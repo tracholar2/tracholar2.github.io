@@ -1,0 +1,477 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>spark 官方教程 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="本教程提供了使用Spark的快速入门。我们将首先通过Spark的交互式shell（Python或Scala）介绍API，然后展示如何用Java，Scala和Python编写应用程序。 要遵循本指南，请先从Spark网站下载Spark的打包版本 。由于我们不会使用HDFS，因此您可以下载任何版本的Hadoop的软件包。 请注意，在Spark 2.0之前，Spark的主要编程接口是弹性分布式数据集（R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spark 官方教程">
+<meta property="og:url" content="https://tracholar2.top/2018/01/12/spark-tutorial/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="本教程提供了使用Spark的快速入门。我们将首先通过Spark的交互式shell（Python或Scala）介绍API，然后展示如何用Java，Scala和Python编写应用程序。 要遵循本指南，请先从Spark网站下载Spark的打包版本 。由于我们不会使用HDFS，因此您可以下载任何版本的Hadoop的软件包。 请注意，在Spark 2.0之前，Spark的主要编程接口是弹性分布式数据集（R">
+<meta property="og:updated_time" content="2018-01-12T14:59:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spark 官方教程">
+<meta name="twitter:description" content="本教程提供了使用Spark的快速入门。我们将首先通过Spark的交互式shell（Python或Scala）介绍API，然后展示如何用Java，Scala和Python编写应用程序。 要遵循本指南，请先从Spark网站下载Spark的打包版本 。由于我们不会使用HDFS，因此您可以下载任何版本的Hadoop的软件包。 请注意，在Spark 2.0之前，Spark的主要编程接口是弹性分布式数据集（R">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:tracholar2.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/12/spark-tutorial/" title="spark 官方教程" itemprop="url">spark 官方教程</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-12T14:08:50.000Z" itemprop="datePublished"> Published 2018-01-12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">使用Spark Shell进行交互式分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">基本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">更多关于数据集操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">缓存</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">自包含的应用程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">更多</span></a></li></ol>
+		
+		</div>
+		
+		<p>本教程提供了使用Spark的快速入门。我们将首先通过Spark的交互式shell（Python或Scala）介绍API，然后展示如何用Java，Scala和Python编写应用程序。</p>
+<p>要遵循本指南，请先从Spark网站下载Spark的打包版本 。由于我们不会使用HDFS，因此您可以下载任何版本的Hadoop的软件包。</p>
+<p>请注意，在Spark 2.0之前，Spark的主要编程接口是弹性分布式数据集（RDD）。在Spark 2.0之后，RDD被数据集取代，数据集类似于RDD类型强大的类型，但在引擎盖下有更丰富的优化。RDD接口仍然受支持，您可以在RDD编程指南中获得更完整的参考资料。但是，我们强烈建议您切换到使用数据集，这比RDD具有更好的性能。请参阅SQL编程指南以获取有关数据集的更多信息。</p>
+<h2><span id="使用spark-shell进行交互式分析">使用Spark Shell进行交互式分析</span></h2><h3><span id="基本">基本</span></h3><p>Spark的shell提供了一个学习API的简单方法，也是一个交互式分析数据的强大工具。它可以在Scala（在Java VM上运行，因此是使用现有Java库的好方法）或Python中提供。通过在Spark目录中运行以下代码来启动它：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/spark-shell</span><br></pre></td></tr></table></figure>
+<p>Spark的主要抽象是一个名为Dataset的分布式集合。数据集可以通过Hadoop InputFormats（例如HDFS文件）或通过转换其他数据集来创建。让我们从Spark源目录中的README文件的文本中创建一个新的数据集：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> textFile = spark.read.textFile(<span class="string">"README.md"</span>)</span><br><span class="line">textFile: org.apache.spark.sql.<span class="type">Dataset</span>[<span class="type">String</span>] = [value: string]</span><br></pre></td></tr></table></figure>
+<p>您可以直接从数据集中获取值，通过调用某些操作，或者转换数据集来获取新的值。有关更多详细信息，请阅读API文档。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; textFile.count() <span class="comment">// Number of items in this Dataset</span></span><br><span class="line">res0: <span class="type">Long</span> = <span class="number">126</span> <span class="comment">// May be different from yours as README.md will change over time, similar to other outputs</span></span><br><span class="line"></span><br><span class="line">scala&gt; textFile.first() <span class="comment">// First item in this Dataset</span></span><br><span class="line">res1: <span class="type">String</span> = # <span class="type">Apache</span> <span class="type">Spark</span></span><br></pre></td></tr></table></figure>
+<p>现在让我们转换这个数据集到一个新的。我们调用filter返回一个新的数据集与文件中的项目的一个子集。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> linesWithSpark = textFile.filter(line =&gt; line.contains(<span class="string">"Spark"</span>))</span><br><span class="line">linesWithSpark: org.apache.spark.sql.<span class="type">Dataset</span>[<span class="type">String</span>] = [value: string]</span><br></pre></td></tr></table></figure>
+<p>我们可以把变革和行动联系在一起：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; textFile.filter(line =&gt; line.contains(<span class="string">"Spark"</span>)).count() <span class="comment">// How many lines contain "Spark"?</span></span><br><span class="line">res3: <span class="type">Long</span> = <span class="number">15</span></span><br></pre></td></tr></table></figure>
+<h3><span id="更多关于数据集操作">更多关于数据集操作</span></h3><p>数据集操作和转换可用于更复杂的计算。比方说，我们想找到最多的单词：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; textFile.map(line =&gt; line.split(<span class="string">" "</span>).size).reduce((a, b) =&gt; <span class="keyword">if</span> (a &gt; b) a <span class="keyword">else</span> b)</span><br><span class="line">res4: <span class="type">Long</span> = <span class="number">15</span></span><br></pre></td></tr></table></figure>
+<p>这首先将一行映射到一个整数值，创建一个新的数据集。reduce在该数据集上调用以查找最大的字数。参数map和reduce是Scala函数文字（闭包），并可以使用任何语言功能或Scala / Java库。例如，我们可以轻松地调用其他地方声明的函数。我们将使用Math.max()函数来使这个代码更容易理解：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">import</span> java.lang.<span class="type">Math</span></span><br><span class="line"><span class="keyword">import</span> java.lang.<span class="type">Math</span></span><br><span class="line"></span><br><span class="line">scala&gt; textFile.map(line =&gt; line.split(<span class="string">" "</span>).size).reduce((a, b) =&gt; <span class="type">Math</span>.max(a, b))</span><br><span class="line">res5: <span class="type">Int</span> = <span class="number">15</span></span><br></pre></td></tr></table></figure>
+<p>一种常见的数据流模式是MapReduce，正如Hadoop所普及的。Spark可以轻松实现MapReduce流程：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> wordCounts = textFile.flatMap(line =&gt; line.split(<span class="string">" "</span>)).groupByKey(identity).count()</span><br><span class="line">wordCounts: org.apache.spark.sql.<span class="type">Dataset</span>[(<span class="type">String</span>, <span class="type">Long</span>)] = [value: string, count(<span class="number">1</span>): bigint]</span><br></pre></td></tr></table></figure>
+<p>在这里，我们要求flatMap将一行数据集转换为一个数据集的单词，然后组合groupByKey并count计算文件中每个单词的数量作为（String，Long）对的数据集。为了收集我们shell中的字数，我们可以调用collect：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; wordCounts.collect()</span><br><span class="line">res6: <span class="type">Array</span>[(<span class="type">String</span>, <span class="type">Int</span>)] = <span class="type">Array</span>((means,<span class="number">1</span>), (under,<span class="number">2</span>), (<span class="keyword">this</span>,<span class="number">3</span>), (<span class="type">Because</span>,<span class="number">1</span>), (<span class="type">Python</span>,<span class="number">2</span>), (agree,<span class="number">1</span>), (cluster.,<span class="number">1</span>), ...)</span><br></pre></td></tr></table></figure>
+<h3><span id="缓存">缓存</span></h3><p>Spark还支持将数据集提取到集群范围内的内存缓存中。当重复访问数据时，如查询小的“热”数据集或运行迭代算法（如PageRank）时，这非常有用。作为一个简单的例子，让我们标记我们的linesWithSpark数据集被缓存：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; linesWithSpark.cache()</span><br><span class="line">res7: linesWithSpark.<span class="keyword">type</span> = [value: string]</span><br><span class="line"></span><br><span class="line">scala&gt; linesWithSpark.count()</span><br><span class="line">res8: <span class="type">Long</span> = <span class="number">15</span></span><br><span class="line"></span><br><span class="line">scala&gt; linesWithSpark.count()</span><br><span class="line">res9: <span class="type">Long</span> = <span class="number">15</span></span><br></pre></td></tr></table></figure>
+<p>使用Spark探索和缓存100行文本文件似乎很愚蠢。有趣的部分是这些相同的函数可以用在非常大的数据集上，即使它们被划分为数十或数百个节点。您也可以bin/spark-shell按照RDD编程指南中的描述，通过连接到集群来交互地完成此操作。</p>
+<h2><span id="自包含的应用程序">自包含的应用程序</span></h2><p>假设我们希望使用Spark API编写一个自包含的应用程序。我们将通过一个简单的应用程序在Scala（与SBT），Java（与Maven）和Python（PIP）。</p>
+<p>我们将在Scala中创建一个非常简单的Spark应用程序 - 这么简单，事实上，它被命名为SimpleApp.scala：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* SimpleApp.scala */</span></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.<span class="type">SparkSession</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">SimpleApp</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]) &#123;</span><br><span class="line">    <span class="keyword">val</span> logFile = <span class="string">"YOUR_SPARK_HOME/README.md"</span> <span class="comment">// Should be some file on your system</span></span><br><span class="line">    <span class="keyword">val</span> spark = <span class="type">SparkSession</span>.builder.appName(<span class="string">"Simple Application"</span>).getOrCreate()</span><br><span class="line">    <span class="keyword">val</span> logData = spark.read.textFile(logFile).cache()</span><br><span class="line">    <span class="keyword">val</span> numAs = logData.filter(line =&gt; line.contains(<span class="string">"a"</span>)).count()</span><br><span class="line">    <span class="keyword">val</span> numBs = logData.filter(line =&gt; line.contains(<span class="string">"b"</span>)).count()</span><br><span class="line">    println(<span class="string">s"Lines with a: <span class="subst">$numAs</span>, Lines with b: <span class="subst">$numBs</span>"</span>)</span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请注意，应用程序应该定义一个main()方法而不是扩展scala.App。子类scala.App可能无法正常工作。</p>
+<p>这个程序只是计算Spark自述文件中包含’a’的行数和包含’b’的数字。请注意，您需要将YOUR_SPARK_HOME替换为安装Spark的位置。与之前使用Spark shell初始化自己的SparkSession的例子不同，我们初始化一个SparkSession作为程序的一部分。</p>
+<p>我们调用SparkSession.builder构造[[SparkSession]]，然后设置应用程序名称，最后调用getOrCreate获取[[SparkSession]]实例。</p>
+<p>我们的应用程序依赖于Spark API，所以我们还将包含一个sbt配置文件 build.sbt，它解释了Spark是一个依赖项。该文件还添加了Spark所依赖的存储库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">name := &quot;Simple Project&quot;</span><br><span class="line"></span><br><span class="line">version := &quot;1.0&quot;</span><br><span class="line"></span><br><span class="line">scalaVersion := &quot;2.11.8&quot;</span><br><span class="line"></span><br><span class="line">libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-sql&quot; % &quot;2.2.1&quot;</span><br></pre></td></tr></table></figure>
+<p>对于SBT正常工作，我们需要布局SimpleApp.scala并build.sbt 根据典型的目录结构。一旦到位，我们可以创建一个包含应用程序代码的JAR包，然后使用spark-submit脚本来运行我们的程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># Your directory layout should look like this</span><br><span class="line">$ find .</span><br><span class="line">.</span><br><span class="line">./build.sbt</span><br><span class="line">./src</span><br><span class="line">./src/main</span><br><span class="line">./src/main/scala</span><br><span class="line">./src/main/scala/SimpleApp.scala</span><br><span class="line"></span><br><span class="line"># Package a jar containing your application</span><br><span class="line">$ sbt package</span><br><span class="line">...</span><br><span class="line">[info] Packaging &#123;..&#125;/&#123;..&#125;/target/scala-2.11/simple-project_2.11-1.0.jar</span><br><span class="line"></span><br><span class="line"># Use spark-submit to run your application</span><br><span class="line">$ YOUR_SPARK_HOME/bin/spark-submit \</span><br><span class="line">  --class &quot;SimpleApp&quot; \</span><br><span class="line">  --master local[4] \</span><br><span class="line">  target/scala-2.11/simple-project_2.11-1.0.jar</span><br><span class="line">...</span><br><span class="line">Lines with a: 46, Lines with b: 23</span><br></pre></td></tr></table></figure>
+<h2><span id="更多">更多</span></h2><p>祝贺您运行您的第一个Spark应用程序！</p>
+<p>有关API的深入概述，请从RDD编程指南和SQL编程指南开始，或者参阅其他组件的“编程指南”菜单。<br>要在群集上运行应用程序，请转到部署概述。<br>最后，Spark在examples目录（Scala， Java， Python， R）中包含了几个样本。你可以运行它们如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># <span class="type">For</span> <span class="type">Scala</span> and <span class="type">Java</span>, use run-example:</span><br><span class="line">./bin/run-example <span class="type">SparkPi</span></span><br><span class="line"></span><br><span class="line"># <span class="type">For</span> <span class="type">Python</span> examples, use spark-submit directly:</span><br><span class="line">./bin/spark-submit examples/src/main/python/pi.py</span><br><span class="line"></span><br><span class="line"># <span class="type">For</span> <span class="type">R</span> examples, use spark-submit directly:</span><br><span class="line">./bin/spark-submit examples/src/main/r/dataframe.<span class="type">R</span></span><br></pre></td></tr></table></figure>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/spark/">spark</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://tracholar2.top/2018/01/12/spark-tutorial/" data-title="spark 官方教程 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/12/RDD-guide/" title="RDD 编程指南">
+  <strong>上一篇：</strong><br/>
+  <span>
+  RDD 编程指南</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/12/python-metaclass/"  title="python metaclass">
+ <strong>下一篇：</strong><br/> 
+ <span>python metaclass
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">使用Spark Shell进行交互式分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">基本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">更多关于数据集操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">缓存</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">自包含的应用程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">更多</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
