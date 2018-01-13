@@ -11,17 +11,17 @@
     
 
     
-    <meta name="description" content="要理解什么yield，你必须了解什么是 generator。">
+    <meta name="description" content="要理解什么yield，你必须了解什么是 generator。 Iterables当你创建一个列表，你可以逐个读取它的项目。逐个读取它的项目称为迭代： 123456&amp;gt;&amp;gt;&amp;gt; mylist = [1, 2, 3]&amp;gt;&amp;gt;&amp;gt; for i in mylist:...    print(i)123 mylist是一个迭代。当你使用列表推导，你创建一个列表，和一个可迭代的： 12">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python yield 关键字">
 <meta property="og:url" content="https://www.tracholar.top/2018/01/12/python-yield/index.html">
 <meta property="og:site_name" content="智子">
-<meta property="og:description" content="要理解什么yield，你必须了解什么是 generator。">
-<meta property="og:updated_time" content="2018-01-13T08:10:05.000Z">
+<meta property="og:description" content="要理解什么yield，你必须了解什么是 generator。 Iterables当你创建一个列表，你可以逐个读取它的项目。逐个读取它的项目称为迭代： 123456&amp;gt;&amp;gt;&amp;gt; mylist = [1, 2, 3]&amp;gt;&amp;gt;&amp;gt; for i in mylist:...    print(i)123 mylist是一个迭代。当你使用列表推导，你创建一个列表，和一个可迭代的： 12">
+<meta property="og:updated_time" content="2018-01-13T08:26:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python yield 关键字">
-<meta name="twitter:description" content="要理解什么yield，你必须了解什么是 generator。">
+<meta name="twitter:description" content="要理解什么yield，你必须了解什么是 generator。 Iterables当你创建一个列表，你可以逐个读取它的项目。逐个读取它的项目称为迭代： 123456&amp;gt;&amp;gt;&amp;gt; mylist = [1, 2, 3]&amp;gt;&amp;gt;&amp;gt; for i in mylist:...    print(i)123 mylist是一个迭代。当你使用列表推导，你创建一个列表，和一个可迭代的： 12">
 
     
     <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
@@ -79,7 +79,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -95,7 +95,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -118,14 +118,14 @@ var _hmt = _hmt || [];
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-12T08:02:23.000Z" itemprop="datePublished"> 发表于 2018-01-12</time>
+    <time datetime="2018-01-12T08:02:23.000Z" itemprop="datePublished"> Published 2018-01-12</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Iterables</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">generator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">yield</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">控制生成器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Itertools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">了解迭代的内在机制</span></a></li></ol>
 		
@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 		
 
         <ins class="adsbygoogle"
-     style="display:block; text-align:center;"
+     style="display:block; text-align:center; overflow:hidden;"
      data-ad-layout="in-article"
      data-ad-format="fluid"
      data-ad-client="ca-pub-6300557868920774"
@@ -144,14 +144,13 @@ var _hmt = _hmt || [];
 
         
 		<p>要理解什么yield，你必须了解什么是 generator。</p>
-<a id="more"></a>
-<p>要理解什么yield，你必须了解什么是 generator。</p>
 <h2><span id="iterables">Iterables</span></h2><p>当你创建一个列表，你可以逐个读取它的项目。逐个读取它的项目称为迭代：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>mylist = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> mylist:</span><br><span class="line"><span class="meta">... </span>   print(i)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
 <p>mylist是一个迭代。当你使用列表推导，你创建一个列表，和一个可迭代的：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>mylist = [x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> mylist:</span><br><span class="line"><span class="meta">... </span>   print(i)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
 <p>你可以使用<code>for... in...</code>的所有东西都是可迭代的; lists，strings，file …</p>
 <p>这些迭代器很方便，因为您可以随心所欲地读取它们，但是将所有值存储在内存中，而且当有很多值时，并不总是您想要的值。</p>
+<a id="more"></a>
 <h2><span id="generator">generator</span></h2><p>生成器(generator)是迭代器，一种迭代器，只能迭代一次。generator不会将所有的值存储在内存中，它们会立即生成值：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>mygenerator = (x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">3</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> mygenerator:</span><br><span class="line"><span class="meta">... </span>   print(i)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
 <p>除了你用来<code>()</code>代替<code>[]</code>之外，它是一样的。但是，由于generator只能使用一次，所以不能再执行<code>for i in mygenerator</code>多次：计算0，然后忘记计算1，逐个计算4。</p>
@@ -224,21 +223,21 @@ var _hmt = _hmt || [];
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
+  <strong class="toc-title">Contents</strong>
  
  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Iterables</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">generator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">yield</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">控制生成器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Itertools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">了解迭代的内在机制</span></a></li></ol>
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 <!-- side-bar-ad -->
 <ins class="adsbygoogle"
-     style="display:block"
+     style="display:block; overflow:hidden;"
      data-ad-client="ca-pub-6300557868920774"
      data-ad-slot="2232545787"
      data-ad-format="auto"></ins>
@@ -252,7 +251,7 @@ var _hmt = _hmt || [];
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分类</p>
+	<p class="asidetitle">Categories</p>
 		<ul>
 		
 		  
@@ -269,7 +268,7 @@ var _hmt = _hmt || [];
 
   
 <div class="tagslist">
-	<p class="asidetitle">标签</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
@@ -281,7 +280,7 @@ var _hmt = _hmt || [];
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
+  <p class="asidetitle">Links</p>
     <ul>
         
           <li>
@@ -294,7 +293,7 @@ var _hmt = _hmt || [];
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
 </aside>
@@ -505,7 +504,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
