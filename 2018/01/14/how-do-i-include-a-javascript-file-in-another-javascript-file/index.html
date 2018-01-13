@@ -1,0 +1,631 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>怎样在js中包含一个javascript文件 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="JavaScript中是否存在类似于@import的JavaScript，允许您在另一个JavaScript文件中包含JavaScript文件？ 旧版本的JavaScript没有导入，包含或需要，所以已经开发了许多不同的方法来解决这个问题。 但是最新版本的JavaScript有像ES6模块这样的标准导入模块，尽管这不是大多数浏览器都支持。许多使用模块的浏览器应用程序使用构建和/或transpila">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎样在js中包含一个javascript文件">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-do-i-include-a-javascript-file-in-another-javascript-file/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="JavaScript中是否存在类似于@import的JavaScript，允许您在另一个JavaScript文件中包含JavaScript文件？ 旧版本的JavaScript没有导入，包含或需要，所以已经开发了许多不同的方法来解决这个问题。 但是最新版本的JavaScript有像ES6模块这样的标准导入模块，尽管这不是大多数浏览器都支持。许多使用模块的浏览器应用程序使用构建和/或transpila">
+<meta property="og:updated_time" content="2018-01-13T17:32:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="怎样在js中包含一个javascript文件">
+<meta name="twitter:description" content="JavaScript中是否存在类似于@import的JavaScript，允许您在另一个JavaScript文件中包含JavaScript文件？ 旧版本的JavaScript没有导入，包含或需要，所以已经开发了许多不同的方法来解决这个问题。 但是最新版本的JavaScript有像ES6模块这样的标准导入模块，尽管这不是大多数浏览器都支持。许多使用模块的浏览器应用程序使用构建和/或transpila">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-i-include-a-javascript-file-in-another-javascript-file/" title="怎样在js中包含一个javascript文件" itemprop="url">怎样在js中包含一个javascript文件</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-13T17:04:26.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">ES6 Modules</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Node.js require</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">AJAX Loading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">jQuery Loading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Dynamic Script Loading</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Detecting when the script has been executed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Source Code Merge/Preprocessing</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>JavaScript中是否存在类似于<code>@import</code>的JavaScript，允许您在另一个JavaScript文件中包含JavaScript文件？</p>
+<p>旧版本的JavaScript没有导入，包含或需要，所以已经开发了许多不同的方法来解决这个问题。</p>
+<p>但是最新版本的JavaScript有像<a href="http://exploringjs.com/es6/ch_modules.html" target="_blank" rel="noopener"><br>ES6模块</a>这样的标准导入模块，尽管这不是大多数浏览器都支持。许多使用模块的浏览器应用程序使用<a href="https://webpack.github.io/" target="_blank" rel="noopener">构建</a>和/或<a href="“https://babeljs.io"><br>transpilation </a>工具，以便使用具有模块特性的新语法。</p>
+<a id="more"></a>
+<h3><span id="es6-modules">ES6 Modules</span></h3><p>请注意，目前，浏览器对ES6模块的支持并不是特别好，但它正在发展中。根据<a href="https://stackoverflow.com/a/44086319" target="_blank" rel="noopener">这个StackOverflow答案</a>，它们在Chrome<br>60，Firefox 54和MS Edge 15中被支持（但在标志后面），只有Safari 10.1提供无标志支持。</p>
+<p>因此，您现在仍然需要使用构建和/或转换工具来运行有效的JavaScript，而不需要用户使用这些浏览器版本或启用任何标志。</p>
+<p>一旦ES6模块很常见，下面是你如何使用它们：</p>
+<pre><code>// module.js
+export function hello() {
+  return &quot;Hello&quot;;
+}
+
+
+
+// main.js
+import {hello} from &apos;module&apos;; // or &apos;./module&apos;
+let val = hello(); // val is &quot;Hello&quot;;
+</code></pre><h3><span id="nodejs-require">Node.js require</span></h3><p>Node.js目前正在使用<a href="https://nodejs.org/api/modules.html" target="_blank" rel="noopener"> module.exports / require
+</a>系统。如果您需要<code>import</code>语法，则可以使用<code>babel</code>进行转码。</p>
+<pre><code>// mymodule.js
+module.exports = {
+   hello: function() {
+      return &quot;Hello&quot;;
+   }
+}
+
+
+
+// server.js
+const myModule = require(&apos;./mymodule&apos;);
+let val = myModule.hello(); // val is &quot;Hello&quot;
+</code></pre><p>还有其他一些方法可以让JavaScript在浏览器中包含外部JavaScript内容，而不需要预处理。</p>
+<h3><span id="ajax-loading">AJAX Loading</span></h3><p>您可以使用AJAX调用加载其他脚本，然后使用<code>eval</code>来运行它。这是最直接的方式，但是由于JavaScript沙盒安全模型，它仅限于您的域。使用<code>eval</code>也为漏洞，黑客和安全问题打开了大门。</p>
+<h3><span id="jquery-loading">jQuery Loading</span></h3><p><a href="http://jquery.com/" target="_blank" rel="noopener"> jQuery </a>库提供了加载功能<a href="“http://api.jquery.com/jQuery”。">在一行</a>：</p>
+<pre><code>$.getScript(&quot;my_lovely_script.js&quot;, function() {
+   alert(&quot;Script loaded but not necessarily executed.&quot;);
+});
+</code></pre><h3><span id="dynamic-script-loading">Dynamic Script Loading</span></h3><p>您可以将脚本网址添加到HTML中。为了避免jQuery的开销，这是一个理想的解决方案。</p>
+<p>该脚本甚至可以驻留在不同的服务器上。此外，浏览器评估代码。 <code>＆lt; script＆gt;</code>标签可以被注入到网页<code>＆lt; head＆gt;</code>中，或者在关闭<code>＆lt; / body＆gt;</code>标记。</p>
+<p>这是一个如何工作的例子：</p>
+<pre><code>function dynamicallyLoadScript(url) {
+    var script = document.createElement(&quot;script&quot;); // Make a script DOM node
+    script.src = url; // Set it&apos;s src to the provided URL
+
+    document.head.appendChild(script); // Add it to the end of the head section of the page (could change &apos;head&apos; to &apos;body&apos; to add it to the end of the body section instead)
+}
+</code></pre><p>这个函数会在页面的头部结尾添加一个新的<code>＆lt; script＆gt;</code>标签，其中<code>src</code>属性被设置为给定的URL作为第一个参数的函数。</p>
+<p>这两个解决方案在<a href="http://unixpapa.com/js/dyna.html" target="_blank" rel="noopener"> JavaScript疯狂：动态脚本加载</a>中进行了讨论和说明。</p>
+<h2><span id="detecting-when-the-script-has-been-executed">Detecting when the script has been executed</span></h2><p>现在，你必须知道一个大问题。这样做意味着您远程加载代码_。现代Web浏览器将加载文件并继续执行当前脚本，因为它们会异步加载所有内容以提高性能。<br>（这适用于jQuery方法和手动动态脚本加载方法。）</p>
+<p>这意味着，如果直接使用这些技巧，那么在您要求加载后，您将无法在下一行使用新加载的代码，因为它仍然会加载。</p>
+<p>例如：<code>my_lovely_script.js</code>包含<code>MySuperObject</code>：</p>
+<pre><code>var js = document.createElement(&quot;script&quot;);
+
+js.type = &quot;text/javascript&quot;;
+js.src = jsFilePath;
+
+document.body.appendChild(js);
+
+var s = new MySuperObject();
+
+Error : MySuperObject is undefined
+</code></pre><p>然后你重新加载页面<code>F5</code>。它的工作原理！混乱…</p>
+<p>那该怎么办？**</p>
+<p>那么，你可以使用我给你的链接中的作者提出的黑客攻击。总之，对于匆忙的人来说，当脚本被加载时，他使用事件来运行回调函数。所以你可以把所有使用远程库的代码放在回调函数中。例如：</p>
+<pre><code>function loadScript(url, callback)
+{
+    // Adding the script tag to the head as suggested before
+    var head = document.getElementsByTagName(&apos;head&apos;)[0];
+    var script = document.createElement(&apos;script&apos;);
+    script.type = &apos;text/javascript&apos;;
+    script.src = url;
+
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
+    script.onreadystatechange = callback;
+    script.onload = callback;
+
+    // Fire the loading
+    head.appendChild(script);
+}
+</code></pre><p>然后，您在<a href="http://en.wikipedia.org/wiki/Anonymous_function" target="_blank" rel="noopener"><br>lambda函数</a>中加载脚本后，编写要使用的代码：</p>
+<pre><code>var myPrettyCode = function() {
+   // Here, do whatever you want
+};
+</code></pre><p>然后你运行所有这些：</p>
+<pre><code>loadScript(&quot;my_lovely_script.js&quot;, myPrettyCode);
+</code></pre><p>请注意，脚本可能会在DOM加载之后或之前执行，具体取决于浏览器以及是否包含行<code>script.async = false;</code>。有一个<a href="http://www.html5rocks.com/en/tutorials/speed
+/script-loading/" target="_blank" rel="noopener">关于Javascript加载的一般文章</a>，讨论这个。 / p&gt;</p>
+<h3><span id="source-code-mergepreprocessing">Source Code Merge/Preprocessing</span></h3><p>正如在这个答案的顶部所提到的，许多开发人员现在在他们的项目中使用像WebPack，Babel或者Gulp这样的构建/转换工具，允许他们更好地使用新的语法和支持模块，合并文件，缩小，等</p>
+<p>如果有人正在寻找更高级的内容，请尝试<a href="http://requirejs.org/" target="_blank" rel="noopener"> RequireJS
+</a>。您将获得额外的好处，例如依赖关系管理，更好的并发性和避免重复（即多次检索脚本）。</p>
+<p>你可以在“模块”中编写你的JavaScript文件，然后把它们作为依赖关系引用到其他脚本中。或者你可以使用RequireJS作为一个简单的“去获得这个脚本”的解决方案。</p>
+<p>示例：</p>
+<p>定义依赖关系为模块：</p>
+<p>&lt;强&gt;一些-dependency.js</p>
+<pre><code>define([&apos;lib/dependency1&apos;, &apos;lib/dependency2&apos;], function (d1, d2) {
+
+     //Your actual script goes here.
+     //The dependent scripts will be fetched if necessary.
+
+     return libraryObject;  //For example, jQuery object
+});
+</code></pre><p><strong>implementation.js</strong> 是您的“主要”JavaScript文件，它依赖 <strong>some-dependency.js</strong></p>
+<pre><code>require([&apos;some-dependency&apos;], function(dependency) {
+
+    //Your script goes here
+    //some-dependency.js is fetched.
+    //Then your script is executed
+});
+</code></pre><p>摘自<a href="https://github.com/jrburke/requirejs" target="_blank" rel="noopener"> GitHub </a>的自述文件：</p>
+<blockquote>
+<p>RequireJS loads plain JavaScript files as well as more defined modules. It<br>is optimized for in-browser use, including in a Web Worker, but it can be used<br>in other JavaScript environments, like Rhino and Node. It implements the<br>Asynchronous Module API.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>RequireJS uses plain script tags to load modules/files, so it should allow<br>for easy debugging. It can be used simply to load existing JavaScript files,<br>so <strong>you can add it to your existing project without having to re-write your<br>JavaScript files.</strong></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>…</p>
+</blockquote>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-do-i-include-a-javascript-file-in-another-javascript-file/" data-title="怎样在js中包含一个javascript文件 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-to-check-whether-a-checkbox-is-checked-in-jquery/" title="how-to-check-whether-a-checkbox-is-checked-in-jquery">
+  <strong>上一篇：</strong><br/>
+  <span>
+  how-to-check-whether-a-checkbox-is-checked-in-jquery</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/13/how-do-javascript-closures-work/"  title="javascript 的闭包">
+ <strong>下一篇：</strong><br/> 
+ <span>javascript 的闭包
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">ES6 Modules</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Node.js require</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">AJAX Loading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">jQuery Loading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Dynamic Script Loading</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Detecting when the script has been executed</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Source Code Merge/Preprocessing</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
