@@ -4,24 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>如何在JavaScript中获得时间戳？ | 智子</title>
+    <title>javascript 获取 querystring | 智子</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="zhizi">
     
 
     
-    <meta name="description" content="类似于Unix的时间戳，也就是代表当前时间和日期的单个数字。可以是数字或字符串。">
-<meta name="keywords" content="javascript">
+    <meta name="description" content="有没有插件，通过jQuery（或没有）检索查询字符串的值？ 如果是这样，怎么样？如果没有，是否有插件可以这样做？">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何在JavaScript中获得时间戳？">
-<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-do-you-get-a-timestamp-in-javascript/index.html">
+<meta property="og:title" content="javascript 获取 querystring">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-can-i-get-query-string-values-in-javascript/index.html">
 <meta property="og:site_name" content="智子">
-<meta property="og:description" content="类似于Unix的时间戳，也就是代表当前时间和日期的单个数字。可以是数字或字符串。">
-<meta property="og:updated_time" content="2018-01-13T17:33:07.000Z">
+<meta property="og:description" content="有没有插件，通过jQuery（或没有）检索查询字符串的值？ 如果是这样，怎么样？如果没有，是否有插件可以这样做？">
+<meta property="og:updated_time" content="2018-01-13T17:36:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何在JavaScript中获得时间戳？">
-<meta name="twitter:description" content="类似于Unix的时间戳，也就是代表当前时间和日期的单个数字。可以是数字或字符串。">
+<meta name="twitter:title" content="javascript 获取 querystring">
+<meta name="twitter:description" content="有没有插件，通过jQuery（或没有）检索查询字符串的值？ 如果是这样，怎么样？如果没有，是否有插件可以这样做？">
 
     
     <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
@@ -111,14 +110,14 @@ var _hmt = _hmt || [];
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-you-get-a-timestamp-in-javascript/" title="如何在JavaScript中获得时间戳？" itemprop="url">如何在JavaScript中获得时间戳？</a>
+      <a href="/2018/01/14/how-can-i-get-query-string-values-in-javascript/" title="javascript 获取 querystring" itemprop="url">javascript 获取 querystring</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-13T17:27:04.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-13T17:34:12.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
@@ -143,41 +142,71 @@ var _hmt = _hmt || [];
 </script>
 
 
-		<p>类似于Unix的时间戳，也就是代表当前时间和日期的单个数字。可以是数字或字符串。</p>
+		<p>有没有插件，通过jQuery（或没有）检索<a href="http://en.wikipedia.org/wiki/Query_string" target="_blank" rel="noopener">查询字符串</a>的值？</p>
+<p>如果是这样，怎么样？如果没有，是否有插件可以这样做？</p>
 <a id="more"></a>
-<pre><code>var timeStampInMs = window.performance &amp;&amp; window.performance.now &amp;&amp; window.performance.timing &amp;&amp; window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
-
-console.log(timeStampInMs, Date.now());
-
-
-
-+ new Date()
-</code></pre><p>像<code>plus</code>这样的一元运算符会触发<code>Date</code>对象中的<code>valueOf</code>方法，并返回时间戳（不作任何修改）。</p>
-<p>详细信息：</p>
-<p>在目前几乎所有浏览器上，您都可以使用<a href="http://www.ecma-
-international.org/ecma-262/5.1/#sec-15.9.4.4" target="_blank" rel="noopener"> <code>Date.now（）</code> </a>以 <strong>毫秒为单位获取UTC时间戳</strong><br>;一个明显的例外是IE8和更早版本（请参阅<a href="http://kangax.github.io/compat-
-table/es5/#Date.now" target="_blank" rel="noopener">兼容性表</a>）</p>
-<p>然而，您可以轻松地为此做一个垫脚：</p>
-<pre><code>if (!Date.now) {
-    Date.now = function() { return new Date().getTime(); }
+<p>你不需要为此目的的jQuery。你可以使用一些纯粹的JavaScript：</p>
+<pre><code>function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, &quot;\\$&amp;&quot;);
+    var regex = new RegExp(&quot;[?&amp;]&quot; + name + &quot;(=([^&amp;#]*)|&amp;|#|$)&quot;),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return &apos;&apos;;
+    return decodeURIComponent(results[2].replace(/\+/g, &quot; &quot;));
 }
-</code></pre><p>要在 <strong>秒</strong> 中获取时间戳，您可以使用：</p>
-<pre><code>Math.floor(Date.now() / 1000)
-</code></pre><p>或者你可以使用：</p>
-<pre><code>Date.now() / 1000 | 0
-</code></pre><p>哪个应该稍微快一点，但也不太可读（也可以参见<a href="https://stackoverflow.com/questions/7487977
-/using-bitwise-or-0-to-floor-a-number" target="_blank" rel="noopener">这个答案</a>）。</p>
-<p>我建议使用<code>Date.now（）</code>（使用兼容性填充）。它稍微好一点，因为它更短，不会创建新的<code>Date</code>对象。但是，如果你不想要一个垫片＆amp;最大的兼容性，你可以使用“旧”的方法来获取 <strong>毫秒</strong> 的时间戳：</p>
-<pre><code>new Date().getTime()
-</code></pre><p>然后你可以把它转换成这样的秒数：</p>
-<pre><code>Math.round(new Date().getTime()/1000)
-</code></pre><p>您也可以使用上面显示的<code>valueOf</code>方法：</p>
-<pre><code>new Date().valueOf()
-</code></pre><p>我喜欢这个，因为它很小：</p>
-<pre><code>+new Date
-</code></pre><p>我也喜欢这个，因为它与现代浏览器一样短，并且兼容，500多人投票认为它更好：</p>
-<pre><code>Date.now()
-</code></pre>
+</code></pre><p>用法：</p>
+<pre><code>// query string: ?foo=lorem&amp;bar=&amp;baz
+var foo = getParameterByName(&apos;foo&apos;); // &quot;lorem&quot;
+var bar = getParameterByName(&apos;bar&apos;); // &quot;&quot; (present with empty value)
+var baz = getParameterByName(&apos;baz&apos;); // &quot;&quot; (present with no value)
+var qux = getParameterByName(&apos;qux&apos;); // null (absent)
+</code></pre><p>，点击 注意：如果一个参数存在几次（<code>？foo = lorem＆amp; foo = ipsum</code>），你将得到第一个值（<code>lorem</code>）。有没有关于这个标准和用法不同，请参阅这个问题：<a href="https://stackoverflow.com/questions/1746507/authoritative-
+position-of-duplicate-http-get-query-keys" target="_blank" rel="noopener">重复HTTPGET查询键的权威位置</a>。</p>
+<hr>
+<p>这是基于新的<a href="https://developer.mozilla.org/en-
+US/docs/Web/API/URLSearchParams" target="_blank" rel="noopener"> URLSearchParams规范</a>的更新以更简洁的方式达到同样的效果。请参阅标题为“<a href="https://stackoverflow.com/questions/901115/how-can-i-get-query-string-
+values-in-javascript/901144#12151322" target="_blank" rel="noopener"> URLSearchParams
+</a>”下方。</p>
+<p>这里发布的一些解决方案效率不高。每次脚本需要访问参数时重复正则表达式搜索是完全没有必要的，将参数拆分成关联数组样式对象的单个函数就足够了。如果您不使用HTML5 History API，则每页加载仅需要一次。此处的其他建议也无法正确解码网址。</p>
+<pre><code>var urlParams;
+(window.[onpopstate](https://developer.mozilla.org/en-US/docs/DOM/window.onpopstate) = function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&amp;=]+)=?([^&amp;]*)/g,
+        decode = function (s) { return [decodeURIComponent](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/decodeURIComponent)(s.replace(pl, &quot; &quot;)); },
+        query  = window.[location](https://developer.mozilla.org/en-US/docs/DOM/window.location).search.[substring](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/substring)(1);
+
+    urlParams = {};
+    while (match = search.[exec](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/RegExp/exec)(query))
+       urlParams[decode(match[1])] = decode(match[2]);
+})();
+</code></pre><p>示例querystring：</p>
+<blockquote>
+<p><code>?i=main&amp;mode=front&amp;sid=de8d49b78a85a322c4155015fdce22c4&amp;enc=+Hello%20&amp;empty</code></p>
+</blockquote>
+<p>结果：</p>
+<pre><code> urlParams = {
+    enc: &quot; Hello &quot;,
+    i: &quot;main&quot;,
+    mode: &quot;front&quot;,
+    sid: &quot;de8d49b78a85a322c4155015fdce22c4&quot;,
+    empty: &quot;&quot;
+}
+
+alert(urlParams[&quot;mode&quot;]);
+// -&gt; &quot;front&quot;
+
+alert(&quot;empty&quot; in urlParams);
+// -&gt; true
+</code></pre><p>这也可以很容易地改善处理数组式的查询字符串。这方面的一个例子是<a href="http://jsbin.com/adali3/2" target="_blank" rel="noopener">这里</a>，但由于数组样式的参数没有在<a href="“中定义http://tools.ietf.org/html/rfc3986“rel"><br>RFC 3986 </a>我不会用源代码污染这个答案。<br><a href="https://stackoverflow.com/questions/901115
+/how-can-i-get-query-string-values-in-javascript/23401756#23401756" target="_blank" rel="noopener">对于那些对“污染”版本感兴趣的人，看看下面的campbeln的答案</a>。</p>
+<p>同样，正如注释中指出的那样，<code>;</code>是<code>key = value</code>对的合法分隔符。这将需要一个更复杂的正则表达式来处理<code>;</code>或<code>＆amp;</code>，我认为这是不必要的，因为很少使用<code>;</code>更不可能说两者都会被使用。如果您需要支持<code>;</code>而不是<code>＆amp;</code>，只需在正则表达式中交换即可。</p>
+<hr>
+<p>If you’re using a server-side preprocessing language, you might want to use<br>its native JSON functions to do the heavy lifting for you. For example, in PHP<br>you can write:</p>
+<pre><code>&lt;script&gt;var urlParams = &lt;?php echo [json_encode](http://php.net/manual/en/function.json-encode.php)($_GET, JSON_HEX_TAG);?&gt;;&lt;/script&gt;
+</code></pre><p>很简单！</p>
+
 
         <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
 	</div>
@@ -185,18 +214,13 @@ table/es5/#Date.now" target="_blank" rel="noopener">兼容性表</a>）</p>
 <div class="article-catetags">
 
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
-
 </div>
 
 
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="https://www.tracholar.top/2018/01/14/how-do-you-get-a-timestamp-in-javascript/" data-title="如何在JavaScript中获得时间戳？ | 智子" data-tsina="" class="share clearfix">
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-can-i-get-query-string-values-in-javascript/" data-title="javascript 获取 querystring | 智子" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -210,18 +234,18 @@ table/es5/#Date.now" target="_blank" rel="noopener">兼容性表</a>）</p>
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2018/01/14/how-can-you-validate-an-email-address-in-javascript/" title="如何在JavaScript中验证电子邮件地址？">
+ <a href="/2018/01/14/upload-files-asynchronously/" title="jQuery异步上传文件">
   <strong>上一篇：</strong><br/>
   <span>
-  如何在JavaScript中验证电子邮件地址？</span>
+  jQuery异步上传文件</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2018/01/14/for-each-over-an-array-in-javascript/"  title="如何使用JavaScript循环访问数组中的所有条目？">
+<a href="/2018/01/14/how-can-you-validate-an-email-address-in-javascript/"  title="如何在JavaScript中验证电子邮件地址？">
  <strong>下一篇：</strong><br/> 
- <span>如何使用JavaScript循环访问数组中的所有条目？
+ <span>如何在JavaScript中验证电子邮件地址？
 </span>
 </a>
 </div>

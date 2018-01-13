@@ -4,24 +4,24 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>如何在JavaScript中获得时间戳？ | 智子</title>
+    <title>javascript 清空数组 | 智子</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="zhizi">
     
 
     
-    <meta name="description" content="类似于Unix的时间戳，也就是代表当前时间和日期的单个数字。可以是数字或字符串。">
+    <meta name="description" content="有没有办法清空数组，如果可能的话用.remove（）？ 例如， A = [1,2,3,4]; 我怎样才能清空它？">
 <meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何在JavaScript中获得时间戳？">
-<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-do-you-get-a-timestamp-in-javascript/index.html">
+<meta property="og:title" content="javascript 清空数组">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/empty-an-array-in-javascript/index.html">
 <meta property="og:site_name" content="智子">
-<meta property="og:description" content="类似于Unix的时间戳，也就是代表当前时间和日期的单个数字。可以是数字或字符串。">
-<meta property="og:updated_time" content="2018-01-13T17:33:07.000Z">
+<meta property="og:description" content="有没有办法清空数组，如果可能的话用.remove（）？ 例如， A = [1,2,3,4]; 我怎样才能清空它？">
+<meta property="og:updated_time" content="2018-01-13T17:51:36.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何在JavaScript中获得时间戳？">
-<meta name="twitter:description" content="类似于Unix的时间戳，也就是代表当前时间和日期的单个数字。可以是数字或字符串。">
+<meta name="twitter:title" content="javascript 清空数组">
+<meta name="twitter:description" content="有没有办法清空数组，如果可能的话用.remove（）？ 例如， A = [1,2,3,4]; 我怎样才能清空它？">
 
     
     <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
@@ -111,14 +111,14 @@ var _hmt = _hmt || [];
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-you-get-a-timestamp-in-javascript/" title="如何在JavaScript中获得时间戳？" itemprop="url">如何在JavaScript中获得时间戳？</a>
+      <a href="/2018/01/14/empty-an-array-in-javascript/" title="javascript 清空数组" itemprop="url">javascript 清空数组</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-13T17:27:04.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-13T17:46:28.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
@@ -143,40 +143,45 @@ var _hmt = _hmt || [];
 </script>
 
 
-		<p>类似于Unix的时间戳，也就是代表当前时间和日期的单个数字。可以是数字或字符串。</p>
+		<p>有没有办法清空数组，如果可能的话用<code>.remove（）</code>？</p>
+<p>例如，</p>
+<pre><code>A = [1,2,3,4];
+</code></pre><p>我怎样才能清空它？</p>
 <a id="more"></a>
-<pre><code>var timeStampInMs = window.performance &amp;&amp; window.performance.now &amp;&amp; window.performance.timing &amp;&amp; window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
-
-console.log(timeStampInMs, Date.now());
-
-
-
-+ new Date()
-</code></pre><p>像<code>plus</code>这样的一元运算符会触发<code>Date</code>对象中的<code>valueOf</code>方法，并返回时间戳（不作任何修改）。</p>
-<p>详细信息：</p>
-<p>在目前几乎所有浏览器上，您都可以使用<a href="http://www.ecma-
-international.org/ecma-262/5.1/#sec-15.9.4.4" target="_blank" rel="noopener"> <code>Date.now（）</code> </a>以 <strong>毫秒为单位获取UTC时间戳</strong><br>;一个明显的例外是IE8和更早版本（请参阅<a href="http://kangax.github.io/compat-
-table/es5/#Date.now" target="_blank" rel="noopener">兼容性表</a>）</p>
-<p>然而，您可以轻松地为此做一个垫脚：</p>
-<pre><code>if (!Date.now) {
-    Date.now = function() { return new Date().getTime(); }
+<p>清除现有数组的方法<code>A</code>：</p>
+<p><strong>方法1</strong></p>
+<p>（这是我对这个问题的原始答案）</p>
+<pre><code>A = [];
+</code></pre><p>这段代码会将变量<code>A</code>设置为一个新的空数组。如果你没有 <strong>对原始数组<code>A</code></strong> 的引用，那么这是完美的，因为这实际上创建了一个全新的（空）数组。你应该小心这个方法，因为如果你从另一个变量或属性引用这个数组，原来的数组将保持不变。如果仅仅通过原始变量<code>A</code>。</p>
+<p>引用数组，那么只能使用它 这也是最快的解决方案。</p>
+<p>此代码示例显示了使用此方法时可能遇到的问题：</p>
+<pre><code>var arr1 = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;,&apos;f&apos;];
+var arr2 = arr1;  // Reference arr1 by another variable
+arr1 = [];
+console.log(arr2); // Output [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;,&apos;f&apos;]
+</code></pre><p><strong>方法2</strong> （如<a href="https://stackoverflow.com/a/1234337/113570" target="_blank" rel="noopener">建议</a>通过<a href="“https：//"> Matthew Crumley
+</a>）</p>
+<pre><code>A.length = 0
+</code></pre><p>这将通过将其长度设置为0来清除现有数组。有些人认为这可能不适用于JavaScript的所有实现，但事实证明情况并非如此。在ECMAScript<br>5中使用“strict mode”时，它也可以工作，因为数组的length属性是一个读/写属性。</p>
+<p><strong>方法3</strong> （如<a href="https://stackoverflow.com/a/8134354/113570" target="_blank" rel="noopener">建议</a>通过<a href="“https：//">安东尼</a>）</p>
+<pre><code>A.splice(0,A.length)
+</code></pre><p>使用<code>.splice（）</code>可以完美的工作，但是由于<code>.splice（）</code>函数会返回一个包含所有被删除项目的数组，所以它实际上会返回一个副本的原始数组。基准测试表明，这对性能没有任何影响。</p>
+<p><strong>方法4</strong> （如<a href="https://stackoverflow.com/a/17306971/113570" target="_blank" rel="noopener">建议</a>通过<a href="“https：//"> tanguy_k
+</a>）</p>
+<pre><code>while(A.length &gt; 0) {
+    A.pop();
 }
-</code></pre><p>要在 <strong>秒</strong> 中获取时间戳，您可以使用：</p>
-<pre><code>Math.floor(Date.now() / 1000)
-</code></pre><p>或者你可以使用：</p>
-<pre><code>Date.now() / 1000 | 0
-</code></pre><p>哪个应该稍微快一点，但也不太可读（也可以参见<a href="https://stackoverflow.com/questions/7487977
-/using-bitwise-or-0-to-floor-a-number" target="_blank" rel="noopener">这个答案</a>）。</p>
-<p>我建议使用<code>Date.now（）</code>（使用兼容性填充）。它稍微好一点，因为它更短，不会创建新的<code>Date</code>对象。但是，如果你不想要一个垫片＆amp;最大的兼容性，你可以使用“旧”的方法来获取 <strong>毫秒</strong> 的时间戳：</p>
-<pre><code>new Date().getTime()
-</code></pre><p>然后你可以把它转换成这样的秒数：</p>
-<pre><code>Math.round(new Date().getTime()/1000)
-</code></pre><p>您也可以使用上面显示的<code>valueOf</code>方法：</p>
-<pre><code>new Date().valueOf()
-</code></pre><p>我喜欢这个，因为它很小：</p>
-<pre><code>+new Date
-</code></pre><p>我也喜欢这个，因为它与现代浏览器一样短，并且兼容，500多人投票认为它更好：</p>
-<pre><code>Date.now()
+</code></pre><p>这个解决方案不是很简洁，也是最慢的解决方案，与原来的答案中引用的早期基准相反。</p>
+<p>&lt;强&gt;性能</p>
+<p>在清除 <strong><em>现有数组</em></strong><br>的所有方法中，方法2和3的性能非常相似，比方法4快很多。请参阅<a href="“http://jsben.ch/#/hyj65”rel">基准</a>。</p>
+<p>正如<a href="https://stackoverflow.com/users/47401/diadistis" target="_blank" rel="noopener"> Diadistis </a>在其<a href="“https://stackoverflow.com/a/28548360”中指出的那样/">
+</a>回答，原来用来确定上述四种方法的性能的基准是有缺陷的。原来的基准重新使用清零的数组，所以第二次迭代清除了一个已经为空的数组。</p>
+<p>以下基准修复了这个缺陷：<a href="http://jsben.ch/#/hyj65" target="_blank" rel="noopener"> http://jsben.ch/#/hyj65
+</a>。它清楚地表明，方法＃2（长度属性）和＃3（拼接）是最快的（不包括不改变原始数组的方法＃1）。</p>
+<hr>
+<p>这是一个热门话题，也是引发诸多争议的原因。实际上有很多正确的答案，因为这个答案已经被标记为很长一段时间的接受答案，所以我将在这里包括所有的方法。如果您对此答案投票，请提出其他答案，我也参考了。</p>
+<p>如果您需要保留原始数组，因为您还需要更新其他引用，则可以将其清除，而不必通过将其长度设置为零来创建新数组：</p>
+<pre><code>A.length = 0;
 </code></pre>
 
         <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
@@ -196,7 +201,7 @@ table/es5/#Date.now" target="_blank" rel="noopener">兼容性表</a>）</p>
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="https://www.tracholar.top/2018/01/14/how-do-you-get-a-timestamp-in-javascript/" data-title="如何在JavaScript中获得时间戳？ | 智子" data-tsina="" class="share clearfix">
+	  <div data-url="https://www.tracholar.top/2018/01/14/empty-an-array-in-javascript/" data-title="javascript 清空数组 | 智子" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -210,18 +215,18 @@ table/es5/#Date.now" target="_blank" rel="noopener">兼容性表</a>）</p>
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2018/01/14/how-can-you-validate-an-email-address-in-javascript/" title="如何在JavaScript中验证电子邮件地址？">
+ <a href="/2018/01/14/how-can-i-know-which-radio-button-is-selected-via-jquery/" title="jquery获取选择的radio按钮">
   <strong>上一篇：</strong><br/>
   <span>
-  如何在JavaScript中验证电子邮件地址？</span>
+  jquery获取选择的radio按钮</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2018/01/14/for-each-over-an-array-in-javascript/"  title="如何使用JavaScript循环访问数组中的所有条目？">
+<a href="/2018/01/14/get-the-current-url-with-javascript/"  title="get-the-current-url-with-javascript">
  <strong>下一篇：</strong><br/> 
- <span>如何使用JavaScript循环访问数组中的所有条目？
+ <span>get-the-current-url-with-javascript
 </span>
 </a>
 </div>
