@@ -109,7 +109,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/running-shell-command-from-python-and-capturing-the-output/" title="从Python运行shell命令并捕获输出" itemprop="url">从Python运行shell命令并捕获输出</a>
+      <a href="/2018/01/14/python-class-inherits-object/" title="Python类继承对象" itemprop="url">Python类继承对象</a>
   </h1>
   <p class="article-author">By
        
@@ -122,21 +122,16 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>我想编写一个函数来执行一个shell命令并返回它的输出 <strong>作为一个字符串</strong> ，不管它是一个错误还是成功的消息。我只想得到和命令行一样的结果。</p>
-<p>什么样的代码可以做这样的事情？</p>
-<p>例如：</p>
-<pre><code>def run_command(cmd):
-    # ??????
-
-print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
-# Should output something like:
-# mysqladmin: CREATE DATABASE failed; error: &apos;Can&apos;t create database &apos;test&apos;; database exists&apos;
+        <p>是否有任何理由让类声明继承<code>object</code>？</p>
+<p>我刚刚发现了一些代码，我找不到一个好的理由。</p>
+<pre><code>class MyClass(object):
+    # class code follows...
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/running-shell-command-from-python-and-capturing-the-output/#more">Read More</a>
+            <a href="/2018/01/14/python-class-inherits-object/#more">Read More</a>
           
        </p>
     </div>
@@ -146,7 +141,7 @@ print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/shell/">shell</a><a href="/tags/subprocess/">subprocess</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/object/">object</a><a href="/tags/class/">class</a><a href="/tags/inheritance/">inheritance</a>
   </div>
 
 </div>
@@ -186,7 +181,7 @@ print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/safely-turning-a-json-string-into-an-object/" title="安全地将JSON字符串转换为对象" itemprop="url">安全地将JSON字符串转换为对象</a>
+      <a href="/2018/01/14/python-join-why-is-it-string-joinlist-instead-of-list-joinstring/" title="Python连接：为什么它是string.join（list）而不是list.join（string）？" itemprop="url">Python连接：为什么它是string.join（list）而不是list.join（string）？</a>
   </h1>
   <p class="article-author">By
        
@@ -199,15 +194,21 @@ print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
 </header>
     <div class="article-content">
         
-        <p>给定一串JSON数据，如何安全地将该字符串转换为JavaScript对象？</p>
-<p>显然，你可以用这样的东西来保密。</p>
-<pre><code>var obj = eval(&quot;(&quot; + json + &apos;)&apos;);
-</code></pre><p>…但是这让我们容易受到包含其他代码的json字符串的影响，这对于简单的eval来说似乎非常危险。</p>
+        <p>这一直困扰着我。这似乎是更好的：</p>
+<pre><code>my_list = [&quot;Hello&quot;, &quot;world&quot;]
+print my_list.join(&quot;-&quot;)
+# Produce: &quot;Hello-world&quot;
+</code></pre><p>比这个：</p>
+<pre><code>my_list = [&quot;Hello&quot;, &quot;world&quot;]
+print &quot;-&quot;.join(my_list)
+# Produce: &quot;Hello-world&quot;
+</code></pre><p>有没有一个特定的原因是这样的？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/safely-turning-a-json-string-into-an-object/#more">Read More</a>
+            <a href="/2018/01/14/python-join-why-is-it-string-joinlist-instead-of-list-joinstring/#more">Read More</a>
           
        </p>
     </div>
@@ -217,7 +218,7 @@ print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/json/">json</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a><a href="/tags/string/">string</a><a href="/tags/join/">join</a>
   </div>
 
 </div>
@@ -246,7 +247,7 @@ print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/reverse-a-string-in-python/" title="在Python中反转一个字符串" itemprop="url">在Python中反转一个字符串</a>
+      <a href="/2018/01/14/why-is-char-preferred-over-string-for-passwords/" title="为什么char []首选字符串密码？" itemprop="url">为什么char []首选字符串密码？</a>
   </h1>
   <p class="article-author">By
        
@@ -259,14 +260,505 @@ print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
 </header>
     <div class="article-content">
         
-        <p>Python的<code>str</code>对象没有内置的<code>reverse</code>函数。实施这种方法的最好方法是什么？</p>
-<p>如果提供一个非常简洁的答案，请详细说明其效率。例如，<code>str</code>对象是否被转换为不同的对象等。</p>
+        <p>在Swing中，密码字段有一个<code>getPassword（）</code>（返回<code>char []</code>）方法，而不是通常的<code>getText（）</code>。返回<code>String</code>）方法。同样，我遇到了一个建议，不要使用<code>String</code>来处理密码。</p>
+<p>为什么<code>String</code>在密码方面对安全构成威胁？ 使用<code>char []</code>感觉不方便。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/reverse-a-string-in-python/#more">Read More</a>
+            <a href="/2018/01/14/why-is-char-preferred-over-string-for-passwords/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/string/">string</a><a href="/tags/security/">security</a><a href="/tags/passwords/">passwords</a><a href="/tags/char/">char</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/python-progression-path-from-apprentice-to-guru/" title="Python进程路径 - 从徒弟到专家" itemprop="url">Python进程路径 - 从徒弟到专家</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我一直在学习，工作和使用Python一年半。作为一个慢慢转向生物信息学的生物学家，这个语言一直是我在实验室做出的所有主要贡献的核心。我或多或少地爱上了Python允许我表达美丽的解决方案的方式，并且还用语言的语义来允许从思想到可行代码的自然流动。</p>
+<p>我想知道的是你对这个或其他论坛中很少见到的问题的回答。这个问题对于我来说对于那些正在改进Python的人来说似乎很重要，但是他不知道下一步应该做什么。</p>
+<p>让我总结一下我不想先问的问题;）</p>
+<ul>
+<li>我不想知道如何快速学习Python </li>
+<li>我也不想找出熟悉该语言的最佳方法</li>
+<li>最后，我不想知道“一窍不通”的方法。</li>
+</ul>
+<p>我想知道你的意见是：</p>
+<p><strong>你会推荐给一个Python熟练人员的步骤是什么，从学徒到专家的地位（随时随地停止，只要你的专业知识指定它），以便持续改进，成为一个更好，更好的Python编码器，一步一步来。在SO上的一些人几乎似乎值得崇拜他们的Python的能力，请赐教我们：）</strong></p>
+<p>我喜欢这样的答案（但是可以让读者感到惊讶：P）的格式或多或少是这样的：</p>
+<ul>
+<li>阅读（例如：python教程），注意这种细节</li>
+<li><p>代码如此之多/问题/代码行<br>然后阅读（例如：这本或那本书），但是这一次，请注意这个</p>
+</li>
+<li><p>解决一些真实的问题<br>然后，继续阅读Y.</p>
+</li>
+<li><p>确保掌握这些概念</p>
+</li>
+<li>X时间代码</li>
+<li>回到这样或那样的基础，或进一步移动到… </li>
+<li>（你明白了）</li>
+</ul>
+<p>我真的很在意在不同的阶段知道你究竟应该注意什么，以便持续地进步（当然还有适当的努力）。如果您来自特定的专业领域，请在此领域讨论适当的路径。</p>
+<p>编辑：感谢您的伟大的输入，我回到了Python的改进轨道上！我真的很感激！</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/python-progression-path-from-apprentice-to-guru/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/" title="为什么在Python 3中“1000000000000000（1000000000000001）”这么快？" itemprop="url">为什么在Python 3中“1000000000000000（1000000000000001）”这么快？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>据我所知，<code>range（）</code>函数实际上是<a href="“https://docs.python.org/3/library/stdtypes.html#typesseq-
+range"> Python<br>3中的一个对象类型</a>，即时生成其内容，类似于生成器。</p>
+<p>如果是这样的话，我会预料到下面这一行会花费过多的时间，因为为了确定是否在这个范围内，需要生成一个四十亿个值：</p>
+<pre><code>1000000000000000 in range(1000000000000001)
+</code></pre><p>此外：似乎不管我添加了多少个零，计算或多或少需要相同的时间量（基本上是瞬时的）。</p>
+<p>我也尝试过这样的事情，但是计算仍然几乎是即时的：</p>
+<pre><code>1000000000000000000000 in range(0,1000000000000000000001,10) # count by tens
+</code></pre><p>如果我试图实现我自己的范围功能，结果是不是很好！</p>
+<pre><code>def my_crappy_range(N):
+    i = 0
+    while i &lt; N:
+        yield i
+        i += 1
+    return
+</code></pre><p><code></code> range（）`是什么使得它如此之快？</p>
+<hr>
+<p>编辑：事实证明，这是一个比我预想的更细致的话题 - 在<code>range（）</code>优化的背后似乎有点历史。</p>
+<p><a href="https://stackoverflow.com/a/30081318/2437514" target="_blank" rel="noopener"> Martijn<br>Pieters的答案</a>是因为它的完整性而被选中的，但也可以参考<a href="“https：//">abarnert的第一个答案</a>，以便很好地讨论在Python中<code>range</code>是一个完整的 <em>序列</em> 3，关于<code>__的潜在不一致性的一些信息/警告包含Python实现中的__</code>函数优化。 <a href="https://stackoverflow.com/a/30088140/2437514" target="_blank" rel="noopener">abarnert的其他答案</a>更详细一些，并提供了有关Python<br>3优化背后的历史感兴趣的链接（缺乏Python 2中<code>xrange</code>的优化）。<br><a href="https://stackoverflow.com/a/30081467/2437514" target="_blank" rel="noopener">通过戳</a>和<a href="https://stackoverflow.com/a/30081470/2437514" target="_blank" rel="noopener">通过wim</a>为有兴趣的人提供相关的C源代码和解释。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/python-3-x/">python-3.x</a><a href="/tags/performance/">performance</a><a href="/tags/python-internals/">python-internals</a><a href="/tags/range/">range</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/python-property-versus-getters-and-setters/" title="Python @property与getters和setter" itemprop="url">Python @property与getters和setter</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这是一个纯Python特有的设计问题：</p>
+<pre><code>class MyClass(object):
+    ...
+    def get_my_attr(self):
+        ...
+
+    def set_my_attr(self, value):
+        ...
+</code></pre><p>和</p>
+<pre><code>class MyClass(object):
+    ...        
+    @property
+    def my_attr(self):
+        ...
+
+    @my_attr.setter
+    def my_attr(self, value):
+        ...
+</code></pre><p>Python让我们可以做到这一点。如果你要设计一个Python程序，你会使用哪种方法，为什么？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/python-property-versus-getters-and-setters/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/properties/">properties</a><a href="/tags/getter-setter/">getter-setter</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/python-setup-py-uninstall/" title="python setup.py卸载" itemprop="url">python setup.py卸载</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我用<code>python setup.py install</code>安装了一个python包。</p>
+<p>我如何卸载它？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/python-setup-py-uninstall/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/setup-py/">setup.py</a><a href="/tags/pypi/">pypi</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/python-string-formatting-vs-format/" title="Python字符串格式：％与.format" itemprop="url">Python字符串格式：％与.format</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Python 2.6引入了<a href="https://docs.python.org/2/library/stdtypes.html#str.format" target="_blank" rel="noopener"> ` str.format（）代码&gt;</a>方法，其语法与现有的<code>％</code>运算符略有不同。哪个更好，什么情况？</p>
+<ul>
+<li>以下使用每种方法，并有相同的结果，所以有什么区别？</li>
+</ul>
+<p>&lt;预&gt; &lt;代码&gt;＃！/ USR /斌/蟒 sub1 =“python string！” sub2 =“一个参数” a =“我是％s”％sub1 b<br>=“我是{0}”格式（sub1） c =“有％（kwarg）s！” ％{‘kwarg’：sub2} d =“with {kwarg}！”。格式（kwarg<br>= sub2） 打印一个＃“我是一个Python字符串！” 打印b＃“我是一个python字符串！” 打印C＃“与arg！” 打印d＃“与arg！”</p>
+<p>另外，什么时候在Python中出现字符串格式？例如，如果我的日志记录级别设置为“高”，那么我仍然会执行下面的<code>％</code>操作。如果是这样，有没有办法避免这种情况？</p>
+<pre><code>log.debug（“一些调试信息：％s”％some_info）
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/python-string-formatting-vs-format/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/string-formatting/">string-formatting</a><a href="/tags/performance/">performance</a><a href="/tags/logging/">logging</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-dont-self-closing-script-tags-work/" title="为什么不能自动关闭脚本标签？" itemprop="url">为什么不能自动关闭脚本标签？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>浏览器不能正确识别的原因是：</p>
+<pre><code>&lt;script src=&quot;foobar.js&quot; /&gt; &lt;!-- self-closing script tag --&gt;
+</code></pre><p>只有这个被认可：</p>
+<pre><code>&lt;script src=&quot;foobar.js&quot;&gt;&lt;/script&gt;
+</code></pre><p>这是否打破了XHTML支持的概念？</p>
+<p>注意：至少对于所有的IE（6-8 beta 2）这个说法是正确的。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/why-dont-self-closing-script-tags-work/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/xhtml/">xhtml</a><a href="/tags/internet-explorer/">internet-explorer</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/pythonic-way-to-create-a-long-multi-line-string/" title="Pythonic方式创建一个长的多行字符串" itemprop="url">Pythonic方式创建一个长的多行字符串</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有一个很长的查询。我想在Python中分成几行。一种在JavaScript中使用的方法是使用几个句子，并用<code>+</code>操作符连接它们（我知道，也许这不是最有效的方式，但我并不担心性能在这个阶段，只是代码的可读性）。例如：</p>
+<pre><code>var long_string = &apos;some text not important. just garbage to&apos; +
+                  &apos;illustrate my example&apos;;
+</code></pre><p>我试着在Python中做类似的事情，但是没有成功，所以我使用<code>\</code>来分割长字符串。但是，我不确定这是否是唯一的/最好的/<br>pythonicest的方式。看起来很尴尬。 实际的代码：</p>
+<pre><code>query = &apos;SELECT action.descr as &quot;action&quot;, &apos;\
+    &apos;role.id as role_id,&apos;\
+    &apos;role.descr as role&apos;\
+    &apos;FROM &apos;\
+    &apos;public.role_action_def,&apos;\
+    &apos;public.role,&apos;\
+    &apos;public.record_def, &apos;\
+    &apos;public.action&apos;\
+    &apos;WHERE role.id = role_action_def.role_id AND&apos;\
+    &apos;record_def.id = role_action_def.def_id AND&apos;\
+    &apos;action.id = role_action_def.action_id AND&apos;\
+    &apos;role_action_def.account_id = &apos; + account_id + &apos; AND&apos;\
+    &apos;record_def.account_id=&apos; + account_id + &apos; AND&apos;\
+    &apos;def_id=&apos; + def_id
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/pythonic-way-to-create-a-long-multi-line-string/#more">Read More</a>
           
        </p>
     </div>
@@ -299,474 +791,9 @@ print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
 
   
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/scroll-to-the-top-of-the-page-using-javascript-jquery/" title="使用JavaScript / jQuery滚动到页面顶部？" itemprop="url">使用JavaScript / jQuery滚动到页面顶部？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我在页面上有一个<code>＆lt; button＆gt;</code>，当按下这个按钮时，使用jQuery显示一个隐藏的<code>＆lt; div＆gt;</code>。</p>
-<p>如何使用该函数中的JavaScript / jQuery命令滚动到页面的顶部？即使滚动条立即跳转到顶部也是可取的。我不是在寻找一个平滑的滚动。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/scroll-to-the-top-of-the-page-using-javascript-jquery/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/scroll/">scroll</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/save-plot-to-image-file-instead-of-displaying-it-using-matplotlib/" title="保存绘图到图像文件，而不是使用Matplotlib显示它" itemprop="url">保存绘图到图像文件，而不是使用Matplotlib显示它</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我正在写一个快速而肮脏的脚本来即时生成剧情。我使用下面的代码（来自<a href="http://en.wikipedia.org/wiki/Matplotlib" target="_blank" rel="noopener"> Matplotlib</a>文档）作为起点：</p>
-<pre><code>from pylab import figure, axes, pie, title, show
-
-# Make a square figure and axes
-figure(1, figsize=(6, 6))
-ax = axes([0.1, 0.1, 0.8, 0.8])
-
-labels = &apos;Frogs&apos;, &apos;Hogs&apos;, &apos;Dogs&apos;, &apos;Logs&apos;
-fracs = [15, 30, 45, 10]
-
-explode = (0, 0.05, 0, 0)
-pie(fracs, explode=explode, labels=labels, autopct=&apos;%1.1f%%&apos;, shadow=True)
-title(&apos;Raining Hogs and Dogs&apos;, bbox={&apos;facecolor&apos;: &apos;0.8&apos;, &apos;pad&apos;: 5})
-
-show()  # Actually, don&apos;t show, just save to foo.png
-</code></pre><p>我不想在GUI上显示图表，而是将图表保存到一个文件（比如说foo.png）中，例如，它可以在批处理脚本中使用。我该怎么做？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/save-plot-to-image-file-instead-of-displaying-it-using-matplotlib/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/matplotlib/">matplotlib</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/select-rows-from-a-dataframe-based-on-values-in-a-column-in-pandas/" title="根据熊猫中列中的值从DataFrame中选择行" itemprop="url">根据熊猫中列中的值从DataFrame中选择行</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何根据pandas中的某列中的值从DataFrame中选择行？<br>在SQL中，我会使用：</p>
-<pre><code>select * from table where colume_name = some_value. 
-</code></pre><p><em>我试图看熊猫文档，但没有立即找到答案。</em></p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/select-rows-from-a-dataframe-based-on-values-in-a-column-in-pandas/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/pandas/">pandas</a><a href="/tags/dataframe/">dataframe</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/serializing-to-json-in-jquery/" title="在jQuery中序列化为JSON [复制]" itemprop="url">在jQuery中序列化为JSON [复制]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/558518/serializing-an-object-to-json">Serializing an object to JSON</a> 3 answers </li>
-</ul>
-<p>我需要序列化一个对象到JSON。我正在使用jQuery。有没有一个“标准”的方式来做到这一点？</p>
-<p>我的具体情况：我有一个数组定义如下所示：</p>
-<pre><code>var countries = new Array();
-countries[0] = &apos;ga&apos;;
-countries[1] = &apos;cd&apos;;
-...
-</code></pre><p>我需要把它变成一个字符串来传递给<code>$。ajax（）</code>，像这样：</p>
-<pre><code>$.ajax({
-    type: &quot;POST&quot;,
-    url: &quot;Concessions.aspx/GetConcessions&quot;,
-    data: &quot;{&apos;countries&apos;:[&apos;ga&apos;,&apos;cd&apos;]}&quot;,
-...
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/serializing-to-json-in-jquery/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/ajax/">ajax</a><a href="/tags/json/">json</a><a href="/tags/serialization/">serialization</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/single-quotes-vs-double-quotes-in-python/" title="单引号与Python中的双引号[closed]" itemprop="url">单引号与Python中的双引号[closed]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>根据文件，他们几乎可以互换。是否有一个风格的理由来使用一个在另一个？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/single-quotes-vs-double-quotes-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/coding-style/">coding-style</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-does-my-javascript-get-a-no-access-control-allow-origin-header-is-present/" title="为什么我的JavaScript得到一个“否”访问控制 - 允许来源“标题出现在请求的资源”错误时，邮差不？" itemprop="url">为什么我的JavaScript得到一个“否”访问控制 - 允许来源“标题出现在请求的资源”错误时，邮差不？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我试图通过连接到<a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank" rel="noopener"> JavaScript</a>进行授权：//en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web<em>services“rel<br>=”noreferrer“&gt; RESTful  [ [ Flask](<a href="https://en.wikipedia.org/wiki/Flask" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Flask</a></em>%28web_framework%29)中构建的API](”<a href="http://en.wikipedia.org/wiki/Application_programming_interface“rel)。但是，当我提出请求时，出现以下错误：" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/Application_programming_interface“rel)。但是，当我提出请求时，出现以下错误：</a></p>
-<blockquote>
-<p>XMLHttpRequest cannot load <a href="http://myApiUrl/login" target="_blank" rel="noopener">http://myApiUrl/login</a>. No ‘Access-Control-<br>Allow-Origin’ header is present on the requested resource. Origin ‘null’ is<br>therefore not allowed access.</p>
-</blockquote>
-<p>我知道API或远程资源必须设置标题，但是为什么当我通过Chrome扩展程序<a href="“https://chrome.google.com/webstore/detail/postman">邮递员</a>？</p>
-<p>这是请求代码：</p>
-<pre><code>$.ajax({
-    type: &quot;POST&quot;,
-    dataType: &apos;text&apos;,
-    url: api,
-    username: &apos;user&apos;,
-    password: &apos;pass&apos;,
-    crossDomain : true,
-    xhrFields: {
-        withCredentials: true
-    }
-})
-    .done(function( data ) {
-        console.log(&quot;done&quot;);
-    })
-    .fail( function(xhr, textStatus, errorThrown) {
-        alert(xhr.responseText);
-        alert(textStatus);
-    });
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-does-my-javascript-get-a-no-access-control-allow-origin-header-is-present/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/cors/">cors</a><a href="/tags/restful-authentication/">restful-authentication</a><a href="/tags/same-origin-policy/">same-origin-policy</a><a href="/tags/flask-restless/">flask-restless</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/sort-array-of-objects-by-string-property-value-in-javascript/" title="在JavaScript中按字符串属性值排序对象数组" itemprop="url">在JavaScript中按字符串属性值排序对象数组</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有一个JavaScript对象数组：</p>
-<pre><code>var objs = [ 
-    { first_nom: &apos;Lazslo&apos;, last_nom: &apos;Jamf&apos;     },
-    { first_nom: &apos;Pig&apos;,    last_nom: &apos;Bodine&apos;   },
-    { first_nom: &apos;Pirate&apos;, last_nom: &apos;Prentice&apos; }
-];
-</code></pre><p>如何使用JavaScript中的<code>last_nom</code>的值对它们进行排序？</p>
-<p>我知道<code>sort（a，b）</code>，但是这似乎只适用于字符串和数字。我是否需要将toString方法添加到我的对象？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/sort-array-of-objects-by-string-property-value-in-javascript/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/arrays/">arrays</a><a href="/tags/sorting/">sorting</a><a href="/tags/properties/">properties</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/28/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/30/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/28/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/30/">Next<span></span></a>
   </nav>
 
 </div>
@@ -830,7 +857,11 @@ countries[1] = &apos;cd&apos;;
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
 			
 		
 			
@@ -838,11 +869,15 @@ countries[1] = &apos;cd&apos;;
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
 			
 		
 			
@@ -850,15 +885,11 @@ countries[1] = &apos;cd&apos;;
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
 			
 		
 			
@@ -866,7 +897,11 @@ countries[1] = &apos;cd&apos;;
 			
 		
 			
-				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
 			
 		
 			
@@ -874,7 +909,7 @@ countries[1] = &apos;cd&apos;;
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
 			
 		
 			
@@ -882,19 +917,11 @@ countries[1] = &apos;cd&apos;;
 			
 		
 			
-				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/undefined/" title="undefined">undefined<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
 			
 		
 		</ul>

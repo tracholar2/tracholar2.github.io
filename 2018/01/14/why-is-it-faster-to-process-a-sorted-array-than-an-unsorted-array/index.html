@@ -1,0 +1,772 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为什么处理排序后的数组比未排序的数组更快？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="这是一个C ++代码，看起来很奇特。出于一些奇怪的原因，对数据进行奇迹排序使得代码几乎快了六倍。 #include &amp;lt;algorithm&amp;gt; #include &amp;lt;ctime&amp;gt; #include &amp;lt;iostream&amp;gt;  int main() {     // Generate data     const unsigned arraySize = 32768;">
+<meta name="keywords" content="java,performance,c++,optimization,branch-prediction">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么处理排序后的数组比未排序的数组更快？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="这是一个C ++代码，看起来很奇特。出于一些奇怪的原因，对数据进行奇迹排序使得代码几乎快了六倍。 #include &amp;lt;algorithm&amp;gt; #include &amp;lt;ctime&amp;gt; #include &amp;lt;iostream&amp;gt;  int main() {     // Generate data     const unsigned arraySize = 32768;">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/“https://i.stack.imgur.com/muxnt.jpg">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/“https://i.stack.imgur.com/pyfwC.png”alt">
+<meta property="og:updated_time" content="2018-01-14T05:28:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么处理排序后的数组比未排序的数组更快？">
+<meta name="twitter:description" content="这是一个C ++代码，看起来很奇特。出于一些奇怪的原因，对数据进行奇迹排序使得代码几乎快了六倍。 #include &amp;lt;algorithm&amp;gt; #include &amp;lt;ctime&amp;gt; #include &amp;lt;iostream&amp;gt;  int main() {     // Generate data     const unsigned arraySize = 32768;">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/“https://i.stack.imgur.com/muxnt.jpg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/" title="为什么处理排序后的数组比未排序的数组更快？" itemprop="url">为什么处理排序后的数组比未排序的数组更快？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">What is Branch Prediction?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">As hinted from above, the culprit is this if-statement:</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>这是一个C ++代码，看起来很奇特。出于一些奇怪的原因，对数据进行奇迹排序使得代码几乎快了六倍。</p>
+<pre><code>#include &lt;algorithm&gt;
+#include &lt;ctime&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    // Generate data
+    const unsigned arraySize = 32768;
+    int data[arraySize];
+
+    for (unsigned c = 0; c &lt; arraySize; ++c)
+        data[c] = std::rand() % 256;
+
+    // !!! With this, the next loop runs faster
+    std::sort(data, data + arraySize);
+
+    // Test
+    clock_t start = clock();
+    long long sum = 0;
+
+    for (unsigned i = 0; i &lt; 100000; ++i)
+    {
+        // Primary loop
+        for (unsigned c = 0; c &lt; arraySize; ++c)
+        {
+            if (data[c] &gt;= 128)
+                sum += data[c];
+        }
+    }
+
+    double elapsedTime = static_cast&lt;double&gt;(clock() - start) / CLOCKS_PER_SEC;
+
+    std::cout &lt;&lt; elapsedTime &lt;&lt; std::endl;
+    std::cout &lt;&lt; &quot;sum = &quot; &lt;&lt; sum &lt;&lt; std::endl;
+}
+</code></pre><ul>
+<li>如果没有<code>std :: sort（data，data + arraySize）;</code>，代码会在11.54秒内运行。</li>
+<li>使用排序后的数据，代码在1.93秒内运行。</li>
+</ul>
+<p>最初，我认为这可能只是一种语言或编译器异常。所以我尝试了Java。</p>
+<pre><code>import java.util.Arrays;
+import java.util.Random;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        // Generate data
+        int arraySize = 32768;
+        int data[] = new int[arraySize];
+
+        Random rnd = new Random(0);
+        for (int c = 0; c &lt; arraySize; ++c)
+            data[c] = rnd.nextInt() % 256;
+
+        // !!! With this, the next loop runs faster
+        Arrays.sort(data);
+
+        // Test
+        long start = System.nanoTime();
+        long sum = 0;
+
+        for (int i = 0; i &lt; 100000; ++i)
+        {
+            // Primary loop
+            for (int c = 0; c &lt; arraySize; ++c)
+            {
+                if (data[c] &gt;= 128)
+                    sum += data[c];
+            }
+        }
+
+        System.out.println((System.nanoTime() - start) / 1000000000.0);
+        System.out.println(&quot;sum = &quot; + sum);
+    }
+}
+</code></pre><p>有点类似但不太极端的结果。</p>
+<hr>
+<p>我首先想到的是，排序将数据带入缓存，但后来我觉得这是因为数组刚刚生成而变得非常愚蠢。</p>
+<ul>
+<li>发生了什么事情？</li>
+<li>为什么处理有序数组比没有排序的数组更快？</li>
+<li>代码总结了一些独立的术语，顺序应该不重要。</li>
+</ul>
+<a id="more"></a>
+<p><strong>您是<a href="//en.wikipedia.org/wiki/Branch_predictor">分支预测</a>失败的受害者。</strong></p>
+<hr>
+<h2><span id="what-is-branch-prediction">What is Branch Prediction?</span></h2><p>考虑一个铁路路口：</p>
+<p><a href="//commons.wikimedia.org/wiki/File:Entroncamento_do_Transpraia.JPG"> <img src="“https://i.stack.imgur.com/muxnt.jpg" alt=""></a> <a href="//commons.wikimedia.org/wiki/File:Entroncamento_do_Transpraia.JPG"> Image</a> by<br>Mecanismo，via Wikimedia Commons。在<a href="//creativecommons.org/licenses/by-sa/3.0/deed.en"> CC-By-SA 3.0</a>许可下使用。</p>
+<p>现在为了争辩，假设这是在19世纪 - 在长途或无线电通信之前。</p>
+<p>你是一个路口的运营商，你听到一列火车来了。你不知道应该走哪条路。你停下火车去询问司机他们想要的方向。然后适当地设置开关。</p>
+<p>火车很重，有很多的惯性。所以他们会永远地开始并放慢速度。_</p>
+<p>有没有更好的方法？你猜猜火车哪个方向去！</p>
+<ul>
+<li>如果你猜对了，就继续。</li>
+<li>如果你猜错了，船长会停下来，然后向你大喊，打开开关。然后它可以重新启动其他路径。</li>
+</ul>
+<p><strong>如果你猜对了，</strong> ，火车将永远不会停止 **如果您经常猜错，火车会花费大量时间停止，备份和重新启动。</p>
+<hr>
+<p>考虑一个if语句：** 在处理器级别，它是一个分支指令：</p>
+<p><img src="“https://i.stack.imgur.com/pyfwC.png”alt" alt=""></p>
+<p>你是一个处理器，你看到一个分支。你不知道它会走哪条路。你是做什么？您停止执行并等到前面的指示完成。然后你继续正确的路径。</p>
+<p>现代的处理器很复杂，管道很长。所以他们永远都要“热身”和“放慢速度”。_</p>
+<p>有没有更好的方法？你猜猜这个分支要走哪个方向！</p>
+<ul>
+<li>如果你猜对了，你继续执行。</li>
+<li>如果你猜错了，你需要刷新管道并回滚到分支。然后，您可以重新启动其他路径。</li>
+</ul>
+<p><strong>如果每次都猜对，那么执行永远不会停止 </strong>如果您经常错误地猜出** ，则会花费大量时间拖延，回滚并重新启动。</p>
+<hr>
+<p>这是分支预测。我承认这不是最好的比喻，因为火车可以用一面旗子标出方向。但在计算机中，处理器不知道分支在最后一刻将走向哪个方向。</p>
+<p>那么你怎么会战略性地猜测，把火车必须备份的次数降到最低呢？你看过去的历史！如果火车剩下99％的时间，那么你猜就走了。如果它交替，那么你交替你的猜测。如果每三次都有一个方向，那么你猜也是一样…</p>
+<p>换句话说，你试图找出一个模式并遵循它。_ **这或多或少是分支预测器的工作原理。</p>
+<p>大部分应用程序都有良好的分支机构。所以现代分支预测器通常将达到&gt; 90％的命中率。但是当面对不可预知的分支而没有可识别的模式时，分支预测器实际上是无用的。</p>
+<p>深入阅读：<a href="//en.wikipedia.org/wiki/Branch_predictor">维基百科</a>“分支预测”文章。</p>
+<hr>
+<h2><span id="as-hinted-from-above-the-culprit-is-this-if-statement">As hinted from above, the culprit is this if-statement:</span></h2><pre><code>if (data[c] &gt;= 128)
+    sum += data[c];
+</code></pre><p>请注意，数据在0到255之间均匀分布。 当数据被排序时，粗略地说前半部分的迭代不会进入if语句。之后，他们将全部进入if语句。</p>
+<p>由于分支连续多次走向同一方向，这对分支预测器非常友好。 即使是一个简单的饱和计数器也能正确预测分支，除了切换方向之后的少数几次迭代。</p>
+<p><strong>快速可视化</strong></p>
+<pre><code>T = branch taken
+N = branch not taken
+
+data[] = 0, 1, 2, 3, 4, ... 126, 127, 128, 129, 130, ... 250, 251, 252, ...
+branch = N  N  N  N  N  ...   N    N    T    T    T  ...   T    T    T  ...
+
+       = NNNNNNNNNNNN ... NNNNNNNTTTTTTTTT ... TTTTTTTTTT  (easy to predict)
+</code></pre><p>然而，当数据是完全随机的时，分支预测器是无用的，因为它不能预测随机数据。 因此，可能会有大约50％的预测失误。 （不比随机猜测好）</p>
+<pre><code>data[] = 226, 185, 125, 158, 198, 144, 217, 79, 202, 118,  14, 150, 177, 182, 133, ...
+branch =   T,   T,   N,   T,   T,   T,   T,  N,   T,   N,   N,   T,   T,   T,   N  ...
+
+       = TTNTTTTNTNNTTTN ...   (completely random - hard to predict)
+</code></pre><hr>
+<p>那么可以做什么？**</p>
+<p>如果编译器无法将分支优化为条件转移，那么如果您愿意为了提高性能而牺牲可读性，则可以尝试一些黑客行为。</p>
+<p>替换：</p>
+<pre><code>if (data[c] &gt;= 128)
+    sum += data[c];
+</code></pre><p>使用：</p>
+<pre><code>int t = (data[c] - 128) &gt;&gt; 31;
+sum += ~t &amp; data[c];
+</code></pre><p>这消除了分支，并用一些按位操作替换它。</p>
+<p>（请注意，这个hack并不等同于原来的if语句，但是在这种情况下，它对于<code>data []</code>的所有输入值都是有效的。）</p>
+<p>基准测试：Core i7 920 @ 3.5 GHz **</p>
+<p>C ++ - Visual Studio 2010 - x64 Release</p>
+<pre><code>//  Branch - Random
+seconds = 11.777
+
+//  Branch - Sorted
+seconds = 2.352
+
+//  Branchless - Random
+seconds = 2.564
+
+//  Branchless - Sorted
+seconds = 2.587
+</code></pre><p>Java - Netbeans 7.1.1 JDK 7 - x64</p>
+<pre><code>//  Branch - Random
+seconds = 10.93293813
+
+//  Branch - Sorted
+seconds = 5.643797077
+
+//  Branchless - Random
+seconds = 3.113581453
+
+//  Branchless - Sorted
+seconds = 3.186068823
+</code></pre><p>观察：</p>
+<ul>
+<li><strong>使用分支</strong> ：已排序和未排序的数据之间存在巨大差异。</li>
+<li><strong>使用Hack：</strong> 在排序和未排序的数据之间没有区别。</li>
+<li>在C ++的情况下，当数据被排序时，hack实际上比分支要慢。</li>
+</ul>
+<p>一般的经验法则是在关键循环中避免与数据相关的分支。 （比如在这个例子中）</p>
+<hr>
+<p>&lt;强&gt;更新</p>
+<p>在x64上，带有<code>-O3</code>或<code>-ftree-vectorize</code>的GCC 4.6.1能够产生一个条件移动。所以在排序和未排序的数据之间没有区别 -<br>两者都很快。</p>
+<p>即使在<code>/ Ox</code>下，VC ++ 2010也无法为这个分支产生条件移动。</p>
+<p>英特尔编译器11做了奇迹般的事情。它<a href="//en.wikipedia.org/wiki/Loop_interchange">交换两个循环</a>，从而将不可预知的分支提升到外部循环。所以它不仅可以避免错误预测，而且还是VC<br>++和GCC可以产生的速度的两倍。换句话说，ICC利用测试循环来打败基准…</p>
+<p>如果你给英特尔编译器无分支代码，它只是向外矢量化它，并且与分支一样快（与循环交换）。</p>
+<p>这表明，即使是成熟的现代编译器，他们在优化代码的能力上也可能会有很大的差异…</p>
+<p>分支预测**</p>
+<p>对于一个有序数组，条件<code>data [c]&gt; = 128</code>首先是<code>false</code>，然后变成<code>true</code>&gt;以后的所有值。这很容易预测。使用未排序的数组，您将支付分支成本。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/performance/">performance</a><a href="/tags/c/">c++</a><a href="/tags/optimization/">optimization</a><a href="/tags/branch-prediction/">branch-prediction</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/" data-title="为什么处理排序后的数组比未排序的数组更快？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-do-i-write-json-data-to-a-file/" title="如何将JSON数据写入文件？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何将JSON数据写入文件？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-do-you-access-the-matched-groups-in-a-javascript-regular-expression/"  title="如何访问JavaScript正则表达式中的匹配组？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何访问JavaScript正则表达式中的匹配组？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">What is Branch Prediction?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">As hinted from above, the culprit is this if-statement:</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

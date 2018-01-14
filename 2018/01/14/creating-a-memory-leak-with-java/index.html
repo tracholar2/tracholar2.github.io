@@ -1,0 +1,627 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>用Java创建内存泄漏 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我刚刚接受了一次采访，并被要求用Java创建内存泄漏。 毋庸置疑，我对于如何开始创建一个产品毫无头绪 一个例子是什么？">
+<meta name="keywords" content="java,memory,memory-leaks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Java创建内存泄漏">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/creating-a-memory-leak-with-java/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我刚刚接受了一次采访，并被要求用Java创建内存泄漏。 毋庸置疑，我对于如何开始创建一个产品毫无头绪 一个例子是什么？">
+<meta property="og:updated_time" content="2018-01-14T05:28:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Java创建内存泄漏">
+<meta name="twitter:description" content="我刚刚接受了一次采访，并被要求用Java创建内存泄漏。 毋庸置疑，我对于如何开始创建一个产品毫无头绪 一个例子是什么？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/creating-a-memory-leak-with-java/" title="用Java创建内存泄漏" itemprop="url">用Java创建内存泄漏</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我刚刚接受了一次采访，并被要求用Java创建内存泄漏。 毋庸置疑，我对于如何开始创建一个产品毫无头绪</p>
+<p>一个例子是什么？</p>
+<p><a id="more"></a> 在纯Java中创建一个真正的内存泄漏（运行代码无法访问的对象，但仍然保存在内存中）的一个好方法是：</p>
+<ul>
+<li>应用程序创建一个长时间运行的线程（或使用线程池更快地泄漏）。</li>
+<li>线程通过一个（可选的）ClassLoader加载一个类。</li>
+<li>类分配一大块内存（例如<code>new byte [1000000]</code>），在静态字段中存储对它的强引用，然后将引用存储到ThreadLocal中。分配额外的内存是可选的（泄露Class实例就足够了），但它会使泄漏工作更快。</li>
+<li>线程清除对自定义类或从其加载的ClassLoader的所有引用。</li>
+<li>重复。</li>
+</ul>
+<p>这是因为ThreadLocal保持对该对象的引用，该对象保持对其Class的引用，该Class继而保持对其ClassLoader的引用。<br>ClassLoader反过来保留了它加载的所有类的引用。</p>
+<p>（在Java 7之前，尤其在Java<br>7之前，这种情况更糟，因为Classes和ClassLoader是直接分配给permgen的，而且从来都不是GC’d，但是不管JVM如何处理类的卸载，ThreadLocal都会仍然阻止一个Class对象被回收。）</p>
+<p>这种模式的一个变种是应用程序容器（如Tomcat）如果经常以任何方式重新部署恰巧使用ThreadLocals的应用程序，就会像筛子一样泄漏内存。<br>（由于应用程序容器使用所描述的线程，并且每次重新部署应用程序时都会使用新的ClassLoader。）</p>
+<p><strong>更新</strong><br>：由于许多人不停地询问，<a href="https://gist.github.com/dpryden/b2bb29ee2d146901b4ae" target="_blank" rel="noopener">这里有一些示例代码在行动中显示这种行为</a>。</p>
+<p><strong>静态字段保存对象引用[esp final field]</strong></p>
+<pre><code>class MemorableClass {
+    static final ArrayList list = new ArrayList(100);
+}
+</code></pre><p><strong>调用<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html#intern%28%29" target="_blank" rel="noopener"> <code>String.intern（）</code></a>在长字符串</strong></p>
+<p>上</p>
+<pre><code>String str=readString(); // read lengthy string any source db,textbox/jsp etc..
+// This will place the string in memory pool from which you cant remove
+str.intern();
+</code></pre><p>（未封闭）开放流（文件，网络等）**</p>
+<pre><code>try {
+    BufferedReader br = new BufferedReader(new FileReader(inputFile));
+    ...
+    ...
+} catch (Exception e) {
+    e.printStacktrace();
+}
+</code></pre><p><strong>未连接的连接</strong></p>
+<pre><code>try {
+    Connection conn = ConnectionFactory.getConnection();
+    ...
+    ...
+} catch (Exception e) {
+    e.printStacktrace();
+}
+</code></pre><p>从JVM的垃圾收集器** 无法访问的区域，例如通过本地方法分配的内存</p>
+<p>在web应用程序中，一些对象被存储在应用程序范围中，直到应用程序被明确停止或删除。</p>
+<pre><code>getServletContext().setAttribute(&quot;SOME_MAP&quot;, map);
+</code></pre><p><strong>不正确或不合适的JVM选项</strong>，例如IBM JDK上的<code>noclassgc</code>选项，用于防止未使用的类垃圾回收</p>
+<p>请参阅<a href="“http://publib.boulder.ibm.com/infocenter/wasinfo/v6r0/index.jsp?topic=/com.ibm.websphere.express.doc/info/exp/ae/"> IBM<br>jdk设置</a>。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/memory/">memory</a><a href="/tags/memory-leaks/">memory-leaks</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/creating-a-memory-leak-with-java/" data-title="用Java创建内存泄漏 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/creating-a-div-element-in-jquery/" title="在jQuery中创建一个div元素[复制]">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在jQuery中创建一个div元素[复制]</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/creating-multiline-strings-in-javascript/"  title="在JavaScript中创建多行字符串">
+ <strong>下一篇：</strong><br/> 
+ <span>在JavaScript中创建多行字符串
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

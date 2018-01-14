@@ -1,0 +1,634 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>何时通过ArrayList使用LinkedList？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我一直只使用一个： List&amp;lt;String&amp;gt; names = new ArrayList&amp;lt;String&amp;gt;(); 我使用接口作为 portability 的类型名称，所以当我提出这样的问题时，我可以重写我的代码。 什么时候应该使用链接列表来覆盖ArrayList，反之亦然？">
+<meta name="keywords" content="java,arraylist,collections,linked-list">
+<meta property="og:type" content="article">
+<meta property="og:title" content="何时通过ArrayList使用LinkedList？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/when-to-use-linkedlist-over-arraylist/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我一直只使用一个： List&amp;lt;String&amp;gt; names = new ArrayList&amp;lt;String&amp;gt;(); 我使用接口作为 portability 的类型名称，所以当我提出这样的问题时，我可以重写我的代码。 什么时候应该使用链接列表来覆盖ArrayList，反之亦然？">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/when-to-use-linkedlist-over-arraylist/“https://i.imgur.com/f83xDyz.png”alt">
+<meta property="og:updated_time" content="2018-01-14T05:28:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="何时通过ArrayList使用LinkedList？">
+<meta name="twitter:description" content="我一直只使用一个： List&amp;lt;String&amp;gt; names = new ArrayList&amp;lt;String&amp;gt;(); 我使用接口作为 portability 的类型名称，所以当我提出这样的问题时，我可以重写我的代码。 什么时候应该使用链接列表来覆盖ArrayList，反之亦然？">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/when-to-use-linkedlist-over-arraylist/“https://i.imgur.com/f83xDyz.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/when-to-use-linkedlist-over-arraylist/" title="何时通过ArrayList使用LinkedList？" itemprop="url">何时通过ArrayList使用LinkedList？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我一直只使用一个：</p>
+<pre><code>List&lt;String&gt; names = new ArrayList&lt;String&gt;();
+</code></pre><p>我使用接口作为 <em>portability</em> 的类型名称，所以当我提出这样的问题时，我可以重写我的代码。</p>
+<p>什么时候应该使用<code>链接列表</code>来覆盖<code>ArrayList</code>，反之亦然？</p>
+<p><a id="more"></a> 在<code>ArrayList</code>中使用<code>ArrayList</code>比<code>LinkedList更适合_ 。不确定 - 只需从</code> ArrayList<br>`开始。</p>
+<hr>
+<p>LinkedList <code>和</code> ArrayList <code>是List接口的两个不同的实现。</code> LinkedList <code>用一个双向链表实现它。</code>ArrayList `用一个动态调整大小的数组来实现它。</p>
+<p>与标准的链表和数组操作一样，各种方法也会有不同的算法运行时间。</p>
+<p>对于<a href="http://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html" target="_blank" rel="noopener"> ` LinkedList＆lt; E＆gt;</a></p>
+<p>get（int index）`是 <em>O（n / 4）</em> 平均</p>
+<ul>
+<li><code>add（E element）</code>是 <em>O（1）</em></li>
+<li><p><code>add（int index，E element）</code>是 <em>O（n / 4）</em> average<br>但是<code>index = 0</code>时的 <em>O（1）</em> &lt;-– LinkedList</p>
+</li>
+<li><p><code>remove（int index）</code>是 <em>O（n / 4）</em> 平均值</p>
+</li>
+<li><code>Iterator.remove（）</code>是 <em>O（1）</em> &lt;-– LinkedList<br><code>ListIterator.add（E element）</code>是 <em>O（1）</em> &lt;-– LinkedList 的主要优点`<br>注意：O（n / 4）_是平均值，O（1）是最好的情况（例如index = 0），O（n / 2）最差情况（列表中）</li>
+</ul>
+<p>对于<a href="http://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html" target="_blank" rel="noopener"> ` ArrayList＆lt; E＆gt;</a></p>
+<p><code>ArrayList</code>的主要优点</p>
+<p><code></code> 因为数组必须调整大小，因此add（E元素）`是O（1）<em>，但是O（n）</em>是最坏的情况。并复制</p>
+<ul>
+<li><code>add（int index，E element）</code>是 <em>O（n / 2）</em> 平均值</li>
+<li><code>remove（int index）</code>是 <em>O（n / 2）</em> 平均值</li>
+<li><code>Iterator.remove（）</code>是 <em>O（n / 2）</em> 平均</li>
+<li><code>ListIterator.add（E元素）</code>是 <em>O（n / 2）</em> 平均值</li>
+</ul>
+<p>O（n / 2）<em>是平均值，O（1）是最好的情况（列表的结尾），O（n） </em>最坏的情况（列表开始）</p>
+<p>LinkedList＆lt; E＆gt;<br><code>允许使用迭代器_进行常量插入或删除，但只能按顺序访问元素。换句话说，您可以向前或向后移动列表，但在列表中查找位置需要与列表大小成比例的时间。
+Javadoc说：“索引到列表中的操作将从开始或结束遍历列表中，无论哪个更接近”_，因此这些方法是 _O（n / 4）_ 平均，虽然</code> index = 0<br>`的O（1）_。</p>
+<p>另一方面，ArrayList＆lt; E＆gt;<br><code>允许快速的随机读取访问，所以你可以在任何时间获取元素。但是，除了最终目标之外，任何地方都可以加入或者删除，这要求将所有后面的要素都转移，要么开放，要么填补空白。此外，如果添加的元素数量多于底层数组的容量，则会分配一个新数组（1.5倍大小），并将旧数组复制到新数组中，从而添加到</code>ArrayList `在最坏的情况下是O（n）_，但平均值是不变的。</p>
+<p>所以根据你打算做的操作，你应该选择相应的实现。迭代任何一种List实际上同样便宜。 （对<code>ArrayList</code>进行迭代在技术上比较快，但除非您对性能敏感，否则不应该担心 - 它们都是常量。）</p>
+<p>使用<code>LinkedList</code>的主要好处是在重用现有的迭代器来插入和删除元素时产生。这些操作可以在 <em>O（1）</em><br>中完成，只需在本地更改列表。在数组列表中，数组的其余部分需要被 <em>移动</em> （即复制）。另一方面，在<code>LinkedList</code>中寻找意味着在最坏情况下遵循<br><em>O（n / 2）</em> 中的链接，而在<code>ArrayList</code>期望的位置可以通过数学计算并在 <em>O（1）</em> 。</p>
+<p>中访问</p>
+<p>使用<code>LinkedList</code>的另一个好处是，当你从列表的头部添加或者删除的时候会产生一个好处，因为这些操作是 <em>O（1）</em> ，而 <em>&gt; O（n）</em><br>用于<code>ArrayList</code>。请注意，<code>ArrayDeque</code>可能是<code>LinkedList</code>的一个很好的替代方案，用于添加和删除头部，但不是<code>List</code>。</p>
+<p>另外，如果你有大的列表，请记住内存使用情况也是不同的。 <code>LinkedList</code>的每个元素都有更多的开销，因为指向下一个元素和前一个元素的指针也被存储。<br><code>ArrayLists</code>没有这个开销。然而，无论元素是否被添加，<code>ArrayLists</code>占用了为容量分配的内存量。</p>
+<p><code>ArrayList</code>的默认初始容量非常小（从Java 1.4 -<br>1.8中的10个）。但是由于底层实现是一个数组，所以如果添加了很多元素，则必须调整数组的大小。为了避免在知道要添加大量元素时调整大小的成本，请使用更高的初始容量构建<code>ArrayList</code>。</p>
+<p>到目前为止，除了一般认为<code>LinkedList</code>比多得多的一般共识外，没有人似乎已经解决了每个列表的内存占用情况，所以我做了一些数字计算，以确切地证明两个列表占用了多少N空引用。</p>
+<p>由于引用在其相关系统上是32位或64位（即使为空），我已经为32位和64位<code>LinkedLists</code>和<code>ArrayLists</code><br>注意：<code>ArrayList</code>行显示的大小是 <em>trimmed lists</em> - 实际上，支持数组的容量在 &lt; code&gt; ArrayList<br>`通常大于当前的元素数。</p>
+<p>注意2：（感谢BeeOnRope）_由于CompressedOops现在是从JDK6以上的版本开始默认的，64位机器下面的值基本上与它们的32位同行，除非你特别关掉它。</p>
+<hr>
+<p><img src="“https://i.imgur.com/f83xDyz.png”alt" alt=""></p>
+<hr>
+<p>结果清楚地表明，<code>LinkedList</code>比ArrayList <code>要多得多，特别是元素数量非常高。如果内存是一个因素，请避开</code> LinkedLists<br>`。</p>
+<p>我使用的公式如下，让我知道如果我做错了什么，我会修好它。对于32或64位系统，’b’是4或8，’n’是元素的数量。注意mods的原因是因为java中的所有对象都占用8个字节的倍数，不管是否全部使用。</p>
+<p>&lt;代码&gt;的ArrayList ：</p>
+<pre><code>ArrayList object header + size integer + modCount integer + array reference + (array oject header + b * n) + MOD(array oject, 8) + MOD(ArrayList object, 8) == 8 + 4 + 4 + b + (12 + b * n) + MOD(12 + b * n, 8) + MOD(8 + 4 + 4 + b + (12 + b * n) + MOD(12 + b * n, 8), 8)
+</code></pre><p><code>链接列表</code>：</p>
+<pre><code>LinkedList object header + size integer + modCount integer + reference to header + reference to footer + (node object overhead + reference to previous element + reference to next element + reference to element) * n) + MOD(node object, 8) * n + MOD(LinkedList object, 8) == 8 + 4 + 4 + 2 * b + (8 + 3 * b) * n + MOD(8 + 3 * b, 8) * n + MOD(8 + 4 + 4 + 2 * b + (8 + 3 * b) * n + MOD(8 + 3 * b, 8) * n, 8)
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/arraylist/">arraylist</a><a href="/tags/collections/">collections</a><a href="/tags/linked-list/">linked-list</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/when-to-use-linkedlist-over-arraylist/" data-title="何时通过ArrayList使用LinkedList？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/when-to-use-double-or-single-quotes-in-javascript/" title="什么时候在JavaScript中使用双引号或单引号？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  什么时候在JavaScript中使用双引号或单引号？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/where-can-i-find-documentation-on-formatting-a-date-in-javascript/"  title="我在哪里可以找到有关在JavaScript中格式化日期的文档？">
+ <strong>下一篇：</strong><br/> 
+ <span>我在哪里可以找到有关在JavaScript中格式化日期的文档？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

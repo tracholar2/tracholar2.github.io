@@ -1,0 +1,717 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何有效地遍历Map中的每个条目？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如果我有一个在Java中实现Map接口的对象，并且我希望遍历其中包含的每一对，那么通过map最有效的方法是什么？ 元素的排序是否依赖于我为界面设计的特定映射实现？">
+<meta name="keywords" content="dictionary,java,collections,iteration">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何有效地遍历Map中的每个条目？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-to-efficiently-iterate-over-each-entry-in-a-map/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如果我有一个在Java中实现Map接口的对象，并且我希望遍历其中包含的每一对，那么通过map最有效的方法是什么？ 元素的排序是否依赖于我为界面设计的特定映射实现？">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/how-to-efficiently-iterate-over-each-entry-in-a-map/“https://i.stack.imgur.com/17VGh.png">
+<meta property="og:updated_time" content="2018-01-14T05:28:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何有效地遍历Map中的每个条目？">
+<meta name="twitter:description" content="如果我有一个在Java中实现Map接口的对象，并且我希望遍历其中包含的每一对，那么通过map最有效的方法是什么？ 元素的排序是否依赖于我为界面设计的特定映射实现？">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/how-to-efficiently-iterate-over-each-entry-in-a-map/“https://i.stack.imgur.com/17VGh.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-efficiently-iterate-over-each-entry-in-a-map/" title="如何有效地遍历Map中的每个条目？" itemprop="url">如何有效地遍历Map中的每个条目？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如果我有一个在Java中实现<code>Map</code>接口的对象，并且我希望遍历其中包含的每一对，那么通过map最有效的方法是什么？</p>
+<p>元素的排序是否依赖于我为界面设计的特定映射实现？</p>
+<a id="more"></a>
+<pre><code>Map&lt;String, String&gt; map = ...
+for (Map.Entry&lt;String, String&gt; entry : map.entrySet())
+{
+    System.out.println(entry.getKey() + &quot;/&quot; + entry.getValue());
+}
+</code></pre><p>总结其他的答案和我所知道的，我发现了10个主要的方法来做到这一点（见下文）。而且我写了一些性能测试（见下面的结果），例如，如果我们想要查找map的所有键和值的总和，我们可以这样写：</p>
+<ul>
+<li><p>使用 <strong>迭代器</strong> 和 <strong>Map.Entry</strong></p>
+<pre><code>long i = 0;
+</code></pre><p>Iterator＆lt; Map.Entry＆lt; Integer，Integer＆gt;＆gt; it = map.entrySet（）。iterator（）;<br>while（it.hasNext（））{</p>
+<pre><code>Map.Entry＆lt; Integer，Integer＆gt; pair = it.next（）;
+i + = pair.getKey（）+ pair.getValue（）;
+</code></pre><p>}</p>
+</li>
+</ul>
+<ul>
+<li><p>使用 <strong>foreach</strong> 和 <strong>Map.Entry</strong></p>
+<pre><code>long i = 0;
+</code></pre><p>for（Map.Entry＆lt; Integer，Integer＆gt; pair：map.entrySet（））{</p>
+<pre><code>i + = pair.getKey（）+ pair.getValue（）;
+</code></pre><p>}</p>
+</li>
+</ul>
+<ul>
+<li>使用<code>Java 8中的 **forEach**</code>    <pre><code>final long [] i = {0};
+</code></pre>map.forEach（（k，v）→i [0] + = k + v）;</li>
+</ul>
+<ul>
+<li><p>使用 <strong>keySet</strong> 和 <strong>foreach</strong></p>
+<pre><code>long i = 0;
+</code></pre><p>for（整数键：map.keySet（））{</p>
+<pre><code>i + = key + map.get（key）;
+</code></pre><p>}</p>
+</li>
+</ul>
+<ul>
+<li><p>使用 <strong>keySet</strong> 和 <strong>迭代器</strong></p>
+<pre><code>long i = 0;
+</code></pre><p>迭代＆LT;整数＆GT; itr2 = map.keySet（）。iterator（）;<br>while（itr2.hasNext（））{</p>
+<pre><code>整数键= itr2.next（）;
+i + = key + map.get（key）;
+</code></pre><p>}</p>
+</li>
+</ul>
+<ul>
+<li><p>使用 <strong>** 和 </strong>Map.Entry**</p>
+<pre><code>long i = 0;
+</code></pre><p>（Iterator＆lt; Map.Entry＆lt; Integer，Integer＆gt;＆gt; entries = map.entrySet（）。iterator（）; entries.hasNext（）;）{</p>
+<pre><code>Map.Entry＆lt; Integer，Integer＆gt; entry = entries.next（）;
+i + = entry.getKey（）+ entry.getValue（）;
+</code></pre><p>}</p>
+</li>
+</ul>
+<ul>
+<li><p>使用<code>Java 8</code> <strong>Stream Api</strong></p>
+<pre><code>final long [] i = {0};
+</code></pre><p>forEach（e  - ＆gt; i [0] + = e.getKey（）+ e.getValue（））;</p>
+</li>
+</ul>
+<ul>
+<li><p>使用<code>Java 8</code> <strong>Stream Api并行</strong></p>
+<pre><code>final long [] i = {0};
+</code></pre><p>forEach（e  - ＆gt; i [0] + = e.getKey（）+ e.getValue（））;</p>
+</li>
+</ul>
+<ul>
+<li>使用<code>Apache Collections的 **IterableMap**</code>    <pre><code>long i = 0;
+</code></pre>MapIterator＆lt; Integer，Integer＆gt; it = iterableMap.mapIterator（）;<br>while（it.hasNext（））{<pre><code>i + = it.next（）+ it.getValue（）;
+</code></pre>}</li>
+</ul>
+<p>使用<code>Eclipse（CS）集合的 **MutableMap**</code></p>
+<pre><code>      final long [] i = {0};
+mutableMap.forEachKeyValue（（key，value） - ＆gt; {
+    我[0] + =键+值;
+}）;
+</code></pre><p>性能测试（模式=平均时间，系统= Win 8.1 64位，Intel i7-4790 3.60GHz 3.60GHz，16 GB）</p>
+<p>1）对于小地图（100个元素），得分0.308是最好的</p>
+<pre><code>       Benchmark                      Mode  Cnt     Score      Error  Units
+test3_UsingForEachAndJava8            avgt   10     0.308 Â±    0.021  us/op
+test10_UsingEclipseMap                avgt   10     0.309 Â±    0.009  us/op
+test1_UsingWhileAndMapEntry           avgt   10     0.380 Â±    0.014  us/op
+test6_UsingForAndIterator             avgt   10     0.387 Â±    0.016  us/op
+test2_UsingForEachAndMapEntry         avgt   10     0.391 Â±    0.023  us/op
+test7_UsingJava8StreamApi             avgt   10     0.510 Â±    0.014  us/op
+test9_UsingApacheIterableMap          avgt   10     0.524 Â±    0.008  us/op
+test4_UsingKeySetAndForEach           avgt   10     0.816 Â±    0.026  us/op
+test5_UsingKeySetAndIterator          avgt   10     0.863 Â±    0.025  us/op
+test8_UsingJava8StreamApiParallel     avgt   10     5.552 Â±    0.185  us/op
+</code></pre><p>2）对于有10000个元素的地图，得分37.606是最好的</p>
+<pre><code>       Benchmark                    Mode  Cnt     Score      Error  Units
+test10_UsingEclipseMap              avgt   10    37.606 Â±    0.790  us/op
+test3_UsingForEachAndJava8          avgt   10    50.368 Â±    0.887  us/op
+test6_UsingForAndIterator           avgt   10    50.332 Â±    0.507  us/op
+test2_UsingForEachAndMapEntry       avgt   10    51.406 Â±    1.032  us/op
+test1_UsingWhileAndMapEntry         avgt   10    52.538 Â±    2.431  us/op
+test7_UsingJava8StreamApi           avgt   10    54.464 Â±    0.712  us/op
+test4_UsingKeySetAndForEach         avgt   10    79.016 Â±   25.345  us/op
+test5_UsingKeySetAndIterator        avgt   10    91.105 Â±   10.220  us/op
+test8_UsingJava8StreamApiParallel   avgt   10   112.511 Â±    0.365  us/op
+test9_UsingApacheIterableMap        avgt   10   125.714 Â±    1.935  us/op
+</code></pre><p>3）对于有10万个元素的地图，得分为1184.767是最好的</p>
+<pre><code>       Benchmark                   Mode  Cnt     Score      Error  Units
+test1_UsingWhileAndMapEntry        avgt   10  1184.767 Â±  332.968  us/op
+test10_UsingEclipseMap             avgt   10  1191.735 Â±  304.273  us/op
+test2_UsingForEachAndMapEntry      avgt   10  1205.815 Â±  366.043  us/op
+test6_UsingForAndIterator          avgt   10  1206.873 Â±  367.272  us/op
+test8_UsingJava8StreamApiParallel  avgt   10  1485.895 Â±  233.143  us/op
+test5_UsingKeySetAndIterator       avgt   10  1540.281 Â±  357.497  us/op
+test4_UsingKeySetAndForEach        avgt   10  1593.342 Â±  294.417  us/op
+test3_UsingForEachAndJava8         avgt   10  1666.296 Â±  126.443  us/op
+test7_UsingJava8StreamApi          avgt   10  1706.676 Â±  436.867  us/op
+test9_UsingApacheIterableMap       avgt   10  3289.866 Â± 1445.564  us/op
+</code></pre><p>图表（性能测试取决于地图大小）</p>
+<p><a href="https://i.stack.imgur.com/17VGh.png" target="_blank" rel="noopener"> <img src="“https://i.stack.imgur.com/17VGh.png" alt=""></a></p>
+<p>表（性能测试取决于地图大小）</p>
+<pre><code>         100     600     1100    1600    2100
+test10  0.333   1.631   2.752   5.937   8.024
+test3   0.309   1.971   4.147   8.147   10.473
+test6   0.372   2.19    4.47    8.322   10.531
+test1   0.405   2.237   4.616   8.645   10.707
+test2   0.376   2.267   4.809   8.403   10.91
+test7   0.473   2.448   5.668   9.79    12.125
+test9   0.565   2.83    5.952   13.22   16.965
+test4   0.808   5.012   8.813   13.939  17.407
+test5   0.81    5.104   8.533   14.064  17.422
+test8   5.173   12.499  17.351  24.671  30.403
+</code></pre><p>所有测试都在<a href="“https://github.com/Vedenin/useful-java-
+links/blob/master/helloworlds/5.0-other-
+examples/src/main/java/other_examples/IterateThroughHashMapTest.java”"> github </a></p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/dictionary/">dictionary</a><a href="/tags/java/">java</a><a href="/tags/collections/">collections</a><a href="/tags/iteration/">iteration</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-to-efficiently-iterate-over-each-entry-in-a-map/" data-title="如何有效地遍历Map中的每个条目？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-to-efficiently-count-the-number-of-keys-properties-of-an-object-in-javascrip/" title="如何有效地计算一个对象在JavaScript中的键/属性的数量？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何有效地计算一个对象在JavaScript中的键/属性的数量？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-to-find-if-directory-exists-in-python/"  title="如何查找Python中是否存在目录">
+ <strong>下一篇：</strong><br/> 
+ <span>如何查找Python中是否存在目录
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

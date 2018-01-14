@@ -1,0 +1,662 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java是“通过引用传递”还是“按值传递”？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我一直认为Java是 通过引用;但是我已经看到了一些博客文章（例如，这个博客），声称它不是。我不认为我理解他们的区别。 是什么解释？">
+<meta name="keywords" content="java,parameter-passing,pass-by-reference,methods,pass-by-value">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java是“通过引用传递”还是“按值传递”？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/is-java-pass-by-reference-or-pass-by-value/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我一直认为Java是 通过引用;但是我已经看到了一些博客文章（例如，这个博客），声称它不是。我不认为我理解他们的区别。 是什么解释？">
+<meta property="og:updated_time" content="2018-01-14T05:28:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java是“通过引用传递”还是“按值传递”？">
+<meta name="twitter:description" content="我一直认为Java是 通过引用;但是我已经看到了一些博客文章（例如，这个博客），声称它不是。我不认为我理解他们的区别。 是什么解释？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/is-java-pass-by-reference-or-pass-by-value/" title="Java是“通过引用传递”还是“按值传递”？" itemprop="url">Java是“通过引用传递”还是“按值传递”？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我一直认为Java是 <strong>通过引用</strong><br>;但是我已经看到了一些博客文章（例如，<a href="http://javadude.com/articles/passbyvalue.htm" target="_blank" rel="noopener">这个博客</a>），声称它不是。我不认为我理解他们的区别。</p>
+<p>是什么解释？</p>
+<p><a id="more"></a> Java始终是 <strong>传递值</strong> 。不幸的是，他们决定把对象的位置称为“参考”。当我们传递一个对象的值时，我们将 <em>引用</em><br>传递给它。这让初学者感到困惑。</p>
+<p>它是这样的：</p>
+<pre><code>public static void main( String[] args ) {
+    Dog aDog = new Dog(&quot;Max&quot;);
+    // we pass the object to foo
+    foo(aDog);
+    // aDog variable is still pointing to the &quot;Max&quot; dog when foo(...) returns
+    aDog.getName().equals(&quot;Max&quot;); // true, java passes by value
+    aDog.getName().equals(&quot;Fifi&quot;); // false 
+}
+
+public static void foo(Dog d) {
+    d.getName().equals(&quot;Max&quot;); // true
+    // change d inside of foo() to point to a new Dog instance &quot;Fifi&quot;
+    d = new Dog(&quot;Fifi&quot;);
+    d.getName().equals(&quot;Fifi&quot;); // true
+}
+</code></pre><p>在这个<a href="http://ideone.com/oUEPbg" target="_blank" rel="noopener">示例</a> <code>aDog.getName（）</code>中仍然会返回<code>“最大“。</code> main <code>中的</code>aDog <code>的值在</code> Dog <code></code>“Fifi”&lt; / code&gt;，因为对象引用是通过值传递的。如果通过引用传递，那么在调用<code>foo之后，</code> main<br><code>中的</code> aDog.getName（）<code>将返回</code>“Fifi”`<br>同样地：</p>
+<pre><code>public static void main( String[] args ) {
+    Dog aDog = new Dog(&quot;Max&quot;);
+    foo(aDog);
+    // when foo(...) returns, the name of the dog has been changed to &quot;Fifi&quot;
+    aDog.getName().equals(&quot;Fifi&quot;); // true
+}
+
+public static void foo(Dog d) {
+    d.getName().equals(&quot;Max&quot;); // true
+    // this changes the name of d to be &quot;Fifi&quot;
+    d.setName(&quot;Fifi&quot;);
+}
+</code></pre><p>在上面的例子中，<code>FiFi</code>是调用<code>foo（aDog）</code>后的狗的名字，因为对象的名字是在<code>foo（...）中设置的。 ）。</code> foo <code>在</code> d<br><code>上执行的任何操作都是这样的，对于所有实际的目的，它们都是在</code> aDog <code>本身上执行的（</code> d <code>被改为指向不同的</code> Dog <code>实例，如</code> d = new<br>Dog（“Boxer”）`）。</p>
+<p>我刚刚注意到你引用了<a href="http://javadude.com/articles/passbyvalue.htm" target="_blank" rel="noopener">我的文章</a>。</p>
+<p>Java Spec说，Java中的所有东西都是按值传递的。 Java中没有“传引用”的东西。</p>
+<p>理解这个的关键就是像</p>
+<pre><code>Dog myDog;
+</code></pre><p>不是<em>狗;它实际上是指向Dog的 </em>指针_ 。</p>
+<p>这意味着什么，当你有</p>
+<p>时</p>
+<pre><code>Dog myDog = new Dog(&quot;Rover&quot;);
+foo(myDog);
+</code></pre><p>实质上是将创建的<code>Dog</code>对象的 <em>地址</em> 传递给<code>foo</code>方法。</p>
+<p>（我说本质上是因为Java指针不是直接地址，但是最简单的方法就是这么想）</p>
+<p>假设<code>Dog</code>对象驻留在内存地址42上。这意味着我们将42传递给该方法。</p>
+<p>如果方法被定义为</p>
+<pre><code>public void foo(Dog someDog) {
+    someDog.setName(&quot;Max&quot;);     // AAA
+    someDog = new Dog(&quot;Fifi&quot;);  // BBB
+    someDog.setName(&quot;Rowlf&quot;);   // CCC
+}
+</code></pre><p>让我们看看发生了什么。</p>
+<ul>
+<li>参数<code>someDog</code>设置为值42 </li>
+<li><p>在“AAA”行  <code>someDog</code>后面跟着它指向的<code>Dog</code>（地址42处的<code>Dog</code>对象）</p>
+<ul>
+<li><p>：<code>Dog</code>（地址为42的那个）被要求将他的名字改为Max<br>在线“BBB”</p>
+</li>
+<li><p>创建一个新的<code>Dog</code>。假设他在地址74 </p>
+</li>
+<li>我们将参数<code>someDog</code>分配给74 </li>
+</ul>
+</li>
+<li>在“CCC”行 <ul>
+<li>someDog后面跟着它指向的<code>Dog</code>（地址为74的<code>Dog</code>对象）</li>
+<li>：<code>Dog</code>（地址为74的那个）被要求将他的名字改为Rowlf </li>
+</ul>
+</li>
+<li>然后，我们返回</li>
+</ul>
+<p>现在我们来考虑一下在这个方法之外发生的事情：</p>
+<p><code>myDog</code>是否改变？_</p>
+<p>有关键。</p>
+<p>请记住，<code>myDog</code>是 <em>指针</em> ，而不是实际的<code>Dog</code>，答案是否定的。 <code>myDog</code>仍然有值42;它仍然指向原始的<code>Dog</code>（但是请注意，由于行“AAA”，它的名字现在是“最大” - 仍然相同的狗; <code>myDog</code>的值没有改变。）</p>
+<p>完全符合 _跟随 __ 的地址，并改变它的结尾;不会改变变量，但是。</p>
+<p>Java的工作方式与C完全一样。您可以指定一个指针，将指针传递给一个方法，跟随方法中的指针并更改指向的数据。但是，您不能更改指针指向的位置。</p>
+<p>在C ++，Ada，Pascal和其他支持通过引用的语言中，实际上可以更改传递的变量。</p>
+<p>如果Java具有引用传递语义，那么我们上面定义的<code>foo</code>方法会在<code>myDog</code>指定<code>someDog</code>在线BBB。</p>
+<p>将引用参数视为传入变量的别名。当分配别名时，传入的变量也一样。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/parameter-passing/">parameter-passing</a><a href="/tags/pass-by-reference/">pass-by-reference</a><a href="/tags/methods/">methods</a><a href="/tags/pass-by-value/">pass-by-value</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/is-java-pass-by-reference-or-pass-by-value/" data-title="Java是“通过引用传递”还是“按值传递”？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/installing-specific-package-versions-with-pip/" title="用pip安装特定的软件包版本">
+  <strong>上一篇：</strong><br/>
+  <span>
+  用pip安装特定的软件包版本</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/is-javascript-a-pass-by-reference-or-pass-by-value-language/"  title="JavaScript是传递引​​用还是传值语言？">
+ <strong>下一篇：</strong><br/> 
+ <span>JavaScript是传递引​​用还是传值语言？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

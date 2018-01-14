@@ -1,0 +1,694 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>避免！=空语句 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在Java中编程时，我使用最多的惯例是在使用它之前测试object！= null。这是为了避免 NullPointerException。我发现代码非常难看，而且变得不可读。 有这个好的选择吗？ 我想解决测试每个对象的必要性，如果你想访问这个对象的字段或方法。 例如： if (someobject != null) {     someobject.doCalc(); } 在这种情况下，我将避免N">
+<meta name="keywords" content="java,object,nullpointerexception">
+<meta property="og:type" content="article">
+<meta property="og:title" content="避免！=空语句">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/avoiding-null-statements/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在Java中编程时，我使用最多的惯例是在使用它之前测试object！= null。这是为了避免 NullPointerException。我发现代码非常难看，而且变得不可读。 有这个好的选择吗？ 我想解决测试每个对象的必要性，如果你想访问这个对象的字段或方法。 例如： if (someobject != null) {     someobject.doCalc(); } 在这种情况下，我将避免N">
+<meta property="og:updated_time" content="2018-01-14T05:28:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="避免！=空语句">
+<meta name="twitter:description" content="在Java中编程时，我使用最多的惯例是在使用它之前测试object！= null。这是为了避免 NullPointerException。我发现代码非常难看，而且变得不可读。 有这个好的选择吗？ 我想解决测试每个对象的必要性，如果你想访问这个对象的字段或方法。 例如： if (someobject != null) {     someobject.doCalc(); } 在这种情况下，我将避免N">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/avoiding-null-statements/" title="避免！=空语句" itemprop="url">避免！=空语句</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在Java中编程时，我使用最多的惯例是在使用它之前测试<code>object！= null</code>。这是为了避免<a href="http://docs.oracle.com/javase/6/docs/api/index.html?java/lang/NullPointerException.html" target="_blank" rel="noopener"> NullPointerException</a>。我发现代码非常难看，而且变得不可读。</p>
+<p>有这个好的选择吗？</p>
+<p>我想解决测试每个对象的必要性，如果你想访问这个对象的字段或方法。</p>
+<p>例如：</p>
+<pre><code>if (someobject != null) {
+    someobject.doCalc();
+}
+</code></pre><p>在这种情况下，我将避免<code>NullPointerException</code>，并且我不知道对象是否是<code>null</code>。这些测试出现在我的代码中，作为结果。</p>
+<a id="more"></a>
+<p>对我而言，这听起来像是一个相当普遍的问题，初级到中级开发人员在某些时候往往会面临这样的问题：他们要么不知道，要么不信任他们正在参与的合同，并且防御性地检查空值。另外，在编写他们自己的代码时，他们倾向于依靠返回空值来指示某事，因此要求调用者检查空值。</p>
+<p>换句话说，有两个实例出现空检查：</p>
+<ul>
+<li><p>如果null是合同方面的有效答复，以及</p>
+</li>
+<li><p>哪里不是有效的答复。</p>
+</li>
+</ul>
+<p>（2）很容易。使用<code>assert</code>语句（断言）或允许失败（例如<a href="“http://docs.oracle.com/javase/6/docs/api/index.html?java/"> NullPointerException</a>）。断言是1.4中添加的一个使用率很低的Java特性。语法是：</p>
+<pre><code>assert &lt;condition&gt;
+</code></pre><p>或</p>
+<pre><code>assert &lt;condition&gt; : &lt;object&gt;
+</code></pre><p><code>＆lt; condition＆gt;</code>是一个布尔表达式，＆lt; code＆gt;＆lt; object＆gt; <code>是一个将</code>toString（）`在错误。</p>
+<p>如果条件不成立，<code>assert</code>语句会抛出<code>Error</code>（）。默认情况下，Java会忽略断言。您可以通过将选项<code>-ea</code>传递给JVM来启用断言。您可以启用和禁用个别类和包的声明。这意味着您可以在开发和测试的同时使用断言验证代码，并在生产环境中禁用它们，虽然我的测试显示接近断言的性能影响。</p>
+<p>在这种情况下不使用断言是可以的，因为代码将会失败，如果使用断言，会发生什么情况。唯一的区别是，断言可能会更快地发生，并且可能会有更多的信息，这可能会帮助你弄清楚为什么它会发生，如果你不期望它。</p>
+<p>（1）有点困难。如果你无法控制你打电话的代码，那么你就被卡住了。如果null是有效的响应，则必须检查它。</p>
+<p>如果是你所控制的代码，那么情况往往是这样的，那么情况就不一样了。避免使用空值作为回应。使用返回集合的方法，很简单：几乎总是返回空集合（或数组）而不是null。</p>
+<p>非集合可能会更困难。考虑这个例子：如果你有这些接口：</p>
+<pre><code>public interface Action {
+  void doSomething();
+}
+
+public interface Parser {
+  Action findAction(String userInput);
+}
+</code></pre><p>在这里，解析器需要原始的用户输入，并找到要做的事情，也许如果你正在实现一个命令行界面的东西。现在，如果没有适当的操作，您可以使合同返回null。这导致你正在谈论的空检查。</p>
+<p>另一种解决方案是永远不会返回null，而是使用<a href="https://en.wikipedia.org/wiki/Null_Object_pattern" target="_blank" rel="noopener">空对象模式</a>：<br>p&gt;</p>
+<pre><code>public class MyParser implements Parser {
+  private static Action DO_NOTHING = new Action() {
+    public void doSomething() { /* do nothing */ }
+  };
+
+  public Action findAction(String userInput) {
+    // ...
+    if ( /* we can&apos;t find any actions */ ) {
+      return DO_NOTHING;
+    }
+  }
+}
+</code></pre><p>比较</p>
+<pre><code>Parser parser = ParserFactory.getParser();
+if (parser == null) {
+  // now what?
+  // this would be an example of where null isn&apos;t (or shouldn&apos;t be) a valid response
+}
+Action action = parser.findAction(someInput);
+if (action == null) {
+  // do nothing
+} else {
+  action.doSomething();
+}
+</code></pre><p>到</p>
+<pre><code>ParserFactory.getParser().findAction(someInput).doSomething();
+</code></pre><p>这是一个更好的设计，因为它导致更简洁的代码。</p>
+<p>也就是说，对于findAction（）方法来说，抛出一个有意义的错误信息的Exception是完全合适的 - 特别是在这种情况下，你依赖于用户输入。<br>findAction方法抛出一个Exception比调用方法抛出一个简单的NullPointerException没有任何解释更好。</p>
+<pre><code>try {
+    ParserFactory.getParser().findAction(someInput).doSomething();
+} catch(ActionNotFoundException anfe) {
+    userConsole.err(anfe.getMessage());
+}
+</code></pre><p>或者如果你认为try / catch机制太丑陋了，而不是Do Nothing，那么你的默认行为应该给用户提供反馈。</p>
+<pre><code>public Action findAction(final String userInput) {
+    /* Code to return requested Action if found */
+    return new Action() {
+        public void doSomething() {
+            userConsole.err(&quot;Action not found: &quot; + userInput);
+        }
+    }
+}
+</code></pre><p>如果您使用（或计划使用）Java IDE，请<a href="https://www.jetbrains.com/idea/" target="_blank" rel="noopener"> JetBrains IntelliJ IDEA</a>使用他们开发的一些特定的注释。</p>
+<p>基本上，你有<code>@Nullable</code>和<code>@NotNull</code>。</p>
+<p>您可以在方法和参数中使用，如下所示：</p>
+<pre><code>@NotNull public static String helloWorld() {
+    return &quot;Hello World&quot;;
+}
+</code></pre><p>或</p>
+<pre><code>@Nullable public static String helloWorld() {
+    return &quot;Hello World&quot;;
+}
+</code></pre><p>第二个例子不能编译（在IntelliJ IDEA中）。</p>
+<p>在另一段代码中使用第一个<code>hello World（）</code>函数：</p>
+<pre><code>public static void main(String[] args)
+{
+    String result = helloWorld();
+    if(result != null) {
+        System.out.println(result);
+    }
+}
+</code></pre><p>现在IntelliJ IDEA编译器会告诉你这个检查是无用的，因为<code>helloWorld（）</code>函数不会返回<code>null</code><br>使用参数</p>
+<pre><code>void someMethod(@NotNull someParameter) { }
+</code></pre><p>如果你写了类似：</p>
+<pre><code>someMethod(null);
+</code></pre><p>这不会编译。</p>
+<p>最后一个使用<code>@Nullable</code><br>的例子</p>
+<pre><code>@Nullable iWantToDestroyEverything() { return null; }
+</code></pre><p>这样做</p>
+<pre><code>iWantToDestroyEverything().something();
+</code></pre><p>你可以肯定，这不会发生。 ：）</p>
+<p>让编译器检查一些比平时更多的东西，并强制你的合约变得更强大，这是一个不错的方法。不幸的是，这并不是所有编译器都支持的。</p>
+<p>在IntelliJ IDEA 10.5及以上版本中，他们添加了对任何其他<code>@Nullable</code> <code>@NotNull</code>实现的支持。</p>
+<p>请参阅博文 <em><a href="https://blog.jetbrains.com/idea/2011/03/more-flexible-and-
+configurable-nullublenotnull-annotations/" target="_blank" rel="noopener">更多灵活且可配置的@Nullable /<br>@NotNull注释</a> </em> 。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/object/">object</a><a href="/tags/nullpointerexception/">nullpointerexception</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/avoiding-null-statements/" data-title="避免！=空语句 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/ascii-value-of-a-character-in-python/" title="Python中字符的ASCII值">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Python中字符的ASCII值</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/behaviour-of-increment-and-decrement-operators-in-python/"  title="Python中增量和减量运算符的行为">
+ <strong>下一篇：</strong><br/> 
+ <span>Python中增量和减量运算符的行为
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

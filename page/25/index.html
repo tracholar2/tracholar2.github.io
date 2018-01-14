@@ -109,7 +109,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/" title="“最小的惊讶”和可变的默认论据" itemprop="url">“最小的惊讶”和可变的默认论据</a>
+      <a href="/2018/01/14/is-there-any-way-to-kill-a-thread-in-python/" title="有没有什么办法杀死Python中的线程？" itemprop="url">有没有什么办法杀死Python中的线程？</a>
   </h1>
   <p class="article-author">By
        
@@ -122,46 +122,12 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>任何人用Python来修补已经被下面的问题困住了（或撕碎）：</p>
-<pre><code>def foo(a=[]):
-    a.append(5)
-    return a
-</code></pre><p>Python新手会期望这个函数总是返回一个只有一个元素的列表：<code>[5]</code>。结果是非常不同的，而且非常惊人（对于新手来说）：</p>
-<pre><code>&gt;&gt;&gt; foo()
-[5]
-&gt;&gt;&gt; foo()
-[5, 5]
-&gt;&gt;&gt; foo()
-[5, 5, 5]
-&gt;&gt;&gt; foo()
-[5, 5, 5, 5]
-&gt;&gt;&gt; foo()
-</code></pre><p>我的一位经理曾经第一次遇到这个功能，并称这是一个“戏剧性的设计缺陷”。我回答说，这个行为有一个基本的解释，如果你不了解内部，那确实是非常令人费解和意外的。然而，我无法回答（对我自己）以下问题：在函数定义处绑定默认参数的原因是什么，而不是在函数执行处？我怀疑经验丰富的行为是否有实际用途（谁真的在C中使用静态变量，而没有繁殖错误？）</p>
-<p><strong>编辑</strong> ：</p>
-<p>Baczek做了一个有趣的例子。再加上你的大部分意见和尤其是Utaal的意见，我进一步阐述了：</p>
-<pre><code>&gt;&gt;&gt; def a():
-...     print(&quot;a executed&quot;)
-...     return []
-... 
-&gt;&gt;&gt;            
-&gt;&gt;&gt; def b(x=a()):
-...     x.append(5)
-...     print(x)
-... 
-a executed
-&gt;&gt;&gt; b()
-[5]
-&gt;&gt;&gt; b()
-[5, 5]
-</code></pre><p>对我来说，这个设计的决定似乎是相对于把参数的范围放在哪里：在函数里面还是在一起呢？</p>
-<p>在函数内部进行绑定意味着<code>x</code>在函数被调用时被有效地绑定到指定的默认值，而不是被定义的，这会带来很深的缺陷：` def &lt; /<br>code&gt;行将是“混合”的，这意味着函数对象的绑定的一部分将在定义处发生，而在函数调用时则是部分（分配默认参数）。</p>
-<p>实际的行为更加一致：当行被执行时，该行的所有内容都被执行，这意味着函数定义。</p>
-<p>
+        <p>是否可以终止正在运行的线程而不设置/检查任何标志/信号/等？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/#more">Read More</a>
+            <a href="/2018/01/14/is-there-any-way-to-kill-a-thread-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -171,7 +137,7 @@ a executed
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/language-design/">language-design</a><a href="/tags/least-astonishment/">least-astonishment</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/multithreading/">multithreading</a><a href="/tags/kill/">kill</a><a href="/tags/terminate/">terminate</a>
   </div>
 
 </div>
@@ -211,7 +177,7 @@ a executed
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/list-filtering-list-comprehension-vs-lambda-filter/" title="列表过滤：列表理解与lambda +过滤器" itemprop="url">列表过滤：列表理解与lambda +过滤器</a>
+      <a href="/2018/01/14/iterate-through-a-hashmap/" title="迭代通过HashMap [复制]" itemprop="url">迭代通过HashMap [复制]</a>
   </h1>
   <p class="article-author">By
        
@@ -224,19 +190,17 @@ a executed
 </header>
     <div class="article-content">
         
-        <p>我碰巧发现自己有一个基本的过滤需求：我有一个列表，我必须通过项目的属性过滤它。</p>
-<p>我的代码看起来像这样：</p>
-<pre><code>my_list = [x for x in my_list if x.attribute == value]
-</code></pre><p>然而，我想，这样写是不是更好？</p>
-<pre><code>my_list = filter(lambda x: x.attribute == value, my_list)
-</code></pre><p>它更具可读性，如果性能需要，lambda可以被拿出来获得一些东西。</p>
-<p>问题是：在使用第二种方法时是否有任何警告？任何性能差异？我是否完全错过了Pythonic Way<br>?,应该用另一种方式来做（比如使用itemgetter而不是lambda）？</p>
+        <blockquote>
+<p><strong>Possible Duplicate:</strong><br> <a href="https://stackoverflow.com/questions/46898/how-do-i-iterate-over-each-
+entry-in-a-collection-map" target="_blank" rel="noopener">How do I iterate over each Entry in a Collection<br>Map?</a></p>
+</blockquote>
+<p>对<code>HashMap</code>中的项目进行迭代的最好方法是什么？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/list-filtering-list-comprehension-vs-lambda-filter/#more">Read More</a>
+            <a href="/2018/01/14/iterate-through-a-hashmap/#more">Read More</a>
           
        </p>
     </div>
@@ -246,7 +210,7 @@ a executed
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a><a href="/tags/functional-programming/">functional-programming</a><a href="/tags/filter/">filter</a><a href="/tags/lambda/">lambda</a>
+  <span></span> <a href="/tags/loops/">loops</a><a href="/tags/java/">java</a><a href="/tags/hashmap/">hashmap</a><a href="/tags/iteration/">iteration</a>
   </div>
 
 </div>
@@ -275,7 +239,7 @@ a executed
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/making-a-flat-list-out-of-list-of-lists-in-python/" title="从Python列表中列出一个扁平列表" itemprop="url">从Python列表中列出一个扁平列表</a>
+      <a href="/2018/01/14/iterate-through-object-properties/" title="遍历对象属性" itemprop="url">遍历对象属性</a>
   </h1>
   <p class="article-author">By
        
@@ -288,22 +252,208 @@ a executed
 </header>
     <div class="article-content">
         
-        <p>我想知道是否有一个快捷方式可以在Python列表中列出一个简单的列表。</p>
-<p>我可以做一个for循环，但也许有一些很酷的“单线”？我试过用 <em>reduce</em> ，但是出现错误。</p>
-<p>&lt;强&gt;代码</p>
-<pre><code>l = [[1, 2, 3], [4, 5, 6], [7], [8, 9]]
-reduce(lambda x, y: x.extend(y), l)
-</code></pre><p><strong>错误讯息</strong></p>
-<pre><code>Traceback (most recent call last):
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;lambda&gt;
-AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
+        <p>var obj = {<br>        name: “Simon”,<br>        age: “20”,<br>        clothing: {<br>            style: “simple”,<br>            hipster: false<br>        }<br>    }</p>
+<pre><code>for(var propt in obj){
+    alert(propt + &apos;: &apos; + obj[propt]);
+}
+</code></pre><p>变量<code>propt</code>如何表示对象的属性？这不是一个内置的方法或属性。那么为什么它会提出对象中的每个属性？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/iterate-through-object-properties/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/loops/">loops</a><a href="/tags/object/">object</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/iterating-over-dictionaries-using-for-loops/" title="使用“for”循环遍历字典" itemprop="url">使用“for”循环遍历字典</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我对以下代码感到有点困惑：</p>
+<pre><code>d = {&apos;x&apos;: 1, &apos;y&apos;: 2, &apos;z&apos;: 3} 
+for key in d:
+    print key, &apos;corresponds to&apos;, d[key]
+</code></pre><p>我不明白的是<code>键</code>部分。 Python如何识别它只需要从字典中读取密钥？ <code>key</code>在Python中是一个特殊的词吗？或者它只是一个变量？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/iterating-over-dictionaries-using-for-loops/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/dictionary/">dictionary</a><a href="/tags/python-2-7/">python-2.7</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/javas-compound-assignment-operators/" title="Java + =， -  =，* =，/ =复合赋值运算符" itemprop="url">Java + =， -  =，* =，/ =复合赋值运算符</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>直到今天，我还以为例如：</p>
+<pre><code>i += j;
+</code></pre><p>只是一个捷径：</p>
+<pre><code>i = i + j;
+</code></pre><p>但是，如果我们试试这个：</p>
+<pre><code>int i = 5;
+long j = 8;
+</code></pre><p><code>然后</code> i = i + j; <code>不会编译，但是</code> i + = j; `会编译好。</p>
+<p>这是否意味着实际上<code>i + = j;</code>是这样的一个快捷方式 <code>i =（我的类型）（i + j）</code>？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/javas-compound-assignment-operators/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/operators/">operators</a><a href="/tags/casting/">casting</a><a href="/tags/variable-assignment/">variable-assignment</a><a href="/tags/assignment-operator/">assignment-operator</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/javascript-check-if-variable-exists-is-defined-initialized/" title="JavaScript检查变量是否存在（被定义/初始化）" itemprop="url">JavaScript检查变量是否存在（被定义/初始化）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>检查变量是否被初始化的方法是更好还是更正？ （假设变量可以容纳任何东西（string，int，object，function等））</p>
+<pre><code>if (elem) { // or !elem
+</code></pre><p>或</p>
+<pre><code>if (typeof(elem) !== &apos;undefined&apos;) {
+</code></pre><p>或</p>
+<pre><code>if (elem != null) {
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/making-a-flat-list-out-of-list-of-lists-in-python/#more">Read More</a>
+            <a href="/2018/01/14/javascript-check-if-variable-exists-is-defined-initialized/#more">Read More</a>
           
        </p>
     </div>
@@ -313,7 +463,7 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a><a href="/tags/multidimensional-array/">multidimensional-array</a><a href="/tags/flatten/">flatten</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/variables/">variables</a><a href="/tags/undefined/">undefined</a><a href="/tags/initialization/">initialization</a><a href="/tags/if-statement/">if-statement</a>
   </div>
 
 </div>
@@ -342,7 +492,7 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/manually-raising-throwing-an-exception-in-python/" title="在Python中手动提高（抛出）异常" itemprop="url">在Python中手动提高（抛出）异常</a>
+      <a href="/2018/01/14/javascript-chop-slice-trim-off-last-character-in-string/" title="JavaScript chop / slice /修剪字符串中的最后一个字符" itemprop="url">JavaScript chop / slice /修剪字符串中的最后一个字符</a>
   </h1>
   <p class="article-author">By
        
@@ -355,12 +505,13 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
 </header>
     <div class="article-content">
         
-        <p>如何在Python中引发异常，以便通过<code>除</code>块之外的其他方法捕获异常？</p>
+        <p>我有一个字符串，<code>12345.00</code>，我希望它返回<code>12345.0</code>。</p>
+<p>我已经看过了<code>trim</code>，但是看起来它只是修剪空白和<code>slice</code>，我不明白这是怎么工作的。有什么建议吗？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/manually-raising-throwing-an-exception-in-python/#more">Read More</a>
+            <a href="/2018/01/14/javascript-chop-slice-trim-off-last-character-in-string/#more">Read More</a>
           
        </p>
     </div>
@@ -370,7 +521,7 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/exception/">exception</a><a href="/tags/exception-handling/">exception-handling</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/trim/">trim</a><a href="/tags/slice/">slice</a><a href="/tags/chop/">chop</a>
   </div>
 
 </div>
@@ -399,7 +550,7 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/map-two-lists-into-a-dictionary-in-python/" title="将两个列表映射到Python中的字典中" itemprop="url">将两个列表映射到Python中的字典中</a>
+      <a href="/2018/01/14/javascript-equivalent-to-printf-string-format/" title="JavaScript相当于printf / string.format" itemprop="url">JavaScript相当于printf / string.format</a>
   </h1>
   <p class="article-author">By
        
@@ -412,20 +563,14 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
 </header>
     <div class="article-content">
         
-        <p>假设你有：</p>
-<pre><code>keys = (&apos;name&apos;, &apos;age&apos;, &apos;food&apos;)
-values = (&apos;Monty&apos;, 42, &apos;spam&apos;)
-</code></pre><p>生成下面的字典最简单的方法是什么？</p>
-<pre><code>a_dict = {&apos;name&apos; : &apos;Monty&apos;, &apos;age&apos; : 42, &apos;food&apos; : &apos;spam&apos;}
-</code></pre><p>这段代码有用，但我并不为此感到骄傲：</p>
-<pre><code>a_dict = {}
-junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
-</code></pre><p>
+        <p>我正在寻找一个与C / PHP <code>printf（）</code>或C＃/ Java程序员相当的JavaScript代码，<code>String.Format（）</code>（`IFormatProvider for .NET）。</p>
+<p>我的基本需求现在是数字分隔格式，但是处理大量组合（包括日期）的东西会很好。</p>
+<p>我意识到微软的<a href="http://en.wikipedia.org/wiki/Ajax_%28programming%29" target="_blank" rel="noopener"> Ajax </a>库提供了一个<code>String的版本。 Format（）</code>，但我们不希望整个框架的开销。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/map-two-lists-into-a-dictionary-in-python/#more">Read More</a>
+            <a href="/2018/01/14/javascript-equivalent-to-printf-string-format/#more">Read More</a>
           
        </p>
     </div>
@@ -435,7 +580,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/dictionary/">dictionary</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/printf/">printf</a><a href="/tags/string-format/">string.format</a>
   </div>
 
 </div>
@@ -464,7 +609,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/modify-the-url-without-reloading-the-page/" title="修改网址而不重新加载页面" itemprop="url">修改网址而不重新加载页面</a>
+      <a href="/2018/01/14/javascript-post-request-like-a-form-submit/" title="JavaScript提交请求，如表单提交" itemprop="url">JavaScript提交请求，如表单提交</a>
   </h1>
   <p class="article-author">By
        
@@ -477,16 +622,23 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 </header>
     <div class="article-content">
         
-        <p>有什么方法可以修改当前页面的URL，而无需重新加载页面？</p>
-<p>如果可能的话，我希望在之前访问 <strong>之前的部分 **</strong></p>
-<p>我只需要在<strong>域之后更改 </strong>部分，这样就不会像我违反跨域策略一样。</p>
-<pre><code>window.location.href = &quot;www.mysite.com/page2.php&quot;;  // sadly this reloads
-</code></pre><p>
+        <p>我试图将浏览器指向不同的页面。如果我想要一个GET请求，我可能会说</p>
+<pre><code>document.location.href = &apos;http://example.com/q=a&apos;;
+</code></pre><p>但是，我试图访问的资源将不会正确响应，除非我使用POST请求。如果这不是动态生成的，我可以使用HTML</p>
+<pre><code>&lt;form action=&quot;http://example.com/&quot; method=&quot;POST&quot;&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;q&quot; value=&quot;a&quot;&gt;
+&lt;/form&gt;
+</code></pre><p>然后，我只需从DOM提交表单。</p>
+<p>但是，我真的想要JavaScript代码，让我说</p>
+<pre><code>post_to_url(&apos;http://example.com/&apos;, {&apos;q&apos;:&apos;a&apos;});
+</code></pre><p>什么是最好的跨浏览器实现？</p>
+<p><strong>编辑</strong></p>
+<p>对不起，我不清楚。我需要一个改变浏览器位置的解决方案，就像提交表单一样。如果使用<a href="http://en.wikipedia.org/wiki/XMLHttpRequest" target="_blank" rel="noopener"> XMLHttpRequest</a>这是可能的，这是不明显的。这不应该是异步的，也不要使用XML，所以Ajax不是答案。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/modify-the-url-without-reloading-the-page/#more">Read More</a>
+            <a href="/2018/01/14/javascript-post-request-like-a-form-submit/#more">Read More</a>
           
        </p>
     </div>
@@ -496,7 +648,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/url/">url</a><a href="/tags/url-rewriting/">url-rewriting</a><a href="/tags/friendly-url/">friendly-url</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/http/">http</a><a href="/tags/post/">post</a><a href="/tags/submit/">submit</a><a href="/tags/html-form/">html-form</a>
   </div>
 
 </div>
@@ -525,7 +677,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/mkdir-p-functionality-in-python/" title="Python中的mkdir -p功能[复制]" itemprop="url">Python中的mkdir -p功能[复制]</a>
+      <a href="/2018/01/14/jquery-document-createelement-equivalent/" title="jQuery document.createElement是否等价？" itemprop="url">jQuery document.createElement是否等价？</a>
   </h1>
   <p class="article-author">By
        
@@ -538,16 +690,26 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 </header>
     <div class="article-content">
         
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist">How can I create a directory if it does not exist?</a> 24 answers </li>
-</ul>
-<p>有没有一种方法可以从Python中获得类似于<code>mkdir -p</code>的shell的功能。我正在寻找一个解决方案，而不是系统调用。我相信代码少于20行，我想知道是否有人已经写了它？</p>
+        <p>我正在重构一些旧的JavaScript代码，并且有很多DOM操作正在进行。</p>
+<pre><code>var d = document;
+var odv = d.createElement(&quot;div&quot;);
+odv.style.display = &quot;none&quot;;
+this.OuterDiv = odv;
+
+var t = d.createElement(&quot;table&quot;);
+t.cellSpacing = 0;
+t.className = &quot;text&quot;;
+odv.appendChild(t);
+</code></pre><p>我想知道是否有更好的方法来使用jQuery来做到这一点。我一直在试验：</p>
+<pre><code>var odv = $.create(&quot;div&quot;);
+$.append(odv);
+// And many more
+</code></pre><p>但我不确定这是否更好。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/mkdir-p-functionality-in-python/#more">Read More</a>
+            <a href="/2018/01/14/jquery-document-createelement-equivalent/#more">Read More</a>
           
        </p>
     </div>
@@ -557,184 +719,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/mkdir/">mkdir</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/most-elegant-way-to-check-if-the-string-is-empty-in-python/" title="最优雅的方法来检查在Python中的字符串是否为空？" itemprop="url">最优雅的方法来检查在Python中的字符串是否为空？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Python是否具有类似于空字符串变量的地方？</p>
-<pre><code>if myString == string.empty:
-</code></pre><p>不管什么是检查空字符串值的最优雅的方法？我发现硬编码<code>“”</code>每次检查一个空字符串都不好。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/most-elegant-way-to-check-if-the-string-is-empty-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a><a href="/tags/comparison-operators/">comparison-operators</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/null-object-in-python/" title="Python中的空对象？" itemprop="url">Python中的空对象？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我如何引用Python中的空对象？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/null-object-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/open-a-url-in-a-new-tab-and-not-a-new-window-using-javascript/" title="使用JavaScript在新标签（而不是新窗口）中打开一个URL" itemprop="url">使用JavaScript在新标签（而不是新窗口）中打开一个URL</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我试图在新标签中打开<a href="http://en.wikipedia.org/wiki/Uniform_Resource_Locator" target="_blank" rel="noopener">网址</a>，而不是弹出窗口。我已经看到了相关的问题，其答案如下所示：</p>
-<pre><code>window.open(url,&apos;_blank&apos;);
-window.open(url);
-</code></pre><p>但是他们都没有为我工作，浏览器仍然试图打开一个弹出窗口。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/open-a-url-in-a-new-tab-and-not-a-new-window-using-javascript/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/html/">html</a><a href="/tags/dom/">dom</a><a href="/tags/dhtml/">dhtml</a>
   </div>
 
 </div>
@@ -759,7 +744,7 @@ window.open(url);
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/24/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/26/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/24/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/26/">Next<span></span></a>
   </nav>
 
 </div>
@@ -823,7 +808,11 @@ window.open(url);
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
 			
 		
 			
@@ -831,11 +820,15 @@ window.open(url);
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
 			
 		
 			
@@ -843,15 +836,11 @@ window.open(url);
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
 			
 		
 			
@@ -859,7 +848,11 @@ window.open(url);
 			
 		
 			
-				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
 			
 		
 			
@@ -867,7 +860,7 @@ window.open(url);
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
 			
 		
 			
@@ -875,19 +868,11 @@ window.open(url);
 			
 		
 			
-				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/undefined/" title="undefined">undefined<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
 			
 		
 		</ul>

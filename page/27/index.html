@@ -109,7 +109,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/python-join-why-is-it-string-joinlist-instead-of-list-joinstring/" title="Python连接：为什么它是string.join（list）而不是list.join（string）？" itemprop="url">Python连接：为什么它是string.join（list）而不是list.join（string）？</a>
+      <a href="/2018/01/14/lookup-enum-by-string-value/" title="通过字符串值查找枚举" itemprop="url">通过字符串值查找枚举</a>
   </h1>
   <p class="article-author">By
        
@@ -122,21 +122,17 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>这一直困扰着我。这似乎是更好的：</p>
-<pre><code>my_list = [&quot;Hello&quot;, &quot;world&quot;]
-print my_list.join(&quot;-&quot;)
-# Produce: &quot;Hello-world&quot;
-</code></pre><p>比这个：</p>
-<pre><code>my_list = [&quot;Hello&quot;, &quot;world&quot;]
-print &quot;-&quot;.join(my_list)
-# Produce: &quot;Hello-world&quot;
-</code></pre><p>有没有一个特定的原因是这样的？</p>
-<p>
+        <p>假设我有一个枚举，只是</p>
+<pre><code>public enum Blah {
+    A, B, C, D
+}
+</code></pre><p>我想找到一个字符串的枚举值，例如<code>“A”</code>，它将是<code>Blah.A</code>。如何做到这一点？</p>
+<p>是我需要的<code>Enum.valueOf（）</code>方法吗？如果是这样，我将如何使用这个？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/python-join-why-is-it-string-joinlist-instead-of-list-joinstring/#more">Read More</a>
+            <a href="/2018/01/14/lookup-enum-by-string-value/#more">Read More</a>
           
        </p>
     </div>
@@ -146,7 +142,7 @@ print &quot;-&quot;.join(my_list)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a><a href="/tags/string/">string</a><a href="/tags/join/">join</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/enums/">enums</a>
   </div>
 
 </div>
@@ -186,7 +182,7 @@ print &quot;-&quot;.join(my_list)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/why-does-python-code-run-faster-in-a-function/" title="为什么Python代码在函数中运行得更快？" itemprop="url">为什么Python代码在函数中运行得更快？</a>
+      <a href="/2018/01/14/map-two-lists-into-a-dictionary-in-python/" title="将两个列表映射到Python中的字典中" itemprop="url">将两个列表映射到Python中的字典中</a>
   </h1>
   <p class="article-author">By
        
@@ -199,24 +195,20 @@ print &quot;-&quot;.join(my_list)
 </header>
     <div class="article-content">
         
-        <p>def main():<br>        for i in xrange(10**8):<br>            pass<br>    main()</p>
-<p>Python中的这段代码运行在（注意：时序是在Linux的BASH中的时间函数中完成的。）</p>
-<pre><code>real    0m1.841s
-user    0m1.828s
-sys     0m0.012s
-</code></pre><p>但是，如果for循环没有放在函数中，</p>
-<pre><code>for i in xrange(10**8):
-    pass
-</code></pre><p>然后运行时间更长：</p>
-<pre><code>real    0m4.543s
-user    0m4.524s
-sys     0m0.012s
-</code></pre><p>这是为什么？</p>
+        <p>假设你有：</p>
+<pre><code>keys = (&apos;name&apos;, &apos;age&apos;, &apos;food&apos;)
+values = (&apos;Monty&apos;, 42, &apos;spam&apos;)
+</code></pre><p>生成下面的字典最简单的方法是什么？</p>
+<pre><code>a_dict = {&apos;name&apos; : &apos;Monty&apos;, &apos;age&apos; : 42, &apos;food&apos; : &apos;spam&apos;}
+</code></pre><p>这段代码有用，但我并不为此感到骄傲：</p>
+<pre><code>a_dict = {}
+junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-does-python-code-run-faster-in-a-function/#more">Read More</a>
+            <a href="/2018/01/14/map-two-lists-into-a-dictionary-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -226,7 +218,7 @@ sys     0m0.012s
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/performance/">performance</a><a href="/tags/profiling/">profiling</a><a href="/tags/benchmarking/">benchmarking</a><a href="/tags/cpython/">cpython</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/dictionary/">dictionary</a>
   </div>
 
 </div>
@@ -255,7 +247,7 @@ sys     0m0.012s
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/why-does-parseint1-0-19-return-18/" title="为什么parseInt（1/0，19）返回18？" itemprop="url">为什么parseInt（1/0，19）返回18？</a>
+      <a href="/2018/01/14/manually-raising-throwing-an-exception-in-python/" title="在Python中手动提高（抛出）异常" itemprop="url">在Python中手动提高（抛出）异常</a>
   </h1>
   <p class="article-author">By
        
@@ -268,16 +260,73 @@ sys     0m0.012s
 </header>
     <div class="article-content">
         
-        <p>我在JavaScript中遇到了一个令人讨厌的问题。</p>
-<pre><code>&gt; parseInt(1 / 0, 19)
-&gt; 18
-</code></pre><p>为什么<code>parseInt</code>返回<code>18</code>？</p>
+        <p>如何在Python中引发异常，以便通过<code>除</code>块之外的其他方法捕获异常？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/manually-raising-throwing-an-exception-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/exception/">exception</a><a href="/tags/exception-handling/">exception-handling</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/meaning-of-classmethod-and-staticmethod-for-beginner/" title="classmethod和staticmethod对初学者的意义？" itemprop="url">classmethod和staticmethod对初学者的意义？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有人可以向我解释在python中<code>@classmethod</code>和<code>@staticmethod</code>的含义吗？我需要知道其中的差异和意义。</p>
+<p>就我所知，<code>@classmethod</code>告诉一个类，它是一个应该被继承到子类或者…东西的方法。但是，这是什么意思？为什么不在不添加<code>@classmethod</code>或<code>@staticmethod</code>或任何<code>@</code>定义的情况下定义类方法？</p>
+<p>我应该如何使用它们，为什么<em>我应该使用它们，而 </em>应该如何使用 _<em> ？</em>我使用它们？</p>
+<p>我很高级的C ++，所以使用更高级的编程概念不应该是一个问题。如果可能，请随意给我一个相应的C ++示例。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-does-parseint1-0-19-return-18/#more">Read More</a>
+            <a href="/2018/01/14/meaning-of-classmethod-and-staticmethod-for-beginner/#more">Read More</a>
           
        </p>
     </div>
@@ -287,7 +336,7 @@ sys     0m0.012s
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/parseint/">parseint</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/oop/">oop</a><a href="/tags/static-methods/">static-methods</a><a href="/tags/class-method/">class-method</a>
   </div>
 
 </div>
@@ -316,7 +365,7 @@ sys     0m0.012s
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/python-class-inherits-object/" title="Python类继承对象" itemprop="url">Python类继承对象</a>
+      <a href="/2018/01/14/mkdir-p-functionality-in-python/" title="Python中的mkdir -p功能[复制]" itemprop="url">Python中的mkdir -p功能[复制]</a>
   </h1>
   <p class="article-author">By
        
@@ -329,16 +378,16 @@ sys     0m0.012s
 </header>
     <div class="article-content">
         
-        <p>是否有任何理由让类声明继承<code>object</code>？</p>
-<p>我刚刚发现了一些代码，我找不到一个好的理由。</p>
-<pre><code>class MyClass(object):
-    # class code follows...
-</code></pre>
+        <p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist">How can I create a directory if it does not exist?</a> 24 answers </li>
+</ul>
+<p>有没有一种方法可以从Python中获得类似于<code>mkdir -p</code>的shell的功能。我正在寻找一个解决方案，而不是系统调用。我相信代码少于20行，我想知道是否有人已经写了它？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/python-class-inherits-object/#more">Read More</a>
+            <a href="/2018/01/14/mkdir-p-functionality-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -348,7 +397,7 @@ sys     0m0.012s
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/object/">object</a><a href="/tags/class/">class</a><a href="/tags/inheritance/">inheritance</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/mkdir/">mkdir</a>
   </div>
 
 </div>
@@ -377,7 +426,7 @@ sys     0m0.012s
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/python-progression-path-from-apprentice-to-guru/" title="Python进程路径 - 从徒弟到专家" itemprop="url">Python进程路径 - 从徒弟到专家</a>
+      <a href="/2018/01/14/modify-the-url-without-reloading-the-page/" title="修改网址而不重新加载页面" itemprop="url">修改网址而不重新加载页面</a>
   </h1>
   <p class="article-author">By
        
@@ -390,37 +439,190 @@ sys     0m0.012s
 </header>
     <div class="article-content">
         
-        <p>我一直在学习，工作和使用Python一年半。作为一个慢慢转向生物信息学的生物学家，这个语言一直是我在实验室做出的所有主要贡献的核心。我或多或少地爱上了Python允许我表达美丽的解决方案的方式，并且还用语言的语义来允许从思想到可行代码的自然流动。</p>
-<p>我想知道的是你对这个或其他论坛中很少见到的问题的回答。这个问题对于我来说对于那些正在改进Python的人来说似乎很重要，但是他不知道下一步应该做什么。</p>
-<p>让我总结一下我不想先问的问题;）</p>
-<ul>
-<li>我不想知道如何快速学习Python </li>
-<li>我也不想找出熟悉该语言的最佳方法</li>
-<li>最后，我不想知道“一窍不通”的方法。</li>
-</ul>
-<p>我想知道你的意见是：</p>
-<p><strong>你会推荐给一个Python熟练人员的步骤是什么，从学徒到专家的地位（随时随地停止，只要你的专业知识指定它），以便持续改进，成为一个更好，更好的Python编码器，一步一步来。在SO上的一些人几乎似乎值得崇拜他们的Python的能力，请赐教我们：）</strong></p>
-<p>我喜欢这样的答案（但是可以让读者感到惊讶：P）的格式或多或少是这样的：</p>
-<ul>
-<li>阅读（例如：python教程），注意这种细节</li>
-<li><p>代码如此之多/问题/代码行<br>然后阅读（例如：这本或那本书），但是这一次，请注意这个</p>
-</li>
-<li><p>解决一些真实的问题<br>然后，继续阅读Y.</p>
-</li>
-<li><p>确保掌握这些概念</p>
-</li>
-<li>X时间代码</li>
-<li>回到这样或那样的基础，或进一步移动到… </li>
-<li>（你明白了）</li>
-</ul>
-<p>我真的很在意在不同的阶段知道你究竟应该注意什么，以便持续地进步（当然还有适当的努力）。如果您来自特定的专业领域，请在此领域讨论适当的路径。</p>
-<p>编辑：感谢您的伟大的输入，我回到了Python的改进轨道上！我真的很感激！</p>
+        <p>有什么方法可以修改当前页面的URL，而无需重新加载页面？</p>
+<p>如果可能的话，我希望在之前访问 <strong>之前的部分 **</strong></p>
+<p>我只需要在<strong>域之后更改 </strong>部分，这样就不会像我违反跨域策略一样。</p>
+<pre><code>window.location.href = &quot;www.mysite.com/page2.php&quot;;  // sadly this reloads
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/modify-the-url-without-reloading-the-page/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/url/">url</a><a href="/tags/url-rewriting/">url-rewriting</a><a href="/tags/friendly-url/">friendly-url</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/most-elegant-way-to-check-if-the-string-is-empty-in-python/" title="最优雅的方法来检查在Python中的字符串是否为空？" itemprop="url">最优雅的方法来检查在Python中的字符串是否为空？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Python是否具有类似于空字符串变量的地方？</p>
+<pre><code>if myString == string.empty:
+</code></pre><p>不管什么是检查空字符串值的最优雅的方法？我发现硬编码<code>“”</code>每次检查一个空字符串都不好。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/most-elegant-way-to-check-if-the-string-is-empty-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a><a href="/tags/comparison-operators/">comparison-operators</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/nicest-way-to-pad-zeroes-to-string/" title="最好的方式填充零字符串" itemprop="url">最好的方式填充零字符串</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>填充数字字符串到左边的最有趣的方法是什么，即数字字符串有特定的长度？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/nicest-way-to-pad-zeroes-to-string/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/null-object-in-python/" title="Python中的空对象？" itemprop="url">Python中的空对象？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我如何引用Python中的空对象？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/python-progression-path-from-apprentice-to-guru/#more">Read More</a>
+            <a href="/2018/01/14/null-object-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -459,7 +661,7 @@ sys     0m0.012s
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/python-setup-py-uninstall/" title="python setup.py卸载" itemprop="url">python setup.py卸载</a>
+      <a href="/2018/01/14/open-a-url-in-a-new-tab-and-not-a-new-window-using-javascript/" title="使用JavaScript在新标签（而不是新窗口）中打开一个URL" itemprop="url">使用JavaScript在新标签（而不是新窗口）中打开一个URL</a>
   </h1>
   <p class="article-author">By
        
@@ -472,13 +674,15 @@ sys     0m0.012s
 </header>
     <div class="article-content">
         
-        <p>我用<code>python setup.py install</code>安装了一个python包。</p>
-<p>我如何卸载它？</p>
+        <p>我试图在新标签中打开<a href="http://en.wikipedia.org/wiki/Uniform_Resource_Locator" target="_blank" rel="noopener">网址</a>，而不是弹出窗口。我已经看到了相关的问题，其答案如下所示：</p>
+<pre><code>window.open(url,&apos;_blank&apos;);
+window.open(url);
+</code></pre><p>但是他们都没有为我工作，浏览器仍然试图打开一个弹出窗口。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/python-setup-py-uninstall/#more">Read More</a>
+            <a href="/2018/01/14/open-a-url-in-a-new-tab-and-not-a-new-window-using-javascript/#more">Read More</a>
           
        </p>
     </div>
@@ -488,279 +692,7 @@ sys     0m0.012s
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/setup-py/">setup.py</a><a href="/tags/pypi/">pypi</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-does-comparing-strings-in-python-using-either-or-is-sometimes-produce/" title="为什么在Python中使用&#39;==&#39;或&#39;is&#39;比较字符串有时会产生不同的结果？" itemprop="url">为什么在Python中使用&#39;==&#39;或&#39;is&#39;比较字符串有时会产生不同的结果？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有一个Python程序，其中两个变量被设置为值<code>&#39;public&#39;</code>。在条件表达式中，我有比较<code>var1是var2</code>，但是如果将其更改为<code>var1
-== var2</code>，则返回<code>True</code> / p&gt; 现在，如果我打开我的Python解释器，并做相同的“是”比较，它会成功。</p>
-<pre><code>&gt;&gt;&gt; s1 = &apos;public&apos;
-&gt;&gt;&gt; s2 = &apos;public&apos;
-&gt;&gt;&gt; s2 is s1
-True
-</code></pre><p>我在这里错过了什么？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-does-comparing-strings-in-python-using-either-or-is-sometimes-produce/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a><a href="/tags/comparison/">comparison</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/python-property-versus-getters-and-setters/" title="Python @property与getters和setter" itemprop="url">Python @property与getters和setter</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>这是一个纯Python特有的设计问题：</p>
-<pre><code>class MyClass(object):
-    ...
-    def get_my_attr(self):
-        ...
-
-    def set_my_attr(self, value):
-        ...
-</code></pre><p>和</p>
-<pre><code>class MyClass(object):
-    ...        
-    @property
-    def my_attr(self):
-        ...
-
-    @my_attr.setter
-    def my_attr(self, value):
-        ...
-</code></pre><p>Python让我们可以做到这一点。如果你要设计一个Python程序，你会使用哪种方法，为什么？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/python-property-versus-getters-and-setters/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/properties/">properties</a><a href="/tags/getter-setter/">getter-setter</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/proper-way-to-declare-custom-exceptions-in-modern-python/" title="在现代Python中声明自定义异常的正确方法是什么？" itemprop="url">在现代Python中声明自定义异常的正确方法是什么？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在现代Python中声明自定义异常类的正确方法是什么？我的主要目标是跟随任何标准的其他异常类，以便（例如）任何额外的字符串，我包括在例外是打印出来的任何工具抓住例外。</p>
-<p>“现代Python”是指在Python 2.5中运行的东西，但对于Python 2.6和Python<br>3。通过“自定义”，我的意思是一个Exception对象，可以包含有关错误原因的额外数据：一个字符串，也许还有一些其他与异常相关的任意对象。</p>
-<p>我被Python 2.6.2中的下面的弃用警告绊倒了：</p>
-<pre><code>&gt;&gt;&gt; class MyError(Exception):
-...     def __init__(self, message):
-...         self.message = message
-... 
-&gt;&gt;&gt; MyError(&quot;foo&quot;)
-_sandbox.py:3: DeprecationWarning: BaseException.message has been deprecated as of Python 2.6
-</code></pre><p><code></code> BaseException <code>对于名为</code> message `的属性有特殊的含义。我从<a href="http://www.python.org/dev/peps/pep-0352/" target="_blank" rel="noopener"> PEP-352</a>中收集到的那个属性在2.5中有特殊的含义我试图贬低，所以我猜这个名字（现在只有一个人）现在被禁止？啊。</p>
-<p>我也模糊地意识到<code>Exception</code>有一些神奇的参数<code>args</code>，但我从来不知道如何使用它。我也不确定这是做事的正确方法。我在网上发现的很多讨论表明他们试图在Python 3中取消参数。</p>
-<p>更新：两个答案建议覆盖<code>__ init __</code>和<code>__ str __</code> / <code>__ unicode __</code> / <code>__ repr __</code>。这似乎很多打字，是否有必要？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/proper-way-to-declare-custom-exceptions-in-modern-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/exception/">exception</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/python-string-formatting-vs-format/" title="Python字符串格式：％与.format" itemprop="url">Python字符串格式：％与.format</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Python 2.6引入了<a href="https://docs.python.org/2/library/stdtypes.html#str.format" target="_blank" rel="noopener"> ` str.format（）代码&gt;</a>方法，其语法与现有的<code>％</code>运算符略有不同。哪个更好，什么情况？</p>
-<ul>
-<li>以下使用每种方法，并有相同的结果，所以有什么区别？</li>
-</ul>
-<p>&lt;预&gt; &lt;代码&gt;＃！/ USR /斌/蟒 sub1 =“python string！” sub2 =“一个参数” a =“我是％s”％sub1 b<br>=“我是{0}”格式（sub1） c =“有％（kwarg）s！” ％{‘kwarg’：sub2} d =“with {kwarg}！”。格式（kwarg<br>= sub2） 打印一个＃“我是一个Python字符串！” 打印b＃“我是一个python字符串！” 打印C＃“与arg！” 打印d＃“与arg！”</p>
-<p>另外，什么时候在Python中出现字符串格式？例如，如果我的日志记录级别设置为“高”，那么我仍然会执行下面的<code>％</code>操作。如果是这样，有没有办法避免这种情况？</p>
-<pre><code>log.debug（“一些调试信息：％s”％some_info）
-</code></pre><p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/python-string-formatting-vs-format/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/string-formatting/">string-formatting</a><a href="/tags/performance/">performance</a><a href="/tags/logging/">logging</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -785,7 +717,7 @@ _sandbox.py:3: DeprecationWarning: BaseException.message has been deprecated as 
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/26/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/28/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/26/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><a class="page-number" href="/page/29/">29</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/28/">Next<span></span></a>
   </nav>
 
 </div>
@@ -849,7 +781,11 @@ _sandbox.py:3: DeprecationWarning: BaseException.message has been deprecated as 
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
 			
 		
 			
@@ -857,11 +793,15 @@ _sandbox.py:3: DeprecationWarning: BaseException.message has been deprecated as 
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
 			
 		
 			
@@ -869,15 +809,11 @@ _sandbox.py:3: DeprecationWarning: BaseException.message has been deprecated as 
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
 			
 		
 			
@@ -885,7 +821,11 @@ _sandbox.py:3: DeprecationWarning: BaseException.message has been deprecated as 
 			
 		
 			
-				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
 			
 		
 			
@@ -893,7 +833,7 @@ _sandbox.py:3: DeprecationWarning: BaseException.message has been deprecated as 
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
 			
 		
 			
@@ -901,19 +841,11 @@ _sandbox.py:3: DeprecationWarning: BaseException.message has been deprecated as 
 			
 		
 			
-				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/undefined/" title="undefined">undefined<sup>5</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
 			
 		
 		</ul>

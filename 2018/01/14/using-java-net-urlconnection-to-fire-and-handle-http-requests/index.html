@@ -1,0 +1,818 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>使用java.net.URLConnection来触发和处理HTTP请求 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="使用 java.net.URLConnection在这里经常被问到，Oracle教程也是简洁的。 该教程基本上只显示如何触发一个GET请求并读取响应。它不会解释如何使用它来执行POST请求，设置请求标头，读取响应标头，处理cookie，提交HTML表单，上传文件等。 那么，如何使用java.net.URLConnection来触发和处理“高级”的HTTP请求？">
+<meta name="keywords" content="java,http,httprequest,httpurlconnection,urlconnection">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用java.net.URLConnection来触发和处理HTTP请求">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/using-java-net-urlconnection-to-fire-and-handle-http-requests/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="使用 java.net.URLConnection在这里经常被问到，Oracle教程也是简洁的。 该教程基本上只显示如何触发一个GET请求并读取响应。它不会解释如何使用它来执行POST请求，设置请求标头，读取响应标头，处理cookie，提交HTML表单，上传文件等。 那么，如何使用java.net.URLConnection来触发和处理“高级”的HTTP请求？">
+<meta property="og:updated_time" content="2018-01-14T05:28:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用java.net.URLConnection来触发和处理HTTP请求">
+<meta name="twitter:description" content="使用 java.net.URLConnection在这里经常被问到，Oracle教程也是简洁的。 该教程基本上只显示如何触发一个GET请求并读取响应。它不会解释如何使用它来执行POST请求，设置请求标头，读取响应标头，处理cookie，提交HTML表单，上传文件等。 那么，如何使用java.net.URLConnection来触发和处理“高级”的HTTP请求？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/using-java-net-urlconnection-to-fire-and-handle-http-requests/" title="使用java.net.URLConnection来触发和处理HTTP请求" itemprop="url">使用java.net.URLConnection来触发和处理HTTP请求</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Preparing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Firing a [HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Firing a [HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Actually firing the HTTP request</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Gathering HTTP response information</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Maintaining the session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Streaming mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">User-Agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">Error handling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">10.</span> <span class="toc-text">Uploading files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">11.</span> <span class="toc-text">Dealing with untrusted or misconfigured HTTPS sites</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">12.</span> <span class="toc-text">Last words</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">13.</span> <span class="toc-text">Parsing and extracting HTML</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>使用<a href="http://docs.oracle.com/javase/8/docs/api/java/net/URLConnection.html" target="_blank" rel="noopener"> <code>java.net.URLConnection</code></a>在这里经常被问到，<a href="http://download.oracle.com/javase/tutorial/networking/urls/connecting.html" target="_blank" rel="noopener">Oracle教程</a>也是简洁的。</p>
+<p>该教程基本上只显示如何触发一个GET请求并读取响应。它不会解释如何使用它来执行POST请求，设置请求标头，读取响应标头，处理cookie，提交HTML表单，上传文件等。</p>
+<p>那么，如何使用<code>java.net.URLConnection</code>来触发和处理“高级”的HTTP请求？</p>
+<p><a id="more"></a> 先提出免责声明：发布的代码片段都是基本的例子。你需要像<code>NullPointerException</code>，<code>ArrayIndexOutOfBoundsException</code>一样处理普通的<code>IOException</code>和` RuntimeException &lt;<br>EM&gt;</p>
+<hr>
+<h3><span id="preparing">Preparing</span></h3><p>我们首先需要知道至少URL和字符集。这些参数是可选的，取决于功能要求。</p>
+<pre><code>String url = &quot;http://example.com&quot;;
+String charset = &quot;UTF-8&quot;;  // Or in Java 7 and later, use the constant: java.nio.charset.StandardCharsets.UTF_8.name()
+String param1 = &quot;value1&quot;;
+String param2 = &quot;value2&quot;;
+// ...
+
+String query = String.format(&quot;param1=%s&amp;param2=%s&quot;, 
+     URLEncoder.encode(param1, charset), 
+     URLEncoder.encode(param2, charset));
+</code></pre><p>查询参数必须为<code>name = value</code>格式，并由<code>＆amp;</code>连接。您通常还会使用指定的字符集对查询参数进行<a href="http://en.wikipedia.org/wiki/Percent-encoding" target="_blank" rel="noopener">网址编码</a><br><a href="“http://docs.oracle.com/javase/8/docs/api/java/net/URLEncoder.html#encode-
+java.lang.String-java.lang.String-”rel"> ` URLEncoder的＃编码（）</a>。</p>
+<p><code>String＃format（）</code>只是为了方便。当我需要String连接运算符<code>+</code>两次以上时，我更喜欢它。</p>
+<hr>
+<h3><span id="firing-a-http">Firing a [HTTP</span></h3><p>GET](<a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.3" target="_blank" rel="noopener">http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.3</a>) request<br>with (optionally) query parameters</p>
+<p>这是一个微不足道的任务。这是默认的请求方法。</p>
+<pre><code>URLConnection connection = new URL(url + &quot;?&quot; + query).openConnection();
+connection.setRequestProperty(&quot;Accept-Charset&quot;, charset);
+InputStream response = connection.getInputStream();
+// ...
+</code></pre><p>任何查询字符串都应该使用<code>？</code>连接到URL。 <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.2" target="_blank" rel="noopener"> <code>Accept-Charset</code></a>头可能会提示服务器参数的编码方式。如果您不发送任何查询字符串，则可以将<code>Accept-Charset</code>标头留下。如果您不需要设置任何标题，那么您甚至可以使用<a href="“http://docs.oracle.com/javase/8/docs/api/java/net/URL.html#openStream%"> <code>URL＃openStream（）</code></a>快捷方法。</p>
+<pre><code>InputStream response = new URL(url).openStream();
+// ...
+</code></pre><p>无论哪种方式，如果对方是<a href="http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServlet.html" target="_blank" rel="noopener"> &lt; code&gt; HttpServlet `</a>，那么它的<a href="“http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServlet.html#doGet%28javax.servlet"><code>doGet（）</code></a>方法将被调用，并且参数可以通过<a href="“http://docs.oracle.com/javaee/7/api/javax/servlet/ServletRequest.html#getParameter%28java.lang.String%29”rel">` HttpServletRequest＃getParameter（）</a>。</p>
+<p>出于测试目的，您可以将响应主体打印到stdout中，如下所示：</p>
+<pre><code>try (Scanner scanner = new Scanner(response)) {
+    String responseBody = scanner.useDelimiter(&quot;\\A&quot;).next();
+    System.out.println(responseBody);
+}
+</code></pre><hr>
+<h3><span id="firing-a-http">Firing a [HTTP</span></h3><p>POST](<a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5" target="_blank" rel="noopener">http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.5</a>) request<br>with query parameters</p>
+<p>设定<a href="http://docs.oracle.com/javase/8/docs/api/java/net/URLConnection.html#setDoOutput%28boolean%29" target="_blank" rel="noopener"> <code>URLConnection＃setDoOutput（）</code></a>为<code>true</code>将请求方法隐式设置为POST。作为web表单的标准HTTP POST的类型是<code>application / x-www-form-
+urlencoded</code>，其中查询字符串被写入请求主体。</p>
+<pre><code>URLConnection connection = new URL(url).openConnection();
+connection.setDoOutput(true); // Triggers POST.
+connection.setRequestProperty(&quot;Accept-Charset&quot;, charset);
+connection.setRequestProperty(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded;charset=&quot; + charset);
+
+try (OutputStream output = connection.getOutputStream()) {
+    output.write(query.getBytes(charset));
+}
+
+InputStream response = connection.getInputStream();
+// ...
+</code></pre><p>注意：只要你想以编程的方式提交一个HTML表单，不要忘记带任何<code>＆lt; input type =“hidden”＆gt;的</code> name = value <code>`元素添加到查询字符串中，当然还有您想要的</code>＆lt; input type =“submit”＆gt; <code>元素的</code> name = value<br>`对以编程方式“按”（因为通常在服务器端用来区分按钮是否被按下，如果是，哪一个按下）。</p>
+<p>您也可以将获得的<a href="http://docs.oracle.com/javase/8/docs/api/java/net/URLConnection.html" target="_blank" rel="noopener"> <code>URLConnection</code></a>到<a href="http://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html" target="_blank" rel="noopener"> <code>HttpURLConnection</code></a>并使用其<a href="“http://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html#setRequestMethod%28java.lang.String%"><code>HttpURLConnection＃setRequestMethod（）</code></a>。但是，如果您尝试使用连接输出，则仍然需要设置<a href="“http://docs.oracle.com/javase/8/docs/api/java/net/URLConnection.html#setDoOutput%"><code>URLConnection＃setDoOutput（）</code></a>为<code>true</code>。</p>
+<pre><code>HttpURLConnection httpConnection = (HttpURLConnection) new URL(url).openConnection();
+httpConnection.setRequestMethod(&quot;POST&quot;);
+// ...
+</code></pre><p>无论哪种方式，如果对方是<a href="http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServlet.html" target="_blank" rel="noopener"> &lt; code&gt; HttpServlet `</a>，那么它的<a href="“http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServlet.html#doPost%28javax.servlet"><code>doPost（）</code></a>方法将被调用，并且参数可以通过<a href="“http://docs.oracle.com/javaee/7/api/javax/servlet/ServletRequest.html#getParameter%28java.lang.String%29”rel">` HttpServletRequest＃getParameter（）</a>。</p>
+<hr>
+<h3><span id="actually-firing-the-http-request">Actually firing the HTTP request</span></h3><p>您可以使用<a href="“http://docs.oracle.com/javase/8/docs/api/java/net/URLConnection.html#connect%28%29”rel">&gt; <code>URLConnection＃connect（）</code></a>，但是当你想得到关于HTTP响应的任何信息时，请求会自动被触发，比如使用<a href="“http://docs.oracle.com/javase/8/docs/api/java/net/URLConnection.html#getInputStream%28%29”rel">` URLConnection＃getInputStream（）&lt; / code&gt;</a>等。上面的例子确实如此，所以<code>connect（）</code>调用实际上是多余的。</p>
+<hr>
+<h3><span id="gathering-http-response-information">Gathering HTTP response information</span></h3><ul>
+<li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html" target="_blank" rel="noopener"> HTTP响应状态</a>：</li>
+</ul>
+<p>您需要<a href="http://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html" target="_blank" rel="noopener"> <code>HttpURLConnection</code></a>在这里。如果有必要，先将它投射出去。</p>
+<pre><code>int status = httpConnection.getResponseCode（）;
+</code></pre><ul>
+<li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html" target="_blank" rel="noopener"> HTTP回应标题</a>：</li>
+</ul>
+<p>（Entry＆lt; String，List＆lt; String＆gt;＆gt;<br>header：connection.getHeaderFields（）。entrySet（））{<br>System.out.println（header.getKey（）+“=”+ header.getValue（））; }</p>
+<ul>
+<li><p><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17" target="_blank" rel="noopener"> HTTP响应编码</a>：&lt; / p&gt; 当<code>Content-Type</code>包含一个<code>charset</code>参数时，响应正文可能是基于文本的，我们想要用服务器端来处理响应正文然后指定字符编码。</p>
+<pre><code>String contentType = connection.getHeaderField（“Content-Type”）;
+</code></pre><p>String charset = null;</p>
+<p>for（String param：contentType.replace（“”，“”）.split（“;”））{</p>
+<pre><code>如果（param.startsWith（“charset =”））{
+    charset = param.split（“=”，2）[1];
+    打破;
+}
+</code></pre><p>}</p>
+<p>如果（charset！= null）{</p>
+<pre><code>尝试（BufferedReader读取器=新的BufferedReader（新的InputStreamReader（响应，字符集）））{
+    for（String line;（line = reader.readLine（））！= null;）{
+        // ... System.out.println（line）？
+    }
+}
+</code></pre><p>} else {</p>
+<pre><code>//这可能是二进制内容，使用InputStream / OutputStream。
+</code></pre><p>}</p>
+</li>
+</ul>
+<hr>
+<h3><span id="maintaining-the-session">Maintaining the session</span></h3><p>服务器端会话通常由一个cookie支持。一些网络表单要求您登录和/或由会话跟踪。您可以使用[ <code>CookieHandler</code> &lt; / a&gt;<br>API来维护Cookie。您需要准备<a href="http://docs.oracle.com/javase/8/docs/api/java/net/CookieManager.html" target="_blank" rel="noopener"> <code>CookieManager</code></a>与<a href="http://docs.oracle.com/javase/8/docs/api/java/net/CookiePolicy.html" target="_blank" rel="noopener"> <code>CookiePolicy</code></a>的<a href="http://docs.oracle.com/javase/8/docs/api/java/net/CookiePolicy.html#ACCEPT_ALL" target="_blank" rel="noopener"> `ACCEPT_ALL &lt; / code&gt;</a>，然后发送所有HTTP请求。</p>
+<pre><code>// First set the default cookie manager.
+CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
+
+// All the following subsequent URLConnections will use the same cookie manager.
+URLConnection connection = new URL(url).openConnection();
+// ...
+
+connection = new URL(url).openConnection();
+// ...
+
+connection = new URL(url).openConnection();
+// ...
+</code></pre><p>请注意，这已知在任何情况下都不能正常工作。如果它失败了，那么最好是手动收集和设置cookie头。您基本上需要从登录或第一个<code>GET</code>请求的响应中抓取所有<code>Set-Cookie</code>标头，然后通过后续请求传递。</p>
+<pre><code>// Gather all cookies on the first request.
+URLConnection connection = new URL(url).openConnection();
+List&lt;String&gt; cookies = connection.getHeaderFields().get(&quot;Set-Cookie&quot;);
+// ...
+
+// Then use the same cookies on all subsequent requests.
+connection = new URL(url).openConnection();
+for (String cookie : cookies) {
+    connection.addRequestProperty(&quot;Cookie&quot;, cookie.split(&quot;;&quot;, 2)[0]);
+}
+// ...
+</code></pre><p><code>split（“;”，2）[0]</code>是为了摆脱与服务器端无关的cookie属性，如<code>expires</code>，<code>路径</code>等。或者，您也可以使用<code>cookie.substring（0，cookie.indexOf（&#39;;&#39;））</code>来代替split（）` / p&gt;</p>
+<hr>
+<h3><span id="streaming-mode">Streaming mode</span></h3><p>[ <code>HttpURLConnection</code> &lt; / a&gt;会默认在发送之前缓冲整个请求体，无论你是否使用<code>connection.setRequestProperty（“Content-Length”，contentLength ）;
+。无论何时您同时发送较大的POST请求（例如上传文件），这可能会导致</code> OutOfMemoryException `。为了避免这种情况，您希望设置<a href="“http://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html#setFixedLengthStreamingMode%28int%29”rel">&lt;代码&gt; HttpURLConnection的＃setFixedLengthStreamingMode（）</a>。</p>
+<pre><code>httpConnection.setFixedLengthStreamingMode(contentLength);
+</code></pre><p>但是，如果事先不知道内容长度，那么可以通过设置<a href="“http://docs.oracle.com/javase/8/docs/api/java”"> <code>HttpURLConnection＃setChunkedStreamingMode（）</code></a>。这将设置HTTP <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41" target="_blank" rel="noopener"> <code>Transfer-
+Encoding</code></a>头到<code>chunked</code>这将强制请求正文发送块。下面的例子将以1KB的块形式发送主体。</p>
+<pre><code>httpConnection.setChunkedStreamingMode(1024);
+</code></pre><hr>
+<h3><span id="user-agent">User-Agent</span></h3><p>可能会发生请求返回意外的响应，而在真正的Web浏览器中它可以正常工作。服务器端可能会根据<a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43" target="_blank" rel="noopener"> <code>User-代理</code></a>请求标头。 <code>URLConnection</code>默认将其设置为<code>Java / 1.6.0_19</code>，其中最后一部分显然是JRE版本。你可以覆盖它如下：</p>
+<pre><code>connection.setRequestProperty(&quot;User-Agent&quot;, &quot;Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36&quot;); // Do as if you&apos;re using Chrome 41 on Windows 7.
+</code></pre><p>使用<a href="http://www.useragentstring.com/pages/useragentstring.php" target="_blank" rel="noopener">最近浏览器</a>的User-<br>Agent字符串。</p>
+<hr>
+<h3><span id="error-handling">Error handling</span></h3><p>如果HTTP响应代码是<code>4nn</code>（Client Error）或<code>5nn</code>（Server Error），那么您可能需要阅读<code>HttpURLConnection＃getErrorStream</code>来查看服务器是否发送了任何有用的错误信息。</p>
+<pre><code>InputStream error = ((HttpURLConnection) connection).getErrorStream();
+</code></pre><p>如果HTTP响应代码是-1，那么连接和响应处理就出错了。 <code>HttpURLConnection</code>实现在旧的JRE中有一些漏洞，导致连接处于活动状态。您可能希望通过将<code>http.keepAlive</code>系统属性设置为<code>false</code>来关闭它。你可以通过编程的方式在应用程序的开始部分执行这个操作：</p>
+<pre><code>System.setProperty(&quot;http.keepAlive&quot;, &quot;false&quot;);
+</code></pre><hr>
+<h3><span id="uploading-files">Uploading files</span></h3><p>您通常会使用<a href="http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.2" target="_blank" rel="noopener"> <code>multipart / form-data</code></a>编码混合POST内容（二进制和字符数据）。编码详见<a href="http://www.faqs.org/rfcs/rfc2388.html" target="_blank" rel="noopener">RFC2388 </a>。</p>
+<pre><code>String param = &quot;value&quot;;
+File textFile = new File(&quot;/path/to/file.txt&quot;);
+File binaryFile = new File(&quot;/path/to/file.bin&quot;);
+String boundary = Long.toHexString(System.currentTimeMillis()); // Just generate some unique random value.
+String CRLF = &quot;\r\n&quot;; // Line separator required by multipart/form-data.
+URLConnection connection = new URL(url).openConnection();
+connection.setDoOutput(true);
+connection.setRequestProperty(&quot;Content-Type&quot;, &quot;multipart/form-data; boundary=&quot; + boundary);
+
+try (
+    OutputStream output = connection.getOutputStream();
+    PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, charset), true);
+) {
+    // Send normal param.
+    writer.append(&quot;--&quot; + boundary).append(CRLF);
+    writer.append(&quot;Content-Disposition: form-data; name=\&quot;param\&quot;&quot;).append(CRLF);
+    writer.append(&quot;Content-Type: text/plain; charset=&quot; + charset).append(CRLF);
+    writer.append(CRLF).append(param).append(CRLF).flush();
+
+    // Send text file.
+    writer.append(&quot;--&quot; + boundary).append(CRLF);
+    writer.append(&quot;Content-Disposition: form-data; name=\&quot;textFile\&quot;; filename=\&quot;&quot; + textFile.getName() + &quot;\&quot;&quot;).append(CRLF);
+    writer.append(&quot;Content-Type: text/plain; charset=&quot; + charset).append(CRLF); // Text file itself must be saved in this charset!
+    writer.append(CRLF).flush();
+    Files.copy(textFile.toPath(), output);
+    output.flush(); // Important before continuing with writer!
+    writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
+
+    // Send binary file.
+    writer.append(&quot;--&quot; + boundary).append(CRLF);
+    writer.append(&quot;Content-Disposition: form-data; name=\&quot;binaryFile\&quot;; filename=\&quot;&quot; + binaryFile.getName() + &quot;\&quot;&quot;).append(CRLF);
+    writer.append(&quot;Content-Type: &quot; + URLConnection.guessContentTypeFromName(binaryFile.getName())).append(CRLF);
+    writer.append(&quot;Content-Transfer-Encoding: binary&quot;).append(CRLF);
+    writer.append(CRLF).flush();
+    Files.copy(binaryFile.toPath(), output);
+    output.flush(); // Important before continuing with writer!
+    writer.append(CRLF).flush(); // CRLF is important! It indicates end of boundary.
+
+    // End of multipart/form-data.
+    writer.append(&quot;--&quot; + boundary + &quot;--&quot;).append(CRLF).flush();
+}
+</code></pre><p>如果对方是<a href="http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServlet.html" target="_blank" rel="noopener"> <code>HttpServlet</code></a>，那么它的<a href="“http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServlet.html#doPost%28javax.servlet.http”。"><code>doPost（）</code></a>方法将被调用，并且这些部分可以通过<a href="”http">` HttpServletRequest＃getPart（）&lt; / code&gt; </a>（注意，因此 <strong>不是</strong> <code>getParameter（）</code>等等！）。然而，<code>getPart（）</code>方法是比较新的，它在Servlet 3.0（Glassfish 3，Tomcat<br>7等）中引入。在Servlet 3.0之前，最好的选择是使用<a href="http://commons.apache.org/fileupload" target="_blank" rel="noopener"> Apache Commons FileUpload</a>解析一个<code>multipart / form-
+数据</code>请求。另请参阅<a href="https://stackoverflow.com/questions/2422468/upload-big-file-
+to-servlet/2424824#2424824" target="_blank" rel="noopener">此答案</a>，以获取FileUpload和Servelt 3.0的示例方法</p>
+<hr>
+<h3><span id="dealing-with-untrusted-or-misconfigured-https-sites">Dealing with untrusted or misconfigured HTTPS sites</span></h3><p>有时您需要连接HTTPS网址，也许是因为您正在编写网络抓取工具。在这种情况下，您可能在某些HTTPS站点上面临<code>javax.net.ssl.SSLException：不可信服务器证书</code>，这些站点没有及时更新其SSL证书，或者<code>java
+.security.cert.CertificateException：在某些配置错误的HTTPS站点上，未找到与[主机名]匹配的主题替代DNS名称</code>或<code>javax.net.ssl.SSLProtocolException：握手警报：无法识别的名称</code>。</p>
+<p>以下一次性运行的<code>static</code>初始值设定项在您的web scraper类中应使<code>HttpsURLConnection</code>对这些HTTPS站点更为宽松，从而不会再抛出这些异常。 / p&gt;</p>
+<pre><code>static {
+    TrustManager[] trustAllCertificates = new TrustManager[] {
+        new X509TrustManager() {
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return null; // Not relevant.
+            }
+            @Override
+            public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                // Do nothing. Just allow them all.
+            }
+            @Override
+            public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                // Do nothing. Just allow them all.
+            }
+        }
+    };
+
+    HostnameVerifier trustAllHostnames = new HostnameVerifier() {
+        @Override
+        public boolean verify(String hostname, SSLSession session) {
+            return true; // Just allow them all.
+        }
+    };
+
+    try {
+        System.setProperty(&quot;jsse.enableSNIExtension&quot;, &quot;false&quot;);
+        SSLContext sc = SSLContext.getInstance(&quot;SSL&quot;);
+        sc.init(null, trustAllCertificates, new SecureRandom());
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        HttpsURLConnection.setDefaultHostnameVerifier(trustAllHostnames);
+    }
+    catch (GeneralSecurityException e) {
+        throw new ExceptionInInitializerError(e);
+    }
+}
+</code></pre><hr>
+<h3><span id="last-words">Last words</span></h3><p><a href="http://hc.apache.org/httpcomponents-
+client-ga/" target="_blank" rel="noopener"> Apache HttpComponents HttpClient </a>更加方便 __ 在这一切：）</p>
+<ul>
+<li><a href="http://hc.apache.org/httpcomponents-client-ga/tutorial/html/" target="_blank" rel="noopener"> HttpClient教程</a></li>
+<li><a href="http://hc.apache.org/httpcomponents-client-ga/examples.html" target="_blank" rel="noopener"> HttpClient示例</a></li>
+</ul>
+<hr>
+<h3><span id="parsing-and-extracting-html">Parsing and extracting HTML</span></h3><p>如果你只想从HTML中解析和提取数据，那么最好使用HTML解析器，比如<a href="http://jsoup.org" target="_blank" rel="noopener"> Jsoup </a></p>
+<ul>
+<li><a href="http://docs.oracle.com/javase/8/docs/api/java/net/HttpURLConnection.html" target="_blank" rel="noopener">什么是Java中领先的HTML解析器的优点/缺点](https://stackoverflow.com/questions/3152138/what-are-the-pros-and-cons-of-the-leading-java-html-parsers/3154281#3154281)<br>＆lt; li＆gt;<br>2835555＃2835555“&gt;如何扫描和提取Java中的网页</a></li>
+</ul>
+<p>使用HTTP时，引用<code>HttpURLConnection</code>而不是基类<code>URLConnection</code>几乎总是更有用（因为<code>URLConnection</code>是一个抽象类当你在HTTP URL上询问<code>URLConnection.openConnection（）</code>时，你会发现任何东西）。</p>
+<p>然后，您可以不用依赖<code>URLConnection＃setDoOutput（true）</code>来隐式设置请求方法为POST _，而是执行<code>httpURLConnection.setRequestMethod（“POST” ）</code>，有些人可能会发现更自然（也允许你指定其他的请求方法，比如<br><em>PUT</em> ， <em>DELETE</em> ，…）。 &gt;</p>
+<p>它还提供了有用的HTTP常量，所以你可以这样做：</p>
+<pre><code>int responseCode = httpURLConnection.getResponseCode();
+
+if (responseCode == HttpURLConnection.HTTP_OK) {
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/http/">http</a><a href="/tags/httprequest/">httprequest</a><a href="/tags/httpurlconnection/">httpurlconnection</a><a href="/tags/urlconnection/">urlconnection</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/using-java-net-urlconnection-to-fire-and-handle-http-requests/" data-title="使用java.net.URLConnection来触发和处理HTTP请求 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/way-to-create-multiline-comments-in-python/" title="在Python中创建多行注释的方法？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在Python中创建多行注释的方法？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/what-are-named-tuples-in-python/"  title="什么是Python中的“命名元组”？">
+ <strong>下一篇：</strong><br/> 
+ <span>什么是Python中的“命名元组”？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Preparing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Firing a [HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Firing a [HTTP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Actually firing the HTTP request</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Gathering HTTP response information</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Maintaining the session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Streaming mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">User-Agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">Error handling</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">10.</span> <span class="toc-text">Uploading files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">11.</span> <span class="toc-text">Dealing with untrusted or misconfigured HTTPS sites</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">12.</span> <span class="toc-text">Last words</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">13.</span> <span class="toc-text">Parsing and extracting HTML</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
