@@ -11,12 +11,15 @@
     
 
     
-    <meta property="og:type" content="website">
+    <meta name="description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+<meta property="og:type" content="website">
 <meta property="og:title" content="智子">
 <meta property="og:url" content="https://www.tracholar.top/page/16/index.html">
 <meta property="og:site_name" content="智子">
+<meta property="og:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="智子">
+<meta name="twitter:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
 
     
     <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
@@ -505,147 +508,6 @@ obj.close
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/" title="为什么处理排序后的数组比未排序的数组更快？" itemprop="url">为什么处理排序后的数组比未排序的数组更快？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>这是一个C ++代码，看起来很奇特。出于一些奇怪的原因，对数据进行奇迹排序使得代码几乎快了六倍。</p>
-<pre><code>#include &lt;algorithm&gt;
-#include &lt;ctime&gt;
-#include &lt;iostream&gt;
-
-int main()
-{
-    // Generate data
-    const unsigned arraySize = 32768;
-    int data[arraySize];
-
-    for (unsigned c = 0; c &lt; arraySize; ++c)
-        data[c] = std::rand() % 256;
-
-    // !!! With this, the next loop runs faster
-    std::sort(data, data + arraySize);
-
-    // Test
-    clock_t start = clock();
-    long long sum = 0;
-
-    for (unsigned i = 0; i &lt; 100000; ++i)
-    {
-        // Primary loop
-        for (unsigned c = 0; c &lt; arraySize; ++c)
-        {
-            if (data[c] &gt;= 128)
-                sum += data[c];
-        }
-    }
-
-    double elapsedTime = static_cast&lt;double&gt;(clock() - start) / CLOCKS_PER_SEC;
-
-    std::cout &lt;&lt; elapsedTime &lt;&lt; std::endl;
-    std::cout &lt;&lt; &quot;sum = &quot; &lt;&lt; sum &lt;&lt; std::endl;
-}
-</code></pre><ul>
-<li>如果没有<code>std :: sort（data，data + arraySize）;</code>，代码会在11.54秒内运行。</li>
-<li>使用排序后的数据，代码在1.93秒内运行。</li>
-</ul>
-<p>最初，我认为这可能只是一种语言或编译器异常。所以我尝试了Java。</p>
-<pre><code>import java.util.Arrays;
-import java.util.Random;
-
-public class Main
-{
-    public static void main(String[] args)
-    {
-        // Generate data
-        int arraySize = 32768;
-        int data[] = new int[arraySize];
-
-        Random rnd = new Random(0);
-        for (int c = 0; c &lt; arraySize; ++c)
-            data[c] = rnd.nextInt() % 256;
-
-        // !!! With this, the next loop runs faster
-        Arrays.sort(data);
-
-        // Test
-        long start = System.nanoTime();
-        long sum = 0;
-
-        for (int i = 0; i &lt; 100000; ++i)
-        {
-            // Primary loop
-            for (int c = 0; c &lt; arraySize; ++c)
-            {
-                if (data[c] &gt;= 128)
-                    sum += data[c];
-            }
-        }
-
-        System.out.println((System.nanoTime() - start) / 1000000000.0);
-        System.out.println(&quot;sum = &quot; + sum);
-    }
-}
-</code></pre><p>有点类似但不太极端的结果。</p>
-<hr>
-<p>我首先想到的是，排序将数据带入缓存，但后来我觉得这是因为数组刚刚生成而变得非常愚蠢。</p>
-<ul>
-<li>发生了什么事情？</li>
-<li>为什么处理有序数组比没有排序的数组更快？</li>
-<li>代码总结了一些独立的术语，顺序应该不重要。</li>
-</ul>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/performance/">performance</a><a href="/tags/c/">c++</a><a href="/tags/optimization/">optimization</a><a href="/tags/branch-prediction/">branch-prediction</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
       <a href="/2018/01/14/how-do-you-access-the-matched-groups-in-a-javascript-regular-expression/" title="如何访问JavaScript正则表达式中的匹配组？" itemprop="url">如何访问JavaScript正则表达式中的匹配组？</a>
   </h1>
   <p class="article-author">By
@@ -689,6 +551,100 @@ console.log(arr[0]);  // Prints: format_undefined (!!!)
   <div class="article-tags">
   
   <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/regex/">regex</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-is-printing-b-dramatically-slower-than-printing/" title="为什么打印“B”比打印“＃”慢得多？" itemprop="url">为什么打印“B”比打印“＃”慢得多？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我生成了两个<code>1000</code> x <code>1000</code>的矩阵：</p>
+<p>First Matrix：<code>O</code>和<code>＃</code> 第二矩阵：<code>O</code>和<code>B</code>。</p>
+<p>使用以下代码，第一个矩阵需要8.52秒才能完成：</p>
+<pre><code>Random r = new Random();
+for (int i = 0; i &lt; 1000; i++) {
+    for (int j = 0; j &lt; 1000; j++) {
+        if(r.nextInt(4) == 0) {
+            System.out.print(&quot;O&quot;);
+        } else {
+            System.out.print(&quot;#&quot;);
+        }
+    }
+
+   System.out.println(&quot;&quot;);
+ }
+</code></pre><p>用这个代码，第二个矩阵需要259.152秒才能完成：</p>
+<pre><code>Random r = new Random();
+for (int i = 0; i &lt; 1000; i++) {
+    for (int j = 0; j &lt; 1000; j++) {
+        if(r.nextInt(4) == 0) {
+            System.out.print(&quot;O&quot;);
+        } else {
+            System.out.print(&quot;B&quot;); //only line changed
+        }
+    }
+
+    System.out.println(&quot;&quot;);
+}
+</code></pre><p>运行时间显着不同的原因是什么？</p>
+<hr>
+<p>正如在注释中所建议的那样，只打印<code>System.out.print（“＃”）;</code>需要7.8871秒的时间，而<code>System.out.print
+“B”）;</code>使<code>仍在打印...</code>。</p>
+<p>正如其他人指出，它正常工作，我尝试了<a href="http://ideone.com" target="_blank" rel="noopener"> Ideone.com </a>，例如，两件代码以相同的速度执行。</p>
+<p>测试条件：</p>
+<ul>
+<li>我从 <em>Netbeans 7.2</em> 运行这个测试，输出到控制台</li>
+<li>我使用<code>System.nanoTime（）</code>进行度量</li>
+</ul>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/why-is-printing-b-dramatically-slower-than-printing/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/performance/">performance</a><a href="/tags/system-out/">system.out</a>
   </div>
 
 </div>
@@ -939,11 +895,11 @@ console.log(arr[0]);  // Prints: format_undefined (!!!)
 			
 		
 			
-				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
 			
 		
 			
@@ -951,7 +907,7 @@ console.log(arr[0]);  // Prints: format_undefined (!!!)
 			
 		
 			
-				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
 			
 		
 			

@@ -11,12 +11,15 @@
     
 
     
-    <meta property="og:type" content="website">
+    <meta name="description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+<meta property="og:type" content="website">
 <meta property="og:title" content="智子">
 <meta property="og:url" content="https://www.tracholar.top/page/18/index.html">
 <meta property="og:site_name" content="智子">
+<meta property="og:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="智子">
+<meta name="twitter:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
 
     
     <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
@@ -109,7 +112,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/" title="Facebook如何禁用浏览器的集成开发者工具？" itemprop="url">Facebook如何禁用浏览器的集成开发者工具？</a>
+      <a href="/2018/01/14/how-does-data-binding-work-in-angularjs/" title="数据绑定在AngularJS中如何工作？" itemprop="url">数据绑定在AngularJS中如何工作？</a>
   </h1>
   <p class="article-author">By
        
@@ -122,19 +125,17 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>显然，由于最近发生的诈骗事件，开发者工具被人们利用来发布垃圾邮件，甚至被用于“黑客”账户。 Facebook阻止了开发者工具，我甚至无法使用控制台。</p>
-<p><img src="“https://i.stack.imgur.com/Wiatp.png”alt" alt=""></p>
-<p>他们是怎么做到的？ <a href="https://stackoverflow.com/questions/7559409
-/disable-developer-tools" target="_blank" rel="noopener">一个堆栈溢出帖子声称这是不可能的</a>，但Facebook已经证明他们错了。</p>
-<p>只要进入Facebook并打开开发者工具，在控制台中输入一个字符，就会弹出这个警告。不管你输入什么，它都不会被执行。</p>
-<p>这怎么可能？</p>
-<p>他们甚至在控制台中阻止自动完成：</p>
-<p><img src="“https://i.stack.imgur.com/j0Zmx.png”alt" alt=""></p>
+        <p>数据绑定如何在<code>AngularJS</code>框架中工作</p>
+<p>我还没有在<a href="http://angularjs.org" target="_blank" rel="noopener">他们的网站</a>上找到技术细节。当数据从视图传播到模型时，它是如何工作的或多或少都很清楚。但是，AngularJS如何在没有setter和getters的情况下追踪模型属性的变化？</p>
+<p>我发现有可能做这项工作的<a href="https://stackoverflow.com/questions/1029241
+/javascript-object-watch-for-all-browsers" target="_blank" rel="noopener"> JavaScript观察者</a>。但是，它们不支持<a href="http://en.wikipedia.org/wiki/Internet_Explorer_6" target="_blank" rel="noopener"> Internet Explorer 6</a>和<a href="“http：//"> Internet Explorer 7</a>。那么，AngularJS如何知道我改变了以下内容，并在视图上反映了这种变化？</p>
+<pre><code>myobject.myproperty=&quot;new value&quot;;
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/#more">Read More</a>
+            <a href="/2018/01/14/how-does-data-binding-work-in-angularjs/#more">Read More</a>
           
        </p>
     </div>
@@ -144,7 +145,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/facebook/">facebook</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/angularjs/">angularjs</a><a href="/tags/data-binding/">data-binding</a>
   </div>
 
 </div>
@@ -323,6 +324,66 @@ class Third(First, Second):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2018/01/14/how-does-trello-access-the-users-clipboard/" title="Trello如何访问用户的剪贴板？" itemprop="url">Trello如何访问用户的剪贴板？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>当您将鼠标悬停在<a href="http://en.wikipedia.org/wiki/Trello" target="_blank" rel="noopener"> Trello </a>的卡片上，然后按<code>Ctrl</code> + <code>C</code>，此卡的网址将被复制到剪贴板。他们如何做到这一点？</p>
+<p>据我所知，没有涉及Flash电影。我已经安装了<a href="http://en.wikipedia.org/wiki/Flashblock" target="_blank" rel="noopener"> Flashblock</a>，并且Firefox网络选项卡没有显示加载的Flash影片。<br>（这是通常的方法，例如，ZeroClipboard。）</p>
+<p>他们如何实现这个魔法？</p>
+<p>（在这一刻，我想我有一个顿悟：你不能选择页面上的文本，所以我假设他们有一个不可见的元素，他们创建一个通过JavaScript代码的文本选择，<code>Ctrl</code>+ <code>C</code>触发浏览器的默认行为，复制不可见节点的文本值。）</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-does-trello-access-the-users-clipboard/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/coffeescript/">coffeescript</a><a href="/tags/clipboard/">clipboard</a><a href="/tags/trello/">trello</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2018/01/14/how-does-the-property-decorator-work/" title="property装饰器是如何工作的？" itemprop="url">property装饰器是如何工作的？</a>
   </h1>
   <p class="article-author">By
@@ -412,6 +473,63 @@ class Third(First, Second):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2018/01/14/how-to-change-the-href-for-a-hyperlink-using-jquery/" title="如何使用jQuery更改超链接的href" itemprop="url">如何使用jQuery更改超链接的href</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何使用jQuery更改超链接的href？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-to-change-the-href-for-a-hyperlink-using-jquery/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/hyperlink/">hyperlink</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2018/01/14/how-does-the-this-keyword-work/" title="“this”这个关键字是如何工作的？" itemprop="url">“this”这个关键字是如何工作的？</a>
   </h1>
   <p class="article-author">By
@@ -442,123 +560,6 @@ class Third(First, Second):
   <div class="article-tags">
   
   <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/this/">this</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-does-trello-access-the-users-clipboard/" title="Trello如何访问用户的剪贴板？" itemprop="url">Trello如何访问用户的剪贴板？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>当您将鼠标悬停在<a href="http://en.wikipedia.org/wiki/Trello" target="_blank" rel="noopener"> Trello </a>的卡片上，然后按<code>Ctrl</code> + <code>C</code>，此卡的网址将被复制到剪贴板。他们如何做到这一点？</p>
-<p>据我所知，没有涉及Flash电影。我已经安装了<a href="http://en.wikipedia.org/wiki/Flashblock" target="_blank" rel="noopener"> Flashblock</a>，并且Firefox网络选项卡没有显示加载的Flash影片。<br>（这是通常的方法，例如，ZeroClipboard。）</p>
-<p>他们如何实现这个魔法？</p>
-<p>（在这一刻，我想我有一个顿悟：你不能选择页面上的文本，所以我假设他们有一个不可见的元素，他们创建一个通过JavaScript代码的文本选择，<code>Ctrl</code>+ <code>C</code>触发浏览器的默认行为，复制不可见节点的文本值。）</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-does-trello-access-the-users-clipboard/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/coffeescript/">coffeescript</a><a href="/tags/clipboard/">clipboard</a><a href="/tags/trello/">trello</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-to-change-the-href-for-a-hyperlink-using-jquery/" title="如何使用jQuery更改超链接的href" itemprop="url">如何使用jQuery更改超链接的href</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何使用jQuery更改超链接的href？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-to-change-the-href-for-a-hyperlink-using-jquery/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/hyperlink/">hyperlink</a>
   </div>
 
 </div>
@@ -657,6 +658,69 @@ class Third(First, Second):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2018/01/14/how-to-concatenate-two-lists-in-python/" title="如何在Python中连接两个列表？" itemprop="url">如何在Python中连接两个列表？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我如何连接Python中的两个列表？</p>
+<p>示例：</p>
+<pre><code>listone = [1, 2, 3]
+listtwo = [4, 5, 6]
+</code></pre><p>预期结果：</p>
+<pre><code>joinedlist == [1, 2, 3, 4, 5, 6]
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-to-concatenate-two-lists-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2018/01/14/how-to-check-if-a-string-startswith-another-string/" title="如何检查一个字符串“StartsWith”另一个字符串？" itemprop="url">如何检查一个字符串“StartsWith”另一个字符串？</a>
   </h1>
   <p class="article-author">By
@@ -693,72 +757,6 @@ var needle = &apos;he&apos;;
   <div class="article-tags">
   
   <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/string/">string</a><a href="/tags/startswith/">startswith</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-is-null-an-object-and-whats-the-difference-between-null-and-undefined/" title="为什么null是一个对象，null和undefined有什么区别？" itemprop="url">为什么null是一个对象，null和undefined有什么区别？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>为什么<code>null</code>在JavaScript中被视为<code>object</code>？</p>
-<p>正在检查</p>
-<pre><code>if ( object == null )
-      Do something
-</code></pre><p>与</p>
-<p>相同</p>
-<pre><code>if ( !object )
-      Do something
-</code></pre><p>还有：</p>
-<p><code>null</code>和<code>undefined</code>之间有什么区别？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-is-null-an-object-and-whats-the-difference-between-null-and-undefined/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/object/">object</a><a href="/tags/undefined/">undefined</a><a href="/tags/typeof/">typeof</a>
   </div>
 
 </div>
@@ -895,11 +893,11 @@ var needle = &apos;he&apos;;
 			
 		
 			
-				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
 			
 		
 			
@@ -907,7 +905,7 @@ var needle = &apos;he&apos;;
 			
 		
 			
-				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
 			
 		
 			

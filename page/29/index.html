@@ -11,12 +11,15 @@
     
 
     
-    <meta property="og:type" content="website">
+    <meta name="description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+<meta property="og:type" content="website">
 <meta property="og:title" content="智子">
 <meta property="og:url" content="https://www.tracholar.top/page/29/index.html">
 <meta property="og:site_name" content="智子">
+<meta property="og:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="智子">
+<meta name="twitter:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
 
     
     <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
@@ -247,6 +250,81 @@ print &quot;-&quot;.join(my_list)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/" title="为什么在Python 3中“1000000000000000（1000000000000001）”这么快？" itemprop="url">为什么在Python 3中“1000000000000000（1000000000000001）”这么快？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>据我所知，<code>range（）</code>函数实际上是<a href="“https://docs.python.org/3/library/stdtypes.html#typesseq-
+range"> Python<br>3中的一个对象类型</a>，即时生成其内容，类似于生成器。</p>
+<p>如果是这样的话，我会预料到下面这一行会花费过多的时间，因为为了确定是否在这个范围内，需要生成一个四十亿个值：</p>
+<pre><code>1000000000000000 in range(1000000000000001)
+</code></pre><p>此外：似乎不管我添加了多少个零，计算或多或少需要相同的时间量（基本上是瞬时的）。</p>
+<p>我也尝试过这样的事情，但是计算仍然几乎是即时的：</p>
+<pre><code>1000000000000000000000 in range(0,1000000000000000000001,10) # count by tens
+</code></pre><p>如果我试图实现我自己的范围功能，结果是不是很好！</p>
+<pre><code>def my_crappy_range(N):
+    i = 0
+    while i &lt; N:
+        yield i
+        i += 1
+    return
+</code></pre><p><code></code> range（）`是什么使得它如此之快？</p>
+<hr>
+<p>编辑：事实证明，这是一个比我预想的更细致的话题 - 在<code>range（）</code>优化的背后似乎有点历史。</p>
+<p><a href="https://stackoverflow.com/a/30081318/2437514" target="_blank" rel="noopener"> Martijn<br>Pieters的答案</a>是因为它的完整性而被选中的，但也可以参考<a href="“https：//">abarnert的第一个答案</a>，以便很好地讨论在Python中<code>range</code>是一个完整的 <em>序列</em> 3，关于<code>__的潜在不一致性的一些信息/警告包含Python实现中的__</code>函数优化。 <a href="https://stackoverflow.com/a/30088140/2437514" target="_blank" rel="noopener">abarnert的其他答案</a>更详细一些，并提供了有关Python<br>3优化背后的历史感兴趣的链接（缺乏Python 2中<code>xrange</code>的优化）。<br><a href="https://stackoverflow.com/a/30081467/2437514" target="_blank" rel="noopener">通过戳</a>和<a href="https://stackoverflow.com/a/30081470/2437514" target="_blank" rel="noopener">通过wim</a>为有兴趣的人提供相关的C源代码和解释。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/python-3-x/">python-3.x</a><a href="/tags/performance/">performance</a><a href="/tags/python-internals/">python-internals</a><a href="/tags/range/">range</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2018/01/14/why-is-char-preferred-over-string-for-passwords/" title="为什么char []首选字符串密码？" itemprop="url">为什么char []首选字符串密码？</a>
   </h1>
   <p class="article-author">By
@@ -360,81 +438,6 @@ print &quot;-&quot;.join(my_list)
   <div class="article-tags">
   
   <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/" title="为什么在Python 3中“1000000000000000（1000000000000001）”这么快？" itemprop="url">为什么在Python 3中“1000000000000000（1000000000000001）”这么快？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>据我所知，<code>range（）</code>函数实际上是<a href="“https://docs.python.org/3/library/stdtypes.html#typesseq-
-range"> Python<br>3中的一个对象类型</a>，即时生成其内容，类似于生成器。</p>
-<p>如果是这样的话，我会预料到下面这一行会花费过多的时间，因为为了确定是否在这个范围内，需要生成一个四十亿个值：</p>
-<pre><code>1000000000000000 in range(1000000000000001)
-</code></pre><p>此外：似乎不管我添加了多少个零，计算或多或少需要相同的时间量（基本上是瞬时的）。</p>
-<p>我也尝试过这样的事情，但是计算仍然几乎是即时的：</p>
-<pre><code>1000000000000000000000 in range(0,1000000000000000000001,10) # count by tens
-</code></pre><p>如果我试图实现我自己的范围功能，结果是不是很好！</p>
-<pre><code>def my_crappy_range(N):
-    i = 0
-    while i &lt; N:
-        yield i
-        i += 1
-    return
-</code></pre><p><code></code> range（）`是什么使得它如此之快？</p>
-<hr>
-<p>编辑：事实证明，这是一个比我预想的更细致的话题 - 在<code>range（）</code>优化的背后似乎有点历史。</p>
-<p><a href="https://stackoverflow.com/a/30081318/2437514" target="_blank" rel="noopener"> Martijn<br>Pieters的答案</a>是因为它的完整性而被选中的，但也可以参考<a href="“https：//">abarnert的第一个答案</a>，以便很好地讨论在Python中<code>range</code>是一个完整的 <em>序列</em> 3，关于<code>__的潜在不一致性的一些信息/警告包含Python实现中的__</code>函数优化。 <a href="https://stackoverflow.com/a/30088140/2437514" target="_blank" rel="noopener">abarnert的其他答案</a>更详细一些，并提供了有关Python<br>3优化背后的历史感兴趣的链接（缺乏Python 2中<code>xrange</code>的优化）。<br><a href="https://stackoverflow.com/a/30081467/2437514" target="_blank" rel="noopener">通过戳</a>和<a href="https://stackoverflow.com/a/30081470/2437514" target="_blank" rel="noopener">通过wim</a>为有兴趣的人提供相关的C源代码和解释。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/python-3-x/">python-3.x</a><a href="/tags/performance/">performance</a><a href="/tags/python-internals/">python-internals</a><a href="/tags/range/">range</a>
   </div>
 
 </div>
@@ -905,11 +908,11 @@ range"> Python<br>3中的一个对象类型</a>，即时生成其内容，类似
 			
 		
 			
-				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
+				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
 			
 		
 			
@@ -917,7 +920,7 @@ range"> Python<br>3中的一个对象类型</a>，即时生成其内容，类似
 			
 		
 			
-				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
 			
 		
 			
