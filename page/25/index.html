@@ -109,7 +109,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/limiting-floats-to-two-decimal-points/" title="限制浮点数到两个小数点" itemprop="url">限制浮点数到两个小数点</a>
+      <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/" title="“最小的惊讶”和可变的默认论据" itemprop="url">“最小的惊讶”和可变的默认论据</a>
   </h1>
   <p class="article-author">By
        
@@ -122,17 +122,46 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>我希望<code>a</code>四舍五入为13.95 _。</p>
-<pre><code>&gt;&gt;&gt; a
-13.949999999999999
-&gt;&gt;&gt; round(a, 2)
-13.949999999999999
-</code></pre><p><a href="https://docs.python.org/2/library/functions.html#round" target="_blank" rel="noopener"> <code>round</code></a>函数不会以我期望的方式工作。</p>
+        <p>任何人用Python来修补已经被下面的问题困住了（或撕碎）：</p>
+<pre><code>def foo(a=[]):
+    a.append(5)
+    return a
+</code></pre><p>Python新手会期望这个函数总是返回一个只有一个元素的列表：<code>[5]</code>。结果是非常不同的，而且非常惊人（对于新手来说）：</p>
+<pre><code>&gt;&gt;&gt; foo()
+[5]
+&gt;&gt;&gt; foo()
+[5, 5]
+&gt;&gt;&gt; foo()
+[5, 5, 5]
+&gt;&gt;&gt; foo()
+[5, 5, 5, 5]
+&gt;&gt;&gt; foo()
+</code></pre><p>我的一位经理曾经第一次遇到这个功能，并称这是一个“戏剧性的设计缺陷”。我回答说，这个行为有一个基本的解释，如果你不了解内部，那确实是非常令人费解和意外的。然而，我无法回答（对我自己）以下问题：在函数定义处绑定默认参数的原因是什么，而不是在函数执行处？我怀疑经验丰富的行为是否有实际用途（谁真的在C中使用静态变量，而没有繁殖错误？）</p>
+<p><strong>编辑</strong> ：</p>
+<p>Baczek做了一个有趣的例子。再加上你的大部分意见和尤其是Utaal的意见，我进一步阐述了：</p>
+<pre><code>&gt;&gt;&gt; def a():
+...     print(&quot;a executed&quot;)
+...     return []
+... 
+&gt;&gt;&gt;            
+&gt;&gt;&gt; def b(x=a()):
+...     x.append(5)
+...     print(x)
+... 
+a executed
+&gt;&gt;&gt; b()
+[5]
+&gt;&gt;&gt; b()
+[5, 5]
+</code></pre><p>对我来说，这个设计的决定似乎是相对于把参数的范围放在哪里：在函数里面还是在一起呢？</p>
+<p>在函数内部进行绑定意味着<code>x</code>在函数被调用时被有效地绑定到指定的默认值，而不是被定义的，这会带来很深的缺陷：` def &lt; /<br>code&gt;行将是“混合”的，这意味着函数对象的绑定的一部分将在定义处发生，而在函数调用时则是部分（分配默认参数）。</p>
+<p>实际的行为更加一致：当行被执行时，该行的所有内容都被执行，这意味着函数定义。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/limiting-floats-to-two-decimal-points/#more">Read More</a>
+            <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/#more">Read More</a>
           
        </p>
     </div>
@@ -142,7 +171,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/floating-point/">floating-point</a><a href="/tags/rounding/">rounding</a><a href="/tags/precision/">precision</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/language-design/">language-design</a><a href="/tags/least-astonishment/">least-astonishment</a>
   </div>
 
 </div>
@@ -435,7 +464,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/meaning-of-classmethod-and-staticmethod-for-beginner/" title="classmethod和staticmethod对初学者的意义？" itemprop="url">classmethod和staticmethod对初学者的意义？</a>
+      <a href="/2018/01/14/modify-the-url-without-reloading-the-page/" title="修改网址而不重新加载页面" itemprop="url">修改网址而不重新加载页面</a>
   </h1>
   <p class="article-author">By
        
@@ -448,16 +477,16 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 </header>
     <div class="article-content">
         
-        <p>有人可以向我解释在python中<code>@classmethod</code>和<code>@staticmethod</code>的含义吗？我需要知道其中的差异和意义。</p>
-<p>就我所知，<code>@classmethod</code>告诉一个类，它是一个应该被继承到子类或者…东西的方法。但是，这是什么意思？为什么不在不添加<code>@classmethod</code>或<code>@staticmethod</code>或任何<code>@</code>定义的情况下定义类方法？</p>
-<p>我应该如何使用它们，为什么<em>我应该使用它们，而 </em>应该如何使用 _<em> ？</em>我使用它们？</p>
-<p>我很高级的C ++，所以使用更高级的编程概念不应该是一个问题。如果可能，请随意给我一个相应的C ++示例。</p>
-<p>
+        <p>有什么方法可以修改当前页面的URL，而无需重新加载页面？</p>
+<p>如果可能的话，我希望在之前访问 <strong>之前的部分 **</strong></p>
+<p>我只需要在<strong>域之后更改 </strong>部分，这样就不会像我违反跨域策略一样。</p>
+<pre><code>window.location.href = &quot;www.mysite.com/page2.php&quot;;  // sadly this reloads
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/meaning-of-classmethod-and-staticmethod-for-beginner/#more">Read More</a>
+            <a href="/2018/01/14/modify-the-url-without-reloading-the-page/#more">Read More</a>
           
        </p>
     </div>
@@ -467,7 +496,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/oop/">oop</a><a href="/tags/static-methods/">static-methods</a><a href="/tags/class-method/">class-method</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/url/">url</a><a href="/tags/url-rewriting/">url-rewriting</a><a href="/tags/friendly-url/">friendly-url</a>
   </div>
 
 </div>
@@ -557,67 +586,6 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/modify-the-url-without-reloading-the-page/" title="修改网址而不重新加载页面" itemprop="url">修改网址而不重新加载页面</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>有什么方法可以修改当前页面的URL，而无需重新加载页面？</p>
-<p>如果可能的话，我希望在之前访问 <strong>之前的部分 **</strong></p>
-<p>我只需要在<strong>域之后更改 </strong>部分，这样就不会像我违反跨域策略一样。</p>
-<pre><code>window.location.href = &quot;www.mysite.com/page2.php&quot;;  // sadly this reloads
-</code></pre><p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/modify-the-url-without-reloading-the-page/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/url/">url</a><a href="/tags/url-rewriting/">url-rewriting</a><a href="/tags/friendly-url/">friendly-url</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
       <a href="/2018/01/14/most-elegant-way-to-check-if-the-string-is-empty-in-python/" title="最优雅的方法来检查在Python中的字符串是否为空？" itemprop="url">最优雅的方法来检查在Python中的字符串是否为空？</a>
   </h1>
   <p class="article-author">By
@@ -677,7 +645,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/nicest-way-to-pad-zeroes-to-string/" title="最好的方式填充零字符串" itemprop="url">最好的方式填充零字符串</a>
+      <a href="/2018/01/14/null-object-in-python/" title="Python中的空对象？" itemprop="url">Python中的空对象？</a>
   </h1>
   <p class="article-author">By
        
@@ -690,12 +658,13 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 </header>
     <div class="article-content">
         
-        <p>填充数字字符串到左边的最有趣的方法是什么，即数字字符串有特定的长度？</p>
+        <p>我如何引用Python中的空对象？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/nicest-way-to-pad-zeroes-to-string/#more">Read More</a>
+            <a href="/2018/01/14/null-object-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -705,7 +674,67 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a>
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/open-a-url-in-a-new-tab-and-not-a-new-window-using-javascript/" title="使用JavaScript在新标签（而不是新窗口）中打开一个URL" itemprop="url">使用JavaScript在新标签（而不是新窗口）中打开一个URL</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我试图在新标签中打开<a href="http://en.wikipedia.org/wiki/Uniform_Resource_Locator" target="_blank" rel="noopener">网址</a>，而不是弹出窗口。我已经看到了相关的问题，其答案如下所示：</p>
+<pre><code>window.open(url,&apos;_blank&apos;);
+window.open(url);
+</code></pre><p>但是他们都没有为我工作，浏览器仍然试图打开一个弹出窗口。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/open-a-url-in-a-new-tab-and-not-a-new-window-using-javascript/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -743,7 +772,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
 <ins class="adsbygoogle"
-     style="display:block"
+     style="display:block; overflow:hidden;"
      data-ad-client="ca-pub-6300557868920774"
      data-ad-slot="2232545787"
      data-ad-format="auto"></ins>
@@ -818,15 +847,19 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
 			
 		
 			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
 			
 		
 			
@@ -842,10 +875,6 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 			
 		
 			
-				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
 			
 		
@@ -854,7 +883,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+				<li><a href="/tags/undefined/" title="undefined">undefined<sup>5</sup></a></li>
 			
 		
 			
