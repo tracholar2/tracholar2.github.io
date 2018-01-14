@@ -1,0 +1,1016 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>最快的方法来确定一个整数的平方根是一个整数 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我正在寻找最快的方法来确定一个long值是否是一个完美的正方形（即其平方根是另一个整数）。我已经通过使用内置的Math.sqrt（）函数简单的方法做到了这一点，但是我想知道是否有办法通过将自己限制在只有整数的域来更快地实现。维护一个查找表是不切实际的（因为有大约231.5 整数的平方小于2 ）。 这是我现在做的非常简单直接的方式： public final static boolean isPer">
+<meta name="keywords" content="java,math,optimization,perfect-square">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最快的方法来确定一个整数的平方根是一个整数">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/fastest-way-to-determine-if-an-integers-square-root-is-an-integer/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我正在寻找最快的方法来确定一个long值是否是一个完美的正方形（即其平方根是另一个整数）。我已经通过使用内置的Math.sqrt（）函数简单的方法做到了这一点，但是我想知道是否有办法通过将自己限制在只有整数的域来更快地实现。维护一个查找表是不切实际的（因为有大约231.5 整数的平方小于2 ）。 这是我现在做的非常简单直接的方式： public final static boolean isPer">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/fastest-way-to-determine-if-an-integers-square-root-is-an-integer/“https://i.stack.imgur.com/UDUNr.png”alt">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="最快的方法来确定一个整数的平方根是一个整数">
+<meta name="twitter:description" content="我正在寻找最快的方法来确定一个long值是否是一个完美的正方形（即其平方根是另一个整数）。我已经通过使用内置的Math.sqrt（）函数简单的方法做到了这一点，但是我想知道是否有办法通过将自己限制在只有整数的域来更快地实现。维护一个查找表是不切实际的（因为有大约231.5 整数的平方小于2 ）。 这是我现在做的非常简单直接的方式： public final static boolean isPer">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/fastest-way-to-determine-if-an-integers-square-root-is-an-integer/“https://i.stack.imgur.com/UDUNr.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/fastest-way-to-determine-if-an-integers-square-root-is-an-integer/" title="最快的方法来确定一个整数的平方根是一个整数" itemprop="url">最快的方法来确定一个整数的平方根是一个整数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我正在寻找最快的方法来确定一个<code>long</code>值是否是一个完美的正方形（即其平方根是另一个整数）。我已经通过使用内置的Math.sqrt（）函数简单的方法做到了这一点，但是我想知道是否有办法通过将自己限制在只有整数的域来更快地实现。维护一个查找表是不切实际的（因为有大约2<br>31.5 整数的平方小于2 <63>）。</63></p>
+<p>这是我现在做的非常简单直接的方式：</p>
+<pre><code>public final static boolean isPerfectSquare(long n)
+{
+  if (n &lt; 0)
+    return false;
+
+  long tst = (long)(Math.sqrt(n) + 0.5);
+  return tst*tst == n;
+}
+</code></pre><hr>
+<p>注：我在许多<a href="http://projecteuler.net/" target="_blank" rel="noopener"> Project Euler</a>问题中使用了这个函数。所以没有人会永远保持这个代码。而这种微观优化实际上可能会有所作为，因为挑战的一部分就是在一分钟内完成所有的算法，而这个功能在一些问题中需要被调用数百万次。_</p>
+<hr>
+<p><strong>更新2</strong> ：由[发布的新解决方案。事实证明，雷克斯更快。在前10亿个整数的运行中，解决方案只需要使用原始解决方案的34％。虽然约翰·卡马克黑客对于<br><em>n </em>的小值有点更好，但与此解决方案相比的好处却相当小。</p>
+<p>A. rex解决方案，转换为Java：</p>
+<pre><code>private final static boolean isPerfectSquare(long n)
+{
+  // Quickfail
+  if( n &lt; 0 || ((n&amp;2) != 0) || ((n &amp; 7) == 5) || ((n &amp; 11) == 8) )
+    return false;
+  if( n == 0 )
+    return true;
+
+  // Check mod 255 = 3 * 5 * 17, for fun
+  long y = n;
+  y = (y &amp; 0xffffffffL) + (y &gt;&gt; 32);
+  y = (y &amp; 0xffffL) + (y &gt;&gt; 16);
+  y = (y &amp; 0xffL) + ((y &gt;&gt; 8) &amp; 0xffL) + (y &gt;&gt; 16);
+  if( bad255[(int)y] )
+      return false;
+
+  // Divide out powers of 4 using binary search
+  if((n &amp; 0xffffffffL) == 0)
+      n &gt;&gt;= 32;
+  if((n &amp; 0xffffL) == 0)
+      n &gt;&gt;= 16;
+  if((n &amp; 0xffL) == 0)
+      n &gt;&gt;= 8;
+  if((n &amp; 0xfL) == 0)
+      n &gt;&gt;= 4;
+  if((n &amp; 0x3L) == 0)
+      n &gt;&gt;= 2;
+
+  if((n &amp; 0x7L) != 1)
+      return false;
+
+  // Compute sqrt using something like Hensel&apos;s lemma
+  long r, t, z;
+  r = start[(int)((n &gt;&gt; 3) &amp; 0x3ffL)];
+  do {
+    z = n - r * r;
+    if( z == 0 )
+      return true;
+    if( z &lt; 0 )
+      return false;
+    t = z &amp; (-z);
+    r += (z &amp; t) &gt;&gt; 1;
+    if( r &gt; (t  &gt;&gt; 1) )
+    r = t - r;
+  } while( t &lt;= (1L &lt;&lt; 33) );
+  return false;
+}
+
+private static boolean[] bad255 =
+{
+   false,false,true ,true ,false,true ,true ,true ,true ,false,true ,true ,true ,
+   true ,true ,false,false,true ,true ,false,true ,false,true ,true ,true ,false,
+   true ,true ,true ,true ,false,true ,true ,true ,false,true ,false,true ,true ,
+   true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,false,true ,false,
+   true ,true ,true ,false,true ,true ,true ,true ,false,true ,true ,true ,false,
+   true ,false,true ,true ,false,false,true ,true ,true ,true ,true ,false,true ,
+   true ,true ,true ,false,true ,true ,false,false,true ,true ,true ,true ,true ,
+   true ,true ,true ,false,true ,true ,true ,true ,true ,false,true ,true ,true ,
+   true ,true ,false,true ,true ,true ,true ,false,true ,true ,true ,false,true ,
+   true ,true ,true ,false,false,true ,true ,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,true ,false,false,true ,true ,true ,true ,true ,true ,
+   true ,false,false,true ,true ,true ,true ,true ,false,true ,true ,false,true ,
+   true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,false,true ,true ,
+   false,true ,false,true ,true ,false,true ,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,false,true ,true ,false,true ,true ,true ,true ,true ,
+   false,false,true ,true ,true ,true ,true ,true ,true ,false,false,true ,true ,
+   true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,false,false,
+   true ,true ,true ,true ,false,true ,true ,true ,false,true ,true ,true ,true ,
+   false,true ,true ,true ,true ,true ,false,true ,true ,true ,true ,true ,false,
+   true ,true ,true ,true ,true ,true ,true ,true ,false,false,true ,true ,false,
+   true ,true ,true ,true ,false,true ,true ,true ,true ,true ,false,false,true ,
+   true ,false,true ,false,true ,true ,true ,false,true ,true ,true ,true ,false,
+   true ,true ,true ,false,true ,false,true ,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,true ,false,true ,false,true ,true ,true ,false,true ,
+   true ,true ,true ,false,true ,true ,true ,false,true ,false,true ,true ,false,
+   false,true ,true ,true ,true ,true ,false,true ,true ,true ,true ,false,true ,
+   true ,false,false,true ,true ,true ,true ,true ,true ,true ,true ,false,true ,
+   true ,true ,true ,true ,false,true ,true ,true ,true ,true ,false,true ,true ,
+   true ,true ,false,true ,true ,true ,false,true ,true ,true ,true ,false,false,
+   true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,
+   false,false,true ,true ,true ,true ,true ,true ,true ,false,false,true ,true ,
+   true ,true ,true ,false,true ,true ,false,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,true ,false,true ,true ,false,true ,false,true ,true ,
+   false,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,false,
+   true ,true ,false,true ,true ,true ,true ,true ,false,false,true ,true ,true ,
+   true ,true ,true ,true ,false,false,true ,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,true ,true ,false,false,true ,true ,true ,true ,false,
+   true ,true ,true ,false,true ,true ,true ,true ,false,true ,true ,true ,true ,
+   true ,false,true ,true ,true ,true ,true ,false,true ,true ,true ,true ,true ,
+   true ,true ,true ,false,false
+};
+
+private static int[] start =
+{
+  1,3,1769,5,1937,1741,7,1451,479,157,9,91,945,659,1817,11,
+  1983,707,1321,1211,1071,13,1479,405,415,1501,1609,741,15,339,1703,203,
+  129,1411,873,1669,17,1715,1145,1835,351,1251,887,1573,975,19,1127,395,
+  1855,1981,425,453,1105,653,327,21,287,93,713,1691,1935,301,551,587,
+  257,1277,23,763,1903,1075,1799,1877,223,1437,1783,859,1201,621,25,779,
+  1727,573,471,1979,815,1293,825,363,159,1315,183,27,241,941,601,971,
+  385,131,919,901,273,435,647,1493,95,29,1417,805,719,1261,1177,1163,
+  1599,835,1367,315,1361,1933,1977,747,31,1373,1079,1637,1679,1581,1753,1355,
+  513,1539,1815,1531,1647,205,505,1109,33,1379,521,1627,1457,1901,1767,1547,
+  1471,1853,1833,1349,559,1523,967,1131,97,35,1975,795,497,1875,1191,1739,
+  641,1149,1385,133,529,845,1657,725,161,1309,375,37,463,1555,615,1931,
+  1343,445,937,1083,1617,883,185,1515,225,1443,1225,869,1423,1235,39,1973,
+  769,259,489,1797,1391,1485,1287,341,289,99,1271,1701,1713,915,537,1781,
+  1215,963,41,581,303,243,1337,1899,353,1245,329,1563,753,595,1113,1589,
+  897,1667,407,635,785,1971,135,43,417,1507,1929,731,207,275,1689,1397,
+  1087,1725,855,1851,1873,397,1607,1813,481,163,567,101,1167,45,1831,1205,
+  1025,1021,1303,1029,1135,1331,1017,427,545,1181,1033,933,1969,365,1255,1013,
+  959,317,1751,187,47,1037,455,1429,609,1571,1463,1765,1009,685,679,821,
+  1153,387,1897,1403,1041,691,1927,811,673,227,137,1499,49,1005,103,629,
+  831,1091,1449,1477,1967,1677,697,1045,737,1117,1737,667,911,1325,473,437,
+  1281,1795,1001,261,879,51,775,1195,801,1635,759,165,1871,1645,1049,245,
+  703,1597,553,955,209,1779,1849,661,865,291,841,997,1265,1965,1625,53,
+  1409,893,105,1925,1297,589,377,1579,929,1053,1655,1829,305,1811,1895,139,
+  575,189,343,709,1711,1139,1095,277,993,1699,55,1435,655,1491,1319,331,
+  1537,515,791,507,623,1229,1529,1963,1057,355,1545,603,1615,1171,743,523,
+  447,1219,1239,1723,465,499,57,107,1121,989,951,229,1521,851,167,715,
+  1665,1923,1687,1157,1553,1869,1415,1749,1185,1763,649,1061,561,531,409,907,
+  319,1469,1961,59,1455,141,1209,491,1249,419,1847,1893,399,211,985,1099,
+  1793,765,1513,1275,367,1587,263,1365,1313,925,247,1371,1359,109,1561,1291,
+  191,61,1065,1605,721,781,1735,875,1377,1827,1353,539,1777,429,1959,1483,
+  1921,643,617,389,1809,947,889,981,1441,483,1143,293,817,749,1383,1675,
+  63,1347,169,827,1199,1421,583,1259,1505,861,457,1125,143,1069,807,1867,
+  2047,2045,279,2043,111,307,2041,597,1569,1891,2039,1957,1103,1389,231,2037,
+  65,1341,727,837,977,2035,569,1643,1633,547,439,1307,2033,1709,345,1845,
+  1919,637,1175,379,2031,333,903,213,1697,797,1161,475,1073,2029,921,1653,
+  193,67,1623,1595,943,1395,1721,2027,1761,1955,1335,357,113,1747,1497,1461,
+  1791,771,2025,1285,145,973,249,171,1825,611,265,1189,847,1427,2023,1269,
+  321,1475,1577,69,1233,755,1223,1685,1889,733,1865,2021,1807,1107,1447,1077,
+  1663,1917,1129,1147,1775,1613,1401,555,1953,2019,631,1243,1329,787,871,885,
+  449,1213,681,1733,687,115,71,1301,2017,675,969,411,369,467,295,693,
+  1535,509,233,517,401,1843,1543,939,2015,669,1527,421,591,147,281,501,
+  577,195,215,699,1489,525,1081,917,1951,2013,73,1253,1551,173,857,309,
+  1407,899,663,1915,1519,1203,391,1323,1887,739,1673,2011,1585,493,1433,117,
+  705,1603,1111,965,431,1165,1863,533,1823,605,823,1179,625,813,2009,75,
+  1279,1789,1559,251,657,563,761,1707,1759,1949,777,347,335,1133,1511,267,
+  833,1085,2007,1467,1745,1805,711,149,1695,803,1719,485,1295,1453,935,459,
+  1151,381,1641,1413,1263,77,1913,2005,1631,541,119,1317,1841,1773,359,651,
+  961,323,1193,197,175,1651,441,235,1567,1885,1481,1947,881,2003,217,843,
+  1023,1027,745,1019,913,717,1031,1621,1503,867,1015,1115,79,1683,793,1035,
+  1089,1731,297,1861,2001,1011,1593,619,1439,477,585,283,1039,1363,1369,1227,
+  895,1661,151,645,1007,1357,121,1237,1375,1821,1911,549,1999,1043,1945,1419,
+  1217,957,599,571,81,371,1351,1003,1311,931,311,1381,1137,723,1575,1611,
+  767,253,1047,1787,1169,1997,1273,853,1247,413,1289,1883,177,403,999,1803,
+  1345,451,1495,1093,1839,269,199,1387,1183,1757,1207,1051,783,83,423,1995,
+  639,1155,1943,123,751,1459,1671,469,1119,995,393,219,1743,237,153,1909,
+  1473,1859,1705,1339,337,909,953,1771,1055,349,1993,613,1393,557,729,1717,
+  511,1533,1257,1541,1425,819,519,85,991,1693,503,1445,433,877,1305,1525,
+  1601,829,809,325,1583,1549,1991,1941,927,1059,1097,1819,527,1197,1881,1333,
+  383,125,361,891,495,179,633,299,863,285,1399,987,1487,1517,1639,1141,
+  1729,579,87,1989,593,1907,839,1557,799,1629,201,155,1649,1837,1063,949,
+  255,1283,535,773,1681,461,1785,683,735,1123,1801,677,689,1939,487,757,
+  1857,1987,983,443,1327,1267,313,1173,671,221,695,1509,271,1619,89,565,
+  127,1405,1431,1659,239,1101,1159,1067,607,1565,905,1755,1231,1299,665,373,
+  1985,701,1879,1221,849,627,1465,789,543,1187,1591,923,1905,979,1241,181
+};
+</code></pre><hr>
+<p><strong>更新</strong> ：我尝试了下面介绍的不同解决方案。</p>
+<ul>
+<li>经过详尽的测试，我发现在Math.sqrt（）的结果中加入<code>0.5</code>是没有必要的，至少不是在我的机器上。</li>
+<li><a href="http://www.codemaestro.com/reviews/9" target="_blank" rel="noopener"> John Carmack黑客</a>速度更快，但是从n = 410881开始的结果却不正确。然而，正如<a href="https://stackoverflow.com/users/38426/bobbyshaftoe" target="_blank" rel="noopener"> BobbyShaftoe </a>所建议的那样，我们可以使用Carmack hack来进行n＆lt; 410881。</li>
+<li>牛顿的方法比<code>Math.sqrt（）</code>慢了一点。这可能是因为<code>Math.sqrt（）</code>使用类似于牛顿方法的东西，但在硬件中实现，因此比Java更快。此外，牛顿的方法仍然需要使用双打。</li>
+<li>修改后的牛顿方法使用了一些技巧，只涉及整数运算，所以需要一些黑客来避免溢出（我希望这个函数能够处理所有正整数的64位有符号整数），而且它仍然比&lt;代码&gt; Math.sqrt（）<br>二元印章更慢。这是有道理的，因为二进制斩将平均需要16遍才能找到一个64位数的平方根。</li>
+</ul>
+<p>有一个建议显示了改进是由<a href="https://stackoverflow.com/users/25188/john-d-cook" target="_blank" rel="noopener">约翰D.库克</a>。您可以观察到完美平方的最后一个十六进制数字（即最后4位）必须是0,1,4或9.这意味着可以立即消除75％的数字作为可能的正方形。实施这个解决方案导致运行时间减少了大约50％。</p>
+<p>根据John的建议，我研究了完美正方形的最后一个 <em>n</em><br>位的属性。通过分析最后6位，我发现最后6位只有64个值中的12个是可能的。这意味着81％的数值可以在不使用任何数学的情况下被消除。实施这个解决方案使运行时间减少了8％（与我的原始算法相比）。分析多于6位会导致可能的结束位列表太大而不可行。</p>
+<p>这里是我使用的代码，它运行在原始算法所需时间的42％（基于对前1亿个整数的运行）。对于 <em>n</em> 小于410881的值，它只运行原始算法所需时间的29％。</p>
+<pre><code>private final static boolean isPerfectSquare(long n)
+{
+  if (n &lt; 0)
+    return false;
+
+  switch((int)(n &amp; 0x3F))
+  {
+  case 0x00: case 0x01: case 0x04: case 0x09: case 0x10: case 0x11:
+  case 0x19: case 0x21: case 0x24: case 0x29: case 0x31: case 0x39:
+    long sqrt;
+    if(n &lt; 410881L)
+    {
+      //John Carmack hack, converted to Java.
+      // See: http://www.codemaestro.com/reviews/9
+      int i;
+      float x2, y;
+
+      x2 = n * 0.5F;
+      y  = n;
+      i  = Float.floatToRawIntBits(y);
+      i  = 0x5f3759df - ( i &gt;&gt; 1 );
+      y  = Float.intBitsToFloat(i);
+      y  = y * ( 1.5F - ( x2 * y * y ) );
+
+      sqrt = (long)(1.0F/y);
+    }
+    else
+    {
+      //Carmack hack gives incorrect answer for n &gt;= 410881.
+      sqrt = (long)Math.sqrt(n);
+    }
+    return sqrt*sqrt == n;
+
+  default:
+    return false;
+  }
+}
+</code></pre><p>**备注 ：</p>
+<ul>
+<li>根据John的测试，在C ++中使用<code>或语句比使用</code>开关<code>更快，但在Java和C＃中，</code>或<code>和</code> switch `。</li>
+<li>我也尝试做一个查找表（作为一个私有的64个布尔值的静态数组）。然后，而不是开关或<code>或语句，我只是说</code> if（lookup [（int）（n＆amp; 0x3F）]）{test} else return false; `。令我吃惊的是，这只是（稍微）慢一点。 <del>我不知道为什么。</del> 这是因为[数组边界。 </li>
+</ul>
+<p><a id="more"></a> 我找到了一个比你的6位+ Carmack + sqrt代码快35％的方法，至少在我的CPU（x86）和编程语言（C / C<br>++）中是这样。您的结果可能会有所不同，特别是因为我不知道Java因素将如何发挥。</p>
+<p>我的方法是三重的：</p>
+<p>首先，过滤出明显的答案。这包括负数，并查看最后4位。 （我发现看最后六个没有帮助。）我也回答是0（在阅读下面的代码，请注意，我的输入是<code>int64 x</code>。） 如果（x＆lt; 0 ||（x＆amp; 2）||（（x＆amp; 7）== 5）||（（x＆amp; 11）== 8））     返回false;<br>如果（x == 0）     返回true; `<br>接下来，检查它是一个平方255 = 3 <em> 5 </em> 17。因为这是三个不同的素数的乘积，所以只有1/8的残基mod<br>255是正方形。然而，根据我的经验，调用模运算符（％）的成本高于获得的好处，所以我使用了一些涉及255 = 2 ^ 8-1的技巧来计算残差。<br>（不管好坏，我不是用一个字读出单个字节的技巧，只是逐位和倒换。）</p>
+<pre><code>      int64 y = x;
+y =（y＆amp; 4294967295LL）+（y＆gt;&gt; 32）;
+y =（y＆amp; 65535）+（y＆gt; 16）;
+y =（y＆amp; 255）+（（y＆gt; 8）＆amp; 255）+（y＆gt; 16）
+//此时，y介于0和511之间。更多的代码可以将它减少得更远。
+</code></pre><p>为了实际检查残留物是否是方块，我在预先计算的表格中查找答案。</p>
+<pre><code>      if（bad255 [y]）
+    返回false;
+//然而，我只是使用一个大小为512的表格
+</code></pre><ul>
+<li>最后，尝试使用类似于<a href="http://en.wikipedia.org/wiki/Hensel%27s_lemma" target="_blank" rel="noopener"> Hensel的引理</a>的方法来计算平方根。 （我不认为它是直接适用的，但它有一些修改。）在这之前，我用二分搜索划分了2的所有权力： 如果（（x＆amp; 4294967295LL）== 0）     x＆gt; = 32; 如果（（x＆amp; 65535）== 0）     x＆gt; = 16; 如果（（x＆amp; 255）== 0）     x＆gt; = 8; 如果（（x＆amp; 15）== 0）     x＆gt; = 4; 如果（（x＆amp; 3）== 0）     x＆gt;＆gt; = 2; <code>在这一点上，我们的数字是一个正方形，它必须是1模8。 如果（（x＆amp; 7）！= 1）     返回false;</code><br>Hensel引理的基本结构如下。 （注意：未经测试的代码;如果不起作用，请尝试t = 2或8）</li>
+</ul>
+<pre><code>      int64 t = 4，r = 1;
+t &lt;= 1; r + =（（xr * r）＆amp; t）＆gt;＆gt; 1;
+t &lt;= 1; r + =（（xr * r）＆amp; t）＆gt;＆gt; 1;
+t &lt;= 1; r + =（（xr * r）＆amp; t）＆gt;＆gt; 1;
+//重复，直到t是2 ^ 33左右。如果你想使用循环。 
+</code></pre><p>这个想法是，在每次迭代时，你要在r的“当前”x平方根上添加一个位;每个平方根都是精确的模2的大，大的幂，即t / 2。最后，r和t / 2-r将是x模t /<br>2的平方根。 （注意，如果r是x的平方根，那么-r也是如此，即使是模数也是如此，但要小心，以某些数为模，甚至可以有2个以上的平方根，特别是包括2的幂。<br>）因为我们的实际平方根小于2 ^ 32，那么我们实际上可以检查r或t / 2-r是否是真正的平方根。在我的实际代码中，我使用了以下修改的循环：</p>
+<pre><code>      int64 r，t，z;
+r = start [（x＆gt;＆gt; 3）＆amp; 1023];
+做{
+    z = x  -  r * r;
+    如果（z == 0）
+        返回true;
+    如果（z &lt;0）
+        返回false;
+    t = z＆amp; （-z）;
+    r + =（z＆amp; t）＆gt;＆gt; 1;
+    如果（r&gt;（t&gt; 1））
+        r = t-r;
+（t &lt;=（1LL &lt;＆lt; 33））;  
+</code></pre><p>这里的加速可以通过三种方式获得：预先计算的起始值（相当于循环的约10次迭代），循环的早期退出，以及跳过一些t值。对于最后一部分，我看一下` z = r-x</p>
+<ul>
+<li>x `，并设置t为2分z的最大幂。这允许我跳过不会影响r值的t值。在我的情况下，预先计算的起始值挑出了“最小正数”平方根模8192。</li>
+</ul>
+<p>即使这个代码对你来说工作不太快，我希望你喜欢它包含的一些想法。完整的，经过测试的代码如下，包括预计算表。</p>
+<pre><code>typedef signed long long int int64;
+
+int start[1024] =
+{1,3,1769,5,1937,1741,7,1451,479,157,9,91,945,659,1817,11,
+1983,707,1321,1211,1071,13,1479,405,415,1501,1609,741,15,339,1703,203,
+129,1411,873,1669,17,1715,1145,1835,351,1251,887,1573,975,19,1127,395,
+1855,1981,425,453,1105,653,327,21,287,93,713,1691,1935,301,551,587,
+257,1277,23,763,1903,1075,1799,1877,223,1437,1783,859,1201,621,25,779,
+1727,573,471,1979,815,1293,825,363,159,1315,183,27,241,941,601,971,
+385,131,919,901,273,435,647,1493,95,29,1417,805,719,1261,1177,1163,
+1599,835,1367,315,1361,1933,1977,747,31,1373,1079,1637,1679,1581,1753,1355,
+513,1539,1815,1531,1647,205,505,1109,33,1379,521,1627,1457,1901,1767,1547,
+1471,1853,1833,1349,559,1523,967,1131,97,35,1975,795,497,1875,1191,1739,
+641,1149,1385,133,529,845,1657,725,161,1309,375,37,463,1555,615,1931,
+1343,445,937,1083,1617,883,185,1515,225,1443,1225,869,1423,1235,39,1973,
+769,259,489,1797,1391,1485,1287,341,289,99,1271,1701,1713,915,537,1781,
+1215,963,41,581,303,243,1337,1899,353,1245,329,1563,753,595,1113,1589,
+897,1667,407,635,785,1971,135,43,417,1507,1929,731,207,275,1689,1397,
+1087,1725,855,1851,1873,397,1607,1813,481,163,567,101,1167,45,1831,1205,
+1025,1021,1303,1029,1135,1331,1017,427,545,1181,1033,933,1969,365,1255,1013,
+959,317,1751,187,47,1037,455,1429,609,1571,1463,1765,1009,685,679,821,
+1153,387,1897,1403,1041,691,1927,811,673,227,137,1499,49,1005,103,629,
+831,1091,1449,1477,1967,1677,697,1045,737,1117,1737,667,911,1325,473,437,
+1281,1795,1001,261,879,51,775,1195,801,1635,759,165,1871,1645,1049,245,
+703,1597,553,955,209,1779,1849,661,865,291,841,997,1265,1965,1625,53,
+1409,893,105,1925,1297,589,377,1579,929,1053,1655,1829,305,1811,1895,139,
+575,189,343,709,1711,1139,1095,277,993,1699,55,1435,655,1491,1319,331,
+1537,515,791,507,623,1229,1529,1963,1057,355,1545,603,1615,1171,743,523,
+447,1219,1239,1723,465,499,57,107,1121,989,951,229,1521,851,167,715,
+1665,1923,1687,1157,1553,1869,1415,1749,1185,1763,649,1061,561,531,409,907,
+319,1469,1961,59,1455,141,1209,491,1249,419,1847,1893,399,211,985,1099,
+1793,765,1513,1275,367,1587,263,1365,1313,925,247,1371,1359,109,1561,1291,
+191,61,1065,1605,721,781,1735,875,1377,1827,1353,539,1777,429,1959,1483,
+1921,643,617,389,1809,947,889,981,1441,483,1143,293,817,749,1383,1675,
+63,1347,169,827,1199,1421,583,1259,1505,861,457,1125,143,1069,807,1867,
+2047,2045,279,2043,111,307,2041,597,1569,1891,2039,1957,1103,1389,231,2037,
+65,1341,727,837,977,2035,569,1643,1633,547,439,1307,2033,1709,345,1845,
+1919,637,1175,379,2031,333,903,213,1697,797,1161,475,1073,2029,921,1653,
+193,67,1623,1595,943,1395,1721,2027,1761,1955,1335,357,113,1747,1497,1461,
+1791,771,2025,1285,145,973,249,171,1825,611,265,1189,847,1427,2023,1269,
+321,1475,1577,69,1233,755,1223,1685,1889,733,1865,2021,1807,1107,1447,1077,
+1663,1917,1129,1147,1775,1613,1401,555,1953,2019,631,1243,1329,787,871,885,
+449,1213,681,1733,687,115,71,1301,2017,675,969,411,369,467,295,693,
+1535,509,233,517,401,1843,1543,939,2015,669,1527,421,591,147,281,501,
+577,195,215,699,1489,525,1081,917,1951,2013,73,1253,1551,173,857,309,
+1407,899,663,1915,1519,1203,391,1323,1887,739,1673,2011,1585,493,1433,117,
+705,1603,1111,965,431,1165,1863,533,1823,605,823,1179,625,813,2009,75,
+1279,1789,1559,251,657,563,761,1707,1759,1949,777,347,335,1133,1511,267,
+833,1085,2007,1467,1745,1805,711,149,1695,803,1719,485,1295,1453,935,459,
+1151,381,1641,1413,1263,77,1913,2005,1631,541,119,1317,1841,1773,359,651,
+961,323,1193,197,175,1651,441,235,1567,1885,1481,1947,881,2003,217,843,
+1023,1027,745,1019,913,717,1031,1621,1503,867,1015,1115,79,1683,793,1035,
+1089,1731,297,1861,2001,1011,1593,619,1439,477,585,283,1039,1363,1369,1227,
+895,1661,151,645,1007,1357,121,1237,1375,1821,1911,549,1999,1043,1945,1419,
+1217,957,599,571,81,371,1351,1003,1311,931,311,1381,1137,723,1575,1611,
+767,253,1047,1787,1169,1997,1273,853,1247,413,1289,1883,177,403,999,1803,
+1345,451,1495,1093,1839,269,199,1387,1183,1757,1207,1051,783,83,423,1995,
+639,1155,1943,123,751,1459,1671,469,1119,995,393,219,1743,237,153,1909,
+1473,1859,1705,1339,337,909,953,1771,1055,349,1993,613,1393,557,729,1717,
+511,1533,1257,1541,1425,819,519,85,991,1693,503,1445,433,877,1305,1525,
+1601,829,809,325,1583,1549,1991,1941,927,1059,1097,1819,527,1197,1881,1333,
+383,125,361,891,495,179,633,299,863,285,1399,987,1487,1517,1639,1141,
+1729,579,87,1989,593,1907,839,1557,799,1629,201,155,1649,1837,1063,949,
+255,1283,535,773,1681,461,1785,683,735,1123,1801,677,689,1939,487,757,
+1857,1987,983,443,1327,1267,313,1173,671,221,695,1509,271,1619,89,565,
+127,1405,1431,1659,239,1101,1159,1067,607,1565,905,1755,1231,1299,665,373,
+1985,701,1879,1221,849,627,1465,789,543,1187,1591,923,1905,979,1241,181};
+
+bool bad255[512] =
+{0,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,0,1,1,0,1,0,1,1,1,0,1,1,1,1,0,1,
+ 1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,1,0,1,1,1,
+ 0,1,0,1,1,0,0,1,1,1,1,1,0,1,1,1,1,0,1,1,0,0,1,1,1,1,1,1,1,1,0,1,
+ 1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1,1,1,1,0,0,1,1,1,1,1,1,
+ 1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,
+ 1,1,1,1,1,1,0,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,
+ 1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,
+ 1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,
+ 0,0,1,1,0,1,1,1,1,0,1,1,1,1,1,0,0,1,1,0,1,0,1,1,1,0,1,1,1,1,0,1,
+ 1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,1,0,1,1,1,
+ 0,1,0,1,1,0,0,1,1,1,1,1,0,1,1,1,1,0,1,1,0,0,1,1,1,1,1,1,1,1,0,1,
+ 1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,1,1,1,1,0,0,1,1,1,1,1,1,
+ 1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,
+ 1,1,1,1,1,1,0,1,1,0,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,
+ 1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,
+ 1,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,
+ 0,0};
+
+inline bool square( int64 x ) {
+    // Quickfail
+    if( x &lt; 0 || (x&amp;2) || ((x &amp; 7) == 5) || ((x &amp; 11) == 8) )
+        return false;
+    if( x == 0 )
+        return true;
+
+    // Check mod 255 = 3 * 5 * 17, for fun
+    int64 y = x;
+    y = (y &amp; 4294967295LL) + (y &gt;&gt; 32);
+    y = (y &amp; 65535) + (y &gt;&gt; 16);
+    y = (y &amp; 255) + ((y &gt;&gt; 8) &amp; 255) + (y &gt;&gt; 16);
+    if( bad255[y] )
+        return false;
+
+    // Divide out powers of 4 using binary search
+    if((x &amp; 4294967295LL) == 0)
+        x &gt;&gt;= 32;
+    if((x &amp; 65535) == 0)
+        x &gt;&gt;= 16;
+    if((x &amp; 255) == 0)
+        x &gt;&gt;= 8;
+    if((x &amp; 15) == 0)
+        x &gt;&gt;= 4;
+    if((x &amp; 3) == 0)
+        x &gt;&gt;= 2;
+
+    if((x &amp; 7) != 1)
+        return false;
+
+    // Compute sqrt using something like Hensel&apos;s lemma
+    int64 r, t, z;
+    r = start[(x &gt;&gt; 3) &amp; 1023];
+    do {
+        z = x - r * r;
+        if( z == 0 )
+            return true;
+        if( z &lt; 0 )
+            return false;
+        t = z &amp; (-z);
+        r += (z &amp; t) &gt;&gt; 1;
+        if( r &gt; (t  &gt;&gt; 1) )
+            r = t - r;
+    } while( t &lt;= (1LL &lt;&lt; 33) );
+
+    return false;
+}
+</code></pre><p><img src="“https://i.stack.imgur.com/UDUNr.png”alt" alt=""></p>
+<p>我对晚会很迟，但我希望提供一个更好的答案。更短（假设我的<a href="https://dl.dropboxusercontent.com/u/4971686/published/maaartin/so/IsSquareBenchmark.java" target="_blank" rel="noopener">基准</a>是正确的）<br><a href="https://microbenchmarks.appspot.com/runs/185f228a-fd9b-44b4-8a7a-
+48d12101aece" target="_blank" rel="noopener">更快</a>。</p>
+<pre><code>long goodMask; // 0xC840C04048404040 computed below
+{
+    for (int i=0; i&lt;64; ++i) goodMask |= Long.MIN_VALUE &gt;&gt;&gt; (i*i);
+}
+
+public boolean isSquare(long x) {
+    // This tests if the 6 least significant bits are right.
+    // Moving the to be tested bit to the highest position saves us masking.
+    if (goodMask &lt;&lt; x &gt;= 0) return false;
+    final int numberOfTrailingZeros = Long.numberOfTrailingZeros(x);
+    // Each square ends with an even number of zeros.
+    if ((numberOfTrailingZeros &amp; 1) != 0) return false;
+    x &gt;&gt;= numberOfTrailingZeros;
+    // Now x is either 0 or odd.
+    // In binary each odd square ends with 001.
+    // Postpone the sign test until now; handle zero in the branch.
+    if ((x&amp;7) != 1 | x &lt;= 0) return x == 0;
+    // Do it in the classical way.
+    // The correctness is not trivial as the conversion from long to double is lossy!
+    final long tst = (long) Math.sqrt(x);
+    return tst * tst == x;
+}
+</code></pre><p>第一个测试很快捕获了大多数非方块。它使用一个长的包装64项表，所以没有阵列访问成本（间接和边界检查）。对于统一的随机<code>long</code>，在这里结束的概率为81.25％。</p>
+<p>第二个测试捕获在分解中具有奇数个二进制数的所有数字。方法<code>Long.numberOfTrailingZeros</code>非常快，因为它被JIT编译成一个i86指令。</p>
+<p>在删除尾部零后，第三个测试处理以二进制结束011,101或111的数字，这些都不是完美的正方形。它也关心负数，并处理0。</p>
+<p>最后的测试返回到<code>double</code>算术。由于<code>double</code>只有53位尾数， 从<code>long</code>到<code>double</code>的转换包括对大值的舍入。尽管如此，测试是正确的（除非<a href="“https://math.stackexchange.com/questions/237865/show-that-floating-point-
+sqrtx-cdot-x-geq-x-for-all-"> proof</a>是错误的）。</p>
+<p>试图纳入mod255的想法是不成功的。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/math/">math</a><a href="/tags/optimization/">optimization</a><a href="/tags/perfect-square/">perfect-square</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/fastest-way-to-determine-if-an-integers-square-root-is-an-integer/" data-title="最快的方法来确定一个整数的平方根是一个整数 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/failed-to-load-the-jni-shared-library-jdk/" title="无法加载JNI共享库（JDK）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  无法加载JNI共享库（JDK）</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/fatal-error-python-h-no-such-file-or-directory/"  title="致命错误：Python.h：没有这样的文件或目录">
+ <strong>下一篇：</strong><br/> 
+ <span>致命错误：Python.h：没有这样的文件或目录
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

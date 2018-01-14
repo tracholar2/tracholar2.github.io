@@ -1,0 +1,650 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>servlets如何工作？实例化，会话，共享变量和多线程 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="假设，我有一个拥有许多servlet的web服务器。对于在这些servlet中传递的信息，我正在设置会话和实例变量。 现在，如果有2个或更多用户向这个服务器发送请求，那么会话变量会发生什么？它们对于所有的用户都是共同的吗？或者对于每个用户来说都是不同的。如果它们不同，那么服务器如何能够区分不同的用户？ 还有一个类似的问题，如果有n用户访问一个特定的servlet，那么这个servlet只是在第一次">
+<meta name="keywords" content="java,multithreading,servlets,session-variables,instance-variables">
+<meta property="og:type" content="article">
+<meta property="og:title" content="servlets如何工作？实例化，会话，共享变量和多线程">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="假设，我有一个拥有许多servlet的web服务器。对于在这些servlet中传递的信息，我正在设置会话和实例变量。 现在，如果有2个或更多用户向这个服务器发送请求，那么会话变量会发生什么？它们对于所有的用户都是共同的吗？或者对于每个用户来说都是不同的。如果它们不同，那么服务器如何能够区分不同的用户？ 还有一个类似的问题，如果有n用户访问一个特定的servlet，那么这个servlet只是在第一次">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/“https://i.stack.imgur.com/ABDSX.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/“https://i.stack.imgur.com/IWAF3.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/“https://i.stack.imgur.com/Jjvcb.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/“https://i.stack.imgur.com/7Bw3x.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/“https://i.stack.imgur.com/t33bd.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/“https://i.stack.imgur.com/e7BB7.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/“https://i.stack.imgur.com/gqoR4.png”alt">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="servlets如何工作？实例化，会话，共享变量和多线程">
+<meta name="twitter:description" content="假设，我有一个拥有许多servlet的web服务器。对于在这些servlet中传递的信息，我正在设置会话和实例变量。 现在，如果有2个或更多用户向这个服务器发送请求，那么会话变量会发生什么？它们对于所有的用户都是共同的吗？或者对于每个用户来说都是不同的。如果它们不同，那么服务器如何能够区分不同的用户？ 还有一个类似的问题，如果有n用户访问一个特定的servlet，那么这个servlet只是在第一次">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/“https://i.stack.imgur.com/ABDSX.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/" title="servlets如何工作？实例化，会话，共享变量和多线程" itemprop="url">servlets如何工作？实例化，会话，共享变量和多线程</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">ServletContext</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">HttpServletRequest and HttpServletResponse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">HttpSession</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">In a nutshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Thread Safety</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.1.</span> <span class="toc-text">See also:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Sessions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Servlet Instantiation</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>假设，我有一个拥有许多servlet的web服务器。对于在这些servlet中传递的信息，我正在设置会话和实例变量。</p>
+<p>现在，如果有2个或更多用户向这个服务器发送请求，那么会话变量会发生什么？它们对于所有的用户都是共同的吗？或者对于每个用户来说都是不同的。如果它们不同，那么服务器如何能够区分不同的用户？</p>
+<p>还有一个类似的问题，如果有<code>n</code>用户访问一个特定的servlet，那么这个servlet只是在第一次用户访问它或者是分别为所有用户实例化时才被实例化？换句话说，实例变量会发生什么？</p>
+<a id="more"></a>
+<h2><span id="servletcontext">ServletContext</span></h2><p>当servlet容器（如<a href="http://tomcat.apache.org" target="_blank" rel="noopener"> Apache Tomcat</a>）启动时，它将部署并加载所有的Web应用程序。加载Web应用程序时，servlet容器会创建<a href="http://docs.oracle.com/javaee/7/api/javax/servlet/ServletContext.html" target="_blank" rel="noopener"> <code>ServletContext</code></a>，并保存在服务器的内存中。每个<code>＆lt;
+servlet＆gt;＆lt; / code＆gt;＆lt; code＆gt;＆lt; filter＆gt;＆lt; / code＆gt;和＆lt;
+code＆gt;＆lt; listener＆gt; （或者每个类分别用</code> @WebServlet <code>，</code> @WebFilter <code>和</code>@WebListener <code>进行注释）被实例化一次并保存在服务器记忆也是如此。对于每个实例化的过滤器，都会使用新的[ init（）</code> “rel<br>=”noreferrer“&gt; <code>FilterConfig</code>](“<a href="https://docs.oracle.com/javaee/7/api/javax/servlet/FilterConfig.html”调用其" target="_blank" rel="noopener">https://docs.oracle.com/javaee/7/api/javax/servlet/FilterConfig.html”调用其</a>&lt;code)。</p>
+<p>当servlet容器关闭时，它卸载所有的web应用程序，调用所有初始化的servlet和过滤器的<code>destroy（）</code>方法，以及所有的<code>ServletContext</code>，<code>Servlet</code>，<code>Filter</code>和<code>Listener</code>实例被抛弃。</p>
+<p>当<code>Servlet</code>的<code>＆lt; servlet＆gt;＆lt; load-on-startup＆gt;</code>或者<code>@WebServlet（loadOnStartup）</code>值大于<code>0</code>，它的<code>init（）</code>方法在启动过程中也会被调用一个新的<a href="“https://docs.oracle.com/javaee/7/api/"> <code>ServletConfig</code></a>。这些servlet以与该值相同的顺序被初始化（1→1，2→2等）。如果为多个servlet指定相同的值，那么每个servlet都按照它们出现在<code>web.xml</code>或<code>@WebServlet</code>类加载中的顺序加载。在“load-on-<br>startup”值不存在的情况下，只要HTTP请求第一次访问那个servlet，就会调用init（）方法。</p>
+<h2><span id="httpservletrequest-and-httpservletresponse">HttpServletRequest and HttpServletResponse</span></h2><p>servlet容器连接到一个Web服务器，该服务器侦听特定端口号（端口8080通常在开发过程中使用，端口80在生产中）上的HTTP请求。当客户端（具有Web浏览器的用户）发送HTTP请求时，servlet容器创建新的<a href="“http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletRequest.html"><code>HttpServletRequest</code></a>和[Filter <code>链，并最终传递给</code> Servlet `实例。</p>
+<p>在<a href="https://stackoverflow.com/tags/servlet-filters/info" target="_blank" rel="noopener">过滤器</a>的情况下，调用<code>doFilter（）</code>方法。当代码调用<code>chain.doFilter（request，response）</code>时，请求和响应继续到下一个过滤器，或者在没有剩余的过滤器的情况下点击servlet。</p>
+<p>在<a href="https://stackoverflow.com/tags/servlets/info" target="_blank" rel="noopener"> servlet </a>的情况下，调用<code>service（）</code>方法。默认情况下，此方法根据<code>request.getMethod（）</code>确定要调用哪个<code>doXxx（）</code>方法。如果确定的方法不在servlet中，则在响应中返回一个HTTP 405错误。</p>
+<p>请求对象提供对HTTP请求的所有信息的访问，比如它的头部和主体。响应对象提供了以您想要的方式控制和发送HTTP响应的功能，例如，允许您设置标题和正文（通常使用JSP文件中生成的HTML内容）。当HTTP响应被提交并完成时，请求和响应对象都被回收并重复使用。</p>
+<h2><span id="httpsession">HttpSession</span></h2><p>当客户端第一次访问webapp时和/或<a href="“http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpSession.html”rel"> request.getSession（）<code>获得HttpSession</code></a>，servlet容器创建一个新的<code>HttpSession</code>对象，生成一个长而唯一的ID（可以通过<code>session.getId（）</code>获取），并将其存储在服务器的内存中。<br>servlet容器还设置了<a href="http://docs.oracle.com/javaee/7/api/javax/servlet/http/Cookie.html" target="_blank" rel="noopener"> <code>Cookie</code></a>中的<code>JSESSIONID</code>作为HTTP响应的<code>Set-Cookie</code>标题，唯一的会话ID作为其值。</p>
+<p>根据<a href="http://www.faqs.org/rfcs/rfc2965.html" target="_blank" rel="noopener"> HTTP<br>cookie规范</a>（合同体面的web浏览器和web服务器必须坚持），只要cookie有效（即，唯一的ID必须引用），客户端（web浏览器）需要在<code>Cookie</code>一个未到期的会话和域和路径是正确的）。使用浏览器的内置HTTP流量监控器，您可以验证cookie是否有效（在Chrome / Firefox<br>23+ / IE9 +中按F12，并检查 <em>Net / Network</em> 标签）。 servlet容器将检查每个传入HTTP请求的<code>Cookie</code>标题，以查找名为<code>JSESSIONID</code>的cookie，并使用其值（会话ID）获取关联来自服务器内存的<code>HttpSession</code>。</p>
+<p><code></code> HttpSession <code>在</code>＆lt; code&gt;＆lt; session-timeout＆gt; <code>中指定的超时值之前一直保持活动状态，这是</code>web中的一项设置。 XML<br>。超时值默认为30分钟。所以，当客户端没有访问Web应用的时间超过了指定的时间，servlet容器就会抛出会话。每一个后续的请求，即使是指定的cookie，都不会再访问同一个会话。<br>servlet容器将创建一个新的会话。</p>
+<p>在客户端，只要浏览器实例正在运行，会话cookie就保持活动状态。所以，如果客户端关闭浏览器实例（所有的标签/窗口），那么会话在客户端被抛弃。在新的浏览器实例中，与会话关联的cookie将不存在，因此不会再发送。这会导致创建一个全新的<code>HTTPSession</code>，并开始使用全新的会话cookie。</p>
+<h2><span id="in-a-nutshell">In a nutshell</span></h2><ul>
+<li>只要Web应用程序存在，<code>ServletContext</code>就会生效。它在 <em>全部</em> 会话中的 <em>全部</em> 请求之间共享。</li>
+<li>只要客户端使用相同的浏览器实例与Web应用程序进行交互，并且在服务器端没有超时，<code>HttpSession</code>就会生效。它在 <em>相同</em> 会话中的 <em>全部</em> 请求之间共享。<br>从servlet接收到来自客户端的HTTP请求的时间开始直到完整的响应（网页）到达为止，<code>HttpServletRequest</code>和<code>HttpServletResponse</code>这是 __ 在其他地方共享。</li>
+</ul>
+<p>只要Web应用程序处于活动状态，所有<code>Servlet</code>，<code>Filter</code>和<code>Listener</code>实例就可以使用。它们在 <em>全部</em> 会话中的<br><em>全部</em> 请求之间共享。</p>
+<ul>
+<li>在<code>ServletContext</code>，<code>HttpServletRequest</code>和<code>HttpSession</code>中定义的任何<code>属性</code>质疑生命。对象本身代表了bean管理框架（如JSF，CDI，Spring等）中的“范围”。这些框架将其作用域Bean存储为最接近的匹配范围的<code>属性</code>。</li>
+</ul>
+<h2><span id="thread-safety">Thread Safety</span></h2><p>也就是说，你的主要担心可能是线程安全性_。您现在应该知道，servlet和过滤器是在所有请求之间共享的。这是Java的好处，它是多线程的，不同的线程（读取：HTTP请求）可以使用相同的实例。否则，为每一个请求重新创建<code>init（）</code>和<code>destroy（）</code>会非常昂贵。</p>
+<p>您还应该认识到，您应该 <strong>将任何请求或会话作用域数据分配为servlet或过滤器的 <em>实例</em> 变量。它将在其他会议中的所有其他请求之间共享。这是
+</strong>不是** 线程安全！下面的例子说明了这一点：</p>
+<pre><code>public class ExampleServlet extends HttpServlet {
+
+    private Object thisIsNOTThreadSafe;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Object thisIsThreadSafe;
+
+        thisIsNOTThreadSafe = request.getParameter(&quot;foo&quot;); // BAD!! Shared among all requests!
+        thisIsThreadSafe = request.getParameter(&quot;foo&quot;); // OK, this is thread safe.
+    } 
+}
+</code></pre><h3><span id="see-also">See also:</span></h3><ul>
+<li><a href="https://stackoverflow.com/questions/2095397/what-is-the-difference-between-jsf-servlet-and-jsp" target="_blank" rel="noopener"> JSF，Servlet和JSP有什么区别？ </a></li>
+<li><a href="https://stackoverflow.com/questions/1700390/best-option-for-session-management-in-java" target="_blank" rel="noopener"> Java中会话管理的最佳选项</a><br>[ servlet映射url模式中/和/ *之间的区别</li>
+</ul>
+<p>一&gt;</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/2349633/doget-and-dopost-in-servlets" target="_blank" rel="noopener"> Servlet中的doGet和doPost </a></li>
+<li><a href="https://stackoverflow.com/questions/8011138/servlet-seems-to-handle-multiple-concurrent-requests-synchronously/" target="_blank" rel="noopener"> Servlet似乎同时处理多个并发的浏览器请求</a></li>
+<li><a href="https://stackoverflow.com/questions/9555842/why-servlets-are-not-thread-safe/" target="_blank" rel="noopener">为什么Servlets不是线程安全的？</a></li>
+</ul>
+<h2><span id="sessions">Sessions</span></h2><p><img src="“https://i.stack.imgur.com/ABDSX.png”alt" alt=""><br><img src="“https://i.stack.imgur.com/IWAF3.png”alt" alt=""></p>
+<p>简而言之，网络服务器会在他的 <em>第一个</em> 访问中向 <em>每个访问者</em><br>发出一个唯一的标识符。访客必须带回该身份证，以便他下次得到认可。这个标识符还允许服务器正确地将一个会话拥有的对象与另一个会话的对象分开。</p>
+<h2><span id="servlet-instantiation">Servlet Instantiation</span></h2><p>如果 <strong>加载启动</strong> 为 <strong>false</strong> ：</p>
+<p><img src="“https://i.stack.imgur.com/Jjvcb.png”alt" alt=""><br><img src="“https://i.stack.imgur.com/7Bw3x.png”alt" alt=""></p>
+<p>如果 <strong>加载启动</strong> 为 <strong>true</strong> ：</p>
+<p><img src="“https://i.stack.imgur.com/t33bd.png”alt" alt=""><br><img src="“https://i.stack.imgur.com/e7BB7.png”alt" alt=""></p>
+<p>一旦他处于服务模式和沟槽中，相同的servlet将处理所有其他客户端的请求。</p>
+<p><img src="“https://i.stack.imgur.com/gqoR4.png”alt" alt=""></p>
+<p>为什么每个客户端都有一个实例不是个好主意？想想这个：你会为每一个订单雇佣一个比萨饼人吗？这样做，你很快就会倒闭。</p>
+<p>虽然它有一个小的风险。请记住：这个人把所有的订单信息放在口袋里：所以如果你不谨慎的话，那么rel =“是” noreferrer“&gt;<br>servlet上的线程安全性](<a href="https://stackoverflow.com/questions/4140448/difference-" target="_blank" rel="noopener">https://stackoverflow.com/questions/4140448/difference-</a><br>between-and-in-servlet-mapping-url-pattern)，他最终可能会把错误的命令发给某个客户端。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/multithreading/">multithreading</a><a href="/tags/servlets/">servlets</a><a href="/tags/session-variables/">session-variables</a><a href="/tags/instance-variables/">instance-variables</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/" data-title="servlets如何工作？实例化，会话，共享变量和多线程 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/why-is-reading-lines-from-stdin-much-slower-in-c-than-python/" title="为什么阅读stdin中的代码比C ++慢得多？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  为什么阅读stdin中的代码比C ++慢得多？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-do-you-access-the-matched-groups-in-a-javascript-regular-expression/"  title="如何访问JavaScript正则表达式中的匹配组？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何访问JavaScript正则表达式中的匹配组？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">ServletContext</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">HttpServletRequest and HttpServletResponse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">HttpSession</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">In a nutshell</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Thread Safety</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.1.</span> <span class="toc-text">See also:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Sessions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Servlet Instantiation</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

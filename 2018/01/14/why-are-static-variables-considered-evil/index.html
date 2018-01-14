@@ -1,0 +1,604 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为什么静态变量被视为邪恶？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我是一个Java程序员，他是企业界的新手。最近，我使用 Groovy和Java开发了一个应用程序。所有通过我写的代码使用了相当多的静态。我被高级技术人员要求削减所使用的静态数量。我用google搜索了一下，发现很多程序员都反对使用静态变量。 我发现静态变量更方便使用。而且我认为它们也是有效的（请纠正我，如果我错了），因为如果我不得不对一个类中的函数进行10,000次调用，我会很高兴使这个方法是静态">
+<meta name="keywords" content="java,static">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么静态变量被视为邪恶？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/why-are-static-variables-considered-evil/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我是一个Java程序员，他是企业界的新手。最近，我使用 Groovy和Java开发了一个应用程序。所有通过我写的代码使用了相当多的静态。我被高级技术人员要求削减所使用的静态数量。我用google搜索了一下，发现很多程序员都反对使用静态变量。 我发现静态变量更方便使用。而且我认为它们也是有效的（请纠正我，如果我错了），因为如果我不得不对一个类中的函数进行10,000次调用，我会很高兴使这个方法是静态">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么静态变量被视为邪恶？">
+<meta name="twitter:description" content="我是一个Java程序员，他是企业界的新手。最近，我使用 Groovy和Java开发了一个应用程序。所有通过我写的代码使用了相当多的静态。我被高级技术人员要求削减所使用的静态数量。我用google搜索了一下，发现很多程序员都反对使用静态变量。 我发现静态变量更方便使用。而且我认为它们也是有效的（请纠正我，如果我错了），因为如果我不得不对一个类中的函数进行10,000次调用，我会很高兴使这个方法是静态">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-are-static-variables-considered-evil/" title="为什么静态变量被视为邪恶？" itemprop="url">为什么静态变量被视为邪恶？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我是一个Java程序员，他是企业界的新手。最近，我使用<a href="http://en.wikipedia.org/wiki/Groovy_%28programming_language%29" target="_blank" rel="noopener"> Groovy</a>和Java开发了一个应用程序。所有通过我写的代码使用了相当多的静态。我被高级技术人员要求削减所使用的静态数量。我用google搜索了一下，发现很多程序员都反对使用静态变量。</p>
+<p>我发现静态变量更方便使用。而且我认为它们也是有效的（请纠正我，如果我错了），因为如果我不得不对一个类中的函数进行10,000次调用，我会很高兴使这个方法是静态的，并使用一个简单的<code>Class .methodCall（）</code>，而不是使用10,000个实例的类来混淆内存，对吧？</p>
+<p>此外，静态减少了代码的其他部分之间的相互依赖关系。他们可以作为完美的国家持有者。除此之外，我发现统计信息广泛应用于某些语言，如<a href="https://en.wikipedia.org/wiki/Smalltalk" target="_blank" rel="noopener"> Smalltalk</a>和<a href="“"> Scala</a>。那么为什么这种对静态特性的压制在程序员（尤其是Java领域）中普遍存在？</p>
+<p>PS：如果我对静力学的假设是错误的，请纠正我。</p>
+<a id="more"></a>
+<p>静态变量代表全局状态。这很难推理和难以测试：如果我创建一个对象的新实例，我可以在测试中推测它的新状态。如果我使用的是使用静态变量的代码，它可以处于任何状态</p>
+<ul>
+<li>任何事情都可以修改它。</li>
+</ul>
+<p>我可以继续相当长的一段时间，但是要想的更大的概念是，事物的范围越紧，就越容易推理。我们善于思考小事情，但是如果没有模块化，就很难推断一百万行系统的状态。这适用于各种各样的东西，顺便说一下</p>
+<ul>
+<li>不仅仅是静态变量。</li>
+</ul>
+<p>它不是非常面向对象的：**<br>一些人认为静力学可能被认为是“邪恶”的一个原因是它们违背了面向对象的范例。特别是违反了数据封装在对象（可以扩展，信息隐藏等）的原则。静态方法，就像你所描述的那样，基本上是把它们作为一个全局变量来避免处理像范围这样的问题。然而，全局变量是过程式或命令式编程范式的决定性特征之一，而不是“良好的”面向对象的代码的特征。这并不是说程序模式是不好的，但是我得到的印象是你的主管期望你写“好的面向对象的代码”，而你真的想写“好的程序代码”。</p>
+<p>在开始使用静态的时候，Java中有许多变种，而这些动态并不总是显而易见的。例如，如果你有两个程序在同一个虚拟机上运行，​​那么他们会把这个静态变量的值擦掉，并且弄乱对方的状态？或者当你扩展类时会发生什么，你可以覆盖静态成员？您的虚拟机是否内存不足，因为您的虚拟机数量太多，而且无法为其他需要的实例对象回收内存？</p>
+<p><strong>对象生命周期</strong> ：<br>此外，静态的生命周期与程序的整个运行时间相匹配。这意味着，即使一旦你完成了使用你的类，所有这些静态变量的内存不能被垃圾收集。例如，如果你的变量是非静态的，在你的main（）函数中你创建了一个你的类的实例，然后要求你的类执行一个特定的函数10000次，一旦这10000次调用完成，并且你删除了对单个实例的引用，所有的静态变量都可以被垃圾收集和重用。</p>
+<p>防止某些重复使用：** 此外，静态方法不能用于实现一个接口，所以静态方法可以防止某些面向对象的功能可用。</p>
+<p><strong>其他选项：</strong><br>如果效率是您最关心的问题，那么解决速度问题可能还有其他更好的方法，而不是只考虑调用通常比创造更快的优势。考虑是否需要瞬态或挥发性修饰符。为了保持被内联的能力，一个方法可以被标记为final而不是静态的。方法参数和其他变量可以被标记为最终的，以允许某些编译器优化基于关于什么可以改变这些变量的假设。一个实例对象可以重复使用多次，而不是每次都创建一个新的实例。一般来说，可能会有应用程序开启优化开关。也许，应该设计这样的设计，以便10,000次运行可以是多线程的并且利用多处理器内核。如果可移植性不是问题，那么也许本地方法会比静态方法更好地提高速度。</p>
+<p>如果由于某种原因，你不想要一个对象的多个副本，那么<a href="“http://www.javabeginner.com/learn-
+java/java-singleton-design-
+pattern”rel"> singleton设计模式</a>，比静态对象（如线程安全性（假设您的单例编码良好））更具优势，允许延迟初始化，保证对象在使用时被正确初始化，子类别，在测试和重构代码的优势，更不用说，如果在某些时候你改变主意只想要一个对象的实例，删除代码以防止重复实例比重构所有静态变量代码要容易得多使用实例变量。我之前必须这样做，它并不好玩，最终你不得不编辑更多的课程，这会增加你引入新bug的风险……第一次设置“正确”即使它看起来有缺点。对于我来说，如果你决定下一步的工作，你需要重新工作，多次复制可能是最不经常使用静态的最有说服力的理由之一。因此，我也不同意你的陈述，静态减少相互依赖关系，如果你有很多可以直接访问的静态信息，而不是一个“知道怎么做”的对象，东西“本身。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/static/">static</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/why-are-static-variables-considered-evil/" data-title="为什么静态变量被视为邪恶？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/why-are-python-lambdas-useful/" title="为什么Python lambda有用？ [关闭]">
+  <strong>上一篇：</strong><br/>
+  <span>
+  为什么Python lambda有用？ [关闭]</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/why-cant-i-switch-on-a-string/"  title="为什么我不能打开一个字符串？">
+ <strong>下一篇：</strong><br/> 
+ <span>为什么我不能打开一个字符串？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

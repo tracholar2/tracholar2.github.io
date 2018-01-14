@@ -1,0 +1,650 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>比较Java枚举成员：==或equals（）？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我知道Java枚举被编译为具有私有构造函数和一堆公共静态成员的类。比较给定枚举的两个成员时，我总是使用.equals（），例如 public useEnums(SomeEnum a) {     if(a.equals(SomeEnum.SOME_ENUM_VALUE))     {         ...     }     ... } 但是，我刚刚遇到了一些使用equals运算符==而不是.e">
+<meta name="keywords" content="java,enums">
+<meta property="og:type" content="article">
+<meta property="og:title" content="比较Java枚举成员：==或equals（）？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/comparing-java-enum-members-or-equals/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我知道Java枚举被编译为具有私有构造函数和一堆公共静态成员的类。比较给定枚举的两个成员时，我总是使用.equals（），例如 public useEnums(SomeEnum a) {     if(a.equals(SomeEnum.SOME_ENUM_VALUE))     {         ...     }     ... } 但是，我刚刚遇到了一些使用equals运算符==而不是.e">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="比较Java枚举成员：==或equals（）？">
+<meta name="twitter:description" content="我知道Java枚举被编译为具有私有构造函数和一堆公共静态成员的类。比较给定枚举的两个成员时，我总是使用.equals（），例如 public useEnums(SomeEnum a) {     if(a.equals(SomeEnum.SOME_ENUM_VALUE))     {         ...     }     ... } 但是，我刚刚遇到了一些使用equals运算符==而不是.e">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/comparing-java-enum-members-or-equals/" title="比较Java枚举成员：==或equals（）？" itemprop="url">比较Java枚举成员：==或equals（）？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Can == be used on enum?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">[JLS 8.9</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">What are the differences between == and equals?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">== never throws NullPointerException</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">== is subject to type compatibility check at compile time</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Should == be used when applicable?</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我知道Java枚举被编译为具有私有构造函数和一堆公共静态成员的类。比较给定枚举的两个成员时，我总是使用<code>.equals（）</code>，例如</p>
+<pre><code>public useEnums(SomeEnum a)
+{
+    if(a.equals(SomeEnum.SOME_ENUM_VALUE))
+    {
+        ...
+    }
+    ...
+}
+</code></pre><p>但是，我刚刚遇到了一些使用equals运算符<code>==</code>而不是.equals（）的代码：</p>
+<pre><code>public useEnums2(SomeEnum a)
+{
+    if(a == SomeEnum.SOME_ENUM_VALUE)
+    {
+        ...
+    }
+    ...
+}
+</code></pre><p>我应该使用哪一个操作符？</p>
+<p><a id="more"></a> 两者在技术上是正确的。如果您查看<code>.equals（）</code>的源代码，则只需按照<code>==</code>。</p>
+<p>然而，我使用<code>==</code>，因为这将是无效的。</p>
+<h2><span id="can-be-used-on-enum">Can <code>==</code> be used on <code>enum</code>?</span></h2><p>是的：枚举具有严格的实例控件，允许您使用<code>==</code>来比较实例。这是语言规范提供的保证（由我强调）：</p>
+<blockquote>
+<h3><span id="jls-89">[JLS 8.9</span></h3><p>Enums](<a href="https://docs.oracle.com/javase/specs/jls/se9/html/jls-8.html#jls-8.9" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jls/se9/html/jls-8.html#jls-8.9</a>)</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>An enum type has no instances other than those defined by its enum<br>constants.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>It is a compile-time error to attempt to explicitly instantiate an enum<br>type. The <code>final clone</code> method in <code>Enum</code> ensures that <code>enum</code> constants can<br>never be cloned, and the special treatment by the serialization mechanism<br>ensures that duplicate instances are never created as a result of<br>deserialization. Reflective instantiation of enum types is prohibited.<br>Together, these four things ensure that no instances of an <code>enum</code> type exist<br>beyond those defined by the <code>enum</code> constants.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Because there is only one instance of each <code>enum</code> constant, <strong>it is<br>permissible to use the<code>==</code> operator in place of the <code>equals</code> method when<br>comparing two object references if it is known that at least one of them<br>refers to an <code>enum</code> constant</strong>. (The <code>equals</code> method in <code>Enum</code> is a <code>final</code>method that merely invokes <code>super.equals</code> on its argument and returns the<br>result, thus performing an identity comparison.)</p>
+</blockquote>
+<p>这个保证足够强大，Josh Bloch建议，如果你坚持使用单例模式，实现它的最好方法是使用单元素<code>enum</code>（参见： <em>Effective Java<br>2nd Edition，Item 3：使用私有构造函数或枚举类型强制实现singleton属性</em> ;<br><a href="“https://stackoverflow.com/questions/2912281/thread-safety-in-
+singleton"></a>&gt;单线程中的线程安全性）</p>
+<hr>
+<h2><span id="what-are-the-differences-between-and-equals">What are the differences between <code>==</code> and <code>equals</code>?</span></h2><p>提醒一下，通常情况下，<code>==</code>不是<code>equals</code>的可行替代方案。但是，如果是（比如<code>enum</code>），则需要考虑两个重要的区别：</p>
+<h3><span id="never-throws-nullpointerexception"><code>==</code> never throws <code>NullPointerException</code></span></h3><pre><code>enum Color { BLACK, WHITE };
+
+Color nothing = null;
+if (nothing == Color.BLACK);      // runs fine
+if (nothing.equals(Color.BLACK)); // throws NullPointerException
+</code></pre><h3><span id="is-subject-to-type-compatibility-check-at-compile-time"><code>==</code> is subject to type compatibility check at compile time</span></h3><pre><code>enum Color { BLACK, WHITE };
+enum Chiral { LEFT, RIGHT };
+
+if (Color.BLACK.equals(Chiral.LEFT)); // compiles fine
+if (Color.BLACK == Chiral.LEFT);      // DOESN&apos;T COMPILE!!! Incompatible types!
+</code></pre><hr>
+<h2><span id="should-be-used-when-applicable">Should <code>==</code> be used when applicable?</span></h2><p>Bloch特别提到，具有对其实例的适当控制的不可变类可以保证其客户端可以使用<code>==</code>。 <code>enum</code>是特别提到的例子。</p>
+<blockquote>
+<p><em>Item 1: Consider static factory methods instead of constructors</em></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>[…] it allows an immutable class to make the guarantee that no two equal<br>instances exist: <code>a.equals(b)</code> if and only if <code>a==b</code>. If a class makes this<br>guarantee, then its clients can use the <code>==</code> operator instead of the<br><code>equals(Object)</code> method, which may result in improved performance. Enum types<br>provide this guarantee.</p>
+</blockquote>
+<p>总而言之，在<code>enum</code>上使用<code>==</code>的参数是：</p>
+<ul>
+<li>有效。</li>
+<li>速度更快。</li>
+<li>运行时更安全。</li>
+<li>编译时更安全。</li>
+</ul>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/enums/">enums</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/comparing-java-enum-members-or-equals/" data-title="比较Java枚举成员：==或equals（）？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/compare-two-dates-with-javascript/" title="用JavaScript比较两个日期">
+  <strong>上一篇：</strong><br/>
+  <span>
+  用JavaScript比较两个日期</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/convert-arrayliststring-to-string-array/"  title="将ArrayList &lt;String&gt;转换为String [] array [duplicate]">
+ <strong>下一篇：</strong><br/> 
+ <span>将ArrayList &lt;String&gt;转换为String [] array [duplicate]
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Can == be used on enum?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">[JLS 8.9</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">What are the differences between == and equals?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">== never throws NullPointerException</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">== is subject to type compatibility check at compile time</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Should == be used when applicable?</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,614 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>什么是JavaBean？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我明白，我认为，“Bean”是一个具有属性和getter / setter的Java类。据我所知，它是相当于一个C结构。这是真的吗？ 另外，bean和普通类之间是否存在真正的 语法 区别？有没有特别的定义或接口？ 基本上，为什么会有这样的术语？ 编辑 ** ：如果你可以如此善良，并添加有关Serializable接口的信息，以及它的含义，对于你的答案，我将非常感激。 / p&amp;gt;">
+<meta name="keywords" content="java,javabeans,serializable">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是JavaBean？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/what-is-a-javabean-exactly/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我明白，我认为，“Bean”是一个具有属性和getter / setter的Java类。据我所知，它是相当于一个C结构。这是真的吗？ 另外，bean和普通类之间是否存在真正的 语法 区别？有没有特别的定义或接口？ 基本上，为什么会有这样的术语？ 编辑 ** ：如果你可以如此善良，并添加有关Serializable接口的信息，以及它的含义，对于你的答案，我将非常感激。 / p&amp;gt;">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是JavaBean？">
+<meta name="twitter:description" content="我明白，我认为，“Bean”是一个具有属性和getter / setter的Java类。据我所知，它是相当于一个C结构。这是真的吗？ 另外，bean和普通类之间是否存在真正的 语法 区别？有没有特别的定义或接口？ 基本上，为什么会有这样的术语？ 编辑 ** ：如果你可以如此善良，并添加有关Serializable接口的信息，以及它的含义，对于你的答案，我将非常感激。 / p&amp;gt;">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-a-javabean-exactly/" title="什么是JavaBean？" itemprop="url">什么是JavaBean？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我明白，我认为，“Bean”是一个具有属性和getter / setter的Java类。据我所知，它是相当于一个C结构。这是真的吗？</p>
+<p>另外，bean和普通类之间是否存在真正的 <em>语法</em> 区别？有没有特别的定义或接口？</p>
+<p>基本上，为什么会有这样的术语？</p>
+<p><strong>编辑 **</strong> ：如果你可以如此善良，并添加有关<code>Serializable</code>接口的信息，以及它的含义，对于你的答案，我将非常感激。 / p&gt;<br><a id="more"></a><br>JavaBean只是一个<a href="http://www.oracle.com/technetwork/java/javase/documentation/spec-136004.html" target="_blank" rel="noopener">标准</a></p>
+<p>p&gt;</p>
+<ul>
+<li>所有属性私有（使用<a href="http://en.wikipedia.org/wiki/Mutator_method" target="_blank" rel="noopener">获取/设置器</a>）</li>
+<li>公共<a href="http://en.wikipedia.org/wiki/Nullary_constructor" target="_blank" rel="noopener">无参数构造函数</a></li>
+<li>实现[ <code>Serializable</code> &lt; / A&gt; </li>
+</ul>
+<p>就是这样。这只是一个惯例。很多图书馆依靠它…</p>
+<p>关于<code>Serializable</code>，来自<a href="“http://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html”rel">API文档</a>：</p>
+<blockquote>
+<p>Serializability of a class is enabled by the class implementing the<br>java.io.Serializable interface. Classes that do not implement this interface<br>will not have any of their state serialized or deserialized. All subtypes of a<br>serializable class are themselves serializable. The serialization interface<br>has no methods or fields and serves only to identify the semantics of being<br>serializable.</p>
+</blockquote>
+<p>换句话说，可序列化的对象可以写入流，因此文件，对象数据库，任何东西都可以。</p>
+<p>另外，JavaBean和另一个类之间没有语法上的区别 - 一个类如果遵循标准定义了一个JavaBean。</p>
+<p>有一个术语，因为该标准允许库以编程方式使用您以预定义方式定义的类实例执行任务。例如，如果一个库想要传入任何你传入的对象，它就知道它可以，因为你的对象是可序列化的（假设lib需要你的对象是适当的JavaBean）。</p>
+<p>有一个术语让它听起来很特别。现实远不如此神秘。</p>
+<p>基本上，一个“豆”：</p>
+<ul>
+<li>是一个可序列化的对象（即，它实现了<a href="http://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html" target="_blank" rel="noopener"> <code>java.io.Serializable</code> </a>，并且是正确的），</li>
+<li>具有“属性”，其getter和setter只是具有特定名称的方法（比如，<code>getFoo（）</code>是“Foo”属性的getter），</li>
+<li>有一个公共的默认构造函数（因此可以随意创建，并通过设置其属性进行配置）。</li>
+</ul>
+<p>更新</p>
+<p>至于<code>Serializable</code>：这只不过是一个“标记接口”（一个没有声明任何函数的接口），它告诉Java实现类同意（并且暗示它是有能力的）“序列化”</p>
+<ul>
+<li>将实例转换为字节流的过程。这些字节可以存储在文件中，通过网络连接等发送，并有足够的信息允许JVM（至少知道对象的类型）稍后重建对象 -<br>可能在不同的实例中应用程序，甚至整个其他机器！</li>
+</ul>
+<p>当然，为了做到这一点，班级必须遵守一定的限制。其中最主要的是所有实例字段必须是原始类型（int，bool等），某些类的实例也是可序列化的，或者标记为<code>transient</code>，以便Java不会尝试包含他们。 （这当然意味着<code>transient</code>字段将不能在流中跳过。具有<code>transient</code>字段的类应该准备在必要时重新初始化它们。 &gt; 一个不能遵守这些限制的类不应该实现<code>Serializable</code>（并且，IIRC，Java编译器甚至不会让它这样做。）_ p&gt;</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/javabeans/">javabeans</a><a href="/tags/serializable/">serializable</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/what-is-a-javabean-exactly/" data-title="什么是JavaBean？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/what-ide-to-use-for-python/" title="什么IDE用于Python？ [关闭]">
+  <strong>上一篇：</strong><br/>
+  <span>
+  什么IDE用于Python？ [关闭]</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/what-is-a-mixin-and-why-are-they-useful/"  title="什么是混合，为什么他们有用？">
+ <strong>下一篇：</strong><br/> 
+ <span>什么是混合，为什么他们有用？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

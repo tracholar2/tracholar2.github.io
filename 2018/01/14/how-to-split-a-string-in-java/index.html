@@ -1,0 +1,661 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何在Java中分割字符串 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个字符串“004-034556”，我想分成两个字符串： string1=004 string2=034556 这意味着第一个字符串将包含&amp;#39; - &amp;#39;之前的字符，第二个字符串将包含&amp;#39; - &amp;#39;之后的字符。我也想检查字符串中是否有&amp;#39; - &amp;#39;。如果没有，我会抛出一个异常。我该怎么做？">
+<meta name="keywords" content="java,string">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在Java中分割字符串">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-to-split-a-string-in-java/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个字符串“004-034556”，我想分成两个字符串： string1=004 string2=034556 这意味着第一个字符串将包含&amp;#39; - &amp;#39;之前的字符，第二个字符串将包含&amp;#39; - &amp;#39;之后的字符。我也想检查字符串中是否有&amp;#39; - &amp;#39;。如果没有，我会抛出一个异常。我该怎么做？">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何在Java中分割字符串">
+<meta name="twitter:description" content="我有一个字符串“004-034556”，我想分成两个字符串： string1=004 string2=034556 这意味着第一个字符串将包含&amp;#39; - &amp;#39;之前的字符，第二个字符串将包含&amp;#39; - &amp;#39;之后的字符。我也想检查字符串中是否有&amp;#39; - &amp;#39;。如果没有，我会抛出一个异常。我该怎么做？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-split-a-string-in-java/" title="如何在Java中分割字符串" itemprop="url">如何在Java中分割字符串</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个字符串<code>“004-034556”</code>，我想分成两个字符串：</p>
+<pre><code>string1=004
+string2=034556
+</code></pre><p>这意味着第一个字符串将包含<code>&#39; - &#39;</code>之前的字符，第二个字符串将包含<code>&#39; - &#39;</code>之后的字符。我也想检查字符串中是否有<code>&#39; -
+&#39;</code>。如果没有，我会抛出一个异常。我该怎么做？</p>
+<p><a id="more"></a> 只要使用适当的方法：<a href="“http://docs.oracle.com/javase/8/docs/api/java/lang/String.html#split-
+java.lang.String-”rel"> &lt;代码&gt;字符串＃分裂（）</a>。</p>
+<pre><code>String string = &quot;004-034556&quot;;
+String[] parts = string.split(&quot;-&quot;);
+String part1 = parts[0]; // 004
+String part2 = parts[1]; // 034556
+</code></pre><p>请注意，这需要<a href="http://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html#sum" target="_blank" rel="noopener">定期表达式</a>，所以请记得在必要时转义<a href="http://www
+.regular-expressions.info/characters.html" target="_blank" rel="noopener">特殊字符</a>。</p>
+<blockquote>
+<p><a href="http://www.regular-expressions.info/characters.html" target="_blank" rel="noopener">there</a> are 12<br>characters with special meanings: the backslash <code>\</code>, the caret <code>^</code>, the dollar<br>sign <code>$</code>, the period or dot <code>.</code>, the vertical bar or pipe symbol <code>|</code>, the<br>question mark <code>?</code>, the asterisk or star <code>*</code>, the plus sign <code>+</code>, the opening<br>parenthesis <code>(</code>, the closing parenthesis <code>)</code>, and the opening square bracket<br><code>[</code>, the opening curly brace <code>{</code>, These special characters are often called<br>“metacharacters”.</p>
+</blockquote>
+<p>所以，如果你想分割，例如period / dot <code>。</code>表示正则表达式中的“<a href="http://www.regular-
+expressions.info/dot.html" target="_blank" rel="noopener">任何字符</a>” ，请使用<a href="http://www.regular-
+expressions.info/characters.html" target="_blank" rel="noopener">反斜杠<code>\</code> </a>来转义个别特殊字符所以<code>split（“\\。”）</code>，或者使用<a href="http://www.regular-expressions.info/charclass.html" target="_blank" rel="noopener">字符类<code>[]</code></a>来表示文字字符，就像<code>split（“[。]”）</code>一样，或者使用<a href="“http://docs.oracle.org"> <code>Pattern＃quote（）</code> </a>来转义整个字符串，像<code>split（Pattern.quote（“。”））</code>。</p>
+<pre><code>String[] parts = string.split(Pattern.quote(&quot;.&quot;)); // Split on period.
+</code></pre><p>要预先测试字符串是否包含某些字符，请使用<a href="“http://docs.oracle.com/javase/8/docs/api/java/lang/String.html#contains"> <code>String＃contains（）</code></a>。</p>
+<pre><code>if (string.contains(&quot;-&quot;)) {
+    // Split it.
+} else {
+    throw new IllegalArgumentException(&quot;String &quot; + string + &quot; does not contain -&quot;);
+}
+</code></pre><p>注意，这并不需要一个正则表达式。为此，请使用<a href="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html#matches-
+java.lang.String-" target="_blank" rel="noopener"> <code>String＃matches（）</code></a>。</p>
+<p>如果您希望在结果部分保留分隔符，请使用<a href="http://www.regular-
+expressions.info/lookaround.html" target="_blank" rel="noopener">正面环视</a>。如果您希望将分隔字符放在左侧，请在模式前添加<code>？&lt;=</code>组，使用正向后视。</p>
+<pre><code>String string = &quot;004-034556&quot;;
+String[] parts = string.split(&quot;(?&lt;=-)&quot;);
+String part1 = parts[0]; // 004-
+String part2 = parts[1]; // 034556
+</code></pre><p>如果你想让分割字符在右边结束，通过在模式前加上<code>？=</code>组来使用肯定的lookahead。</p>
+<pre><code>String string = &quot;004-034556&quot;;
+String[] parts = string.split(&quot;(?=-)&quot;);
+String part1 = parts[0]; // 004
+String part2 = parts[1]; // -034556
+</code></pre><p>如果您想限制结果部分的数量，那么您可以提供所需的数字作为<code>split（）</code>方法的第二个参数。</p>
+<pre><code>String string = &quot;004-034556-42&quot;;
+String[] parts = string.split(&quot;-&quot;, 2);
+String part1 = parts[0]; // 004
+String part2 = parts[1]; // 034556-42
+</code></pre><p>直接处理字符串的替代方法是使用正则表达式来捕获组。这具有的优点是，它使得直接暗示更复杂的输入限制。例如，以下内容将字符串拆分为两部分，并确保两部分只包含数字：</p>
+<pre><code>import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+class SplitExample
+{
+    private static Pattern twopart = Pattern.compile(&quot;(\\d+)-(\\d+)&quot;);
+
+    public static void checkString(String s)
+    {
+        Matcher m = twopart.matcher(s);
+        if (m.matches()) {
+            System.out.println(s + &quot; matches; first part is &quot; + m.group(1) +
+                               &quot;, second part is &quot; + m.group(2) + &quot;.&quot;);
+        } else {
+            System.out.println(s + &quot; does not match.&quot;);
+        }
+    }
+
+    public static void main(String[] args) {
+        checkString(&quot;123-4567&quot;);
+        checkString(&quot;foo-bar&quot;);
+        checkString(&quot;123-&quot;);
+        checkString(&quot;-4567&quot;);
+        checkString(&quot;123-4567-890&quot;);
+    }
+}
+</code></pre><p>由于该模式在这个实例中是固定的，所以它可以被预先编译并存储为一个静态成员（在这个例子中是在类加载时初始化的）。正则表达式是：</p>
+<pre><code>(\d+)-(\d+)
+</code></pre><p>括号表示捕获组;匹配正则表达式部分的字符串可以通过Match.group（）方法访问，如图所示。 \<br>d匹配单个十进制数字，+表示匹配一个或多个前面的表达式） -<br>没有特殊含义，所以只需要匹配输入中的那个字符。注意，你需要双重转义反斜线当把它写成一个Java字符串时，还有一些例子：</p>
+<pre><code>([A-Z]+)-([A-Z]+)          // Each part consists of only capital letters 
+([^-]+)-([^-]+)            // Each part consists of characters other than -
+([A-Z]{2})-(\d+)           // The first part is exactly two capital letters,
+                           // the second consists of digits
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/string/">string</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-to-split-a-string-in-java/" data-title="如何在Java中分割字符串 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-to-short-circuit-array-foreach-like-calling-break/" title="如何短路Array.forEach像调用break？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何短路Array.forEach像调用break？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-to-tell-jackson-to-ignore-a-field-during-serialization-if-its-value-is-null/"  title="如果杰克逊在序列化过程中忽略某个字段的值是否为空，该怎么办？">
+ <strong>下一篇：</strong><br/> 
+ <span>如果杰克逊在序列化过程中忽略某个字段的值是否为空，该怎么办？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,651 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java：检查与未经检查的异常说明 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我已经阅读StackOverFlow有关检查与未经检查的异常多个职位。我老实说还不太清楚如何正确使用它们。 Joshua Bloch在“ Effective Java ”中表示，  Use checked exceptions for recoverable conditions and runtime exceptions forprogramming errors (Item 58 in 2n">
+<meta name="keywords" content="java,exception,runtimeexception,checked-exceptions,unchecked-exception">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java：检查与未经检查的异常说明">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/java-checked-vs-unchecked-exception-explanation/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我已经阅读StackOverFlow有关检查与未经检查的异常多个职位。我老实说还不太清楚如何正确使用它们。 Joshua Bloch在“ Effective Java ”中表示，  Use checked exceptions for recoverable conditions and runtime exceptions forprogramming errors (Item 58 in 2n">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java：检查与未经检查的异常说明">
+<meta name="twitter:description" content="我已经阅读StackOverFlow有关检查与未经检查的异常多个职位。我老实说还不太清楚如何正确使用它们。 Joshua Bloch在“ Effective Java ”中表示，  Use checked exceptions for recoverable conditions and runtime exceptions forprogramming errors (Item 58 in 2n">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/" title="Java：检查与未经检查的异常说明" itemprop="url">Java：检查与未经检查的异常说明</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我已经阅读StackOverFlow有关检查与未经检查的异常多个职位。我老实说还不太清楚如何正确使用它们。</p>
+<p>Joshua Bloch在“ <em>Effective Java</em> ”中表示，</p>
+<blockquote>
+<p>Use checked exceptions for recoverable conditions and runtime exceptions for<br>programming errors (Item 58 in 2nd edition)</p>
+</blockquote>
+<p>让我们看看我是否正确理解这一点。</p>
+<p>这里是我对被检查的异常的理解：</p>
+<pre><code>try{
+    String userInput = //read in user input
+    Long id = Long.parseLong(userInput);
+}catch(NumberFormatException e){
+    id = 0; //recover the situation by setting the id to 0
+}
+</code></pre><p>&lt;强&gt; 1。上面是否考虑过检查异常？**</p>
+<p>&lt;强&gt; 2。 RuntimeException是一个未经检查的异常吗？**</p>
+<p>以下是我对非检查异常的理解：</p>
+<pre><code>try{
+    File file = new File(&quot;my/file/path&quot;);
+    FileInputStream fis = new FileInputStream(file);   
+}catch(FileNotFoundException e){
+
+//3. What should I do here?
+    //Should I &quot;throw new FileNotFoundException(&quot;File not found&quot;);&quot;?
+    //Should I log?
+    //Or should I System.exit(0);?
+}
+</code></pre><p>&lt;强&gt; 4。现在，不能上面的代码也是一个检查异常？我可以尝试恢复这种情况？我可以吗？**（注意：我的第三个问题在上面的<code>catch</code>里面）</p>
+<pre><code>try{
+    String filePath = //read in from user input file path
+    File file = new File(filePath);
+    FileInputStream fis = new FileInputStream(file);   
+}catch(FileNotFoundException e){
+    //Kindly prompt the user an error message
+    //Somehow ask the user to re-enter the file path.
+}
+</code></pre><p>&lt;强&gt; 5。为什么人们这样做？**</p>
+<pre><code>public void someMethod throws Exception{
+
+}
+</code></pre><p>他们为什么让这个例外冒出来呢？没有更好地处理错误？为什么泡起来？</p>
+<p>编辑：我应该冒出确切的异常或使用异常屏蔽它？**</p>
+<p><strong>以下是我的读物</strong></p>
+<p>[<br><a href="https://stackoverflow.com/questions/27578/when-to-choose-
+checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已检查和未检查的例外情况</a></p>
+<p><a id="more"></a> 许多人说，检查异常（即应明确捕获或重新抛出的异常）不应该被使用。例如，他们在C＃中被淘汰，大多数语言都没有。所以你总是可以抛出<code>RuntimeException</code>的子类（未经检查的异常）</p>
+<p>不过，我认为检查异常是有用的 -<br>当你想强制你的API的用户思考如何处理异常情况（如果它是可恢复的）时使用它们。只是检查的异常在Java平台中过度使用，这使得人们讨厌它们。</p>
+<p><a href="http://techblog.bozho.net/?p=316" target="_blank" rel="noopener">这是我对这个主题的扩展视图</a>。</p>
+<p>至于特定的问题：</p>
+<p><code>NumberFormatException</code>是否考虑检查异常？**<br>否。<code>NumberFormatException</code>未被选中（=是<code>RuntimeException</code>的子类）。为什么？我不知道。<br>（但应该有一个方法<code>isValidInteger（..）</code>）</p>
+<p><code></code> RuntimeException `是一个未经检查的异常吗？**<br>是的，确切地说。</p>
+<ul>
+<li><p><strong>我应该在这里做什么？</strong> 这取决于这个代码在哪里，你想要发生什么。如果它在UI层 - 抓住它并显示警告;如果它在服务层 - 根本不要捕捉 - 让它冒泡。只是不要吞下例外。如果在大多数情况下发生异常，您应该选择其中一个：</p>
+<ul>
+<li>记录并返回</li>
+<li>重新抛出它（声明它由方法抛出）</li>
+<li>通过在构造函数中传递当前构造函数来构造新的异常</li>
+</ul>
+</li>
+<li><strong>现在，上面的代码不能成为检查异常吗？我可以尝试恢复这种情况？我可以吗？</strong> 它可能是。但是，没有什么能够阻止你捕捉未经检查的异常，以及</li>
+</ul>
+<p>为什么人们在throws子句中添加class <code>Exception</code>？**<br>通常是因为人们懒得考虑要抓什么和重新抛出什么。抛出<code>Exception</code>是不好的做法，应该避免。</p>
+<p>唉，没有一个规则可以让你确定什么时候可以捕捉，什么时候重新抛出，何时使用检查以及何时使用未检查的异常。我同意这会导致很多混淆和很多错误的代码。<br>Bloch声明了一般原则（你引用了它的一部分）。一般的原则是重新抛出一个异常到你可以处理它的层。</p>
+<p>是否是“检查的异常”与你是否抓住它或你在catch块中做了什么无关。这是异常类的属性。除 <em><code>RuntimeException</code>及其子类外的<code>Exception</code> </em>的任何子类都是检查的异常。</p>
+<p>Java编译器强迫你捕获检查的异常，或者在方法签名中声明它们。这应该是为了提高程序的安全性，但是大多数人的意见似乎是不值得设计的问题。</p>
+<blockquote>
+<p>Why do they let the exception bubble up? Isnt handle error the sooner the<br>better? Why bubble up?</p>
+</blockquote>
+<p>因为这是例外的整个 <em>点</em> 。没有这种可能性，你就不需要例外。它们使您能够按照您选择的级别来处理错误，而不是强迫您在最初出现的低级方法中处理这些错误。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/exception/">exception</a><a href="/tags/runtimeexception/">runtimeexception</a><a href="/tags/checked-exceptions/">checked-exceptions</a><a href="/tags/unchecked-exception/">unchecked-exception</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/java-checked-vs-unchecked-exception-explanation/" data-title="Java：检查与未经检查的异常说明 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/java-8-listv-into-mapk-v/" title="Java 8列表&lt;V&gt;到地图&lt;K，V&gt;中">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Java 8列表&lt;V&gt;到地图&lt;K，V&gt;中</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/java-inner-class-and-static-nested-class/"  title="Java内部类和静态嵌套类">
+ <strong>下一篇：</strong><br/> 
+ <span>Java内部类和静态嵌套类
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

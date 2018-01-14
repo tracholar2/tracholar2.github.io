@@ -1,0 +1,666 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>我如何告诉Maven使用最新版本的依赖关系？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在Maven中，依赖通常是这样设置的： &amp;lt;dependency&amp;gt;   &amp;lt;groupId&amp;gt;wonderful-inc&amp;lt;/groupId&amp;gt;   &amp;lt;artifactId&amp;gt;dream-library&amp;lt;/artifactId&amp;gt;   &amp;lt;version&amp;gt;1.2.3&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; 现在">
+<meta name="keywords" content="java,maven-2,maven,dependencies,maven-metadata">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我如何告诉Maven使用最新版本的依赖关系？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-do-i-tell-maven-to-use-the-latest-version-of-a-dependency/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在Maven中，依赖通常是这样设置的： &amp;lt;dependency&amp;gt;   &amp;lt;groupId&amp;gt;wonderful-inc&amp;lt;/groupId&amp;gt;   &amp;lt;artifactId&amp;gt;dream-library&amp;lt;/artifactId&amp;gt;   &amp;lt;version&amp;gt;1.2.3&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; 现在">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我如何告诉Maven使用最新版本的依赖关系？">
+<meta name="twitter:description" content="在Maven中，依赖通常是这样设置的： &amp;lt;dependency&amp;gt;   &amp;lt;groupId&amp;gt;wonderful-inc&amp;lt;/groupId&amp;gt;   &amp;lt;artifactId&amp;gt;dream-library&amp;lt;/artifactId&amp;gt;   &amp;lt;version&amp;gt;1.2.3&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; 现在">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-i-tell-maven-to-use-the-latest-version-of-a-dependency/" title="我如何告诉Maven使用最新版本的依赖关系？" itemprop="url">我如何告诉Maven使用最新版本的依赖关系？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在Maven中，依赖通常是这样设置的：</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;wonderful-inc&lt;/groupId&gt;
+  &lt;artifactId&gt;dream-library&lt;/artifactId&gt;
+  &lt;version&gt;1.2.3&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><p>现在，如果您正在使用频繁发布的库，请不断更新＆lt; version＆gt;标签可能有点烦人。有什么办法告诉Maven总是使用最新的可用版本（从版本库）？</p>
+<p><a id="more"></a> <strong>_</strong>这个答案只适用于Maven 2！上面提到的<code>LATEST</code>和<code>RELEASE</code> metaversions [。_</p>
+<p>如果您始终想要使用最新版本，Maven有两个关键字可以用来替代版本范围。您应该谨慎使用这些选项，因为您不再控制所使用的插件/依赖项。</p>
+<blockquote>
+<p>When you depend on a plugin or a dependency, you can use the a version value<br>of LATEST or RELEASE. LATEST refers to the latest released or snapshot version<br>of a particular artifact, the most recently deployed artifact in a particular<br>repository. RELEASE refers to the last non-snapshot release in the repository.<br>In general, it is not a best practice to design software which depends on a<br>non-specific version of an artifact. If you are developing software, you might<br>want to use RELEASE or LATEST as a convenience so that you don’t have to<br>update version numbers when a new release of a third-party library is<br>released. When you release software, you should always make sure that your<br>project depends on specific versions to reduce the chances of your build or<br>your project being affected by a software release not under your control. Use<br>LATEST and RELEASE with caution, if at all.</p>
+</blockquote>
+<p>请参阅<a href="“http://www.sonatype.com/books/maven-book/reference/pom-
+relationships-sect-pom-syntax.html#pom-relationships-sect-latest-
+release”"> Maven书籍的POM语法部分</a>了解更多详情。或者在<a href="http://www.mojohaus.org/versions-maven-
+plugin/examples/resolve-ranges.html" target="_blank" rel="noopener">依赖版本范围</a>上查看此文档，其中：</p>
+<ul>
+<li>方括号（<code>[</code>＆amp; <code>]</code>）表示“closed”（包含）。</li>
+<li>圆括号（<code>（</code>＆amp; <code>）</code>）的意思是“open”（独占）。</li>
+</ul>
+<p>这是一个例子说明各种选项。在Maven仓库中，com.foo：my-foo具有以下元数据：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;metadata&gt;
+  &lt;groupId&gt;com.foo&lt;/groupId&gt;
+  &lt;artifactId&gt;my-foo&lt;/artifactId&gt;
+  &lt;version&gt;2.0.0&lt;/version&gt;
+  &lt;versioning&gt;
+    &lt;release&gt;1.1.1&lt;/release&gt;
+    &lt;versions&gt;
+      &lt;version&gt;1.0&lt;/version&gt;
+      &lt;version&gt;1.0.1&lt;/version&gt;
+      &lt;version&gt;1.1&lt;/version&gt;
+      &lt;version&gt;1.1.1&lt;/version&gt;
+      &lt;version&gt;2.0.0&lt;/version&gt;
+    &lt;/versions&gt;
+    &lt;lastUpdated&gt;20090722140000&lt;/lastUpdated&gt;
+  &lt;/versioning&gt;
+&lt;/metadata&gt;
+</code></pre><p>如果需要依赖该工件，您可以使用以下选项（其他<a href="“https://cwiki.apache.org/confluence/display/MAVENOLD/Dependency+Mediation+and+Conflict+Resolution#当然可以指定
+“DependencyMediationandConflictResolution-
+DependencyVersionRanges”rel"> version ranges</a>，这里只显示相关的）：</p>
+<p>声明一个确切的版本（总是会解析为1.0.1）：</p>
+<pre><code>&lt;version&gt;[1.0.1]&lt;/version&gt;
+</code></pre><p>声明一个明确的版本（除非发生冲突，否则Maven将选择一个匹配版本，否则将永远解析为1.0.1）：</p>
+<pre><code>&lt;version&gt;1.0.1&lt;/version&gt;
+</code></pre><p>声明所有1.x的版本范围（目前将解析为1.1.1）：</p>
+<pre><code>&lt;version&gt;[1.0.0,2.0.0)&lt;/version&gt;
+</code></pre><p>声明开放式版本范围（将解析为2.0.0）：</p>
+<pre><code>&lt;version&gt;[1.0.0,)&lt;/version&gt;
+</code></pre><p>声明版本为LATEST（将解析为2.0.0）（从maven 3.x中移除）</p>
+<pre><code>&lt;version&gt;LATEST&lt;/version&gt;
+</code></pre><p>声明版本为RELEASE（将解析为1.1.1）（从maven 3.x中删除）：</p>
+<pre><code>&lt;version&gt;RELEASE&lt;/version&gt;
+</code></pre><p>请注意，默认情况下，您自己的部署将更新Maven元数据中的“latest”条目，但要更新“release”条目，您需要从[。你可以用“-Prelease-<br>profile”或者“-DperformRelease = true”做这个。</p>
+<hr>
+<p>值得强调的是，任何允许Maven选择依赖版本（LATEST，RELEASE和版本范围）的方法都可能会让您打开时间问题，因为后来的版本可能会有不同的行为（例如，依赖项插件先前将默认值从true切换到false，结果令人困惑）。</p>
+<p>因此，在发行版中定义精确版本通常是一个好主意。正如<a href="https://stackoverflow.com/questions/30571
+/how-do-i-tell-maven-to-use-the-latest-version-
+of-a-dependency/1172805#1172805" target="_blank" rel="noopener"> Tim’s答案</a>指出，<a href="http://www.mojohaus.org/versions-maven-plugin/" target="_blank" rel="noopener"> maven-versions-plugin</a>是一个方便的工具更新依赖版本，特别是<a href="http://www.mojohaus.org/versions-maven-plugin/use-latest-versions-
+mojo.html" target="_blank" rel="noopener">版本：use-<br>latest-版本</a>和<a href="http://www.mojohaus.org/versions-maven-plugin/use-
+latest-releases-mojo.html" target="_blank" rel="noopener">版本：使用最新版本</a>目标。</p>
+<p>现在我知道这个话题已经老了，但是读到这个问题，OP提供了答案，看起来好像是<a href="“http://www.mojohaus.org/versions-maven-plugin/”rel"> Maven Versions Plugin</a>可能实际上是对他的问题的更好的回答：</p>
+<p>特别是下面的目标可以使用：</p>
+<ul>
+<li><strong>版本：use-latest-versions</strong> 在所有版本中搜索pom 这是一个更新的版本和 用最新的替换它们 版本</li>
+<li><strong>版本：use-latest-releases</strong> 在pom中搜索所有非SNAPSHOT 版本已经更新了 释放并用它们替换它们 最新版本。</li>
+<li><strong>版本：更新属性</strong> 更新a中定义的属性 项目，以便他们对应 最新的可用版本 特定的依赖关系。这可以 如果有一套依赖关系很有用 必须全部锁定到一个版本。</li>
+</ul>
+<p>还提供了以下其他目标：</p>
+<ul>
+<li><strong>版本：display-dependency-updates</strong> 扫描项目的依赖关系 产生这些报告 依赖关系更新 版本可用。</li>
+<li><strong>版本：display-plugin-updates</strong> 扫描项目的插件和 产生这些插件的报告 有更新的版本可用。</li>
+<li><strong>版本：update-parent</strong> 更新项目的父项部分 它引用了最新的 可用的版本。例如，如果 你用一个公司的根POM，这个 目标可以是有用的，如果你需要 确保你使用最新的 版本的公司根POM。</li>
+<li><strong>版本：update-child-modules</strong> 更新 一个项目的子模块等等 版本匹配的版本 当前的项目。例如，如果你 有一个聚合pom也是 它的项目的父母 总量和儿童和 父母版本不同步，这 mojo可以帮助修复的版本 子模块。 （注意你可能需要 在-N选项中调用Maven 为了运行这个目标，如果你的 项目被打破得如此糟糕 由于版本不能建立 错配）。</li>
+<li><strong>版本：锁定快照</strong> 在pom中搜索所有的“-NASHOT” 版本并用它们替换它们 当前的时间戳版本 -SNAPSHOT，例如-20090327.172306-4 </li>
+<li><strong>版本：unlock-snapshots</strong> 会搜索所有时间戳 锁定的快照版本和替换 他们与-SNAPSHOT。</li>
+<li><strong>版本：resolve-ranges</strong> 使用版本范围和 解决了具体的范围 正在使用的版本。</li>
+<li><strong>版本：使用版本</strong> 在pom中搜索所有的“-NASHOT”版本 已经发布和取代 他们与相应的释放 版本</li>
+<li><strong>版本：use-next-releases</strong> 在pom中搜索所有非SNAPSHOT 版本已经更新了 释放并用它们替换它们 下一个版本。</li>
+<li><strong>版本：use-next-versions</strong> 在pom中搜索所有版本 这是一个更新的版本和 将其替换为下一个版本。</li>
+<li><strong>版本：提交</strong> 删除pom.xml.versionsBackup文件。形式 一半的内置“穷人” SCM”。</li>
+<li><strong>版本：恢复</strong> 可以从中恢复pom.xml文件 pom.xml.versionsBackup文件。形式 一半的内置“穷人” SCM”。</li>
+</ul>
+<p>只是想我会把它包括在内以备将来参考。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/maven-2/">maven-2</a><a href="/tags/maven/">maven</a><a href="/tags/dependencies/">dependencies</a><a href="/tags/maven-metadata/">maven-metadata</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-do-i-tell-maven-to-use-the-latest-version-of-a-dependency/" data-title="我如何告诉Maven使用最新版本的依赖关系？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-do-i-split-a-string-with-any-whitespace-chars-as-delimiters/" title="如何将任何空格字符作为分隔符分割字符串？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何将任何空格字符作为分隔符分割字符串？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-do-i-test-for-an-empty-javascript-object/"  title="我如何测试一个空的JavaScript对象？">
+ <strong>下一篇：</strong><br/> 
+ <span>我如何测试一个空的JavaScript对象？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

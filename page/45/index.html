@@ -1,0 +1,1088 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+<meta property="og:type" content="website">
+<meta property="og:title" content="智子">
+<meta property="og:url" content="https://www.tracholar.top/page/45/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="智子">
+<meta name="twitter:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/storing-objects-in-html5-localstorage/" title="将对象存储在HTML5 localStorage中" itemprop="url">将对象存储在HTML5 localStorage中</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想在HTML5 <code>localStorage</code>中存储一个JavaScript对象，但是我的对象显然正在转换为一个字符串。</p>
+<p>我可以使用<code>localStorage</code>存储和检索原始JavaScript类型和数组，但对象似乎不工作。他们应该吗？</p>
+<p>这是我的代码：</p>
+<pre><code>var testObject = { &apos;one&apos;: 1, &apos;two&apos;: 2, &apos;three&apos;: 3 };
+console.log(&apos;typeof testObject: &apos; + typeof testObject);
+console.log(&apos;testObject properties:&apos;);
+for (var prop in testObject) {
+    console.log(&apos;  &apos; + prop + &apos;: &apos; + testObject[prop]);
+}
+
+// Put the object into storage
+localStorage.setItem(&apos;testObject&apos;, testObject);
+
+// Retrieve the object from storage
+var retrievedObject = localStorage.getItem(&apos;testObject&apos;);
+
+console.log(&apos;typeof retrievedObject: &apos; + typeof retrievedObject);
+console.log(&apos;Value of retrievedObject: &apos; + retrievedObject);
+</code></pre><p>控制台输出是</p>
+<pre><code>typeof testObject: object
+testObject properties:
+  one: 1
+  two: 2
+  three: 3
+typeof retrievedObject: string
+Value of retrievedObject: [object Object]
+</code></pre><p>在我看来，像<code>setItem</code>方法在将输入转换为字符串之前将其存储。</p>
+<p>我在Safari，Chrome和Firefox中看到了这种行为，所以我认为这是对<a href="http://www.w3.org/TR/webstorage/" target="_blank" rel="noopener">HTML5的误解网络存储</a>规范，而不是浏览器特定的错误或限制。</p>
+<p>我尝试了解<a href="“http://www.w3.org/TR/html5/infrastructure.html”rel">结构化克隆_算法。 noreferrer“&gt; http://www.w3.org/TR/html5/infrastructure.html</a>。我不完全明白它的意思，但也许我的问题与我的对象的属性不能被枚举（???）</p>
+<p>有一个简单的解决方法吗？</p>
+<hr>
+<p>更新：W3C最终改变了关于结构化克隆规范的想法，并决定改变规范来匹配实现。请参阅<a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=12111" target="_blank" rel="noopener">https://www.w3.org/Bugs/Public/show_bug。 CGI？ID = 12111</a>。所以这个问题不再100％有效，但答案仍然可能是有趣的。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/storing-objects-in-html5-localstorage/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html5/">html5</a><a href="/tags/local-storage/">local-storage</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+      <ins class="adsbygoogle"
+     style="display:block;  overflow:hidden;"
+     data-ad-format="fluid"
+     data-ad-layout-key="-ej+6f-q-c7+ou"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="5206371097"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/stringbuilder-vs-string-concatenation-in-tostring-in-java/" title="在Java中toString（）中的StringBuilder vs字符串连接" itemprop="url">在Java中toString（）中的StringBuilder vs字符串连接</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>给定下面的2 <code>toString（）</code>实现，哪一个是首选的：</p>
+<pre><code>public String toString(){
+    return &quot;{a:&quot;+ a + &quot;, b:&quot; + b + &quot;, c: &quot; + c +&quot;}&quot;;
+}
+</code></pre><p>或</p>
+<pre><code>public String toString(){
+    StringBuilder sb = new StringBuilder(100);
+    return sb.append(&quot;{a:&quot;).append(a)
+          .append(&quot;, b:&quot;).append(b)
+          .append(&quot;, c:&quot;).append(c)
+          .append(&quot;}&quot;)
+          .toString();
+}
+</code></pre><p>更重要的是，由于我们只有3个属性，它可能没有什么区别，但是在什么时候你会从<code>+</code> concat切换到<code>StringBuilder</code>？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/stringbuilder-vs-string-concatenation-in-tostring-in-java/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/string/">string</a><a href="/tags/stringbuilder/">stringbuilder</a><a href="/tags/performance/">performance</a><a href="/tags/concatenation/">concatenation</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/terminating-a-python-script/" title="终止一个Python脚本" itemprop="url">终止一个Python脚本</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我知道PHP中的<code>die（）</code>命令，可以尽早停止脚本。</p>
+<p>我怎样才能在Python中做到这一点？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/terminating-a-python-script/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/termination/">termination</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/trigger-a-button-click-with-javascript-on-the-enter-key-in-a-text-box/" title="用文本框中的Enter键触发一个按钮点击" itemprop="url">用文本框中的Enter键触发一个按钮点击</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有一个文本输入和一个按钮（见下文）。如果在文本框内按下<code>Enter</code>键，如何使用JavaScript <strong>触发按钮的点击事件</strong> ？</p>
+<p>在我目前的页面上已经有了一个不同的提交按钮，所以我不能简单地将按钮设为提交按钮。而且，只有当<code>Enter</code>键在这个文本框内按下时才需要点击这个特定的按钮，否则就没有别的了。</p>
+<pre><code>&lt;input type=&quot;text&quot; id=&quot;txtSearch&quot; /&gt;
+&lt;input type=&quot;button&quot; id=&quot;btnSearch&quot; value=&quot;Search&quot; onclick=&quot;doSomething();&quot; /&gt;
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/trigger-a-button-click-with-javascript-on-the-enter-key-in-a-text-box/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/button/">button</a><a href="/tags/onclick/">onclick</a><a href="/tags/onkeypress/">onkeypress</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/trim-string-in-javascript/" title="在JavaScript中修剪字符串？" itemprop="url">在JavaScript中修剪字符串？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何在JavaScript中修剪字符串？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/trim-string-in-javascript/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/string/">string</a><a href="/tags/trim/">trim</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/trimming-a-string-in-python/" title="在Python中修剪一个字符串" itemprop="url">在Python中修剪一个字符串</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何从Python中的字符串中删除前导和后缀的空白？</p>
+<p>例如：</p>
+<pre><code>&quot; Hello &quot; --&gt; &quot;Hello&quot;
+&quot; Hello&quot;  --&gt; &quot;Hello&quot;
+&quot;Hello &quot;  --&gt; &quot;Hello&quot;
+&quot;Bob has a cat&quot; --&gt; &quot;Bob has a cat&quot;
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/trimming-a-string-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a><a href="/tags/trim/">trim</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/try-except-in-python-how-do-you-properly-ignore-exceptions/" title="尝试/在Python除外：你如何正确地忽略例外？" itemprop="url">尝试/在Python除外：你如何正确地忽略例外？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>当你只是想做一个尝试（除了没有处理异常），你如何在Python中做到这一点？</p>
+<p>下面是正确的做法吗？</p>
+<pre><code>try:
+    shutil.rmtree(path)
+except:
+    pass
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/try-except-in-python-how-do-you-properly-ignore-exceptions/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/exception/">exception</a><a href="/tags/exception-handling/">exception-handling</a><a href="/tags/try-except/">try-except</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/ukkonens-suffix-tree-algorithm-in-plain-english/" title="简单的英语中的Ukkonen后缀树算法" itemprop="url">简单的英语中的Ukkonen后缀树算法</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在这一点上我感觉有点厚。我已经花了好几天的时间想把自己的头完全包裹在后缀树的构造中，但是因为我没有数学背景，所以很多的解释都是在我开始过度使用数学符号的时候解决的。最接近我找到的一个很好的解释是<br><em><a href="http://marknelson.us/1996/08/01/suffix-trees/" target="_blank" rel="noopener">带后缀的快速字符串搜索树</a> </em><br>，但他掩盖了各种各样的点，算法的某些方面仍然不清楚。</p>
+<p>这个关于Stack Overflow的这个算法的一步一步的解释对于除了我以外的其他许多人来说是非常宝贵的，我相信。</p>
+<p>作为参考，这里是关于算法的Ukkonen的论文：<a href="http://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf" target="_blank" rel="noopener"> http：// www。<br>cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf</a></p>
+<p>到目前为止，我的基本了解：</p>
+<ul>
+<li>我需要迭代给定字符串T的每个前缀P </li>
+<li>我需要遍历前缀P中的每个后缀S并将其添加到树中</li>
+<li>要为树添加后缀S，我需要遍历S中的每个字符，迭代包括沿着以S中相同的一组字符C开头的现有分支进行迭代，并且可能将边分割为后代当我在后缀中达到不同的字符时，或者如果没有匹配的边缘向下走，则返回节点。如果找不到匹配的边缘C，则会为C创建一个新的边缘。</li>
+</ul>
+<p>基本算法似乎是O（n  2 ），正如在大多数解释中指出的那样，因为我们需要遍历所有的前缀，那么我们需要遍历每一个每个前缀的后缀。<br>Ukkonen的算法显然是独一无二的，因为他使用了后缀指针技术，但我认为_是我无法理解的。</p>
+<p>我也很难理解：</p>
+<ul>
+<li>恰好在何时以及如何分配，使用和更改“活动点”</li>
+<li>算法的标准化方面正在发生什么</li>
+<li>为什么我看到的实现需要“修复”正在使用的变量</li>
+</ul>
+<hr>
+<p>这是完整的 <strong>C＃</strong> 源代码。它不仅能够正常工作，而且支持自动封装，并呈现更好看的输出文本图形。源代码和示例输出在：</p>
+<blockquote>
+<p><strong><a href="https://gist.github.com/2373868" target="_blank" rel="noopener">https://gist.github.com/2373868</a></strong></p>
+</blockquote>
+<hr>
+<p><strong>更新2017-11-04</strong></p>
+<p>多年以后，我发现了一个新的后缀树，并在 <strong>JavaScript</strong> 中实现了这个算法。 Gist在下面。它应该是无bug的。将它转储到一个js文件中，<code>npm install chalk</code>从相同的位置运行，然后运行node.js以查看一些丰富多彩的输出。在同一个Gist中有一个精简版，没有任何调试代码。</p>
+<blockquote>
+<p><strong><a href="https://gist.github.com/axefrog/c347bf0f5e0723cbd09b1aaed6ec6fc6" target="_blank" rel="noopener">https://gist.github.com/axefrog/c347bf0f5e0723cbd09b1aaed6ec6fc6</a></strong></p>
+</blockquote>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/ukkonens-suffix-tree-algorithm-in-plain-english/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/c/">c#</a><a href="/tags/algorithm/">algorithm</a><a href="/tags/search/">search</a><a href="/tags/suffix-tree/">suffix-tree</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/uncatchable-chucknorrisexception/" title="不可捕捉的ChuckNorrisException" itemprop="url">不可捕捉的ChuckNorrisException</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>是否可以在<a href="http://en.wikipedia.org/wiki/Java_%28programming_language%29" target="_blank" rel="noopener"> Java</a>中构建一段代码，这会构成一个假设的<code>java.lang.ChuckNorrisException</code>不可捕捉？</p>
+<p>想到的想法是使用拦截器或<a href="http://en.wikipedia.org/wiki/Aspect-
+oriented_programming" target="_blank" rel="noopener">面向方面的编程</a>。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/uncatchable-chucknorrisexception/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/exception/">exception</a><a href="/tags/exception-handling/">exception-handling</a><a href="/tags/aop/">aop</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/understanding-kwargs-in-python/" title="在Python中理解kwargs" itemprop="url">在Python中理解kwargs</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Python中<code>** kwargs</code>有什么用途？</p>
+<p>我知道你可以在表上做一个<code>objects.filter</code>，并传入一个<code>** kwargs</code>参数。</p>
+<p>我也可以这样做来指定time deltas，即<code>timedelta（hours = time1）</code>？</p>
+<p>它究竟如何工作？它是类作为“拆包”？像<code>a，b = 1,2</code>？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/understanding-kwargs-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/kwargs/">kwargs</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/page/44/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/43/">43</a><a class="page-number" href="/page/44/">44</a><span class="page-number current">45</span><a class="page-number" href="/page/46/">46</a><a class="page-number" href="/page/47/">47</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><a class="extend next" rel="next" href="/page/46/">Next<span></span></a>
+  </nav>
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+ </html>

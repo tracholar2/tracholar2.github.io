@@ -1,0 +1,805 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>什么是原始类型，为什么我们不应该使用它？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="Questions: Java中的原始类型是什么，为什么我经常听到它们不应该用在新代码中？ 如果我们不能使用原始类型，那么有什么替代方法？它是如何更好的？">
+<meta name="keywords" content="java,generics,raw-types">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是原始类型，为什么我们不应该使用它？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/what-is-a-raw-type-and-why-shouldnt-we-use-it/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="Questions: Java中的原始类型是什么，为什么我经常听到它们不应该用在新代码中？ 如果我们不能使用原始类型，那么有什么替代方法？它是如何更好的？">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是原始类型，为什么我们不应该使用它？">
+<meta name="twitter:description" content="Questions: Java中的原始类型是什么，为什么我经常听到它们不应该用在新代码中？ 如果我们不能使用原始类型，那么有什么替代方法？它是如何更好的？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-a-raw-type-and-why-shouldnt-we-use-it/" title="什么是原始类型，为什么我们不应该使用它？" itemprop="url">什么是原始类型，为什么我们不应该使用它？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Questions:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">What is a raw type?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">[JLS 4.8 Raw</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">What’s so special about raw types?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">See also</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">How’s a raw type different from using &lt;Object&gt; as type parameters?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">See also</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">How’s a raw type different from using &lt;?&gt; as a type parameter?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">A raw type is the erasure of that type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">If it’s unsafe, why is it allowed to use a raw type?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Are there no exceptions?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">See also</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h3><span id="questions">Questions:</span></h3><ul>
+<li>Java中的原始类型是什么，为什么我经常听到它们不应该用在新代码中？</li>
+<li>如果我们不能使用原始类型，那么有什么替代方法？它是如何更好的？</li>
+</ul>
+<a id="more"></a>
+<h2><span id="what-is-a-raw-type">What is a raw type?</span></h2><p>Java语言规范定义了一个 <em>原始类型</em> ，如下所示：</p>
+<h3><span id="jls-48-raw">[JLS 4.8 Raw</span></h3><p>Types](<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.8" target="_blank" rel="noopener">https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.8</a>)</p>
+<blockquote>
+<p>A raw type is defined to be one of:</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li>The reference type that is formed by taking the name of a generic type<br>declaration without an accompanying type argument list.</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li>An array type whose element type is a raw type.</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li>A non-<code>static</code> member type of a raw type <code>R</code> that is not inherited from<br>a superclass or superinterface of <code>R</code>.</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>&gt;</p>
+<p>下面是一个例子来说明：</p>
+<pre><code>public class MyType&lt;E&gt; {
+    class Inner { }
+    static class Nested { }
+
+    public static void main(String[] args) {
+        MyType mt;          // warning: MyType is a raw type
+        MyType.Inner inn;   // warning: MyType.Inner is a raw type
+
+        MyType.Nested nest; // no warning: not parameterized type
+        MyType&lt;Object&gt; mt1; // no warning: type parameter given
+        MyType&lt;?&gt; mt2;      // no warning: type parameter given (wildcard OK!)
+    }
+}
+</code></pre><p>这里，<code>MyType＆lt; E＆gt;</code>是一个 <em>参数化类型</em> （<a href="“https://docs.oracle.com/javase/specs/jls/se8"> JLS 4.5</a>）。通俗地说，这种类型简称为<code>MyType</code>，但技术上这个名称是<code>MyType＆lt; E＆gt;</code>。 mt <code>有一个原始类型（并生成一个编译警告）在上面定义的第一个项目符号点;</code> inn<br>`在第二个项目符号点也有一个原始类型。</p>
+<p><code>MyType.Nested</code>不是参数化类型，即使它是参数化类型<code>MyType＆lt; E＆gt;</code>的成员类型，因为它是<code>static</code> &gt;</p>
+<p><code>mt1</code>和<code>mt2</code>都是用实际的类型参数声明的，所以它们不是原始类型。</p>
+<hr>
+<h2><span id="whats-so-special-about-raw-types">What’s so special about raw types?</span></h2><p>基本上，原始类型的行为就像在泛型引入之前一样。也就是说，以下内容在编译时是完全合法的。</p>
+<pre><code>List names = new ArrayList(); // warning: raw type!
+names.add(&quot;John&quot;);
+names.add(&quot;Mary&quot;);
+names.add(Boolean.FALSE); // not a compilation error!
+</code></pre><p>上面的代码运行得很好，但是假设你也有下面的代码：</p>
+<pre><code>for (Object o : names) {
+    String name = (String) o;
+    System.out.println(name);
+} // throws ClassCastException!
+  //    java.lang.Boolean cannot be cast to java.lang.String
+</code></pre><p>现在我们在运行时遇到了麻烦，因为<code>names</code>包含的东西不是<code>instanceof String</code>。</p>
+<p>据推测，如果您希望<code>names</code>仅包含<code>String</code>，您可能仍然使用原始类型，而 <em>手动检查每个自己添加`，然后 </em>手动将<code>names</code>中的每个项目转换为<code>String</code>。 <strong>甚至更好</strong> ，但不是使用原始类型，而是让编译器为您完成所有工作_，利用Java泛型的强大功能。</p>
+<pre><code>List&lt;String&gt; names = new ArrayList&lt;String&gt;();
+names.add(&quot;John&quot;);
+names.add(&quot;Mary&quot;);
+names.add(Boolean.FALSE); // compilation error!
+</code></pre><p>当然，如果您希望<code>names</code>允许<code>Boolean</code>，那么您可以声明它为<code>List＆lt; Object＆gt;名称</code>，上面的代码将被编译。</p>
+<h3><span id="see-also">See also</span></h3><ul>
+<li><a href="https://docs.oracle.com/javase/tutorial/java/generics/" target="_blank" rel="noopener"> Java教程/泛型</a></li>
+</ul>
+<hr>
+<h2><span id="hows-a-raw-type-different-from-using-ltobjectgt-as-type-parameters">How’s a raw type different from using <code>&lt;Object&gt;</code> as type parameters?</span></h2><p>以下是来自 <em>Effective Java 2nd Edition，Item 23的引文：不要在新代码中使用原始类型</em> ：</p>
+<blockquote>
+<p>Just what is the difference between the raw type <code>List</code> and the<br>parameterized type <code>List&lt;Object&gt;</code>? Loosely speaking, the former has opted out<br>generic type checking, while the latter explicitly told the compiler that it<br>is capable of holding objects of any type. While you can pass a <code>List&lt;String&gt;</code>to a parameter of type <code>List</code>, you can’t pass it to a parameter of type<br><code>List&lt;Object&gt;</code>. There are subtyping rules for generics, and <code>List&lt;String&gt;</code> is<br>a subtype of the raw type <code>List</code>, but not of the parameterized type<br><code>List&lt;Object&gt;</code>. As a consequence, <strong>you lose type safety if you use raw type<br>like<code>List</code>, but not if you use a parameterized type like <code>List&lt;Object&gt;</code></strong>.</p>
+</blockquote>
+<p>为了说明这一点，请考虑下面的方法，该方法需要<code>List＆lt; Object＆gt;</code>并附加一个<code>new Object（）</code>。</p>
+<pre><code>void appendNewObject(List&lt;Object&gt; list) {
+   list.add(new Object());
+}
+</code></pre><p>Java中的泛型是不变的。 <code>List＆lt; String＆gt;</code>不是<code>List＆lt; Object＆gt;</code>，所以下面的代码会产生一个编译警告：</p>
+<pre><code>List&lt;String&gt; names = new ArrayList&lt;String&gt;();
+appendNewObject(names); // compilation error!
+</code></pre><p>如果已经声明<code>appendNewObject</code>将原始类型的<code>List</code>作为参数，那么就会进行编译，因此您将失去从泛型</p>
+<h3><span id="see-also">See also</span></h3><ul>
+<li><a href="https://stackoverflow.com/questions/2770264/what-is-the-difference-between-e-exndsnds-number-and-number/" target="_blank" rel="noopener"> <code>＆lt; E extends Number＆gt;</code>和<code>＆lt; Number＆gt;</code>？</a></li>
+<li><a href="https://stackoverflow.com/questions/2660827/java-generics-covariance" target="_blank" rel="noopener"> java泛型（不）协变</a></li>
+</ul>
+<hr>
+<h2><span id="hows-a-raw-type-different-from-using-ltgt-as-a-type-parameter">How’s a raw type different from using <code>&lt;?&gt;</code> as a type parameter?</span></h2><p><code>List ＆gt;</code>，<code>List＆lt; String＆gt;</code>等都是<code>List &lt;？&gt;</code>，所以它可能是诱人的说他们只是<code>List</code>而已。但是，有一个主要区别：由于<code>List 仅定义了</code> add（E）<code>，因此不能将任何任意对象添加到</code> List＆lt ;？＆GT;<br>。另一方面，由于原始类型<code>List</code>不具有类型安全性，因此您可以将<code>add</code>几乎添加到<code>List</code>中。 &gt; 考虑下面的代码片段的变化：</p>
+<pre><code>static void appendNewObject(List&lt;?&gt; list) {
+    list.add(new Object()); // compilation error!
+}
+//...
+
+List&lt;String&gt; names = new ArrayList&lt;String&gt;();
+appendNewObject(names); // this part is fine!
+</code></pre><p>编译器做了一个很好的工作来保护你免受可能违反<code>List＆lt;＆gt;</code>的类型不变性的影响！如果你已经将这个参数声明为原始类型<code>List list</code>，那么这个代码就会被编译，并且违反了` List＆lt; String＆gt;的类型不变性。名称</p>
+<hr>
+<h2><span id="a-raw-type-is-the-erasure-of-that-type">A raw type is the erasure of that type</span></h2><p>回到JLS 4.8：</p>
+<blockquote>
+<p>It is possible to use as a type <strong>the erasure</strong> of a parameterized type or<br>the erasure of an array type whose element type is a parameterized type.<br><strong>Such a type is called a <em>raw type</em>.</strong></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><em>[…]</em></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>The superclasses (respectively, superinterfaces) of a raw type are the<br>erasures of the superclasses (superinterfaces) of any of the parameterizations<br>of the generic type.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>The type of a constructor, instance method, or non-<code>static</code> field of a raw<br>type <code>C</code> that is not inherited from its superclasses or superinterfaces is the<br>raw type that corresponds to the erasure of its type in the generic<br>declaration corresponding to <code>C</code>.</p>
+</blockquote>
+<p>简单来说，当使用原始类型时，构造函数，实例方法和非<code>static</code>字段也被擦除_。</p>
+<p>以下面的例子：</p>
+<pre><code>class MyType&lt;E&gt; {
+    List&lt;String&gt; getNames() {
+        return Arrays.asList(&quot;John&quot;, &quot;Mary&quot;);
+    }
+
+    public static void main(String[] args) {
+        MyType rawType = new MyType();
+        // unchecked warning!
+        // required: List&lt;String&gt; found: List
+        List&lt;String&gt; names = rawType.getNames();
+        // compilation error!
+        // incompatible types: Object cannot be converted to String
+        for (String str : rawType.getNames())
+            System.out.print(str);
+    }
+}
+</code></pre><p>当我们使用原始的<code>MyType</code>时，<code>getNames</code>也被清除，所以它返回一个原始的<code>List</code>！</p>
+<p><a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.6" target="_blank" rel="noopener"> JLS 4.6</a>继续解释如下：</p>
+<blockquote>
+<p><strong>Type erasure also maps the signature of a constructor or method to a<br>signature that has no parameterized types or type variables.</strong> The erasure of<br>a constructor or method signature <code>s</code> is a signature consisting of the same<br>name as <code>s</code> and the erasures of all the formal parameter types given in <code>s</code>.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><strong>The return type of a method and the type parameters of a generic method or<br>constructor also undergo erasure if the method or constructor’s signature is<br>erased.</strong></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>The erasure of the signature of a generic method has no type parameters.</p>
+</blockquote>
+<p>下面的错误报告包含了来自编译器开发者Maurizio Cimadamore和JLS作者之一Alex Buckley关于为什么会发生这种行为的一些想法：<a href="“https：//">https://bugs.openjdk.java.net/browse/JDK-6400189 </a>。 （简而言之，它使规范更简单。）</p>
+<hr>
+<h2><span id="if-its-unsafe-why-is-it-allowed-to-use-a-raw-type">If it’s unsafe, why is it allowed to use a raw type?</span></h2><p>这里是JLS 4.8的另一个引用：</p>
+<blockquote>
+<p>The use of raw types is allowed only as a concession to compatibility of<br>legacy code. <em>The use of raw types in code written after the introduction of<br>genericity into the Java programming language is strongly discouraged. It is<br>possible that future versions of the Java programming language will disallow<br>the use of raw types.</em></p>
+</blockquote>
+<p>有效的Java第二版_ 也有这个添加：</p>
+<blockquote>
+<p>Given that you shouldn’t use raw types, why did the language designers allow<br>them? To provide compatibility.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>The Java platform was about to enter its second decade when generics were<br>introduced, and there was an enormous amount of Java code in existence that<br>did not use generics. It was deemed critical that all this code remains legal<br>and interoperable with new code that does use generics. It had to be legal to<br>pass instances of parameterized types to methods that were designed for use<br>with ordinary types, and vice versa. This requirement, known as <em>migration<br>compatibility</em> , drove the decision to support raw types.</p>
+</blockquote>
+<p>总之，原始类型不应该用在新代码中。 <strong>您应始终使用参数化类型</strong> 。</p>
+<hr>
+<h2><span id="are-there-no-exceptions">Are there no exceptions?</span></h2><p>不幸的是，因为Java泛型是非泛化的，在新代码中必须使用原始类型有两个例外：</p>
+<ul>
+<li><p>类文字，例如<code>List.class</code>，而不是<code>List＆lt; String＆gt; .class</code>  * <code>instanceof</code>操作数，例如<code>o instanceofSet</code>，而不是<code>o instanceofSet＆lt; String＆gt;</code></p>
+<h3><span id="see-also">See also</span></h3></li>
+<li><p>[为什么<code>集合＆lt; String＆gt; .class</code>非法？ / A&gt; </p>
+</li>
+</ul>
+<blockquote>
+<p>What are raw types in Java, and why do I often hear that they shouldn’t be<br>used in new code?</p>
+</blockquote>
+<p>原始类型是古代Java语言的历史。在开始的时候有<code>Collections</code>，他们只持有<code>Objects</code>。 <code>Collections</code>上的每个操作都需要从<code>Object</code>转换为所需的类型。</p>
+<pre><code>List aList = new ArrayList();
+String s = &quot;Hello World!&quot;;
+aList.add(s);
+String c = (String)aList.get(0);
+</code></pre><p>虽然大部分时间都是这样，但是错误确实发生了</p>
+<pre><code>List aNumberList = new ArrayList();
+String one = &quot;1&quot;;//Number one
+aNumberList.add(one);
+Integer iOne = (Integer)aNumberList.get(0);//Insert ClassCastException here
+</code></pre><p>旧的无类型集合不能强制类型安全，所以程序员必须记住他存储在集合中的内容。<br>为了解决这个限制，泛型开发人员会声明一次存储类型，编译器会这样做。</p>
+<pre><code>List&lt;String&gt; aNumberList = new ArrayList&lt;String&gt;();
+aNumberList.add(&quot;one&quot;);
+Integer iOne = aNumberList.get(0);//Compile time error
+String sOne = aNumberList.get(0);//works fine
+</code></pre><p>比较：</p>
+<pre><code>// Old style collections now known as raw types
+List aList = new ArrayList(); //Could contain anything
+// New style collections with Generics
+List&lt;String&gt; aList = new ArrayList&lt;String&gt;(); //Contains only Strings
+</code></pre><p>比较复杂的界面：</p>
+<pre><code>//raw, not type save can compare with Other classes
+class MyCompareAble implements CompareAble
+{
+   int id;
+   public int compareTo(Object other)
+   {return this.id - ((MyCompareAble)other).id;}
+}
+//Generic
+class MyCompareAble implements CompareAble&lt;MyCompareAble&gt;
+{
+   int id;
+   public int compareTo(MyCompareAble other)
+   {return this.id - other.id;}
+}
+</code></pre><p>请注意，用<code>compareTo（ComparAble）</code>与原始类型实现<code>ComparAble</code>接口是不可能的。 为什么你不应该使用它们：</p>
+<ul>
+<li>存储在<code>Collection</code>中的任何<code>Object</code>在被使用之前必须进行转换</li>
+<li>使用泛型启用编译时检查</li>
+<li>使用原始类型与将每个值存储为<code>Object</code>的方法相同</li>
+</ul>
+<p>编译器的功能： 泛型是向后兼容的，它们使用与原始类型相同的Java类。这个奇迹主要发生在编译时。</p>
+<pre><code>List&lt;String&gt; someStrings = new ArrayList&lt;String&gt;();
+someStrings.add(&quot;one&quot;);
+String one = someStrings.get(0);
+</code></pre><p>将被编译为：</p>
+<pre><code>List someStrings = new ArrayList();
+someStrings.add(&quot;one&quot;); 
+String one = (String)someStrings.get(0);
+</code></pre><p>如果您直接使用原始类型，那么您将编写相同的代码。以为我不确定接口中会发生什么，我猜测它创建了两个<code>compareTo</code>函数，一个接受<code>MyCompareAble</code>，另一个接受另一个<code>MyCompareAble</code>接受一个<code>Object</code>，并在投射之后将它传递给第一个。</p>
+<p>原始类型有哪些替代方法：使用[泛型</p>
+<p>一&gt;</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/generics/">generics</a><a href="/tags/raw-types/">raw-types</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/what-is-a-raw-type-and-why-shouldnt-we-use-it/" data-title="什么是原始类型，为什么我们不应该使用它？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/what-is-a-mixin-and-why-are-they-useful/" title="什么是混合，为什么他们有用？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  什么是混合，为什么他们有用？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/what-is-a-serialversionuid-and-why-should-i-use-it/"  title="什么是serialVersionUID，为什么要使用它？">
+ <strong>下一篇：</strong><br/> 
+ <span>什么是serialVersionUID，为什么要使用它？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Questions:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">What is a raw type?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">[JLS 4.8 Raw</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">What’s so special about raw types?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">See also</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">How’s a raw type different from using &lt;Object&gt; as type parameters?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">See also</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">How’s a raw type different from using &lt;?&gt; as a type parameter?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">A raw type is the erasure of that type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">If it’s unsafe, why is it allowed to use a raw type?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Are there no exceptions?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">See also</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -112,7 +112,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/where-can-i-find-documentation-on-formatting-a-date-in-javascript/" title="我在哪里可以找到有关在JavaScript中格式化日期的文档？" itemprop="url">我在哪里可以找到有关在JavaScript中格式化日期的文档？</a>
+      <a href="/2018/01/14/large-data-work-flows-using-pandas/" title="“大数据”使用大熊猫的工作流程" itemprop="url">“大数据”使用大熊猫的工作流程</a>
   </h1>
   <p class="article-author">By
        
@@ -125,26 +125,40 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>我注意到，JavaScript的<code>new Date（）</code>函数在接受多种格式的日期方面非常聪明。</p>
-<pre><code>Xmas95 = new Date(&quot;25 Dec, 1995 23:15:00&quot;)
-Xmas95 = new Date(&quot;2009 06 12,12:52:39&quot;)
-Xmas95 = new Date(&quot;20 09 2006,12:52:39&quot;)
-</code></pre><p>在调用<code>new Date（）</code>函数时，我无法在任何地方找到显示所有有效字符串格式的文档。</p>
-<p>这是为了将字符串转换为日期。如果我们看另一面，即将日期对象转换为字符串，直到现在我还是觉得JavaScript没有内置API来将日期对象格式化为字符串。</p>
-<blockquote>
-<p><strong>Editor’s note:</strong> The following approach is the asker’s attempt that worked<br>on a particular browser but does <em>not</em> work in general; <strong>see the answers on<br>this page</strong> to see some actual solutions.</p>
-</blockquote>
-<p>今天，我在date对象上使用了<code>toString（）</code>方法，并且令人惊讶地发挥了将日期格式化为字符串的作用。</p>
-<pre><code>var d1 = new Date();
-d1.toString(&apos;yyyy-MM-dd&apos;);       //Returns &quot;2009-06-29&quot; in Internet Explorer, but not Firefox or Chrome
-d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&quot; in Internet Explorer, but not Firefox or Chrome
-</code></pre><p>另外在这里，我找不到任何有关我们可以将日期对象格式化为字符串的方法的文档。</p>
-<p>在哪里列出了<code>Date（）</code>对象支持的格式说明符？</p>
+        <p>在学习熊猫的过程中，我试图解答这个问题好几个月。我使用SAS进行日常工作，这对我们来说是非常棒的支持。但是，由于其他原因，SAS作为软件是非常糟糕的。</p>
+<p>有一天，我希望用python和pandas取代我使用SAS，但是我目前缺乏大型数据集的核心外工作流程。我不是在谈论需要分布式网络的“大数据”，而是文件太大而不适合内存，但又足够小以适应硬盘驱动器。</p>
+<p>我的第一个想法是使用<code>HDFStore</code>在磁盘上保存大数据集，并只将需要的部分拖放到数据框中进行分析。其他人提到MongoDB是一个更易于使用的替代方案。我的问题是这样的：</p>
+<p>有哪些最佳实践工作流程可以完成以下工作：</p>
+<ul>
+<li>将平面文件加载到永久的磁盘上数据库结构</li>
+<li>查询该数据库以检索要送入熊猫数据结构的数据</li>
+<li>在pandas中处理作品之后更新数据库</li>
+</ul>
+<p>真实世界的例子会受到大家的赞赏，尤其是那些使用“大数据”熊猫的人。</p>
+<p>编辑 - 我想如何工作的例子：</p>
+<ul>
+<li>迭代地导入一个大的平面文件并将其存储在一个永久性的磁盘数据库结构中。这些文件通常太大而不适合内存。</li>
+<li>为了使用“熊猫”，我想读取这些数据的子集（通常只是一些列），可以放在内存中。</li>
+<li>我会通过对所选列进行各种操作来创建新列。</li>
+<li>然后，我必须将这些新列添加到数据库结构中。</li>
+</ul>
+<p>我试图找到一个执行这些步骤的最佳实践方式。阅读关于熊猫和pytables的链接，似乎添加一个新列可能是一个问题。</p>
+<p>编辑 - 特别回应杰夫的问题：</p>
+<ul>
+<li>我正在建立消费者信用风险模型。数据种类包括电话，SSN和地址特征;财产价值;像犯罪记录，破产等贬义的信息……我每天使用的数据集平均有近1000到2000个混合数据类型的字段：数字和字符数据的连续变量，名义变量和有序变量。我很少追加行，但是我执行许多操作来创建新的列。</li>
+<li><p>典型的操作涉及将使用条件逻辑的多个列组合成新的复合列。例如，<code>if var1＆gt; 2 then newvar =&#39;A&#39;elif var2 = 4 then newvar =&#39;B&#39;</code>。这些操作的结果是我数据集中每个记录的新列。<br>最后，我想将这些新列添加到磁盘数据结构中。我会重复第2步，使用交叉表和描述性统计数据来探索数据，试图找到有趣，直观的模型关系。</p>
+</li>
+<li><p>一个典型的项目文件通常大约是1GB。文件被组织成一行，其中包含消费者数据的记录。每行记录的每一行都有相同的列数。这总是如此。</p>
+</li>
+<li>在创建新列时，我将按行逐个分组，这是非常罕见的。但是，创建报告或生成描述性统计信息时，对行进行子集的处理是非常常见的。例如，我可能想为特定的业务线创建一个简单的频率，比如零售信用卡。要做到这一点，我只会选择那些业务线=零售的记录，除了我想报告的任何一列。但是，在创建新列时，我会提取所有数据行，并只提取操作所需的列。<br>建模过程要求我分析每一列，查找与某个结果变量有趣的关系，并创建描述这些关系的新复合列。我探索的专栏通常以小集合完成。例如，我将重点讨论一组刚刚处理财产价值的20列，并观察它们与贷款违约的关系。一旦探索了这些内容，并创建了新的专栏，那么我就转到另一组专栏，说大学教育，重复这个过程。我正在做的是创建候选变量来解释我的数据和一些结果之间的关系。在这个过程的最后，我应用了一些学习技巧，从这些复合列中创建一个等式。</li>
+</ul>
+<p>我很少会将行添加到数据集中。我将几乎总是创建新的列（统计/机器学习说法中的变量或功能）。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/where-can-i-find-documentation-on-formatting-a-date-in-javascript/#more">Read More</a>
+            <a href="/2018/01/14/large-data-work-flows-using-pandas/#more">Read More</a>
           
        </p>
     </div>
@@ -154,7 +168,7 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/date/">date</a><a href="/tags/datetime/">datetime</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/pandas/">pandas</a><a href="/tags/mongodb/">mongodb</a><a href="/tags/hdf5/">hdf5</a><a href="/tags/large-data/">large-data</a>
   </div>
 
 </div>
@@ -194,7 +208,7 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/where-should-i-put-script-tags-in-html-markup/" title="我应该在HTML标记中放置&lt;script&gt;标记？" itemprop="url">我应该在HTML标记中放置&lt;script&gt;标记？</a>
+      <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/" title="“最小的惊讶”和可变的默认论据" itemprop="url">“最小的惊讶”和可变的默认论据</a>
   </h1>
   <p class="article-author">By
        
@@ -207,14 +221,46 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
 </header>
     <div class="article-content">
         
-        <p>将JavaScript嵌入到HTML文档中时，放置<code>＆lt; script＆gt;</code>标签和包含JavaScript的适当位置在哪里？我似乎记得，你不应该把它们放在<code>＆lt; head＆gt;</code>部分，但是放在<code>＆lt; body＆gt;</code>部分的开头也是不好的，因为JavaScript必须在页面完全呈现（或类似的东西）之前解析。这似乎将<code>＆lt; body＆gt;</code>部分的 <em>end</em><br>作为<code>＆lt; script＆gt;</code>标记的逻辑位置。</p>
-<p>那么， __ 是放置<code>＆lt; script＆gt;</code>标记的正确位置？</p>
-<p>（这个问题引用了[这个问题&lt; / a&gt;，其中建议JavaScript函数调用应该从<code>＆lt; a＆gt;</code>标记移动到<code>＆lt; script＆gt;</code>标记。但更一般的答案也是适当的。）</p>
+        <p>任何人用Python来修补已经被下面的问题困住了（或撕碎）：</p>
+<pre><code>def foo(a=[]):
+    a.append(5)
+    return a
+</code></pre><p>Python新手会期望这个函数总是返回一个只有一个元素的列表：<code>[5]</code>。结果是非常不同的，而且非常惊人（对于新手来说）：</p>
+<pre><code>&gt;&gt;&gt; foo()
+[5]
+&gt;&gt;&gt; foo()
+[5, 5]
+&gt;&gt;&gt; foo()
+[5, 5, 5]
+&gt;&gt;&gt; foo()
+[5, 5, 5, 5]
+&gt;&gt;&gt; foo()
+</code></pre><p>我的一位经理曾经第一次遇到这个功能，并称这是一个“戏剧性的设计缺陷”。我回答说，这个行为有一个基本的解释，如果你不了解内部，那确实是非常令人费解和意外的。然而，我无法回答（对我自己）以下问题：在函数定义处绑定默认参数的原因是什么，而不是在函数执行处？我怀疑经验丰富的行为是否有实际用途（谁真的在C中使用静态变量，而没有繁殖错误？）</p>
+<p><strong>编辑</strong> ：</p>
+<p>Baczek做了一个有趣的例子。再加上你的大部分意见和尤其是Utaal的意见，我进一步阐述了：</p>
+<pre><code>&gt;&gt;&gt; def a():
+...     print(&quot;a executed&quot;)
+...     return []
+... 
+&gt;&gt;&gt;            
+&gt;&gt;&gt; def b(x=a()):
+...     x.append(5)
+...     print(x)
+... 
+a executed
+&gt;&gt;&gt; b()
+[5]
+&gt;&gt;&gt; b()
+[5, 5]
+</code></pre><p>对我来说，这个设计的决定似乎是相对于把参数的范围放在哪里：在函数里面还是在一起呢？</p>
+<p>在函数内部进行绑定意味着<code>x</code>在函数被调用时被有效地绑定到指定的默认值，而不是被定义的，这会带来很深的缺陷：` def &lt; /<br>code&gt;行将是“混合”的，这意味着函数对象的绑定的一部分将在定义处发生，而在函数调用时则是部分（分配默认参数）。</p>
+<p>实际的行为更加一致：当行被执行时，该行的所有内容都被执行，这意味着函数定义。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/where-should-i-put-script-tags-in-html-markup/#more">Read More</a>
+            <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/#more">Read More</a>
           
        </p>
     </div>
@@ -224,7 +270,7 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/html/">html</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/language-design/">language-design</a><a href="/tags/least-astonishment/">least-astonishment</a>
   </div>
 
 </div>
@@ -253,7 +299,7 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/why-does-this-code-using-random-strings-print-hello-world/" title="为什么这个使用随机字符串的代码打印“hello world”？" itemprop="url">为什么这个使用随机字符串的代码打印“hello world”？</a>
+      <a href="/2018/01/14/length-of-a-javascript-object/" title="JavaScript对象的长度" itemprop="url">JavaScript对象的长度</a>
   </h1>
   <p class="article-author">By
        
@@ -266,30 +312,333 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
 </header>
     <div class="article-content">
         
-        <p>下面的打印语句将打印“hello world”。 任何人都可以解释这个？</p>
-<pre><code>System.out.println(randomString(-229985452) + &quot; &quot; + randomString(-147909649));
-</code></pre><p>和<code>randomString（）</code>看起来像这样：</p>
-<pre><code>public static String randomString(int i)
-{
-    Random ran = new Random(i);
-    StringBuilder sb = new StringBuilder();
-    while (true)
-    {
-        int k = ran.nextInt(27);
-        if (k == 0)
-            break;
+        <p>如果我有一个JavaScript对象，请说</p>
+<pre><code>var myObject = new Object();
+myObject[&quot;firstname&quot;] = &quot;Gareth&quot;;
+myObject[&quot;lastname&quot;] = &quot;Simpson&quot;;
+myObject[&quot;age&quot;] = 21;
+</code></pre><p>有没有一个内置的或接受的最佳实践方式来获得这个对象的长度？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/length-of-a-javascript-object/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
 
-        sb.append((char)(&apos;`&apos; + k));
-    }
 
-    return sb.toString();
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/javascript-objects/">javascript-objects</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/limiting-floats-to-two-decimal-points/" title="限制浮点数到两个小数点" itemprop="url">限制浮点数到两个小数点</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我希望<code>a</code>四舍五入为13.95 _。</p>
+<pre><code>&gt;&gt;&gt; a
+13.949999999999999
+&gt;&gt;&gt; round(a, 2)
+13.949999999999999
+</code></pre><p><a href="https://docs.python.org/2/library/functions.html#round" target="_blank" rel="noopener"> <code>round</code></a>函数不会以我期望的方式工作。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/limiting-floats-to-two-decimal-points/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/floating-point/">floating-point</a><a href="/tags/rounding/">rounding</a><a href="/tags/precision/">precision</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/linking-to-an-external-url-in-javadoc/" title="链接到Javadoc中的外部URL？" itemprop="url">链接到Javadoc中的外部URL？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>类似于：</p>
+<pre><code>/**
+ * See {@linktourl http://google.com}
+ */
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/linking-to-an-external-url-in-javadoc/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/url/">url</a><a href="/tags/hyperlink/">hyperlink</a><a href="/tags/javadoc/">javadoc</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/list-filtering-list-comprehension-vs-lambda-filter/" title="列表过滤：列表理解与lambda +过滤器" itemprop="url">列表过滤：列表理解与lambda +过滤器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我碰巧发现自己有一个基本的过滤需求：我有一个列表，我必须通过项目的属性过滤它。</p>
+<p>我的代码看起来像这样：</p>
+<pre><code>my_list = [x for x in my_list if x.attribute == value]
+</code></pre><p>然而，我想，这样写是不是更好？</p>
+<pre><code>my_list = filter(lambda x: x.attribute == value, my_list)
+</code></pre><p>它更具可读性，如果性能需要，lambda可以被拿出来获得一些东西。</p>
+<p>问题是：在使用第二种方法时是否有任何警告？任何性能差异？我是否完全错过了Pythonic Way<br>?,应该用另一种方式来做（比如使用itemgetter而不是lambda）？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/list-filtering-list-comprehension-vs-lambda-filter/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a><a href="/tags/lambda/">lambda</a><a href="/tags/functional-programming/">functional-programming</a><a href="/tags/filter/">filter</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/lookup-enum-by-string-value/" title="通过字符串值查找枚举" itemprop="url">通过字符串值查找枚举</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>假设我有一个枚举，只是</p>
+<pre><code>public enum Blah {
+    A, B, C, D
 }
+</code></pre><p>我想找到一个字符串的枚举值，例如<code>“A”</code>，它将是<code>Blah.A</code>。如何做到这一点？</p>
+<p>是我需要的<code>Enum.valueOf（）</code>方法吗？如果是这样，我将如何使用这个？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/lookup-enum-by-string-value/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/enums/">enums</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/making-a-flat-list-out-of-list-of-lists-in-python/" title="从Python列表中列出一个扁平列表" itemprop="url">从Python列表中列出一个扁平列表</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想知道是否有一个快捷方式可以在Python列表中列出一个简单的列表。</p>
+<p>我可以做一个for循环，但也许有一些很酷的“单线”？我试过用 <em>reduce</em> ，但是出现错误。</p>
+<p>&lt;强&gt;代码</p>
+<pre><code>l = [[1, 2, 3], [4, 5, 6], [7], [8, 9]]
+reduce(lambda x, y: x.extend(y), l)
+</code></pre><p><strong>错误讯息</strong></p>
+<pre><code>Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;lambda&gt;
+AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-does-this-code-using-random-strings-print-hello-world/#more">Read More</a>
+            <a href="/2018/01/14/making-a-flat-list-out-of-list-of-lists-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -299,7 +648,7 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/string/">string</a><a href="/tags/random/">random</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a><a href="/tags/multidimensional-array/">multidimensional-array</a><a href="/tags/flatten/">flatten</a>
   </div>
 
 </div>
@@ -328,7 +677,7 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/why-are-python-lambdas-useful/" title="为什么Python lambda有用？ [关闭]" itemprop="url">为什么Python lambda有用？ [关闭]</a>
+      <a href="/2018/01/14/manually-raising-throwing-an-exception-in-python/" title="在Python中手动提高（抛出）异常" itemprop="url">在Python中手动提高（抛出）异常</a>
   </h1>
   <p class="article-author">By
        
@@ -341,15 +690,12 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
 </header>
     <div class="article-content">
         
-        <p>我试图找出Python的lambdas。拉姆达是那些在现实生活中应该被遗忘的“有趣”的语言项目之一吗？</p>
-<p>我相信有一些边缘情况可能需要它，但是由于它的模糊性，它在未来版本中的重新定义的可能性（基于它的各种定义的我的假设）和编码清晰度的降低 - 应该避免吗？</p>
-<p>这让我想起了C类型的溢出（缓冲区溢出） - 指向顶部变量和重载来设置其他字段值。这感觉就像一个技术人员的表演，但维护编码器的噩梦。</p>
-<p>
+        <p>如何在Python中引发异常，以便通过<code>除</code>块之外的其他方法捕获异常？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-are-python-lambdas-useful/#more">Read More</a>
+            <a href="/2018/01/14/manually-raising-throwing-an-exception-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -359,7 +705,7 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/lambda/">lambda</a><a href="/tags/function/">function</a><a href="/tags/closures/">closures</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/exception/">exception</a><a href="/tags/exception-handling/">exception-handling</a>
   </div>
 
 </div>
@@ -388,7 +734,7 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/which-python-memory-profiler-is-recommended/" title="哪个Python内存分析器被推荐？ [关闭]" itemprop="url">哪个Python内存分析器被推荐？ [关闭]</a>
+      <a href="/2018/01/14/map-two-lists-into-a-dictionary-in-python/" title="将两个列表映射到Python中的字典中" itemprop="url">将两个列表映射到Python中的字典中</a>
   </h1>
   <p class="article-author">By
        
@@ -401,21 +747,20 @@ d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&
 </header>
     <div class="article-content">
         
-        <p>我想知道我的Python应用程序的内存使用情况，特别想知道哪些代码块/部分或对象消耗了大部分内存。 谷歌搜索显示一个商业的是<a href="http://www.softwareverify.com/python/memory/index.html" target="_blank" rel="noopener">Python内存验证器</a>（仅限Windows）<br>p&gt;</p>
-<p>开放源代码是<a href="http://pysizer.8325.org/" target="_blank" rel="noopener"> PySizer </a>和<a href="“http：//guppy-
-pe.sourceforge"> Heapy </a>。</p>
-<p>我没有尝试过任何人，所以我想知道哪一个是最好的考虑：</p>
-<ul>
-<li><p>给出大部分细节。</p>
-</li>
-<li><p>我必须对我的代码做最少的改动或不改变。</p>
-</li>
-</ul>
+        <p>假设你有：</p>
+<pre><code>keys = (&apos;name&apos;, &apos;age&apos;, &apos;food&apos;)
+values = (&apos;Monty&apos;, 42, &apos;spam&apos;)
+</code></pre><p>生成下面的字典最简单的方法是什么？</p>
+<pre><code>a_dict = {&apos;name&apos; : &apos;Monty&apos;, &apos;age&apos; : 42, &apos;food&apos; : &apos;spam&apos;}
+</code></pre><p>这段代码有用，但我并不为此感到骄傲：</p>
+<pre><code>a_dict = {}
+junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/which-python-memory-profiler-is-recommended/#more">Read More</a>
+            <a href="/2018/01/14/map-two-lists-into-a-dictionary-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -425,339 +770,7 @@ pe.sourceforge"> Heapy </a>。</p>
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/performance/">performance</a><a href="/tags/profiling/">profiling</a><a href="/tags/memory-management/">memory-management</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-do-people-write-usr-bin-env-python-on-the-first-line-of-a-python-script/" title="为什么人们在Python脚本的第一行编写＃！/ usr / bin / env python？" itemprop="url">为什么人们在Python脚本的第一行编写＃！/ usr / bin / env python？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在我看来，这些文件在没有该行的情况下运行相同。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-do-people-write-usr-bin-env-python-on-the-first-line-of-a-python-script/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/shell/">shell</a><a href="/tags/shebang/">shebang</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-does-comparing-strings-in-python-using-either-or-is-sometimes-produce/" title="为什么在Python中使用&#39;==&#39;或&#39;is&#39;比较字符串有时会产生不同的结果？" itemprop="url">为什么在Python中使用&#39;==&#39;或&#39;is&#39;比较字符串有时会产生不同的结果？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有一个Python程序，其中两个变量被设置为值<code>&#39;public&#39;</code>。在条件表达式中，我有比较<code>var1是var2</code>，但是如果将其更改为<code>var1
-== var2</code>，则返回<code>True</code> / p&gt; 现在，如果我打开我的Python解释器，并做相同的“是”比较，它会成功。</p>
-<pre><code>&gt;&gt;&gt; s1 = &apos;public&apos;
-&gt;&gt;&gt; s2 = &apos;public&apos;
-&gt;&gt;&gt; s2 is s1
-True
-</code></pre><p>我在这里错过了什么？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-does-comparing-strings-in-python-using-either-or-is-sometimes-produce/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a><a href="/tags/comparison/">comparison</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-does-my-javascript-get-a-no-access-control-allow-origin-header-is-present/" title="为什么我的JavaScript得到一个“否”访问控制 - 允许来源“标题出现在请求的资源”错误时，邮差不？" itemprop="url">为什么我的JavaScript得到一个“否”访问控制 - 允许来源“标题出现在请求的资源”错误时，邮差不？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我试图通过连接到<a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank" rel="noopener"> JavaScript</a>进行授权：//en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web<em>services“rel<br>=”noreferrer“&gt; RESTful  [ [ Flask](<a href="https://en.wikipedia.org/wiki/Flask" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Flask</a></em>%28web_framework%29)中构建的API](”<a href="http://en.wikipedia.org/wiki/Application_programming_interface“rel)。但是，当我提出请求时，出现以下错误：" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/Application_programming_interface“rel)。但是，当我提出请求时，出现以下错误：</a></p>
-<blockquote>
-<p>XMLHttpRequest cannot load <a href="http://myApiUrl/login" target="_blank" rel="noopener">http://myApiUrl/login</a>. No ‘Access-Control-<br>Allow-Origin’ header is present on the requested resource. Origin ‘null’ is<br>therefore not allowed access.</p>
-</blockquote>
-<p>我知道API或远程资源必须设置标题，但是为什么当我通过Chrome扩展程序<a href="“https://chrome.google.com/webstore/detail/postman">邮递员</a>？</p>
-<p>这是请求代码：</p>
-<pre><code>$.ajax({
-    type: &quot;POST&quot;,
-    dataType: &apos;text&apos;,
-    url: api,
-    username: &apos;user&apos;,
-    password: &apos;pass&apos;,
-    crossDomain : true,
-    xhrFields: {
-        withCredentials: true
-    }
-})
-    .done(function( data ) {
-        console.log(&quot;done&quot;);
-    })
-    .fail( function(xhr, textStatus, errorThrown) {
-        alert(xhr.responseText);
-        alert(textStatus);
-    });
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-does-my-javascript-get-a-no-access-control-allow-origin-header-is-present/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/cors/">cors</a><a href="/tags/restful-authentication/">restful-authentication</a><a href="/tags/same-origin-policy/">same-origin-policy</a><a href="/tags/flask-restless/">flask-restless</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-does-parseint1-0-19-return-18/" title="为什么parseInt（1/0，19）返回18？" itemprop="url">为什么parseInt（1/0，19）返回18？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我在JavaScript中遇到了一个令人讨厌的问题。</p>
-<pre><code>&gt; parseInt(1 / 0, 19)
-&gt; 18
-</code></pre><p>为什么<code>parseInt</code>返回<code>18</code>？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-does-parseint1-0-19-return-18/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/parseint/">parseint</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-does-python-code-run-faster-in-a-function/" title="为什么Python代码在函数中运行得更快？" itemprop="url">为什么Python代码在函数中运行得更快？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>def main():<br>        for i in xrange(10**8):<br>            pass<br>    main()</p>
-<p>Python中的这段代码运行在（注意：时序是在Linux的BASH中的时间函数中完成的。）</p>
-<pre><code>real    0m1.841s
-user    0m1.828s
-sys     0m0.012s
-</code></pre><p>但是，如果for循环没有放在函数中，</p>
-<pre><code>for i in xrange(10**8):
-    pass
-</code></pre><p>然后运行时间更长：</p>
-<pre><code>real    0m4.543s
-user    0m4.524s
-sys     0m0.012s
-</code></pre><p>这是为什么？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-does-python-code-run-faster-in-a-function/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/performance/">performance</a><a href="/tags/profiling/">profiling</a><a href="/tags/benchmarking/">benchmarking</a><a href="/tags/cpython/">cpython</a>
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/dictionary/">dictionary</a>
   </div>
 
 </div>
@@ -782,7 +795,7 @@ sys     0m0.012s
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/37/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/36/">36</a><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/39/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/37/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/36/">36</a><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><a class="page-number" href="/page/40/">40</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><a class="extend next" rel="next" href="/page/39/">Next<span></span></a>
   </nav>
 
 </div>
@@ -834,6 +847,10 @@ sys     0m0.012s
 		<ul class="clearfix">
 		
 			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
 			
 		
@@ -842,31 +859,35 @@ sys     0m0.012s
 			
 		
 			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
 			
 		
 			
@@ -874,11 +895,27 @@ sys     0m0.012s
 			
 		
 			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
 			
 		
 			
@@ -886,31 +923,7 @@ sys     0m0.012s
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
 			
 		
 		</ul>

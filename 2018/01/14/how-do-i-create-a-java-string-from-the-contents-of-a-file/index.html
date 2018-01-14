@@ -1,0 +1,674 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何从文件内容创建Java字符串？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="现在我已经用了一段时间以下的习语了。而且它似乎是最广泛的，至少在我访问过的网站上。 有没有更好的/不同的方式来读取文件到Java中的字符串？ private String readFile(String file) throws IOException {     BufferedReader reader = new BufferedReader(new FileReader (file));">
+<meta name="keywords" content="java,file-io,io,file">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何从文件内容创建Java字符串？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-do-i-create-a-java-string-from-the-contents-of-a-file/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="现在我已经用了一段时间以下的习语了。而且它似乎是最广泛的，至少在我访问过的网站上。 有没有更好的/不同的方式来读取文件到Java中的字符串？ private String readFile(String file) throws IOException {     BufferedReader reader = new BufferedReader(new FileReader (file));">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何从文件内容创建Java字符串？">
+<meta name="twitter:description" content="现在我已经用了一段时间以下的习语了。而且它似乎是最广泛的，至少在我访问过的网站上。 有没有更好的/不同的方式来读取文件到Java中的字符串？ private String readFile(String file) throws IOException {     BufferedReader reader = new BufferedReader(new FileReader (file));">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-i-create-a-java-string-from-the-contents-of-a-file/" title="如何从文件内容创建Java字符串？" itemprop="url">如何从文件内容创建Java字符串？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Read all text from a file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Read lines of text from a file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Memory utilization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Character encoding</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>现在我已经用了一段时间以下的习语了。而且它似乎是最广泛的，至少在我访问过的网站上。</p>
+<p>有没有更好的/不同的方式来读取文件到Java中的字符串？</p>
+<pre><code>private String readFile(String file) throws IOException {
+    BufferedReader reader = new BufferedReader(new FileReader (file));
+    String         line = null;
+    StringBuilder  stringBuilder = new StringBuilder();
+    String         ls = System.getProperty(&quot;line.separator&quot;);
+
+    try {
+        while((line = reader.readLine()) != null) {
+            stringBuilder.append(line);
+            stringBuilder.append(ls);
+        }
+
+        return stringBuilder.toString();
+    } finally {
+        reader.close();
+    }
+}
+</code></pre><a id="more"></a>
+<h2><span id="read-all-text-from-a-file">Read all text from a file</span></h2><p>这是Java 7的一个紧凑，强大的习惯用法，包含在一个实用程序方法中：</p>
+<pre><code>static String readFile(String path, Charset encoding) 
+  throws IOException 
+{
+  byte[] encoded = Files.readAllBytes(Paths.get(path));
+  return new String(encoded, encoding);
+}
+</code></pre><h2><span id="read-lines-of-text-from-a-file">Read lines of text from a file</span></h2><p>Java<br>7增加了一个<a href="“http://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html#readAllLines%28java.nio.file.Path”">用文本行读取文件的方便方法</a>，表示为<code>List</code>。这种方法是“有损”的，因为行分隔符从每行的末尾被剥离。</p>
+<pre><code>List&lt;String&gt; lines = Files.readAllLines(Paths.get(path), encoding);
+</code></pre><p>在Java 8中，<code>BufferedReader</code>添加了一个新的方法，<a href="“https://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html"> <code>lines（）</code></a>来产生一个<code>Stream＆lt; String＆gt;</code>。如果在读取文件时遇到<code>IOException</code>，它将被封装在<a href="“https://docs.oracle.com/javase/8/docs/api/java/io/UncheckedIOException"> <code>UncheckedIOException</code></a>，因为<code>Stream</code>不接受抛出检查异常的lambda表达式。</p>
+<pre><code>try (BufferedReader r = Files.newBufferedReader(path, encoding)) {
+  r.lines().forEach(System.out::println);
+}
+</code></pre><h2><span id="memory-utilization">Memory utilization</span></h2><p>第一种保存换行符的方法可以暂时需要几倍于文件大小的内存，因为在短时间内原始文件内容（一个字节数组）和解码字符（每一个都是16位）即使在文件中被编码为8位）也一次驻留在存储器中。应用于相对于可用内存而言小的文件是最安全的。</p>
+<p>第二种方法，即读取行，通常更具有内存效率，因为用于解码的输入字节缓冲区不需要包含整个文件。但是，对于相对于可用内存而言非常大的文件来说，它仍然不适合。</p>
+<p>为了读取大文件，你需要为你的程序设计一个不同的设计，一个从流中读取一段文本，处理它，然后转到下一个，重新使用同一个固定大小的内存块。这里“大”取决于电脑的规格。如今，这个门槛可能是很多千兆字节的RAM。如果您的输入“记录”碰巧是单独的行，则使用<code>Stream＆lt; String＆gt;</code>的第三种方法是一种方法。 （使用<code>BufferedReader</code>的<code>readLine（）</code>方法是与这种方法相当的程序。）</p>
+<h2><span id="character-encoding">Character encoding</span></h2><p>原始文章中的示例中缺少的一件事是字符编码。有一些特殊情况下，平台默认是你想要的，但是它们很少，你应该能够证明你的选择。</p>
+<p><a href="http://docs.oracle.com/javase/7/docs/api/java/nio/charset/StandardCharsets.html" target="_blank" rel="noopener"> <code>StandardCharsets</code></a>类为所有Java运行时所需的编码定义了一些常量：</p>
+<pre><code>String content = readFile(&quot;test.txt&quot;, StandardCharsets.UTF_8);
+</code></pre><p>平台默认可从<a href="“http://docs.oracle.com/javase/7/docs/api/java/nio/charset/Charset.html#defaultCharset%28%29”rel"> <code>Charset</code>类</a>本身：</p>
+<pre><code>String content = readFile(&quot;test.txt&quot;, Charset.defaultCharset());
+</code></pre><hr>
+<p>注意：这个回答很大程度上取代了我的Java 6版本。 Java<br>7的实用程序安全地简化了代码，而使用映射字节缓冲区的旧答案阻止了从被删除的文件被删除，直到映射的缓冲区被垃圾收集为止。您可以通过此答案上的“已编辑”链接查看旧版本。</p>
+<p>Commons <a href="“https://commons.apache.org/proper
+/commons-
+io/javadocs/api-2.4/org/apache/commons/io/FileUtils.html#readFileToString\(java.io.File"> <code>FileUtils.readFileToString</code> </a>：</p>
+<p>&gt;</p>
+<blockquote>
+<pre><code>public static String readFileToString(File file)
+
+                       throws IOException
+</code></pre><p>Reads the contents of a file into a String using the default encoding for<br>the VM. The file is always closed.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Parameters:</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><code>file</code> - the file to read, must not be null</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p>Returns: the file contents, never null</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Throws: - <code>IOException</code> - in case of an I/O error</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Since: Commons IO 1.3.1</p>
+</blockquote>
+<p>该类使用的（间接）代码是：</p>
+<p>在</p>
+<p><a href="http://www.docjar.com/html/api/org/apache/commons/io/IOUtils.java.html" target="_blank" rel="noopener"> IOUtils.java</a>下<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener">Apache许可证2.0 </a>。</p>
+<pre><code>public static long copyLarge(InputStream input, OutputStream output)
+       throws IOException {
+   byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+   long count = 0;
+   int n = 0;
+   while (-1 != (n = input.read(buffer))) {
+       output.write(buffer, 0, n);
+       count += n;
+   }
+   return count;
+}
+</code></pre><p>这与Ritche_W使用的非常相似。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/file-io/">file-io</a><a href="/tags/io/">io</a><a href="/tags/file/">file</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-do-i-create-a-java-string-from-the-contents-of-a-file/" data-title="如何从文件内容创建Java字符串？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-do-i-create-a-file-and-write-to-it-in-java/" title="我如何创建一个文件并在Java中写入？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  我如何创建一个文件并在Java中写入？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-do-i-debug-node-js-applications/"  title="我如何调试Node.js应用程序？">
+ <strong>下一篇：</strong><br/> 
+ <span>我如何调试Node.js应用程序？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Read all text from a file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Read lines of text from a file</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Memory utilization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Character encoding</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

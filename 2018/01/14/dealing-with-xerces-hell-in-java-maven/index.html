@@ -1,0 +1,619 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>在Java / Maven中处理“Xerces hell”？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在我的办公室里，只要提到Xerces这个词就足以煽动开发商的杀气。粗略地看一下其他Xerces上的SO问题似乎表明，几乎所有的Maven用户都被这个问题“触动”了一些。不幸的是，理解这个问题需要对Xerces的历史有一些了解… HistoryXerces是Java生态系统中使用最广泛的XML解析器。几乎每个使用Java编写的库或框架都以某种身份使用Xerces（即使不是直接传递）。 包含在官方二进">
+<meta name="keywords" content="java,maven,classloader,dependency-management,xerces">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Java &#x2F; Maven中处理“Xerces hell”？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/dealing-with-xerces-hell-in-java-maven/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在我的办公室里，只要提到Xerces这个词就足以煽动开发商的杀气。粗略地看一下其他Xerces上的SO问题似乎表明，几乎所有的Maven用户都被这个问题“触动”了一些。不幸的是，理解这个问题需要对Xerces的历史有一些了解… HistoryXerces是Java生态系统中使用最广泛的XML解析器。几乎每个使用Java编写的库或框架都以某种身份使用Xerces（即使不是直接传递）。 包含在官方二进">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/dealing-with-xerces-hell-in-java-maven/“https://i.stack.imgur.com/Fe9Xa.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/dealing-with-xerces-hell-in-java-maven/“https://i.stack.imgur.com/4X1ts.png”alt">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Java &#x2F; Maven中处理“Xerces hell”？">
+<meta name="twitter:description" content="在我的办公室里，只要提到Xerces这个词就足以煽动开发商的杀气。粗略地看一下其他Xerces上的SO问题似乎表明，几乎所有的Maven用户都被这个问题“触动”了一些。不幸的是，理解这个问题需要对Xerces的历史有一些了解… HistoryXerces是Java生态系统中使用最广泛的XML解析器。几乎每个使用Java编写的库或框架都以某种身份使用Xerces（即使不是直接传递）。 包含在官方二进">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/dealing-with-xerces-hell-in-java-maven/“https://i.stack.imgur.com/Fe9Xa.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/dealing-with-xerces-hell-in-java-maven/" title="在Java / Maven中处理“Xerces hell”？" itemprop="url">在Java / Maven中处理“Xerces hell”？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">History</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Problems</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.1.</span> <span class="toc-text">Conflict Resolution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.2.</span> <span class="toc-text">Classloader Hell</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Solutions?</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在我的办公室里，只要提到Xerces这个词就足以煽动开发商的杀气。粗略地看一下其他Xerces上的SO问题似乎表明，几乎所有的Maven用户都被这个问题“触动”了一些。不幸的是，理解这个问题需要对Xerces的历史有一些了解…</p>
+<h1><span id="history">History</span></h1><p>Xerces是Java生态系统中使用最广泛的XML解析器。几乎每个使用Java编写的库或框架都以某种身份使用Xerces（即使不是直接传递）。</p>
+<p>包含在<a href="http://xerces.apache.org/mirrors.cgi#binary" target="_blank" rel="noopener">官方二进制文件</a>中的Xerces<br>jars到今天为止，没有版本。例如，Xerces 2.11.0实现jar命名为<code>xercesImpl.jar</code>，而不是<code>xercesImpl-2.11.0.jar</code>。</p>
+<p>Xerces团队<a href="“https://issues.apache.org/jira/browse/XERCESJ-1454?focusedCommentId=12881865&amp;page=com.atlassian.jira.plugin.system.issuetabpanels：">不使用Maven</a>，这意味着它们不会<br>将正式版本上传到<a href="http://search.maven.org/" target="_blank" rel="noopener"> Maven Central </a>。</p>
+<p>Xerces曾经是<a href="http://xerces.apache.org/xerces2-j/faq-
+general.html#faq-3" target="_blank" rel="noopener">作为一个单独的jar发布</a>（<code>xerces.jar</code>），但被分成两个jar包，一个包含API（<code>xml-apis.jar</code>），另一个包含这些API的实现（&lt;码&gt; xercesImpl.jar ）。许多较老的Maven POM仍然声明对<code>xerces.jar</code>的依赖。在过去的某个时候，Xerces也以<code>xmlParserAPIs.jar</code>的形式发布，一些较老的POM也依赖于它。</p>
+<ul>
+<li>那些将jar部署到Maven仓库的人所分配的xml-apis和xercesImpl jar版本通常是不同的。例如，xml-apis可能会被赋予1.3.03版本，而xercesImpl可能会被赋予2.8.0版本，即使两者都来自Xerces 2.8.0。这是因为人们经常使用它实现的规范版本来标记xml-apis jar。这里<a href="http://swordsystems.com/2011/06/29/xerces-and-xml-api-dependency-hell/" target="_blank" rel="noopener">这里有一个非常好的，但不完整的细分</a>。</li>
+</ul>
+<p>复杂的是，Xerces是JRE中包含的用于XML处理的Java API的参考实现（JAXP）中使用的XML解析器。实现类在<code>com.sun。*</code>命名空间下重新打包，这使得直接访问它们是危险的，因为它们可能在某些JRE中不可用。但是，并不是所有的Xerces功能都通过<code>java。*</code>和<code>javax。*</code> API公开。例如，没有暴露Xerces序列化的API。</p>
+<p>添加到混乱的混乱中，几乎所有的servlet容器（JBoss，Jetty，Glassfish，Tomcat等）都在Xerces的一个或多个<code>/ lib</code>文件夹中提供。 / p&gt;</p>
+<h1><span id="problems">Problems</span></h1><h3><span id="conflict-resolution">Conflict Resolution</span></h3><p>对于上述原因中的一些或者全部原因，很多 组织发布和使用Xerces的定制版本 多金属氧酸盐。如果你有一个小应用程序并且只使用Maven<br>Central，那么这不是一个真正的问题，但是它很快就会成为Artifactory或者Nexus代理多个仓库（JBoss，Hibernate等）的企业软件的一个问题：<br><img src="“https://i.stack.imgur.com/Fe9Xa.png”alt" alt=""></p>
+<p>例如，组织A可能会将xml-apis发布为：</p>
+<p>&lt;代码&gt;＆LT;＆的groupId GT; org.apache.xerces＆LT; /＆的groupId GT; 结果 &lt;代码&gt;＆LT;<br>artifactId的＆GT; XML的API＆LT; / artifactId的＆GT; 结果 &lt;代码&gt;＆LT;版本＆GT; 2.9.1＆LT;<br>/版本＆GT;</p>
+<p>同时，组织B可能会发布相同的jar：</p>
+<p>&lt;代码&gt;＆LT;＆的groupId GT; XML的API＆LT; /＆的groupId GT; 结果 &lt;代码&gt;＆LT; artifactId的＆GT;<br>XML的API＆LT; / artifactId的＆GT; 结果 &lt;代码&gt;＆LT;版本＆GT; 04年3月1日和LT; /版本＆GT;</p>
+<p>虽然B的jar比A的jar版本更低，但是Maven并不知道 他们是相同的神器，因为他们有不同的 &lt;代码&gt;的groupId 秒。因此，它不能执行冲突解决和两者<br>jar将被包含为已解决的依赖项：</p>
+<p><img src="“https://i.stack.imgur.com/4X1ts.png”alt" alt=""></p>
+<h3><span id="classloader-hell">Classloader Hell</span></h3><p>如上所述，JRE在JAXP RI中与Xerces一起发货。尽管将所有Xerces Maven依赖项标记为<code>＆lt; exclusion＆gt;</code>或<code>＆lt; provided＆gt;</code>会很好，但您所依赖的第三方代码可能会也可能不会使用您正在使用的JDK的JAXP中提供的版本。另外，你的servlet容器中有Xerces罐子可以与之抗衡。这给你留下了许多选择：你是否删除了servlet版本，并希望你的容器在JAXP版本上运行？离开servlet版本更好吗，并希望您的应用程序框架在servlet版本上运行？如果上面列出的一个或两个未解决的冲突导致您的产品陷入困境（容易在大型组织中发生），那么您很快就会发现自己处于classloader地狱，想知道classloader在运行时选择哪个版本的Xerces，以及是否它会在Windows和Linux中选择相同的jar（可能不是）。</p>
+<h1><span id="solutions">Solutions?</span></h1><p>我们已经尝试将所有的Xerces Maven依赖关系标记为<code>＆lt; provided＆gt;</code>或<code>＆lt; exclusion＆gt;</code>，但这很难实施（特别是对于大团队），因为工件有这么多的别名（xml-<br>apis，xerces，xercesImpl，xmlParserAPI等）。此外，我们的第三方库/框架可能不能运行在JAXP版本或由servlet容器提供的版本上。</p>
+<p>Maven如何最好地解决这个问题？我们是否必须对依赖关系进行细粒度的控制，然后依靠分层的类加载？是否有某种方法可以全局排除所有的Xerces依赖关系，并强制所有的框架/库使用JAXP版本？**</p>
+<hr>
+<p>更新**：Joshua Spiewak已经将修补版本的Xerces构建脚本上传到<a href="“https://issues.apache.org/jira/browse/XERCESJ-1454”rel"> XERCESJ-1454</a>，允许上传到Maven<br>Central。投票/看/造成这个问题，让我们一劳永逸解决这个问题。</p>
+<p><a id="more"></a> 自2013年2月20日起，Maven Central中有2.11.0个JARs <strong>（和源JARs！）</strong> ！请参阅<a href="http://search.maven.org/#artifactdetails%7Cxerces%7CxercesImpl%7C2.11.0%7Cjar" target="_blank" rel="noopener"> Maven<br>Central中的Xerces</a>。我想知道他们为什么还没有解决[<a href="https://issues.apache.org/jira/browse/XERCESJ-1454" target="_blank" rel="noopener">https://issues.apache.org/jira/browse/XERCESJ-1454</a> &lt; / A&gt; …</p>
+<p>我用过：</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;xerces&lt;/groupId&gt;
+    &lt;artifactId&gt;xercesImpl&lt;/artifactId&gt;
+    &lt;version&gt;2.11.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre><p>所有的依赖都解决了 - 甚至正确的<code>xml-apis-1.4.01</code>！</p>
+<p>最重要的是什么（过去并不明显） - Maven Central中的JAR与官方的` Xerces-J-bin中的JAR相同。2.11.0.zip &lt; /<br>code&gt;分发**。</p>
+<p>我无法找到<code>xml-schema-1.1-beta</code>版本 - 因为附加依赖关系，它不能成为Maven <code>classifier</code> -ed版本。 p&gt;<br>老实说，我们所遇到的几乎所有的东西都可以在JAXP版本中工作，所以 <strong>我们总是_ 排除</strong> <code>xml-apis</code>和<code>xercesImpl</code>。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/maven/">maven</a><a href="/tags/classloader/">classloader</a><a href="/tags/dependency-management/">dependency-management</a><a href="/tags/xerces/">xerces</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/dealing-with-xerces-hell-in-java-maven/" data-title="在Java / Maven中处理“Xerces hell”？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/dealing-with-java-lang-outofmemoryerror-permgen-space-error/" title="处理“java.lang.OutOfMemoryError：PermGen空间”错误">
+  <strong>上一篇：</strong><br/>
+  <span>
+  处理“java.lang.OutOfMemoryError：PermGen空间”错误</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/decompiling-dex-into-java-sourcecode/"  title="将DEX反编译成Java源代码">
+ <strong>下一篇：</strong><br/> 
+ <span>将DEX反编译成Java源代码
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">History</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Problems</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.1.</span> <span class="toc-text">Conflict Resolution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.2.</span> <span class="toc-text">Classloader Hell</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Solutions?</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

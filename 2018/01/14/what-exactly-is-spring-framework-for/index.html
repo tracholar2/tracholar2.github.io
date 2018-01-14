@@ -1,0 +1,658 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Spring框架到底是什么？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我听到很多关于 Spring 的消息，人们都在网络上说Spring是一个很好的web开发框架。Spring框架到底是什么？我如何将它用于我的Web-Java应用程序开发？任何例子？">
+<meta name="keywords" content="java,spring,web-applications,web,frameworks">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring框架到底是什么？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/what-exactly-is-spring-framework-for/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我听到很多关于 Spring 的消息，人们都在网络上说Spring是一个很好的web开发框架。Spring框架到底是什么？我如何将它用于我的Web-Java应用程序开发？任何例子？">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring框架到底是什么？">
+<meta name="twitter:description" content="我听到很多关于 Spring 的消息，人们都在网络上说Spring是一个很好的web开发框架。Spring框架到底是什么？我如何将它用于我的Web-Java应用程序开发？任何例子？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-exactly-is-spring-framework-for/" title="Spring框架到底是什么？" itemprop="url">Spring框架到底是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">The problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Spring (Dependency Injection) approach</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我听到很多关于<a href="https://spring.io/" target="_blank" rel="noopener"> Spring </a>的消息，人们都在网络上说Spring是一个很好的web开发框架。<br>Spring框架到底是什么？我如何将它用于我的Web-Java应用程序开发？任何例子？</p>
+<p><a id="more"></a> 基本上Spring是一个框架，用于<a href="/questions/tagged/dependency-injection" title="show">依赖关系 - 注入</a>这是一种模式，允许建立非常分离的系统。</p>
+<h2><span id="the-problem">The problem</span></h2><p>例如，假设您需要列出系统的用户，并声明一个名为<code>UserLister</code>的接口：</p>
+<pre><code>public interface UserLister {
+    List&lt;User&gt; getUsers();
+}
+</code></pre><p>也许一个实现访问数据库来获取所有用户：</p>
+<pre><code>public class UserListerDB implements UserLister {
+    public List&lt;User&gt; getUsers() {
+        // DB access code here
+    }
+}
+</code></pre><p>在你看来，你需要访问一个实例（只是一个例子，记住）：</p>
+<pre><code>public class SomeView {
+    private UserLister userLister;
+
+    public void render() {
+        List&lt;User&gt; users = userLister.getUsers();
+        view.render(users);
+    }
+}
+</code></pre><p>请注意，上面的代码没有初始化变量<code>userLister</code>。我们应该做什么？如果我像这样显式实例化对象：</p>
+<pre><code>UserLister userLister = new UserListerDB();
+</code></pre><p>…我将这个视图与我的实现访问数据库的类相结合。如果我想从DB实现切换到另一个从逗号分隔的文件中获取用户列表（请记住，这是一个例子）？在这种情况下，我会再次去我的代码，并更改最后一行：</p>
+<pre><code>UserLister userLister = new UserListerCommaSeparatedFile();
+</code></pre><p>这对一个像这样的小程序来说没有问题，但是……在一个拥有数百个视图和类似数量的业务类的程序中会发生什么？维护成为一场噩梦！</p>
+<h2><span id="spring-dependency-injection-approach">Spring (Dependency Injection) approach</span></h2><p>Spring所做的是通过使用XML文件来连接类，这样所有的对象都被实例化，并被Spring初始化并且在正确的位置注入 ___<br>Servlets，Web框架，业务类，DAO等等等等）。</p>
+<p>回过头来看Spring的例子，我们只需要为<code>userLister</code>字段设置一个setter，并拥有这样的XML：</p>
+<pre><code>&lt;bean id=&quot;userLister&quot; class=&quot;UserListerDB&quot; /&gt;
+
+&lt;bean class=&quot;SomeView&quot;&gt;
+    &lt;property name=&quot;userLister&quot; ref=&quot;userLister&quot; /&gt;
+&lt;/bean&gt;
+</code></pre><p>通过这种方式，当视图被创建时，神奇的_将会有一个<code>UserLister</code>准备好工作。</p>
+<pre><code>List&lt;User&gt; users = userLister.getUsers();  // This will actually work
+                                           // without adding any line of code
+</code></pre><p>太好了！是不是？</p>
+<ul>
+<li><em>如果要使用<code>UserLister</code>接口的其他实现，那该怎么办？</em> 只需更改XML </li>
+<li><em>如果没有<code>UserLister</code>实现准备好了什么？</em> 编写<code>UserLister</code>的暂时模拟实现并简化视图的开发&lt; / LI&gt; </li>
+<li><em>如果我不想再使用Spring，该怎么办？</em> 不要使用它！您的应用程序不耦合到它。 <a href="http://en.wikipedia.org/wiki/Inversion_of_control" target="_blank" rel="noopener"> Inversion of Control </a>指出：“应用程序控制框架，而不是框架控制应用程序”。&lt; / LI&gt;<br>除此之外，还有其他一些依赖注入的选择，除了简单性，优雅性和稳定性之外，我认为Spring已经成为众所瞩目的焦点，SpringSource的编程人员已经编写了许多许多POJO，这些POJO将Spring与许多其他常见框架，而不会侵入你的应用程序。另外，Spring还有几个很好的子项目，比如Spring<br>MVC，Spring WebFlow，Spring Security，还有一些其他的例子。</li>
+</ul>
+<p>希望这有助于无论如何，我鼓励你阅读关于依赖注入和控制反转的<a href="http://martinfowler.com/articles/injection.html" target="_blank" rel="noopener"> Martin<br>Fowler的文章</a>，因为他这样做了比我好。<br><del>在了解了基础知识之后，请查看[ Spring Documentation ** a&gt; ~~ ，在我看来 ~</del>~<br>**曾经是有史以来最好的Spring书。</p>
+<p>Spring <em>包含</em> （正如Skaffman正确地指出的那样）一个MVC框架。简而言之，这里是我的投入。<br>Spring支持服务层，Web层和业务层的分离，但实际上最擅长的是注入对象。所以用一个例子来解释下面的例子：</p>
+<pre><code>public interface FourWheel
+{
+   public void drive();
+}
+
+public class Sedan implements FourWheel
+{
+   public void drive()
+   {
+      //drive gracefully
+   }
+}
+
+public class SUV implements FourWheel
+{
+   public void drive()
+   {
+      //Rule the rough terrain
+   }
+}
+</code></pre><p>现在你的代码中有一个名为RoadTrip的类，如下所示</p>
+<pre><code>public class RoadTrip
+{
+    private FourWheel myCarForTrip;
+}
+</code></pre><p>现在，每当你想要一个Trip的实例;有时你可能想要一辆SUV来初始化FourWheel，或者有时你可能想要四门轿车。这真的取决于你想要根据具体情况。</p>
+<p>为了解决这个问题，你想有一个工厂模式作为创建模式。工厂返回正确的实例。所以最终你会得到大量的胶水代码来正确地实例化对象。春天没有胶水代码最好的胶水代码的工作。您声明XML中的映射，并自动初始化对象。它也使用单例体系结构的实例很多，这有助于优化内存使用。</p>
+<p>这也被称为控制反转。其他的框架是Google guice，Pico容器等。</p>
+<p>除此之外，Spring还有验证框架，与JDBC，iBatis和Hibernate（还有更多）协作，对DAO层提供了广泛的支持。对数据库事务提供卓越的事务控制。</p>
+<p>春天还有很多东西可以在“Pro Spring”这样的好书中读到。</p>
+<p>以下网址可能也有帮助 <a href="http://static.springframework.org/docs/Spring-MVC-step-by-step/" target="_blank" rel="noopener"> http://static.springframework.org/docs/Spring-MVC-一步步骤/</a>结果 <a href="http://en.wikipedia.org/wiki/Spring_Framework" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/Spring_Framework</a><br><a href="http://www.theserverside.com/tt/articles/article.tss?l=SpringFramework" target="_blank" rel="noopener"> http://www.theserverside.com/tt/articles/article.tss ？l = SpringFramework</a></p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/spring/">spring</a><a href="/tags/web-applications/">web-applications</a><a href="/tags/web/">web</a><a href="/tags/frameworks/">frameworks</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/what-exactly-is-spring-framework-for/" data-title="Spring框架到底是什么？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/what-exactly-is-apache-camel/" title="Apache Camel究竟是什么？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Apache Camel究竟是什么？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/what-ide-to-use-for-python/"  title="什么IDE用于Python？ [关闭]">
+ <strong>下一篇：</strong><br/> 
+ <span>什么IDE用于Python？ [关闭]
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">The problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Spring (Dependency Injection) approach</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

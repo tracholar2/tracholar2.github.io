@@ -1,0 +1,679 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何生成一个随机的字母数字字符串？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我一直在寻找简单的Java算法来生成一个伪随机字母数字字符串。在我的情况下，它将被用作一个独特的会话/密钥标识符，“可能”在50万代以上是唯一的（我的需求并不需要任何更复杂的东西）。理想情况下，我将能够根据我的独特需要指定长度。例如，生成的长度为12的字符串可能类似于“AEYGF7K0DM1X”。">
+<meta name="keywords" content="java,string,random,alphanumeric">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何生成一个随机的字母数字字符串？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-to-generate-a-random-alpha-numeric-string/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我一直在寻找简单的Java算法来生成一个伪随机字母数字字符串。在我的情况下，它将被用作一个独特的会话/密钥标识符，“可能”在50万代以上是唯一的（我的需求并不需要任何更复杂的东西）。理想情况下，我将能够根据我的独特需要指定长度。例如，生成的长度为12的字符串可能类似于“AEYGF7K0DM1X”。">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何生成一个随机的字母数字字符串？">
+<meta name="twitter:description" content="我一直在寻找简单的Java算法来生成一个伪随机字母数字字符串。在我的情况下，它将被用作一个独特的会话/密钥标识符，“可能”在50万代以上是唯一的（我的需求并不需要任何更复杂的东西）。理想情况下，我将能够根据我的独特需要指定长度。例如，生成的长度为12的字符串可能类似于“AEYGF7K0DM1X”。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-generate-a-random-alpha-numeric-string/" title="如何生成一个随机的字母数字字符串？" itemprop="url">如何生成一个随机的字母数字字符串？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Algorithm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Implementation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Usage examples</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Use as session identifiers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Use as object identifiers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Comparison with UUIDs</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我一直在寻找简单的Java算法来生成一个伪随机字母数字字符串。在我的情况下，它将被用作一个独特的会话/密钥标识符，“可能”在50万代以上是唯一的（我的需求并不需要任何更复杂的东西）。理想情况下，我将能够根据我的独特需要指定长度。例如，生成的长度为12的字符串可能类似于<code>“AEYGF7K0DM1X”</code>。</p>
+<a id="more"></a>
+<h2><span id="algorithm">Algorithm</span></h2><p>要生成一个随机字符串，从可接受符号集合中随机抽取字符，直到字符串达到所需的长度。</p>
+<h2><span id="implementation">Implementation</span></h2><p>这里有一些相当简单和非常灵活的代码来生成随机标识符。阅读重要应用笔记的 _<em> </em> 。</p>
+<pre><code>import java.security.SecureRandom;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Random;
+
+public class RandomString {
+
+    /**
+     * Generate a random string.
+     */
+    public String nextString() {
+        for (int idx = 0; idx &lt; buf.length; ++idx)
+            buf[idx] = symbols[random.nextInt(symbols.length)];
+        return new String(buf);
+    }
+
+    public static final String upper = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;;
+
+    public static final String lower = upper.toLowerCase(Locale.ROOT);
+
+    public static final String digits = &quot;0123456789&quot;;
+
+    public static final String alphanum = upper + lower + digits;
+
+    private final Random random;
+
+    private final char[] symbols;
+
+    private final char[] buf;
+
+    public RandomString(int length, Random random, String symbols) {
+        if (length &lt; 1) throw new IllegalArgumentException();
+        if (symbols.length() &lt; 2) throw new IllegalArgumentException();
+        this.random = Objects.requireNonNull(random);
+        this.symbols = symbols.toCharArray();
+        this.buf = new char[length];
+    }
+
+    /**
+     * Create an alphanumeric string generator.
+     */
+    public RandomString(int length, Random random) {
+        this(length, random, alphanum);
+    }
+
+    /**
+     * Create an alphanumeric strings from a secure generator.
+     */
+    public RandomString(int length) {
+        this(length, new SecureRandom());
+    }
+
+    /**
+     * Create session identifiers.
+     */
+    public RandomString() {
+        this(21);
+    }
+
+}
+</code></pre><h2><span id="usage-examples">Usage examples</span></h2><p>为8个字符的标识符创建一个不安全的生成器：</p>
+<pre><code>RandomString gen = new RandomString(8, ThreadLocalRandom.current());
+</code></pre><p>为会话标识符创建一个安全的生成器：</p>
+<pre><code>RandomString session = new RandomString();
+</code></pre><p>创建一个易于阅读的代码打印生成器。字符串比完整的字母数字字符串长，以补偿使用较少的符号：</p>
+<pre><code>String easy = RandomString.digits + &quot;ACEFGHJKLMNPQRUVWXYabcdefhijkprstuvwx&quot;;
+RandomString tickets = new RandomString(23, new SecureRandom(), easy);
+</code></pre><h2><span id="use-as-session-identifiers">Use as session identifiers</span></h2><p>生成可能是唯一的会话标识符不够好，或者只能使用简单的计数器。当使用可预测的标识符时，攻击者劫持会话。</p>
+<p>长度和安全之间是紧张的。较短的标识符更容易被猜出，因为可能性较小。但是更长的标识符消耗更多的存储和带宽如果标识符包含在URL中或手动重新输入，更大的一组符号可能会有帮助，但可能会导致编码问题。</p>
+<p>会话标识符的随机性或熵的基本来源应来自为密码学设计的随机数生成器。但是，初始化这些生成器有时可能在计算上花费很大或很慢，所以应尽可能在重新使用这些生成器时付出努力。</p>
+<h2><span id="use-as-object-identifiers">Use as object identifiers</span></h2><p>并不是每个应用程序都需要安全性。随机分配可以是多个实体在共享空间中生成标识符而没有任何协调或分区的有效方式。协调可能会很慢，特别是在集群或分布式环境中，当实体最终分配太小或太大的份额时，分割空间会导致问题。</p>
+<p>如果攻击者可能能够查看和操纵这些标识符，而不采取措施使其不可预知，则应采用其他方式加以保护，就像在大多数Web应用程序中一样。应该有一个单独的授权系统，保护对象的标识符可以被攻击者猜出没有访问权限。</p>
+<p>必须小心使用足够长的标识符，以便在给定预期的标识符总数时不太可能发生冲突。这被称为“生日悖论”。<br><a href="https://en.wikipedia.org/wiki/Birthday_problem#Square_approximation" target="_blank" rel="noopener">碰撞的概率，</a><br><em>p</em> 大约是n &lt; sup&gt; 2  /（2q  x ），其中 <em>n</em> 是实际生成的标识符的数量， _是 &lt;字母表中的符号，而 <em>x</em><br>是标识符的长度。这应该是一个非常小的数字，比如2 &lt;-50 或更少。</p>
+<p>解决这个问题表明，500k个15个字符的标识符之间相互碰撞的机会大约是2s-52s / s，比起宇宙射线中未被发现的错误等，可能性更小。</p>
+<h2><span id="comparison-with-uuids">Comparison with UUIDs</span></h2><p>根据它们的规范，UUID不是不可预知的，而且 _不应该被用作会话标识符。</p>
+<p>标准格式的UUID需要大量的空间：只有122个熵的36个字符。<br>（随机选择“随机”UUID的所有位都不是随机选择的。）随机选择的字母数字字符串仅包含21个字符的熵。</p>
+<p>UUID不灵活;他们有一个标准化的结构和布局。这是他们的主要美德，也是他们的主要弱点。与外部合作时，UUID提供的标准化可能会有帮助。纯粹的内部使用，可能是效率低下。</p>
+<p>Java提供了一种直接执行此操作的方法。如果你不想要破折号，他们很容易剥离。只要使用<code>uuid.replace（“ - ”，“”）</code></p>
+<pre><code>import java.util.UUID;
+
+public class randomStringGenerator {
+    public static void main(String[] args) {
+        System.out.println(generateString());
+    }
+
+    public static String generateString() {
+        String uuid = UUID.randomUUID().toString();
+        return &quot;uuid = &quot; + uuid;
+    }
+}
+</code></pre><p>&lt;强&gt;输出：</p>
+<pre><code>uuid = 2d7428a6-b58c-4008-8575-f05549f16316
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/string/">string</a><a href="/tags/random/">random</a><a href="/tags/alphanumeric/">alphanumeric</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-to-generate-a-random-alpha-numeric-string/" data-title="如何生成一个随机的字母数字字符串？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-to-format-a-javascript-date/" title="如何格式化JavaScript日期">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何格式化JavaScript日期</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-to-get-a-class-instance-of-generics-type-t/"  title="如何获得泛型类型T的类实例">
+ <strong>下一篇：</strong><br/> 
+ <span>如何获得泛型类型T的类实例
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Algorithm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Implementation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Usage examples</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Use as session identifiers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Use as object identifiers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Comparison with UUIDs</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

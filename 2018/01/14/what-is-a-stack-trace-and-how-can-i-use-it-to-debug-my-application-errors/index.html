@@ -1,0 +1,746 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>什么是堆栈跟踪，以及如何使用它来调试我的应用程序错误？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="有时当我运行我的应用程序时，它给了我一个如下所示的错误： Exception in thread &amp;quot;main&amp;quot; java.lang.NullPointerException         at com.example.myproject.Book.getTitle(Book.java:16)         at com.example.myproject.Author.ge">
+<meta name="keywords" content="java,stack-trace,debugging">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是堆栈跟踪，以及如何使用它来调试我的应用程序错误？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/what-is-a-stack-trace-and-how-can-i-use-it-to-debug-my-application-errors/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="有时当我运行我的应用程序时，它给了我一个如下所示的错误： Exception in thread &amp;quot;main&amp;quot; java.lang.NullPointerException         at com.example.myproject.Book.getTitle(Book.java:16)         at com.example.myproject.Author.ge">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是堆栈跟踪，以及如何使用它来调试我的应用程序错误？">
+<meta name="twitter:description" content="有时当我运行我的应用程序时，它给了我一个如下所示的错误： Exception in thread &amp;quot;main&amp;quot; java.lang.NullPointerException         at com.example.myproject.Book.getTitle(Book.java:16)         at com.example.myproject.Author.ge">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-a-stack-trace-and-how-can-i-use-it-to-debug-my-application-errors/" title="什么是堆栈跟踪，以及如何使用它来调试我的应用程序错误？" itemprop="url">什么是堆栈跟踪，以及如何使用它来调试我的应用程序错误？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>有时当我运行我的应用程序时，它给了我一个如下所示的错误：</p>
+<pre><code>Exception in thread &quot;main&quot; java.lang.NullPointerException
+        at com.example.myproject.Book.getTitle(Book.java:16)
+        at com.example.myproject.Author.getBookTitles(Author.java:25)
+        at com.example.myproject.Bootstrap.main(Bootstrap.java:14)
+</code></pre><p>人们称之为“堆栈轨迹”。 <strong>什么是堆栈跟踪？</strong> 有什么能告诉我有关程序中发生的错误吗？</p>
+<hr>
+<p>关于这个问题 -<br>我常常会遇到一个问题，那就是新手程序员“出错”的地方，他们只是简单地粘贴堆栈跟踪和一些随机代码块，而不理解堆栈跟踪是什么或者他们如何使用它。这个问题的目的是作为新手程序员的参考，他们可能需要帮助理解堆栈跟踪的价值。_</p>
+<p><a id="more"></a> 简单来说， <strong>堆栈跟踪</strong> 是应用程序在抛出异常时的方法调用列表。</p>
+<p><strong>简单示例</strong></p>
+<p>通过问题中给出的例子，我们可以确定在应用程序中抛出异常的位置。我们来看一下堆栈跟踪：</p>
+<pre><code>Exception in thread &quot;main&quot; java.lang.NullPointerException
+        at com.example.myproject.Book.getTitle(Book.java:16)
+        at com.example.myproject.Author.getBookTitles(Author.java:25)
+        at com.example.myproject.Bootstrap.main(Bootstrap.java:14)
+</code></pre><p>这是一个非常简单的堆栈跟踪。如果我们从“at<br>…”列表的开始处开始，我们可以知道我们的错误发生在哪里。我们正在寻找的是最顶层的**方法调用，它是我们应用程序的一部分。在这种情况下，它是：</p>
+<pre><code>at com.example.myproject.Book.getTitle(Book.java:16)
+</code></pre><p>为了调试这个，我们可以打开<code>Book.java</code>，看看<code>16</code>，它是：</p>
+<pre><code>15   public String getTitle() {
+16      System.out.println(title.toString());
+17      return title;
+18   }
+</code></pre><p>这表明在上面的代码中有些东西（可能是<code>title</code>）是<code>null</code>。</p>
+<p><strong>例外情况</strong></p>
+<p>有时应用程序会捕获一个异常，并重新抛出它作为另一个异常的原因。这通常看起来像：</p>
+<pre><code>34   public void getBookIds(int id) {
+35      try {
+36         book.getId(id);    // this method it throws a NullPointerException on line 22
+37      } catch (NullPointerException e) {
+38         throw new IllegalStateException(&quot;A book has a null property&quot;, e)
+39      }
+40   }
+</code></pre><p>这可能会给你一个堆栈跟踪，如下所示：</p>
+<pre><code>Exception in thread &quot;main&quot; java.lang.IllegalStateException: A book has a null property
+        at com.example.myproject.Author.getBookIds(Author.java:38)
+        at com.example.myproject.Bootstrap.main(Bootstrap.java:14)
+Caused by: java.lang.NullPointerException
+        at com.example.myproject.Book.getId(Book.java:22)
+        at com.example.myproject.Author.getBookIds(Author.java:36)
+        ... 1 more
+</code></pre><p>与此不同的是“引起的”。有时例外会有多个“由…引起”部分。对于这些，通常需要找到“根本原因”，这将是堆栈跟踪中最低的“由…引起”部分之一。在我们的情况下，它是：</p>
+<pre><code>Caused by: java.lang.NullPointerException &lt;-- root cause
+        at com.example.myproject.Book.getId(Book.java:22) &lt;-- important line
+</code></pre><p>同样，在这个例外情况下，我们希望查看<code>Book.java</code>的<code>22</code>来查看可能会导致<code>NullPointerException</code><br><strong>库代码更令人生畏的例子</strong></p>
+<p>通常堆栈轨迹比上面两个例子复杂得多。下面是一个例子（这是一个很长的例子，但是演示了几个级别的链接异常）：</p>
+<pre><code>javax.servlet.ServletException: Something bad happened
+    at com.example.myproject.OpenSessionInViewFilter.doFilter(OpenSessionInViewFilter.java:60)
+    at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+    at com.example.myproject.ExceptionHandlerFilter.doFilter(ExceptionHandlerFilter.java:28)
+    at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+    at com.example.myproject.OutputBufferFilter.doFilter(OutputBufferFilter.java:33)
+    at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+    at org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:388)
+    at org.mortbay.jetty.security.SecurityHandler.handle(SecurityHandler.java:216)
+    at org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:182)
+    at org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:765)
+    at org.mortbay.jetty.webapp.WebAppContext.handle(WebAppContext.java:418)
+    at org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+    at org.mortbay.jetty.Server.handle(Server.java:326)
+    at org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:542)
+    at org.mortbay.jetty.HttpConnection$RequestHandler.content(HttpConnection.java:943)
+    at org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:756)
+    at org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:218)
+    at org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:404)
+    at org.mortbay.jetty.bio.SocketConnector$Connection.run(SocketConnector.java:228)
+    at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
+Caused by: com.example.myproject.MyProjectServletException
+    at com.example.myproject.MyServlet.doPost(MyServlet.java:169)
+    at javax.servlet.http.HttpServlet.service(HttpServlet.java:727)
+    at javax.servlet.http.HttpServlet.service(HttpServlet.java:820)
+    at org.mortbay.jetty.servlet.ServletHolder.handle(ServletHolder.java:511)
+    at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1166)
+    at com.example.myproject.OpenSessionInViewFilter.doFilter(OpenSessionInViewFilter.java:30)
+    ... 27 more
+Caused by: org.hibernate.exception.ConstraintViolationException: could not insert: [com.example.myproject.MyEntity]
+    at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:96)
+    at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:66)
+    at org.hibernate.id.insert.AbstractSelectingDelegate.performInsert(AbstractSelectingDelegate.java:64)
+    at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:2329)
+    at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:2822)
+    at org.hibernate.action.EntityIdentityInsertAction.execute(EntityIdentityInsertAction.java:71)
+    at org.hibernate.engine.ActionQueue.execute(ActionQueue.java:268)
+    at org.hibernate.event.def.AbstractSaveEventListener.performSaveOrReplicate(AbstractSaveEventListener.java:321)
+    at org.hibernate.event.def.AbstractSaveEventListener.performSave(AbstractSaveEventListener.java:204)
+    at org.hibernate.event.def.AbstractSaveEventListener.saveWithGeneratedId(AbstractSaveEventListener.java:130)
+    at org.hibernate.event.def.DefaultSaveOrUpdateEventListener.saveWithGeneratedOrRequestedId(DefaultSaveOrUpdateEventListener.java:210)
+    at org.hibernate.event.def.DefaultSaveEventListener.saveWithGeneratedOrRequestedId(DefaultSaveEventListener.java:56)
+    at org.hibernate.event.def.DefaultSaveOrUpdateEventListener.entityIsTransient(DefaultSaveOrUpdateEventListener.java:195)
+    at org.hibernate.event.def.DefaultSaveEventListener.performSaveOrUpdate(DefaultSaveEventListener.java:50)
+    at org.hibernate.event.def.DefaultSaveOrUpdateEventListener.onSaveOrUpdate(DefaultSaveOrUpdateEventListener.java:93)
+    at org.hibernate.impl.SessionImpl.fireSave(SessionImpl.java:705)
+    at org.hibernate.impl.SessionImpl.save(SessionImpl.java:693)
+    at org.hibernate.impl.SessionImpl.save(SessionImpl.java:689)
+    at sun.reflect.GeneratedMethodAccessor5.invoke(Unknown Source)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    at java.lang.reflect.Method.invoke(Method.java:597)
+    at org.hibernate.context.ThreadLocalSessionContext$TransactionProtectionWrapper.invoke(ThreadLocalSessionContext.java:344)
+    at $Proxy19.save(Unknown Source)
+    at com.example.myproject.MyEntityService.save(MyEntityService.java:59) &lt;-- relevant call (see notes below)
+    at com.example.myproject.MyServlet.doPost(MyServlet.java:164)
+    ... 32 more
+Caused by: java.sql.SQLException: Violation of unique constraint MY_ENTITY_UK_1: duplicate value(s) for column(s) MY_COLUMN in statement [...]
+    at org.hsqldb.jdbc.Util.throwError(Unknown Source)
+    at org.hsqldb.jdbc.jdbcPreparedStatement.executeUpdate(Unknown Source)
+    at com.mchange.v2.c3p0.impl.NewProxyPreparedStatement.executeUpdate(NewProxyPreparedStatement.java:105)
+    at org.hibernate.id.insert.AbstractSelectingDelegate.performInsert(AbstractSelectingDelegate.java:57)
+    ... 54 more
+</code></pre><p>在这个例子中，还有很多。我们最关心的是寻找来自 <em>我们的代码</em> 的方法，它们是<code>com.example.myproject</code>包中的任何东西。从上面的第二个例子中，我们首先要看看根本原因：</p>
+<pre><code>Caused by: java.sql.SQLException
+</code></pre><p>但是，所有的方法调用都是库代码。因此，我们将移至上面的“由…引发”，并查找源自我们代码的第一个方法调用，即：</p>
+<pre><code>at com.example.myproject.MyEntityService.save(MyEntityService.java:59)
+</code></pre><p>像前面的例子一样，我们应该在<code>59</code>行上看<code>MyEntityService.java</code>，因为这是错误发生的地方（这个错误有点显而易见，<br>SQLException声明错误，但是调试过程就是我们所要做的）。</p>
+<p>我发布这个答案，所以最上面的答案（当按活动排序）不是一个只是明显错误的答案。</p>
+<p><strong>什么是Stacktrace？</strong></p>
+<p>stacktrace是一个非常有用的调试工具。它显示了在未捕获的异常被抛出时（或手动生成堆栈跟踪的时间）的调用堆栈（意思是调用该点的函数堆栈）。这是非常有用的，因为它不仅告诉你错误发生在哪里，而且程序如何在代码的这个地方结束。<br>这导致了下一个问题：</p>
+<p><strong>什么是例外？</strong></p>
+<p>异常是运行时环境用来告诉你发生了一个错误。流行的例子是NullPointerException，IndexOutOfBoundsException或ArithmeticException。当你尝试做一些不可能的事情时，这些都是造成的。例如，当您尝试取消引用空对象时，将引发NullPointerException：</p>
+<pre><code>Object a = null;
+a.toString();                 //this line throws a NullPointerException
+
+Object[] b = new Object[5];
+System.out.println(b[10]);    //this line throws an IndexOutOfBoundsException,
+                              //because b is only 5 elements long
+int ia = 5;
+int ib = 0;
+ia = ia/ib;                   //this line throws an  ArithmeticException with the 
+                              //message &quot;/ by 0&quot;, because you are trying to
+                              //divide by 0, which is not possible.
+</code></pre><p>我应该如何处理Stacktraces / Exceptions？**</p>
+<p>首先，找出是什么导致异常。试着googleing这个异常的名字来找出这个异常是什么原因造成的。大部分时间会由不正确的代码引起。在上面给出的例子中，所有的例外都是由不正确的代码引起的。因此，对于NullPointerException示例，您可以确保<code>a</code>在当时从不为空。例如，你可以初始化<code>a</code>，或者包含一个像这样的检查：</p>
+<pre><code>if (a!=null) {
+    a.toString();
+}
+</code></pre><p>这样，如果<code>a == null</code>，则不会执行有问题的行。其他例子也一样。</p>
+<p>有时你不能确定你没有得到一个例外。例如，如果您在程序中使用网络连接，则无法停止计算机的互联网连接（例如，您不能阻止用户断开计算机的网络连接）。在这种情况下，网络库可能会引发异常。现在您应该捕获异常并<br><strong>处理</strong> 。这意味着，在网络连接的例子中，您应该尝试重新打开连接或通知用户或类似的东西。另外，每当你使用catch的时候，总是只捕获你想要捕获的异常，<br><strong>不要使用像catch（Exception e）` </strong><br>这样广泛的catch语句来捕获所有的异常。这非常重要，否则你可能会意外地发现错误的异常并以错误的方式作出反应。</p>
+<pre><code>try {
+    Socket x = new Socket(&quot;1.1.1.1&quot;, 6789);
+    x.getInputStream().read()
+} catch (IOException e) {
+    System.err.println(&quot;Connection could not be established, please try again later!&quot;)
+}
+</code></pre><p>为什么我不应该使用<code>catch（Exception e）</code>？**</p>
+<p>让我们用一个小例子来说明为什么你不应该只捕获所有异常：</p>
+<pre><code>int mult(Integer a,Integer b) {
+    try {
+        int result = a/b
+        return result;
+    } catch (Exception e) {
+        System.err.println(&quot;Error: Division by zero!&quot;);
+        return 0;
+    }
+}
+</code></pre><p>这段代码试图做的是捕获由可能的除法引起的 <code>。但是它也捕获</code> NullPointerException <code>，如果</code> a <code>或者</code> b <code>是</code> null<br><code>。这意味着，你可能会得到一个</code> NullPointerException<br>`，但是你会把它当作一个ArithmeticException，可能会做错误的事情。在最好的情况下，你仍然错过有一个NullPointerException。这样的东西使调试更难，所以不要那样做。</p>
+<p>&lt;强&gt; TLDR</p>
+<ul>
+<li>找出异常的原因并解决它，这样它就不会抛出异常。</li>
+<li><p>如果1.不可能，请捕获特定异常并处理它。</p>
+<ul>
+<li>不要只是添加try / catch，然后忽略异常！不要这样做！</li>
+<li>切勿使用<code>catch（Exception e）</code>，总是捕获特定的异常。这将为您节省很多头痛。</li>
+</ul>
+</li>
+</ul>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/stack-trace/">stack-trace</a><a href="/tags/debugging/">debugging</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/what-is-a-stack-trace-and-how-can-i-use-it-to-debug-my-application-errors/" data-title="什么是堆栈跟踪，以及如何使用它来调试我的应用程序错误？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/what-is-a-serialversionuid-and-why-should-i-use-it/" title="什么是serialVersionUID，为什么要使用它？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  什么是serialVersionUID，为什么要使用它？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/what-is-an-efficient-way-to-implement-a-singleton-pattern-in-java/"  title="什么是在Java中实现单例模式的有效方法？">
+ <strong>下一篇：</strong><br/> 
+ <span>什么是在Java中实现单例模式的有效方法？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

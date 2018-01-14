@@ -1,0 +1,689 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Java内部类和静态嵌套类 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="Java中的内部类和静态嵌套类之间的主要区别是什么？设计/实现在选择其中一个方面起作用吗？">
+<meta name="keywords" content="java,inner-classes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java内部类和静态嵌套类">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/java-inner-class-and-static-nested-class/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="Java中的内部类和静态嵌套类之间的主要区别是什么？设计/实现在选择其中一个方面起作用吗？">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java内部类和静态嵌套类">
+<meta name="twitter:description" content="Java中的内部类和静态嵌套类之间的主要区别是什么？设计/实现在选择其中一个方面起作用吗？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-inner-class-and-static-nested-class/" title="Java内部类和静态嵌套类" itemprop="url">Java内部类和静态嵌套类</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Static Classes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Inner Classes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Local Inner Classes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Anonymous Inner Classes</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>Java中的内部类和静态嵌套类之间的主要区别是什么？设计/实现在选择其中一个方面起作用吗？</p>
+<a id="more"></a>
+<p>从<a href="http://java.sun.com/docs/books/tutorial/java/javaOO/nested.html" target="_blank" rel="noopener"> Java教程</a>：</p>
+<blockquote>
+<p>Nested classes are divided into two categories: static and non-static.<br>Nested classes that are declared static are simply called static nested<br>classes. Non-static nested classes are called inner classes.</p>
+</blockquote>
+<p>使用包含的类名称访问静态嵌套类：</p>
+<pre><code>OuterClass.StaticNestedClass
+</code></pre><p>例如，要为静态嵌套类创建一个对象，请使用以下语法：</p>
+<pre><code>OuterClass.StaticNestedClass nestedObject = new OuterClass.StaticNestedClass();
+</code></pre><p>作为内部类实例的对象存在于外部类的实例中。考虑以下类：</p>
+<pre><code>class OuterClass {
+    ...
+    class InnerClass {
+        ...
+    }
+}
+</code></pre><p>内部类的一个实例只能存在于外部类的一个实例中，并且可以直接访问其外部实例的方法和字段。</p>
+<p>要实例化一个内部类，你必须首先实例化外部类。然后，使用以下语法在外部对象内创建内部对象：</p>
+<pre><code>OuterClass.InnerClass innerObject = outerObject.new InnerClass();
+</code></pre><p>请参阅：<a href="http://download.oracle.com/javase/tutorial/java/javaOO/nested.html" target="_blank" rel="noopener"> Java教程 -<br>嵌套类</a></p>
+<p>为了完整性，请注意，也有这样的事情，如[封闭的实例，&gt;内部类 _：</p>
+<pre><code>class A {
+  int t() { return 1; }
+  static A a =  new A() { int t() { return 2; } };
+}
+</code></pre><p>这里，<code>new A（）{...}</code>是在静态上下文中定义的内部类_ ，没有包含实例。</p>
+<p><a href="“https://stackoverflow.com/questions/20468856/is-it-true-that-every-inner-
+class-requires-an-如果没有&lt;/em"> Java教程](http://java.sun.com/docs/books/tutorial/java/javaOO/nested.html)</a>：</p>
+<blockquote>
+<p>Terminology: Nested classes are divided into two categories: static and non-<br>static. Nested classes that are declared static are simply called static<br>nested classes. Non-static nested classes are called inner classes.</p>
+</blockquote>
+<p>通常的说法是，大多数程序员可以互换使用“嵌套”和“内部”这两个术语，但是我将使用正确的术语“嵌套类”，它涵盖了内部和静态两个部分。</p>
+<p>类可以嵌套 <em>ad infinitum</em> ，例如类A可以包含包含包含类D的类C的类B，但是，多于一级的类嵌套是很少见的，因为它通常是不好的设计。</p>
+<p>有三个原因可以创建一个嵌套类：</p>
+<ul>
+<li><p>组织：有时候，将一个类排序到另一个类的名字空间似乎是最明智的，特别是当它不会被用于任何其他的上下文时。<br>访问：嵌套类可以访问其包含的类的变量/字段（正是哪些变量/字段取决于嵌套类的类型，无论是内部类型还是静态类型）。</p>
+</li>
+<li><p>方便：为每个新类型创建一个新文件都很麻烦，特别是当这个类型只能在一个上下文中使用时</p>
+</li>
+</ul>
+<p><strong>Java中有四种嵌套类</strong> 。简而言之，它们是：</p>
+<ul>
+<li><strong>静态类</strong> ：声明为另一个类的静态成员</li>
+<li><strong>内部类</strong> ：声明为另一个类的实例成员</li>
+<li><strong>本地内部类</strong> ：在另一个类的实例方法中声明</li>
+<li><strong>匿名内部类</strong> ：类似于本地内部类，但是被写为一个返回一次性对象的表达式</li>
+</ul>
+<p>让我详细说明一下。</p>
+<p>结果</p>
+<h2><span id="static-classes">Static Classes</span></h2><p>静态类是最容易理解的类，因为它们与包含类的实例无关。</p>
+<p>静态类是声明为另一个类的静态成员的类。就像其他静态成员一样，这样的类实际上只是一个挂钩，它使用包含的类作为它的命名空间，例如_类 <em>Goat</em> 声明为类&lt;<br>em&gt; pizza <em>pizza.Rhino.Goat</em> 。 <strong>__ </strong></p>
+<pre><code>package pizza;
+
+public class Rhino {
+
+    ...
+
+    public static class Goat {
+        ...
+    }
+}
+</code></pre><p>坦率地说，静态类是一个非常没有价值的功能，因为类已经被包分解成名称空间。创建一个静态类的唯一真正可以想象的理由是这样的类可以访问它的包含类的私有静态成员，但是我觉得这是静态类特性存在的一个非常蹩脚的理由。</p>
+<p>结果</p>
+<h2><span id="inner-classes">Inner Classes</span></h2><p>内部类是被声明为另一个类的非静态成员的类：</p>
+<pre><code>package pizza;
+
+public class Rhino {
+
+    public class Goat {
+        ...
+    }
+
+    private void jerry() {
+        Goat g = new Goat();
+    }
+}
+</code></pre><p>像一个静态类一样，内部类被称为限定类名（ <em>pizza.Rhino.Goat</em><br>），但是在包含类中，可以通过它的简单名称来知道它。但是，内部类的每个实例都与其包含的类的特定实例相关联：上面的在 <em>jerry</em> 中创建的 <strong><br>隐含地绑定到 _Rhino </strong> 中的 _<em> 实例</em>。否则，当我们实例化 <em>Goat</em> 时，我们使相关的 <em>Rhino</em> 实例显式化：</p>
+<pre><code>Rhino rhino = new Rhino();
+Rhino.Goat goat = rhino.new Goat();
+</code></pre><p>（请注意，在怪异的 <em>new</em> 语法中将内部类型称为 <em>Goat</em> ：Java推断来自 <em>rhino</em><br>部分的包含类型。是的，新的rhino.Goat（）_对我来说也更有意义。）</p>
+<p>那么这对我们有什么好处呢？那么，内部类实例可以访问包含类实例的实例成员。这些封闭的实例成员在内部类中通过<em>引用它们的简单名称，而不是 </em>通过<em> </em>这个_ （<br><em>this</em> 在内部类中引用内部类实例，而不是关联的包含类实例）：</p>
+<pre><code>public class Rhino {
+
+    private String barry;
+
+    public class Goat {
+        public void colin() {
+            System.out.println(barry);
+        }
+    }
+}
+</code></pre><p>在内部类中，可以将包含类的 __ 引用为 <em>Rhino.this</em> ，并且可以使用 <em>this</em> 来引用给其成员，例如Rhino.this.barry _</p>
+<p>结果</p>
+<h2><span id="local-inner-classes">Local Inner Classes</span></h2><p>本地内部类是在方法体内声明的类。这样的类只在其包含的方法中是已知的，所以它只能被实例化并且在其包含的方法中访问它的成员。增益是一个本地的内部类实例绑定到并且可以访问其包含方法的最终本地变量。当实例使用其包含方法的最后一个局部变量时，即使变量超出了作用域，这个变量仍保留了它在创建实例时所保留的值（这实际上是Java的原始的有限版闭包）。<br>/ p&gt;</p>
+<p>因为本地内部类既不是类或包的成员，也不会声明具有访问级别。 （但是，要清楚的是，它自己的成员像普通课程一样具有访问权限。）</p>
+<p>如果在实例方法中声明了一个本地内部类，那么在实例创建时，内部类的实例化与包含方法 <em>this</em><br>所持有的实例相关联，所以包含类的实例成员可以像在实例内部类中那样访问。一个本地的内部类简单地通过 <em>实例化它的名字，例如</em> 本地内部类 <em>Cat</em><br>被实例化为新的Cat（）_，不是新的this.Cat（），你可能期望。</p>
+<p>结果</p>
+<h2><span id="anonymous-inner-classes">Anonymous Inner Classes</span></h2><p>一个匿名的内部类是编写一个本地内部类的句法方便的方法。大多数情况下，每次运行包含的方法时，最多只能实例化一个本地内部类。那么，如果我们可以将本地的内部类定义和它的单一实例化结合成一个方便的语法形式，那将是很好的，如果我们不需要为这个类考虑一个名字就更好了（越少越不利用您的代码包含的名称越多越好）。一个匿名的内部类允许这两个东西：</p>
+<pre><code>new *ParentClassName*(*constructorArgs*) {*members*}
+</code></pre><p>这是一个表达式，返回一个扩展 <em>ParentClassName</em><br>的未命名类的新实例。你不能提供你自己的构造函数;而是隐式提供的，它只是简单地调用超级构造函数，所以提供的参数必须适合超级构造函数。<br>（如果父项包含多个构造函数，那么称为“最简单的”，由一组相当复杂的规则决定，不需要详细学习，只要注意NetBeans或Eclipse告诉您的内容即可。 ）</p>
+<p>或者，您可以指定一个接口来实现：</p>
+<pre><code>new *InterfaceName*() {*members*}
+</code></pre><p>这种声明创建了一个未命名类的新实例，它扩展了Object并实现了<br>_。同样，你不能提供你自己的构造函数。在这种情况下，Java隐含地提供了一个无参数，无所作为的构造函数（所以在这种情况下永远不会有构造函数参数）。</p>
+<p>即使你不能给一个匿名的内部类构造函数，你仍然可以使用一个初始化块（一个放置在任何方法之外的块）进行任何设置。</p>
+<p>明白一个匿名的内部类只是一个不太灵活的创建一个本地内部类的方法。如果你想要一个实现多个接口的本地内部类，或者在扩展除 <em>Object</em><br>以外的其他类或者指定它自己的构造函数时实现接口，那么你就不能创建一个常规的名为local的内部类。 p&gt;</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/inner-classes/">inner-classes</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/java-inner-class-and-static-nested-class/" data-title="Java内部类和静态嵌套类 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/" title="Java：检查与未经检查的异常说明">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Java：检查与未经检查的异常说明</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/java-optional-parameters/"  title="Java可选参数">
+ <strong>下一篇：</strong><br/> 
+ <span>Java可选参数
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Static Classes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Inner Classes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Local Inner Classes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Anonymous Inner Classes</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

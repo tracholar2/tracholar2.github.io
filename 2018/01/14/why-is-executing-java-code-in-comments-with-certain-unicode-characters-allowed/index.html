@@ -1,0 +1,645 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为什么在允许某些Unicode字符的注释中执行Java代码？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="下面的代码产生输出“Hello World！” （没有，试试看）。 public static void main(String... args) {     // The comment below is not a typo.    // \u000d System.out.println(&amp;quot;Hello World!&amp;quot;); } 原因在于Java编译器将Unicode字符\">
+<meta name="keywords" content="java,unicode,comments">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么在允许某些Unicode字符的注释中执行Java代码？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/why-is-executing-java-code-in-comments-with-certain-unicode-characters-allowed/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="下面的代码产生输出“Hello World！” （没有，试试看）。 public static void main(String... args) {     // The comment below is not a typo.    // \u000d System.out.println(&amp;quot;Hello World!&amp;quot;); } 原因在于Java编译器将Unicode字符\">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么在允许某些Unicode字符的注释中执行Java代码？">
+<meta name="twitter:description" content="下面的代码产生输出“Hello World！” （没有，试试看）。 public static void main(String... args) {     // The comment below is not a typo.    // \u000d System.out.println(&amp;quot;Hello World!&amp;quot;); } 原因在于Java编译器将Unicode字符\">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-is-executing-java-code-in-comments-with-certain-unicode-characters-allowed/" title="为什么在允许某些Unicode字符的注释中执行Java代码？" itemprop="url">为什么在允许某些Unicode字符的注释中执行Java代码？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>下面的代码产生输出“Hello World！” （没有，试试看）。</p>
+<pre><code>public static void main(String... args) {
+
+   // The comment below is not a typo.
+   // \u000d System.out.println(&quot;Hello World!&quot;);
+}
+</code></pre><p>原因在于Java编译器将Unicode字符<code>\ u000d</code>解析为新行，并转换为：</p>
+<pre><code>public static void main(String... args) {
+
+   // The comment below is not a typo.
+   //
+   System.out.println(&quot;Hello World!&quot;);
+}
+</code></pre><p>因此导致评论被“执行”。</p>
+<p>既然这可以用来“隐藏”恶意代码，或者一个邪恶的程序员能想象的东西， <strong>为什么它允许评论</strong> ？</p>
+<p>为什么Java规范允许这样做呢？</p>
+<a id="more"></a>
+<p>Unicode解码发生在任何其他词汇翻译之前。这样做的关键好处就是它可以在ASCII和其他编码之间来回切换。你甚至不需要弄清楚评论开始和结束的地方！</p>
+<p>正如<a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-3.3" target="_blank" rel="noopener">JLS第3.3节</a>所述允许任何基于ASCII的工具来处理源文件：</p>
+<blockquote>
+<p>[…] The Java programming language specifies a standard way of transforming<br>a program written in Unicode into ASCII that changes a program into a form<br>that can be processed by ASCII-based tools. […]</p>
+</blockquote>
+<p>这为平台独立性（支持的字符集的独立性）提供了一个基本的保证，这一直是Java平台的关键目标。</p>
+<p>能够在文件中的任何位置编写任何Unicode字符是一个很好的功能，在使用非拉丁语言编写代码时非常重要。它能以这种微妙的方式干扰语义的事实只是一个（不幸的）副作用。</p>
+<p>这个主题有许多问题，Joshua Bloch和Neal Gafter包括以下内容：<a href="http://www.javapuzzlers.com/" target="_blank" rel="noopener"> <em>Puzzlers</em></a>变体：</p>
+<blockquote>
+<p>Is this a legal Java program? If so, what does it print?</p>
+<pre><code>\u0070\u0075\u0062\u006c\u0069\u0063\u0020\u0020\u0020\u0020
+
+\u0063\u006c\u0061\u0073\u0073\u0020\u0055\u0067\u006c\u0079
+
+\u007b\u0070\u0075\u0062\u006c\u0069\u0063\u0020\u0020\u0020
+
+\u0020\u0020\u0020\u0020\u0073\u0074\u0061\u0074\u0069\u0063
+
+\u0076\u006f\u0069\u0064\u0020\u006d\u0061\u0069\u006e\u0028
+
+\u0053\u0074\u0072\u0069\u006e\u0067\u005b\u005d\u0020\u0020
+
+\u0020\u0020\u0020\u0020\u0061\u0072\u0067\u0073\u0029\u007b
+
+\u0053\u0079\u0073\u0074\u0065\u006d\u002e\u006f\u0075\u0074
+
+\u002e\u0070\u0072\u0069\u006e\u0074\u006c\u006e\u0028\u0020
+
+\u0022\u0048\u0065\u006c\u006c\u006f\u0020\u0077\u0022\u002b
+
+\u0022\u006f\u0072\u006c\u0064\u0022\u0029\u003b\u007d\u007d
+</code></pre></blockquote>
+<p>（这个程序原来是一个普通的“Hello World”程序。）</p>
+<p>在解决这个问题的时候，他们指出：</p>
+<blockquote>
+<p>More seriously, this puzzle serves to reinforce the lessons of the previous<br>three: <strong>Unicode escapes are essential when you need to insert characters that<br>can at be represented in any other way into your program. Avoid them in all<br>other cases.</strong></p>
+</blockquote>
+<hr>
+<p>来源：<a href="http://programming.guide/java/executing-code-in-
+comments.html" target="_blank" rel="noopener"> Java：在评论中执行代码?! </a></p>
+<p>因为这还没有解决，所以这里解释一下，为什么Unicode转义的翻译发生在任何其他源代码处理之前：</p>
+<p>它背后的想法是，它允许Java源代码在不同的字符编码之间进行无损的转换。今天，Unicode有广泛的支持，这看起来不是一个问题，但是当时一个来自西方国家的开发者从包含亚洲字符的亚洲同事手中接收一些源代码并不容易，更改（包括编译和测试）并将结果发回，而不会损坏某些内容。</p>
+<p>所以，Java源代码可以用任何编码来编写，并允许在标识符，字符和<code>String</code>文字和注释中使用大量的字符。然后，为了无损传输，目标编码不支持的所有字符都被Unicode转义替换。</p>
+<p>这是一个可逆的过程，有趣的一点是，翻译可以通过一个不需要知道Java源代码语法的东西来完成，因为翻译规则不依赖于它。这在编译器内部转换为其实际的Unicode字符时独立于Java源代码语法。这意味着您可以在两个方向上执行任意数量的翻译步骤，而无需更改源代码的含义。</p>
+<p>这是另一个奇怪的功能，甚至没有提到的原因：<code>\ uuuuuuxxxx</code> 当翻译工具转义字符并遇到已经是转义序列的序列时，它应该在序列中插入一个额外的<code>u</code>，将<code>\ ucafe</code>转换为&lt;代码&gt; \ uucafe 。含义不会改变，但是当转换到另一个方向时，工具应该移除一个<code>u</code>，并且用Unicode字符替换只包含一个<code>u</code>的序列。这样，即使Unicode转义仍然保持原来的形式来回转换。我想，没有人曾经使用过这个功能……</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/unicode/">unicode</a><a href="/tags/comments/">comments</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/why-is-executing-java-code-in-comments-with-certain-unicode-characters-allowed/" data-title="为什么在允许某些Unicode字符的注释中执行Java代码？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/sorting-an-array-of-javascript-objects/" title="排序JavaScript对象的数组">
+  <strong>上一篇：</strong><br/>
+  <span>
+  排序JavaScript对象的数组</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/static-class-variables-in-python/"  title="Python中的静态类变量">
+ <strong>下一篇：</strong><br/> 
+ <span>Python中的静态类变量
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,636 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>我可以将jar添加到maven 2生成类路径而不安装它们？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在实验/快速和肮脏的模拟开发阶段，Maven2正在让我疯狂。 我有一个pom.xml文件，它定义了我想要使用的web-app框架的依赖关系，我可以从这个文件中快速生成starter项目。但是，有时候我想链接到一个没有定义pom.xml文件的第三方库，所以不要为这个文件创建pom.xml文件第三方lib手工安装，并添加依赖到我的pom.xml，我只想告诉Maven：“除了我定义的依赖项之外，还包括/">
+<meta name="keywords" content="java,maven-2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我可以将jar添加到maven 2生成类路径而不安装它们？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/can-i-add-jars-to-maven-2-build-classpath-without-installing-them/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在实验/快速和肮脏的模拟开发阶段，Maven2正在让我疯狂。 我有一个pom.xml文件，它定义了我想要使用的web-app框架的依赖关系，我可以从这个文件中快速生成starter项目。但是，有时候我想链接到一个没有定义pom.xml文件的第三方库，所以不要为这个文件创建pom.xml文件第三方lib手工安装，并添加依赖到我的pom.xml，我只想告诉Maven：“除了我定义的依赖项之外，还包括/">
+<meta property="og:updated_time" content="2018-01-14T13:19:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我可以将jar添加到maven 2生成类路径而不安装它们？">
+<meta name="twitter:description" content="在实验/快速和肮脏的模拟开发阶段，Maven2正在让我疯狂。 我有一个pom.xml文件，它定义了我想要使用的web-app框架的依赖关系，我可以从这个文件中快速生成starter项目。但是，有时候我想链接到一个没有定义pom.xml文件的第三方库，所以不要为这个文件创建pom.xml文件第三方lib手工安装，并添加依赖到我的pom.xml，我只想告诉Maven：“除了我定义的依赖项之外，还包括/">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/can-i-add-jars-to-maven-2-build-classpath-without-installing-them/" title="我可以将jar添加到maven 2生成类路径而不安装它们？" itemprop="url">我可以将jar添加到maven 2生成类路径而不安装它们？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Problems of popular approaches</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Why you shouldn’t apply the “Install to Local Repo” approach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Why you shouldn’t apply the “System Scope” approach</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">The static in-project repository solution</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">Use Maven to install to project repo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">A helper script</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.3.</span> <span class="toc-text">Include the dependencies in your target package</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在实验/快速和肮脏的模拟开发阶段，Maven2正在让我疯狂。</p>
+<p>我有一个<code>pom.xml</code>文件，它定义了我想要使用的web-<br>app框架的依赖关系，我可以从这个文件中快速生成starter项目。但是，有时候我想链接到一个没有定义<code>pom.xml</code>文件的第三方库，所以不要为这个文件创建<code>pom.xml</code>文件第三方lib手工安装，并添加依赖到我的<code>pom.xml</code>，我只想告诉Maven：“除了我定义的依赖项之外，还包括<code>/ lib</code>。“</p>
+<p>看起来这应该是简单的，但如果是这样，我错过了一些东西。</p>
+<p>任何指针如何做到这一点非常感谢。简而言之，如果有一种简单的方法将maven指向<code>/ lib</code>目录，并轻松创建一个<code>pom.xml</code>，所有封闭的jar映射到一个依赖关系我可以这样命名/安装并连接到一举也就够了。</p>
+<a id="more"></a>
+<h1><span id="problems-of-popular-approaches">Problems of popular approaches</span></h1><p>你可以在互联网上找到大多数的答案，建议你将依赖项安装到你的本地仓库，或者在<code>pom</code>中指定一个“系统”作用域，然后分发依赖项你的项目。但是这两种解决方案实际上都是有缺陷的。</p>
+<h2><span id="why-you-shouldnt-apply-the-install-to-local-repo-approach">Why you shouldn’t apply the “Install to Local Repo” approach</span></h2><p>当你安装依赖到你的本地仓库时，它仍然在那里。只要有权访问此存储库，分发工件就会正常工作。问题是在大多数情况下，这个仓库将驻留在你的本地机器上，所以在任何其他机器上都无法解决这个依赖关系。清楚地使你的神器依赖于特定的机器不是一种处理事物的方法。否则，这个依赖关系将不得不在每个使用该项目的计算机上本地安装，这是没有比这更好的了。</p>
+<h2><span id="why-you-shouldnt-apply-the-system-scope-approach">Why you shouldn’t apply the “System Scope” approach</span></h2><p>您使用“系统范围”方法所依赖的jar既不会被安装到任何存储库，也不会被附加到您的目标包中。这就是为什么您的发行包在使用时无法解决依赖关系的原因。我相信这是系统范围的使用甚至被废弃的原因。无论如何，你不想依赖于不推荐的功能。</p>
+<h1><span id="the-static-in-project-repository-solution">The static in-project repository solution</span></h1><p>把这个放在你的<code>pom</code>：</p>
+<p>之后</p>
+<pre><code>&lt;repository&gt;
+    &lt;id&gt;repo&lt;/id&gt;
+    &lt;releases&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+        &lt;checksumPolicy&gt;ignore&lt;/checksumPolicy&gt;
+    &lt;/releases&gt;
+    &lt;snapshots&gt;
+        &lt;enabled&gt;false&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+    &lt;url&gt;file://${project.basedir}/repo&lt;/url&gt;
+&lt;/repository&gt;
+</code></pre><p>对于具有<code>x.y.z</code>形式的组ID的每个工件，Maven将在您的项目目录中包含以下位置，以搜索工件：</p>
+<pre><code>repo/
+| - x/
+|   | - y/
+|   |   | - z/
+|   |   |   | - ${artifactId}/
+|   |   |   |   | - ${version}/
+|   |   |   |   |   | - ${artifactId}-${version}.jar
+</code></pre><p>详细阐述这个你可以阅读<a href="http://blog.dub.podval.org/2010/01/maven-in-project-
+repository.html" target="_blank" rel="noopener">这个博客帖子</a>。</p>
+<h2><span id="use-maven-to-install-to-project-repo">Use Maven to install to project repo</span></h2><p>而不是手动创建这个结构，我推荐使用Maven插件来将你的罐子安装成工件。因此，要将工件安装到<code>repo</code>文件夹下的in-project存储库，请执行：</p>
+<pre><code>mvn install:install-file -DlocalRepositoryPath=repo -DcreateChecksum=true -Dpackaging=jar -Dfile=[your-jar] -DgroupId=[...] -DartifactId=[...] -Dversion=[...]
+</code></pre><p>如果您选择这种方法，您可以将<code>pom</code>中的存储库声明简化为：</p>
+<pre><code>&lt;repository&gt;
+    &lt;id&gt;repo&lt;/id&gt;
+    &lt;url&gt;file://${project.basedir}/repo&lt;/url&gt;
+&lt;/repository&gt;
+</code></pre><h2><span id="a-helper-script">A helper script</span></h2><p>由于每个lib执行安装命令有点烦人，而且绝对容易出错，所以我创建了一个<a href="“https://github.com/nikita-volkov
+/install-to-project-repo”rel">实用程序脚本</a>，它自动将所有从<code>lib</code>文件夹中的jar文件安装到项目存储库，同时自动从文件名解析所有元数据（groupId，artifactId等）。该脚本还会打印出依赖关系xml，供您复制粘贴到您的<code>pom</code>中。</p>
+<h2><span id="include-the-dependencies-in-your-target-package">Include the dependencies in your target package</span></h2><p>当你创建了你的项目库时，你将解决一个项目依赖关系的问题，但是从那以后，你的项目的目标项目将依赖于未发布的jar，所以当你将它安装到一个仓库将有无法解决的依赖关系。</p>
+<p>为了解决这个问题，我建议把这些依赖包括在你的目标包中。这可以通过<a href="https://stackoverflow.com/a/1729094/485115" target="_blank" rel="noopener">装配体插件</a>或更好地使用<a href="“http://code.google。">OneJar插件</a>。 OneJar上的官方文档很容易理解。</p>
+<p><strong>仅用于丢弃代码</strong></p>
+<p>设置范围==系统，只是组成一个groupId，artifactId和版本</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.swinglabs&lt;/groupId&gt;
+    &lt;artifactId&gt;swingx&lt;/artifactId&gt;
+    &lt;version&gt;0.9.2&lt;/version&gt;
+    &lt;scope&gt;system&lt;/scope&gt;
+    &lt;systemPath&gt;${project.basedir}/lib/swingx-0.9.3.jar&lt;/systemPath&gt;
+&lt;/dependency&gt;
+</code></pre><p>注意：系统依赖不会被复制到结果jar / war<br>中 （请参阅<a href="https://stackoverflow.com/questions/19065666
+/how-to-include-system-dependencies-in-war-built-using-maven" target="_blank" rel="noopener">如何在使用maven构建的war中包含系统依赖关系</a>）</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/maven-2/">maven-2</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/can-i-add-jars-to-maven-2-build-classpath-without-installing-them/" data-title="我可以将jar添加到maven 2生成类路径而不安装它们？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/window-onload-vs-document-ready/" title="window.onload vs $（document）.ready（）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  window.onload vs $（document）.ready（）</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/can-i-catch-multiple-java-exceptions-in-the-same-catch-clause/"  title="我可以在同一个catch子句中捕获多个Java异常吗？">
+ <strong>下一篇：</strong><br/> 
+ <span>我可以在同一个catch子句中捕获多个Java异常吗？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Problems of popular approaches</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Why you shouldn’t apply the “Install to Local Repo” approach</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Why you shouldn’t apply the “System Scope” approach</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">The static in-project repository solution</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">Use Maven to install to project repo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">A helper script</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.3.</span> <span class="toc-text">Include the dependencies in your target package</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

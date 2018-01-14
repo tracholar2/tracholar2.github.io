@@ -112,7 +112,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-difference-between-old-style-and-new-style-classes-in-python/" title="Python中的旧风格和新风格类有什么区别？" itemprop="url">Python中的旧风格和新风格类有什么区别？</a>
+      <a href="/2018/01/14/iterating-through-a-collection-avoiding-concurrentmodificationexception-when-re/" title="迭代集合，避免在循环中移除时出现ConcurrentModificationException异常" itemprop="url">迭代集合，避免在循环中移除时出现ConcurrentModificationException异常</a>
   </h1>
   <p class="article-author">By
        
@@ -125,12 +125,66 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>在Python中，旧式和新式的类有什么区别？现在有没有理由使用旧式的课程？</p>
+        <p>我们都知道你不能这样做：</p>
+<pre><code>for (Object i : l) {
+    if (condition(i)) {
+        l.remove(i);
+    }
+}
+</code></pre><p>ConcurrentModificationException `等…这显然有效，但并不总是。以下是一些特定的代码：</p>
+<pre><code>public static void main(String[] args) {
+    Collection&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+    for (int i=0; i &lt; 10; ++i) {
+        l.add(new Integer(4));
+        l.add(new Integer(5));
+        l.add(new Integer(6));
+    }
+
+    for (Integer i : l) {
+        if (i.intValue() == 5) {
+            l.remove(i);
+        }
+    }
+
+    System.out.println(l);
+}
+</code></pre><p>这当然会导致：</p>
+<pre><code>Exception in thread &quot;main&quot; java.util.ConcurrentModificationException
+</code></pre><p>即使多个线程没有这样做……无论如何。</p>
+<p>这个问题最好的解决办法是什么？我怎样才能从循环中删除一个项目而不会抛出这个异常？</p>
+<p>我也在这里使用一个任意的<code>Collection</code>，不一定是一个<code>ArrayList</code>，所以你不能依赖<code>get</code>。<code>p&gt; &lt;!-- more --&gt;
+Iterator.remove（）</code>是安全的，你可以像这样使用它：</p>
+<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
+
+// This is a clever way to create the iterator and call iterator.hasNext() like
+// you would do in a while-loop. It would be the same as doing:
+//     Iterator&lt;String&gt; iterator = list.iterator();
+//     while (iterator.hasNext()) {
+for (Iterator&lt;String&gt; iterator = list.iterator(); iterator.hasNext();) {
+    String string = iterator.next();
+    if (string.isEmpty()) {
+        // Remove the current element from the iterator and the list.
+        iterator.remove();
+    }
+}
+</code></pre><p>请注意，<code>Iterator.remove</code>是在迭代过程中修改集合的唯一安全方法。如果在迭代过程中以其他方式修改了底层集合，则行为是未指定的。</p>
+<p>来源：</p>
+<p><a href="http://docs.oracle.com/javase/tutorial/collections/interfaces/collection.html" target="_blank" rel="noopener"> http://docs.oracle.com/javase/tutorial/集合/接口/ collection.html</a></p>
+<hr>
+<p>同样，如果你有一个<code>ListIterator</code>并且想要添加_项，你可以使用<a href="“http://docs.oracle.com/javase"> <code>ListIterator＃add</code></a>，出于同样的原因，您可以使用<code>Iterator＃remove</code> - 它被设计为允许它。</p>
+<p>愚蠢的我：</p>
+<pre><code>Iterator&lt;Integer&gt; iter = l.iterator();
+while (iter.hasNext()) {
+    if (iter.next().intValue() == 5) {
+        iter.remove();
+    }
+}
+</code></pre><p>我认为，由于foreach循环是用于迭代的语法糖，所以使用迭代器将无济于事……但它为您提供了<code>.remove（）</code>功能。</p>
+
         
         
         <p class="article-more-link">
-          
-            <a href="/2018/01/14/what-is-the-difference-between-old-style-and-new-style-classes-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -140,7 +194,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/types/">types</a><a href="/tags/oop/">oop</a><a href="/tags/class/">class</a><a href="/tags/new-style-class/">new-style-class</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/collections/">collections</a>
   </div>
 
 </div>
@@ -180,7 +234,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-difference-between-range-and-xrange-functions-in-python-2-x/" title="Python 2.X中的range和xrange函数有什么区别？" itemprop="url">Python 2.X中的range和xrange函数有什么区别？</a>
+      <a href="/2018/01/14/java-3-dots-in-parameters/" title="Java，参数中有3个点" itemprop="url">Java，参数中有3个点</a>
   </h1>
   <p class="article-author">By
        
@@ -193,15 +247,16 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>显然xrange是更快的，但我不知道为什么它更快（除了轶事迄今没有证据，它是更快），或除此之外是什么不同的</p>
-<pre><code>for i in range(0, 20):
-for i in xrange(0, 20):
+        <p>以下方法中的3个点是什么意思？</p>
+<pre><code>public void myMethod(String... strings){
+    // method body
+}
 </code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-is-the-difference-between-range-and-xrange-functions-in-python-2-x/#more">Read More</a>
+            <a href="/2018/01/14/java-3-dots-in-parameters/#more">Read More</a>
           
        </p>
     </div>
@@ -211,7 +266,7 @@ for i in xrange(0, 20):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/loops/">loops</a><a href="/tags/python-2-x/">python-2.x</a><a href="/tags/range/">range</a><a href="/tags/xrange/">xrange</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/variadic-functions/">variadic-functions</a>
   </div>
 
 </div>
@@ -240,7 +295,7 @@ for i in xrange(0, 20):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-difference-between-staticmethod-and-classmethod-in-python/" title="Python中的@staticmethod和@classmethod有什么区别？" itemprop="url">Python中的@staticmethod和@classmethod有什么区别？</a>
+      <a href="/2018/01/14/java-8-listv-into-mapk-v/" title="Java 8列表&lt;V&gt;到地图&lt;K，V&gt;中" itemprop="url">Java 8列表&lt;V&gt;到地图&lt;K，V&gt;中</a>
   </h1>
   <p class="article-author">By
        
@@ -253,12 +308,36 @@ for i in xrange(0, 20):
 </header>
     <div class="article-content">
         
-        <p>用<a href="http://docs.python.org/library/functions.html#staticmethod" target="_blank" rel="noopener"> <code>@staticmethod</code>装饰的功能有什么区别？</a>，并使用<a href="http://docs.python.org/library/functions.html#classmethod" target="_blank" rel="noopener"> <code>@classmethod</code></a>进行装饰？</p>
+        <p>我想使用Java 8的流和lambdas将对象列表翻译成Map。</p>
+<p>这是我在Java 7及以下版本中编写的。</p>
+<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
+        final Map&lt;String, Choice&gt; hashMap = new HashMap&lt;&gt;();
+        for (final Choice choice : choices) {
+            hashMap.put(choice.getName(), choice);
+        }
+        return hashMap;
+}
+</code></pre><p>使用Java 8和Guava我可以轻松完成这个任务，但是我想知道如何在没有Guava的情况下做到这一点。</p>
+<p>在番石榴：</p>
+<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
+    return Maps.uniqueIndex(choices, new Function&lt;Choice, String&gt;() {
+
+        @Override
+        public String apply(final Choice input) {
+            return input.getName();
+        }
+    });
+}
+</code></pre><p>用Java 8 lambda表达番石榴。</p>
+<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
+    return Maps.uniqueIndex(choices, c -&gt; c.getName());
+}
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-is-the-difference-between-staticmethod-and-classmethod-in-python/#more">Read More</a>
+            <a href="/2018/01/14/java-8-listv-into-mapk-v/#more">Read More</a>
           
        </p>
     </div>
@@ -268,7 +347,7 @@ for i in xrange(0, 20):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/python-decorators/">python-decorators</a><a href="/tags/methods/">methods</a><a href="/tags/oop/">oop</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/java-8/">java-8</a><a href="/tags/lambda/">lambda</a><a href="/tags/java-stream/">java-stream</a>
   </div>
 
 </div>
@@ -297,7 +376,7 @@ for i in xrange(0, 20):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-meaning-of-a-single-and-a-double-underscore-before-an-object-name/" title="对象名称之前的单下划线和双下划线的含义是什么？" itemprop="url">对象名称之前的单下划线和双下划线的含义是什么？</a>
+      <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/" title="Java：检查与未经检查的异常说明" itemprop="url">Java：检查与未经检查的异常说明</a>
   </h1>
   <p class="article-author">By
        
@@ -310,75 +389,56 @@ for i in xrange(0, 20):
 </header>
     <div class="article-content">
         
-        <p>我想彻底澄清这一点。有人可以解释在Python中的对象的名称之前有下划线的确切含义吗？还要解释一个单独的和一个双重的下划线之间的区别。另外，不管对象是变量，函数，方法等，这个意义是否保持不变？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/what-is-the-meaning-of-a-single-and-a-double-underscore-before-an-object-name/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
+        <p>我已经阅读StackOverFlow有关检查与未经检查的异常多个职位。我老实说还不太清楚如何正确使用它们。</p>
+<p>Joshua Bloch在“ <em>Effective Java</em> ”中表示，</p>
+<blockquote>
+<p>Use checked exceptions for recoverable conditions and runtime exceptions for<br>programming errors (Item 58 in 2nd edition)</p>
+</blockquote>
+<p>让我们看看我是否正确理解这一点。</p>
+<p>这里是我对被检查的异常的理解：</p>
+<pre><code>try{
+    String userInput = //read in user input
+    Long id = Long.parseLong(userInput);
+}catch(NumberFormatException e){
+    id = 0; //recover the situation by setting the id to 0
+}
+</code></pre><p>&lt;强&gt; 1。上面是否考虑过检查异常？**</p>
+<p>&lt;强&gt; 2。 RuntimeException是一个未经检查的异常吗？**</p>
+<p>以下是我对非检查异常的理解：</p>
+<pre><code>try{
+    File file = new File(&quot;my/file/path&quot;);
+    FileInputStream fis = new FileInputStream(file);   
+}catch(FileNotFoundException e){
 
+//3. What should I do here?
+    //Should I &quot;throw new FileNotFoundException(&quot;File not found&quot;);&quot;?
+    //Should I log?
+    //Or should I System.exit(0);?
+}
+</code></pre><p>&lt;强&gt; 4。现在，不能上面的代码也是一个检查异常？我可以尝试恢复这种情况？我可以吗？**（注意：我的第三个问题在上面的<code>catch</code>里面）</p>
+<pre><code>try{
+    String filePath = //read in from user input file path
+    File file = new File(filePath);
+    FileInputStream fis = new FileInputStream(file);   
+}catch(FileNotFoundException e){
+    //Kindly prompt the user an error message
+    //Somehow ask the user to re-enter the file path.
+}
+</code></pre><p>&lt;强&gt; 5。为什么人们这样做？**</p>
+<pre><code>public void someMethod throws Exception{
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/private/">private</a><a href="/tags/naming-conventions/">naming-conventions</a><a href="/tags/underscores/">underscores</a><a href="/tags/double-underscore/">double-underscore</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/what-is-the-new-keyword-in-javascript/" title="JavaScript中的“新”关键字是什么？" itemprop="url">JavaScript中的“新”关键字是什么？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>JavaScript中的<code>new</code>关键字在第一次遇到时可能会相当混乱，因为人们倾向于认为JavaScript不是面向对象的编程语言。</p>
-<ul>
-<li>这是什么？</li>
-<li>它解决了什么问题？</li>
-<li>什么时候适合，什么时候不适合</li>
-</ul>
+}
+</code></pre><p>他们为什么让这个例外冒出来呢？没有更好地处理错误？为什么泡起来？</p>
+<p>编辑：我应该冒出确切的异常或使用异常屏蔽它？**</p>
+<p><strong>以下是我的读物</strong></p>
+<p>[<br><a href="https://stackoverflow.com/questions/27578/when-to-choose-
+checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已检查和未检查的例外情况</a></p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-is-the-new-keyword-in-javascript/#more">Read More</a>
+            <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/#more">Read More</a>
           
        </p>
     </div>
@@ -388,7 +448,7 @@ for i in xrange(0, 20):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/new-operator/">new-operator</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/exception/">exception</a><a href="/tags/runtimeexception/">runtimeexception</a><a href="/tags/checked-exceptions/">checked-exceptions</a><a href="/tags/unchecked-exception/">unchecked-exception</a>
   </div>
 
 </div>
@@ -417,7 +477,7 @@ for i in xrange(0, 20):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-javascript-version-of-sleep/" title="什么是sleep（）的JavaScript版本？" itemprop="url">什么是sleep（）的JavaScript版本？</a>
+      <a href="/2018/01/14/java-inner-class-and-static-nested-class/" title="Java内部类和静态嵌套类" itemprop="url">Java内部类和静态嵌套类</a>
   </h1>
   <p class="article-author">By
        
@@ -430,21 +490,12 @@ for i in xrange(0, 20):
 </header>
     <div class="article-content">
         
-        <p>有没有更好的方法来设计JavaScript中的<code>sleep</code>，比下面的<code>pausecomp</code>函数（<a href="“http://www.sean.co.uk">取自这里</a>）？</p>
-<pre><code>function pausecomp(millis)
-{
-    var date = new Date();
-    var curDate = null;
-    do { curDate = new Date(); }
-    while(curDate-date &lt; millis);
-}
-</code></pre><p>这不是<a href="https://stackoverflow.com/questions/758688
-/sleep-in-javascript" target="_blank" rel="noopener"> Javascript中的睡眠 - 动作之间的延迟</a>;我想要一个真正的睡眠_在一个函数的中间，而不是一段代码执行之前的延迟。</p>
+        <p>Java中的内部类和静态嵌套类之间的主要区别是什么？设计/实现在选择其中一个方面起作用吗？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-is-the-javascript-version-of-sleep/#more">Read More</a>
+            <a href="/2018/01/14/java-inner-class-and-static-nested-class/#more">Read More</a>
           
        </p>
     </div>
@@ -454,7 +505,7 @@ for i in xrange(0, 20):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/sleep/">sleep</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/inner-classes/">inner-classes</a>
   </div>
 
 </div>
@@ -483,7 +534,7 @@ for i in xrange(0, 20):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-preferred-syntax-for-defining-enums-in-javascript/" title="在JavaScript中定义枚举的首选语法是什么？" itemprop="url">在JavaScript中定义枚举的首选语法是什么？</a>
+      <a href="/2018/01/14/java-optional-parameters/" title="Java可选参数" itemprop="url">Java可选参数</a>
   </h1>
   <p class="article-author">By
        
@@ -496,24 +547,12 @@ for i in xrange(0, 20):
 </header>
     <div class="article-content">
         
-        <p>在JavaScript中定义枚举的首选语法是什么？就像：</p>
-<pre><code>my.namespace.ColorEnum = {
-    RED : 0,
-    GREEN : 1,
-    BLUE : 2
-}
-
-// later on
-
-if(currentColor == my.namespace.ColorEnum.RED) {
-   // whatever
-}
-</code></pre><p>还是有更好的成语？</p>
+        <p>如何在Java中使用可选参数？什么规范支持可选参数？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-is-the-preferred-syntax-for-defining-enums-in-javascript/#more">Read More</a>
+            <a href="/2018/01/14/java-optional-parameters/#more">Read More</a>
           
        </p>
     </div>
@@ -523,7 +562,7 @@ if(currentColor == my.namespace.ColorEnum.RED) {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/enums/">enums</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/optional-parameters/">optional-parameters</a>
   </div>
 
 </div>
@@ -552,7 +591,7 @@ if(currentColor == my.namespace.ColorEnum.RED) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-purpose-of-node-js-module-exports-and-how-do-you-use-it/" title="Node.js module.exports的目的是什么？你如何使用它？" itemprop="url">Node.js module.exports的目的是什么？你如何使用它？</a>
+      <a href="/2018/01/14/java-util-date-to-xmlgregoriancalendar/" title="java.util.Date到XMLGregorianCalendar" itemprop="url">java.util.Date到XMLGregorianCalendar</a>
   </h1>
   <p class="article-author">By
        
@@ -565,23 +604,141 @@ if(currentColor == my.namespace.ColorEnum.RED) {
 </header>
     <div class="article-content">
         
-        <p>Node.js module.exports的目的是什么？你如何使用它？</p>
-<p>我似乎无法找到任何有关这方面的信息，但它似乎是Node.js的一个相当重要的部分，因为我经常在源代码中看到它。</p>
-<p>根据<a href="http://nodejs.org/docs/v0.4.2/api/globals.html#module" target="_blank" rel="noopener"> Node.js文档</a>： p&gt;</p>
+        <p>没有从java.util.Date到XMLGregorianCalendar的简便方法吗？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/java-util-date-to-xmlgregoriancalendar/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/date/">date</a><a href="/tags/xml/">xml</a><a href="/tags/xmlgregoriancalendar/">xmlgregoriancalendar</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-string-to-date-conversion/" title="Java字符串到日期的转换" itemprop="url">Java字符串到日期的转换</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有人可以推荐最好的方式来转换格式’2010年1月2日’的字符串在Java中的日期？最终，我想把整个月份，每一天，每一年都分解为整数，以便我可以使用：</p>
+<pre><code>Date date = new Date();
+date.setMonth()..
+date.setYear()..
+date.setDay()..
+date.setlong currentTime = date.getTime();
+</code></pre><p>将日期转换成时间。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/java-string-to-date-conversion/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/date/">date</a><a href="/tags/string/">string</a><a href="/tags/data-conversion/">data-conversion</a><a href="/tags/time/">time</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-url-encoding-of-query-string-parameters/" title="查询字符串参数的Java URL编码" itemprop="url">查询字符串参数的Java URL编码</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>假设我有一个网址</p>
+<pre><code>http://example.com/query?q=
+</code></pre><p>我有一个用户输入的查询，如：</p>
 <blockquote>
-<p><strong>module</strong></p>
+<p>random word Â£500 bank $</p>
 </blockquote>
-<p>&gt;</p>
-<blockquote>
-<p>A reference to the current <code>module</code>. In particular <code>module.exports</code> is the<br>same as the exports object. See <code>src/node.js</code> for more information.</p>
-</blockquote>
-<p>但是这并没有什么帮助。</p>
-<p><code></code> module.exports `究竟做了什么，一个简单的例子是什么？</p>
+<p>我希望结果是一个正确编码的网址：</p>
+<pre><code>http://example.com/query?q=random%20word%20%A3500%20bank%20%24
+</code></pre><p>实现这个目标的最好方法是什么？我尝试了<code>URLEncoder</code>并创建了URI / URL对象，但是没有一个出来很正确。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-is-the-purpose-of-node-js-module-exports-and-how-do-you-use-it/#more">Read More</a>
+            <a href="/2018/01/14/java-url-encoding-of-query-string-parameters/#more">Read More</a>
           
        </p>
     </div>
@@ -591,7 +748,7 @@ if(currentColor == my.namespace.ColorEnum.RED) {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/node-js/">node.js</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/url/">url</a><a href="/tags/encoding/">encoding</a><a href="/tags/http/">http</a><a href="/tags/urlencode/">urlencode</a>
   </div>
 
 </div>
@@ -620,7 +777,7 @@ if(currentColor == my.namespace.ColorEnum.RED) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-purpose-of-self/" title="自我的目的是什么？" itemprop="url">自我的目的是什么？</a>
+      <a href="/2018/01/14/java-when-to-use-static-methods/" title="Java：何时使用静态方法" itemprop="url">Java：何时使用静态方法</a>
   </h1>
   <p class="article-author">By
        
@@ -633,22 +790,20 @@ if(currentColor == my.namespace.ColorEnum.RED) {
 </header>
     <div class="article-content">
         
-        <p>Python中<code>self</code>单词的用途是什么？我知道它是指从该类创建的特定对象，但我不明白为什么它明确需要作为参数添加到每个函数。为了说明，在Ruby中我可以这样做：</p>
-<pre><code>class myClass
-    def myFunc(name)
-        @name = name
-    end
-end
-</code></pre><p>我很明白，这很容易。然而在Python中，我需要包含<code>self</code>：</p>
-<pre><code>class myClass:
-    def myFunc(self, name):
-        self.name = name
-</code></pre><p>任何人都可以通过这个说话吗？这不是我在我的（当然是有限的）经验中遇到的。</p>
+        <p>我想知道什么时候使用静态方法？假如我有一个只有几个getter和setter的类，一个或两个方法，我希望这些方法只能在类的实例对象上调用。这是否意味着我应该使用静态方法？</p>
+<p>e.g</p>
+<pre><code>Obj x = new Obj();
+x.someMethod
+</code></pre><p>或</p>
+<pre><code>Obj.someMethod
+</code></pre><p>（这是静态的方式？）</p>
+<p>我很困惑！</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-is-the-purpose-of-self/#more">Read More</a>
+            <a href="/2018/01/14/java-when-to-use-static-methods/#more">Read More</a>
           
        </p>
     </div>
@@ -658,77 +813,7 @@ end
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/class/">class</a><a href="/tags/self/">self</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/what-is-the-purpose-of-the-var-keyword-and-when-to-use-it-or-omit-it/" title="var关键字的用途是什么以及何时使用（或省略）？" itemprop="url">var关键字的用途是什么以及何时使用（或省略）？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p><strong><em>NOTE</em></strong> : This question was asked from the viewpoint of ECMAScript<br>version 3 or 5. The answers might become outdated with the introduction of new<br>features in the release of ECMAScript 6.</p>
-</blockquote>
-<p>Javascript中<code>var</code>关键字的功能究竟是什么，以及它们之间有什么区别：</p>
-<pre><code>var someNumber = 2;
-var someFunction = function() { doSomething; }
-var someObject = { }
-var someObject.someProperty = 5;
-</code></pre><p>和</p>
-<pre><code>someNumber = 2;
-someFunction = function() { doSomething; }
-someObject = { }
-someObject.someProperty = 5;
-</code></pre><p>您什么时候可以使用其中一种，为什么？它有什么作用？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/what-is-the-purpose-of-the-var-keyword-and-when-to-use-it-or-omit-it/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/keyword/">keyword</a><a href="/tags/ecmascript-5/">ecmascript-5</a>
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/static-methods/">static-methods</a>
   </div>
 
 </div>
@@ -753,7 +838,7 @@ someObject.someProperty = 5;
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/35/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><a class="page-number" href="/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/page/40/">40</a><a class="extend next" rel="next" href="/page/37/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/35/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><a class="page-number" href="/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><a class="extend next" rel="next" href="/page/37/">Next<span></span></a>
   </nav>
 
 </div>
@@ -805,6 +890,10 @@ someObject.someProperty = 5;
 		<ul class="clearfix">
 		
 			
+				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
 			
 		
@@ -813,31 +902,35 @@ someObject.someProperty = 5;
 			
 		
 			
+				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>29</sup></a></li>
+				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>28</sup></a></li>
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>18</sup></a></li>
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>12</sup></a></li>
+				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>12</sup></a></li>
+				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
 			
 		
 			
@@ -845,11 +938,27 @@ someObject.someProperty = 5;
 			
 		
 			
+				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
 			
 		
 			
@@ -857,31 +966,7 @@ someObject.someProperty = 5;
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>8</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/integer/" title="integer">integer<sup>7</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/date/" title="date">date<sup>6</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/object/" title="object">object<sup>6</sup></a></li>
+				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
 			
 		
 		</ul>
