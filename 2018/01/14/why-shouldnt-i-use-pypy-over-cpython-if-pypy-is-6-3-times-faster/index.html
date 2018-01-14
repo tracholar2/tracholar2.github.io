@@ -1,0 +1,608 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为什么PyPy的速度提高了6.3倍，我不应该在Python上使用Pyython呢？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我已经听说了很多关于 PyPy 的项目。他们声称，它的速度比 CPython解释器快了6.3倍他们的网站。 每当我们谈论像Python这样的动态语言时，速度就是最重要的问题之一。为了解决这个问题，他们说PyPy快了6.3倍。 第二个问题是并行，即臭名昭着的全球口译员锁定（GIL）。为此，PyPy说可以给予GIL的Python。 如果PyPy能够解决这些巨大的挑战，它的弱点是什么，阻止更广泛的采用？">
+<meta name="keywords" content="python,performance,cpython,jit,pypy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么PyPy的速度提高了6.3倍，我不应该在Python上使用Pyython呢？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/why-shouldnt-i-use-pypy-over-cpython-if-pypy-is-6-3-times-faster/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我已经听说了很多关于 PyPy 的项目。他们声称，它的速度比 CPython解释器快了6.3倍他们的网站。 每当我们谈论像Python这样的动态语言时，速度就是最重要的问题之一。为了解决这个问题，他们说PyPy快了6.3倍。 第二个问题是并行，即臭名昭着的全球口译员锁定（GIL）。为此，PyPy说可以给予GIL的Python。 如果PyPy能够解决这些巨大的挑战，它的弱点是什么，阻止更广泛的采用？">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么PyPy的速度提高了6.3倍，我不应该在Python上使用Pyython呢？">
+<meta name="twitter:description" content="我已经听说了很多关于 PyPy 的项目。他们声称，它的速度比 CPython解释器快了6.3倍他们的网站。 每当我们谈论像Python这样的动态语言时，速度就是最重要的问题之一。为了解决这个问题，他们说PyPy快了6.3倍。 第二个问题是并行，即臭名昭着的全球口译员锁定（GIL）。为此，PyPy说可以给予GIL的Python。 如果PyPy能够解决这些巨大的挑战，它的弱点是什么，阻止更广泛的采用？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-shouldnt-i-use-pypy-over-cpython-if-pypy-is-6-3-times-faster/" title="为什么PyPy的速度提高了6.3倍，我不应该在Python上使用Pyython呢？" itemprop="url">为什么PyPy的速度提高了6.3倍，我不应该在Python上使用Pyython呢？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我已经听说了很多关于<a href="http://en.wikipedia.org/wiki/PyPy" target="_blank" rel="noopener"> PyPy </a>的项目。他们声称，它的速度比<a href="http://en.wikipedia.org/wiki/CPython" target="_blank" rel="noopener"> CPython</a>解释器快了6.3倍<a href="“http：//">他们的网站</a>。</p>
+<p>每当我们谈论像Python这样的动态语言时，速度就是最重要的问题之一。为了解决这个问题，他们说PyPy快了6.3倍。</p>
+<p>第二个问题是并行，即臭名昭着的<a href="http://en.wikipedia.org/wiki/Global_Interpreter_Lock" target="_blank" rel="noopener">全球口译员锁定</a>（GIL）。为此，PyPy说<a href="http://pypy.org/tmdonate.html" target="_blank" rel="noopener">可以给予GIL的Python</a>。</p>
+<p>如果PyPy能够解决这些巨大的挑战，它的弱点是什么，阻止更广泛的采用？也就是说，什么阻止像我这样的典型的Python开发人员现在切换到PyPy __ ？</p>
+<a id="more"></a>
+<p>正如其他人一样，PyPy对C扩展的强烈支持**。它支持 <em>__，但通常以低于Python的速度运行，而且最好也是如此。因此很多模块只需要</em> CPython。<br>Cython和Numpy对于数字来说是很棒的，而大多数真正需要Python速度的人们正在大量使用这些（Pandas，SciPy等）。由于它们要么不存在，要么支持得很慢，所以需要快速Python的人通常使用CPython获得更好的速度和易用性</p>
+<p>。</p>
+<ul>
+<li>Python 3的支持 <del>现在是实验性的。</del> **刚刚达到稳定！截至2014年6月20日，[ PyPy3 2.3.1 - 支点出局&lt; / A&gt; &lt;！/强&gt; </li>
+<li>PyPy有时对于“脚本”来说实际上并不是很快，很多人使用Python。这些是短小的程序，可以做一些简单而小巧的事情。由于PyPy是一个JIT编译器，它的主要优点来自长时间运行和简单的类型（如数字）。坦率地说，与CPython相比，PyPy的pre-JIT速度相当糟糕。</li>
+<li>的 <strong>惯性</strong> 即可。转移到PyPy通常需要重新安装工具，对于某些人员和组织来说，工作太多了。</li>
+</ul>
+<p>这些是影响我的主要原因，我会说。</p>
+<blockquote>
+<p><strong>NOTE:</strong> This question is ancient! Avoid drawing conclusions from out-of-<br>date information.</p>
+</blockquote>
+<p>那个网站没有 **声称PyPy比CPython快了6.3倍。引用：</p>
+<blockquote>
+<p>The geometric average of all benchmarks is 0.16 or 6.3 times faster than<br>CPython</p>
+</blockquote>
+<p>这是对你所做的全面陈述的一个非常不同的陈述，当你理解了它们之间的区别时，你至少会理解一组为什么你不能说“使用PyPy<br>”。这可能听起来像我挑选，但理解为什么这两个声明是完全不同的是至关重要的。</p>
+<p>打破这一点：</p>
+<p>他们所做的陈述仅适用于他们使用的基准。它说你的程序绝对没有（除非你的程序和他们的基准测试完全一样）。</p>
+<p>该声明是关于一组基准的 <strong>平均值</strong> 。没有人声称，即使对于他们测试过的程序，运行PyPy也会提高6.3倍。</p>
+<p>没有人声称PyPy甚至可以运行CPython运行的所有程序 **，更不用说更快。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/performance/">performance</a><a href="/tags/cpython/">cpython</a><a href="/tags/jit/">jit</a><a href="/tags/pypy/">pypy</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/why-shouldnt-i-use-pypy-over-cpython-if-pypy-is-6-3-times-faster/" data-title="为什么PyPy的速度提高了6.3倍，我不应该在Python上使用Pyython呢？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/does-python-have-a-string-contains-substring-method/" title="Python是否有一个字符串“包含”子字符串方法？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Python是否有一个字符串“包含”子字符串方法？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/get-selected-text-from-a-drop-down-list-select-box-using-jquery/"  title="从下拉列表（选择框）使用jQuery获取选定的文本">
+ <strong>下一篇：</strong><br/> 
+ <span>从下拉列表（选择框）使用jQuery获取选定的文本
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

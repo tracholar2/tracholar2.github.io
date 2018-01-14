@@ -1,0 +1,626 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>iOS 6上的Safari缓存$ .ajax结果吗？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="自从升级到iOS 6后，我们看到Safari的web视图冒昧地缓存$。ajax调用。这是在PhoneGap应用程序的上下文中，因此它使用SafariWebView。我们的$。ajax调用是POST方法，我们将缓存设置为false {cache：false}，但是这种情况仍然存在。我们尝试手动向标题添加TimeStamp，但没有帮助。 我们做了更多的研究，发现Safari只是返回缓存的Web服务的结">
+<meta name="keywords" content="javascript,jquery,ajax,caching,mobile-safari">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 6上的Safari缓存$ .ajax结果吗？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/is-safari-on-ios-6-caching-ajax-results/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="自从升级到iOS 6后，我们看到Safari的web视图冒昧地缓存$。ajax调用。这是在PhoneGap应用程序的上下文中，因此它使用SafariWebView。我们的$。ajax调用是POST方法，我们将缓存设置为false {cache：false}，但是这种情况仍然存在。我们尝试手动向标题添加TimeStamp，但没有帮助。 我们做了更多的研究，发现Safari只是返回缓存的Web服务的结">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 6上的Safari缓存$ .ajax结果吗？">
+<meta name="twitter:description" content="自从升级到iOS 6后，我们看到Safari的web视图冒昧地缓存$。ajax调用。这是在PhoneGap应用程序的上下文中，因此它使用SafariWebView。我们的$。ajax调用是POST方法，我们将缓存设置为false {cache：false}，但是这种情况仍然存在。我们尝试手动向标题添加TimeStamp，但没有帮助。 我们做了更多的研究，发现Safari只是返回缓存的Web服务的结">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/is-safari-on-ios-6-caching-ajax-results/" title="iOS 6上的Safari缓存$ .ajax结果吗？" itemprop="url">iOS 6上的Safari缓存$ .ajax结果吗？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>自从升级到iOS 6后，我们看到Safari的web视图冒昧地缓存<code>$。ajax</code>调用。这是在PhoneGap应用程序的上下文中，因此它使用Safari<br>WebView。我们的<code>$。ajax</code>调用是<code>POST</code>方法，我们将缓存设置为false <code>{cache：false}</code>，但是这种情况仍然存在。我们尝试手动向标题添加<code>TimeStamp</code>，但没有帮助。</p>
+<p>我们做了更多的研究，发现Safari只是返回缓存的Web服务的结果，这些Web服务的功能签名是静态的，不会因呼叫而改变。例如，想象一个叫做“</p>
+<p>”的函数</p>
+<pre><code>getNewRecordID(intRecordType)
+</code></pre><p>这个函数一次又一次地接收相同的输入参数，但是它返回的数据应该每次都是不同的。</p>
+<p>必须在苹果公司急于使iOS 6 zip令人印象深刻，他们对缓存设置太高兴了。有没有其他人在iOS 6上看到这种行为？如果是这样，究竟是什么原因造成的？</p>
+<hr>
+<p>我们找到的解决方法是修改函数签名，如下所示：</p>
+<pre><code>getNewRecordID(intRecordType, strTimestamp)
+</code></pre><p>然后总是传入一个<code>TimeStamp</code>参数，并在服务器端丢弃该值。这可以解决这个问题。我希望这能帮助其他像我一样在这个问题上花费15个小时的可怜的灵魂！</p>
+<p><a id="more"></a> 经过一番调查，事实证明，iOS6上的Safari会缓存没有Cache-Control标题，甚至“Cache-Control：max-age =<br>0”的POST。</p>
+<p>我发现防止这种缓存发生在全局级别的唯一方法是设置“Cache-Control：no-cache”。</p>
+<p>所以：</p>
+<ul>
+<li>没有缓存控制或过期标头= iOS6 Safari将缓存</li>
+<li>缓存控制最大年龄= 0，即时过期= iOS6 Safari将缓存</li>
+<li>缓存控制：no-cache = iOS6 Safari不会缓存</li>
+</ul>
+<p>我怀疑苹果公司正在利用HTTP规范的第9.5节有关POST：</p>
+<blockquote>
+<p>Responses to this method are not cacheable, unless the response includes<br>appropriate Cache-Control or Expires header fields. However, the 303 (See<br>Other) response can be used to direct the user agent to retrieve a cacheable<br>resource.</p>
+</blockquote>
+<p>所以理论上你可以缓存POST回复……谁知道。但没有其他浏览器制造商曾经认为这是一个好主意，直​​到现在。但是，如果没有设置Cache-<br>Control或Expires标头，那么这并不代表缓存。所以它一定是个bug。</p>
+<p>下面是我在我的Apache配置的右边用来定位整个API的原因，因为实际上我并不想缓存任何东西，甚至得到。我不知道的是如何设置这只是发布。</p>
+<pre><code>Header set Cache-Control &quot;no-cache&quot;
+</code></pre><p>更新：只是注意到，我没有指出，只有当POST是相同的，所以更改任何POST数据或URL，你很好。所以你可以在其他地方提到的只是添加一些随机数据的URL或一些POST数据。</p>
+<p>更新：如果你希望在Apache中这样做，你可以将“no-cache”限制为POST：</p>
+<pre><code>SetEnvIf Request_Method &quot;POST&quot; IS_POST
+Header set Cache-Control &quot;no-cache&quot; env=IS_POST
+</code></pre><p>我希望这可以用于其他开发者在这个墙上撞墙。我发现以下任何一种情况都会阻止iOS 6上的Safari缓存POST响应：</p>
+<ul>
+<li>在请求标题中添加[cache-control：no-cache] </li>
+<li>新增一个可变的网址参数，例如当前时间</li>
+<li>在响应标题中添加[pragma：no-cache] </li>
+<li>在响应标头中添加[cache-control：no-cache] </li>
+</ul>
+<p>我的解决方案是在我的Javascript（所有我的AJAX请求是POST）以下。</p>
+<pre><code>$.ajaxSetup({
+    type: &apos;POST&apos;,
+    headers: { &quot;cache-control&quot;: &quot;no-cache&quot; }
+});
+</code></pre><p>我还在我的许多服务器响应中添加了[pragma：no-cache]标头。</p>
+<p>如果您使用上述解决方案，请注意您设置为global：false的任何$ .ajax（）调用不会使用$<br>.ajaxSetup（）中指定的设置，因此您需要将标头添加到试。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/ajax/">ajax</a><a href="/tags/caching/">caching</a><a href="/tags/mobile-safari/">mobile-safari</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/is-safari-on-ios-6-caching-ajax-results/" data-title="iOS 6上的Safari缓存$ .ajax结果吗？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/is-javascript-a-pass-by-reference-or-pass-by-value-language/" title="JavaScript是传递引​​用还是传值语言？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  JavaScript是传递引​​用还是传值语言？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/is-there-a-built-in-function-to-print-all-the-current-properties-and-values-of-a/"  title="是否有一个内置函数来打印一个对象的所有当前属性和值？">
+ <strong>下一篇：</strong><br/> 
+ <span>是否有一个内置函数来打印一个对象的所有当前属性和值？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

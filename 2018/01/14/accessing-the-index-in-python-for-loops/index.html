@@ -1,0 +1,665 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>在Python中为&#39;循环访问索引 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何访问索引本身的列表如下所示？ ints = [8, 23, 45, 12, 78] 当我使用for循环遍历它时，如何访问循环索引，在这种情况下从1到5？">
+<meta name="keywords" content="python,loops,list">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Python中为&#39;循环访问索引">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/accessing-the-index-in-python-for-loops/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何访问索引本身的列表如下所示？ ints = [8, 23, 45, 12, 78] 当我使用for循环遍历它时，如何访问循环索引，在这种情况下从1到5？">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Python中为&#39;循环访问索引">
+<meta name="twitter:description" content="如何访问索引本身的列表如下所示？ ints = [8, 23, 45, 12, 78] 当我使用for循环遍历它时，如何访问循环索引，在这种情况下从1到5？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/accessing-the-index-in-python-for-loops/" title="在Python中为&#39;循环访问索引" itemprop="url">在Python中为&#39;循环访问索引</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Using a for loop, how do I access the loop index, from 1 to 5 in this</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Unidiomatic control flow</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Use the Enumerate Function</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Getting a count</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Breaking it down - a step by step explanation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Conclusion</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如何访问索引本身的列表如下所示？</p>
+<pre><code>ints = [8, 23, 45, 12, 78]
+</code></pre><p>当我使用<code>for</code>循环遍历它时，如何访问循环索引，在这种情况下从1到5？</p>
+<a id="more"></a>
+<p>使用额外的状态变量，如索引变量（通常用于C或PHP等语言中），被认为是非pythonic。</p>
+<p>更好的选择是使用内置函数<a href="https://docs.python.org/3/library/functions.html#enumerate" title="enumerate" target="_blank" rel="noopener"> <code>enumerate（）</code></a>，可在Python 2和Python 3中使用：</p>
+<pre><code>for idx, val in enumerate(ints):
+    print(idx, val)
+</code></pre><p>查看更多<a href="https://www.python.org/dev/peps/pep-0279/" title="PEP 279" target="_blank" rel="noopener"> PEP 279 </a>。</p>
+<blockquote>
+<h1><span id="using-a-for-loop-how-do-i-access-the-loop-index-from-1-to-5-in-this">Using a for loop, how do I access the loop index, from 1 to 5 in this</span></h1><p>case?</p>
+</blockquote>
+<p>使用<code>枚举</code>：</p>
+<pre><code>for index, item in enumerate(items):
+    print(index, item)
+</code></pre><p>请注意，索引从零开始，所以你会得到0到4这个。如果你想要点数，我会在下面解释一下。</p>
+<h1><span id="unidiomatic-control-flow">Unidiomatic control flow</span></h1><p>你所要求的是以下的Pythonic等价物，这是大多数低级语言的程序员将使用的算法：</p>
+<p>&gt;</p>
+<blockquote>
+<pre><code>index = 0            # Python&apos;s indexing starts at zero
+
+for item in items:   # Python&apos;s for loops are a &quot;for each&quot; loop
+
+    print(index, item)
+
+    index += 1
+</code></pre></blockquote>
+<p>或者在没有for-each循环的语言中：</p>
+<p>&gt;</p>
+<blockquote>
+<pre><code>index = 0
+
+while index &lt; len(items):
+
+    print(index, items[index])
+
+    index += 1
+</code></pre></blockquote>
+<p>或者有时更常用（但是是单指的）在Python中找到：</p>
+<p>&gt;</p>
+<blockquote>
+<pre><code>for index in range(len(items)):
+
+    print(index, items[index])
+</code></pre></blockquote>
+<h1><span id="use-the-enumerate-function">Use the Enumerate Function</span></h1><p>Python的<a href="https://docs.python.org/2/library/functions.html#enumerate" target="_blank" rel="noopener"><code>枚举</code>功能</a>通过隐藏计算索引，并将迭代器封装到另一个迭代器（一个<code>枚举</code>对象）中，该对象产生索引的两个项目元组和原始迭代器将提供的项目。看起来像这样：</p>
+<pre><code>for index, item in enumerate(items, start=0):   # default is zero
+    print(index, item)
+</code></pre><p>这个代码示例相当不错，一个Python的惯用代码和不是的代码之间的区别的例子。语言代码是复杂的（但不是复杂的）Python，按照它打算使用的方式编写。语言的设计者期望的是语言代码，这意味着通常这个代码不仅更具可读性，而且更高效。</p>
+<h2><span id="getting-a-count">Getting a count</span></h2><p>即使你不需要索引，但是你需要迭代的次数（有时是可取的），你可以从<code>1</code>开始，最后的数字是你的计数。 p&gt;</p>
+<pre><code>for count, item in enumerate(items, start=1):   # default is zero
+    print(item)
+
+print(&apos;there were {0} items printed&apos;.format(count))
+</code></pre><p>当你说你想要从1到5时，计数似乎更多地是你要求的（而不是指数）。</p>
+<hr>
+<h2><span id="breaking-it-down-a-step-by-step-explanation">Breaking it down - a step by step explanation</span></h2><p>打破这些例子，说我们有一个项目的列表，我们想用一个索引迭代：</p>
+<pre><code>items = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos;]
+</code></pre><p>现在我们通过这个迭代器枚举，创建一个枚举对象：</p>
+<pre><code>enumerate_object = enumerate(items) # the enumerate object
+</code></pre><p>我们可以从这个迭代中取出第一个项目，我们将使用<code>next</code>函数进行循环：</p>
+<pre><code>iteration = next(enumerate_object) # first iteration from enumerate
+print(iteration)
+</code></pre><p>我们看到我们得到了第一个索引<code>0</code>和第一个索引`的元组：</p>
+<pre><code>(0, &apos;a&apos;)
+</code></pre><p>我们可以使用所谓的“[序列解包](<a href="https://docs.python.org/2/tutorial/datastructures.html" target="_blank" rel="noopener">https://docs.python.org/2/tutorial/datastructures.html</a></p>
+<p>#tuples-and-sequences)”来从这个二元组中提取元素：</p>
+<pre><code>index, item = iteration
+#   0,  &apos;a&apos; = (0, &apos;a&apos;) # essentially this.
+</code></pre><p>当我们检查<code>index</code>时，我们发现它指的是第一个索引0，而<code>item</code>指向第一个项目`’a’代码&gt;</p>
+<pre><code>&gt;&gt;&gt; print(index)
+0
+&gt;&gt;&gt; print(item)
+a
+</code></pre><h1><span id="conclusion">Conclusion</span></h1><ul>
+<li>Python索引从零开始</li>
+<li>要在遍历它时从迭代中获取这些索引，请使用枚举函数</li>
+<li>以惯用的方式使用枚举（连同tuple解包）创建更具可读性和可维护性的代码：</li>
+</ul>
+<p>所以这样做：</p>
+<pre><code>for index, item in enumerate(items, start=0):   # Python indexes start at zero
+    print(index, item)
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/loops/">loops</a><a href="/tags/list/">list</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/accessing-the-index-in-python-for-loops/" data-title="在Python中为&#39;循环访问索引 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/are-there-constants-in-javascript/" title="JavaScript中有常量吗？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  JavaScript中有常量吗？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/add-table-row-in-jquery/"  title="在jQuery中添加表格行">
+ <strong>下一篇：</strong><br/> 
+ <span>在jQuery中添加表格行
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Using a for loop, how do I access the loop index, from 1 to 5 in this</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Unidiomatic control flow</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Use the Enumerate Function</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Getting a count</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Breaking it down - a step by step explanation</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Conclusion</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

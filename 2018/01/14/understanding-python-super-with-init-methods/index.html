@@ -1,0 +1,722 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>用__init __（）方法理解Python super（）方法[duplicate] | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="This question already has an answer here:  What does ‘super’ do in Python? 5 answers   我试图理解super（）的用法。从外观上看，这两个子类都可以创建，就好了。 我很想知道以下两个子类的实际区别。 class Base(object):     def __init__(self):         print">
+<meta name="keywords" content="python,oop,inheritance,super">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用__init __（）方法理解Python super（）方法[duplicate]">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/understanding-python-super-with-init-methods/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="This question already has an answer here:  What does ‘super’ do in Python? 5 answers   我试图理解super（）的用法。从外观上看，这两个子类都可以创建，就好了。 我很想知道以下两个子类的实际区别。 class Base(object):     def __init__(self):         print">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用__init __（）方法理解Python super（）方法[duplicate]">
+<meta name="twitter:description" content="This question already has an answer here:  What does ‘super’ do in Python? 5 answers   我试图理解super（）的用法。从外观上看，这两个子类都可以创建，就好了。 我很想知道以下两个子类的实际区别。 class Base(object):     def __init__(self):         print">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/understanding-python-super-with-init-methods/" title="用__init __（）方法理解Python super（）方法[duplicate]" itemprop="url">用__init __（）方法理解Python super（）方法[duplicate]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">I’m trying to understand super()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">“What difference is there actually in this code?:”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">If Python didn’t have super</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Criticisms of other answers:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Criticism for another answer</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/222877/what-does-super-do-in-python">What does ‘super’ do in Python?</a> 5 answers </li>
+</ul>
+<p>我试图理解<code>super（）</code>的用法。从外观上看，这两个子类都可以创建，就好了。</p>
+<p>我很想知道以下两个子类的实际区别。</p>
+<pre><code>class Base(object):
+    def __init__(self):
+        print &quot;Base created&quot;
+
+class ChildA(Base):
+    def __init__(self):
+        Base.__init__(self)
+
+class ChildB(Base):
+    def __init__(self):
+        super(ChildB, self).__init__()
+
+ChildA() 
+ChildB()
+</code></pre><a id="more"></a>
+<p>super（）`可以避免显式地引用基类，这可以很好。但主要优势来自多重继承，其中各种<a href="http://www.artima.com/weblogs/viewpost.jsp?thread=236275" target="_blank" rel="noopener">有趣的东西</a>可以发生。如果还没有，请参阅<a href="https://docs.python.org/2/library/functions.html#super" target="_blank" rel="noopener">super上的标准文档</a>。 p&gt;</p>
+<p>请注意，<a href="https://docs.python.org/3.0/library/functions.html#super" target="_blank" rel="noopener"> Python<br>3.0中的语法已更改</a>：您可以说<code>super（）.__ init __（）</code>，而不是<code>super（ChildB，self）.__ init __（）</code> IMO更好一些。</p>
+<blockquote>
+<h2><span id="im-trying-to-understand-super">I’m trying to understand <code>super()</code></span></h2><p>我们使用<code>super</code>的原因是，可能使用协作多重继承的子类将在方法解析顺序（MRO）中调用正确的下一个父类函数。</p>
+</blockquote>
+<p>在Python 3中，我们可以这样调用它：</p>
+<pre><code>class ChildB(Base):
+    def __init__(self):
+        super().__init__() 
+</code></pre><p>在Python 2中，我们需要像这样使用它：</p>
+<pre><code>super(ChildB, self).__init__()
+</code></pre><p>没有超级，你在使用多继承方面的能力有限：</p>
+<pre><code>Base.__init__(self) # Avoid this.
+</code></pre><p>我在下面进一步解释。</p>
+<blockquote>
+<h2><span id="what-difference-is-there-actually-in-this-code">“What difference is there actually in this code?:”</span></h2></blockquote>
+<pre><code>class ChildA(Base):
+    def __init__(self):
+        Base.__init__(self)
+
+class ChildB(Base):
+    def __init__(self):
+        super(ChildB, self).__init__()
+        # super().__init__() # you can call super like this in Python 3!
+</code></pre><p><code>这个代码的主要区别在于你在</code> <strong> init </strong> <code>中用</code> super <code>得到一个间接层，它使用当前类来确定下一个类的</code> <strong>init </strong><br>`在MRO中查找。</p>
+<p>我在<a href="https://stackoverflow.com/a/33469090/541136" target="_blank" rel="noopener">规范性问题，如何在Python中使用’super’？</a>解释了这种差异。演示了<br><strong>依赖注入</strong> 和 <strong>合作多重继承</strong> 。</p>
+<h2><span id="if-python-didnt-have-super">If Python didn’t have <code>super</code></span></h2><p>这里的代码实际上与<code>super</code>非常相似（它是如何在C中实现的，减去一些检查和回退行为，并转换为Python）：</p>
+<pre><code>class ChildB(Base):
+    def __init__(self):
+        mro = type(self).mro()             # Get the Method Resolution Order.
+        check_next = mro.index(ChildB) + 1 # Start looking after *this* class.
+        while check_next &lt; len(mro):
+            next_class = mro[check_next]
+            if &apos;__init__&apos; in next_class.__dict__:
+                next_class.__init__(self)
+                break
+            check_next += 1
+</code></pre><p>写得更像本机Python：</p>
+<pre><code>class ChildB(Base):
+    def __init__(self):
+        mro = type(self).mro()
+        for next_class in mro[mro.index(ChildB) + 1:]: # slice to end
+            if hasattr(next_class, &apos;__init__&apos;):
+                next_class.__init__(self)
+                break
+</code></pre><p>如果我们没有<code>super</code>对象，我们必须在每个地方编写这个手册代码（或者重新创建它！），以确保我们调用方法解析顺序！</p>
+<p>super如何在Python 3中完成这个工作，而不需要明确地告诉它被调用的方法是哪个类和实例呢？</p>
+<p>它获取调用堆栈框架，并找到该类（隐式存储为本地自由变量，使调用函数成为类的闭包）以及该函数的第一个参数，这应该是通知它使用哪个方法解析顺序（MRO）的实例或类。</p>
+<p>因为它需要MRO的第一个参数，所以<a href="https://bugs.python.org/issue31118" target="_blank" rel="noopener">使用<code>super</code>与静态方法是不可能的</a>。</p>
+<h2><span id="criticisms-of-other-answers">Criticisms of other answers:</span></h2><blockquote>
+<p>super() lets you avoid referring to the base class explicitly, which can be<br>nice. . But the main advantage comes with multiple inheritance, where all<br>sorts of fun stuff can happen. See the standard docs on super if you haven’t<br>already.</p>
+</blockquote>
+<p>这是相当有趣的，并没有告诉我们很多，但是<code>super</code>的目的不是为了避免写父类。重点是确保调用方法解析顺序（MRO）中的下一个方法。这在多重继承中变得重要。</p>
+<p>我会在这里解释。</p>
+<pre><code>class Base(object):
+    def __init__(self):
+        print(&quot;Base init&apos;ed&quot;)
+
+class ChildA(Base):
+    def __init__(self):
+        print(&quot;ChildA init&apos;ed&quot;)
+        Base.__init__(self)
+
+class ChildB(Base):
+    def __init__(self):
+        print(&quot;ChildB init&apos;ed&quot;)
+        super(ChildB, self).__init__()
+</code></pre><p>让我们创建一个我们希望在Child之后调用的依赖项：</p>
+<pre><code>class UserDependency(Base):
+    def __init__(self):
+        print(&quot;UserDependency init&apos;ed&quot;)
+        super(UserDependency, self).__init__()
+</code></pre><p>现在请记住，<code>ChildB</code>使用super，<code>ChildA</code>不会：</p>
+<pre><code>class UserA(ChildA, UserDependency):
+    def __init__(self):
+        print(&quot;UserA init&apos;ed&quot;)
+        super(UserA, self).__init__()
+
+class UserB(ChildB, UserDependency):
+    def __init__(self):
+        print(&quot;UserB init&apos;ed&quot;)
+        super(UserB, self).__init__()
+</code></pre><p>和<code>UserA</code>不会调用UserDependency方法：</p>
+<pre><code>&gt;&gt;&gt; UserA()
+UserA init&apos;ed
+ChildA init&apos;ed
+Base init&apos;ed
+&lt;__main__.UserA object at 0x0000000003403BA8&gt;
+</code></pre><p>但是<code>UserB</code>，因为<code>ChildB</code>使用<code>super</code>，所以！</p>
+<pre><code>&gt;&gt;&gt; UserB()
+UserB init&apos;ed
+ChildB init&apos;ed
+UserDependency init&apos;ed
+Base init&apos;ed
+&lt;__main__.UserB object at 0x0000000003403438&gt;
+</code></pre><h3><span id="criticism-for-another-answer">Criticism for another answer</span></h3><p>在任何情况下，你都不应该做下面的问题，而另一个答案建议，因为当你继承ChildB时，你一定会得到错误：</p>
+<pre><code>super(self.__class__, self).__init__() # Don&apos;t do this. Ever.
+</code></pre><p>（这个答案不是很聪明或者特别有趣，但是尽管在评论中有直接的批评，还有超过17个投票，回答者仍然坚持这样做，直到一位好心的编辑解决了他的问题。）</p>
+<p>解释：这个答案建议调用超级像这样：</p>
+<pre><code>super(self.__class__, self).__init__()
+</code></pre><p>这完全是错误的。 <code>super</code>让我们查看MRO中的下一个父级（参见本答案的第一部分）。如果你告诉<code>super</code>我们在子实例的方法中，它会查找下一个方法（可能是这个），导致递归，可能导致逻辑失败（在回答者的例子中， ）或超过递归深度时的<code>RuntimeError</code>。</p>
+<pre><code>&gt;&gt;&gt; class Polygon(object):
+...     def __init__(self, id):
+...         self.id = id
+...
+&gt;&gt;&gt; class Rectangle(Polygon):
+...     def __init__(self, id, width, height):
+...         super(self.__class__, self).__init__(id)
+...         self.shape = (width, height)
+...
+&gt;&gt;&gt; class Square(Rectangle):
+...     pass
+...
+&gt;&gt;&gt; Square(&apos;a&apos;, 10, 10)
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;&lt;stdin&gt;&quot;, line 3, in __init__
+TypeError: __init__() missing 2 required positional arguments: &apos;width&apos; and &apos;height&apos;
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/oop/">oop</a><a href="/tags/inheritance/">inheritance</a><a href="/tags/super/">super</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/understanding-python-super-with-init-methods/" data-title="用__init __（）方法理解Python super（）方法[duplicate] | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/understanding-kwargs-in-python/" title="在Python中理解kwargs">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在Python中理解kwargs</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/understanding-pythons-slice-notation/"  title="了解Python的切片符号">
+ <strong>下一篇：</strong><br/> 
+ <span>了解Python的切片符号
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">I’m trying to understand super()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">“What difference is there actually in this code?:”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">If Python didn’t have super</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Criticisms of other answers:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Criticism for another answer</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,633 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Pythonic方式创建一个长的多行字符串 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个很长的查询。我想在Python中分成几行。一种在JavaScript中使用的方法是使用几个句子，并用+操作符连接它们（我知道，也许这不是最有效的方式，但我并不担心性能在这个阶段，只是代码的可读性）。例如： var long_string = &amp;apos;some text not important. just garbage to&amp;apos; +                   &amp;a">
+<meta name="keywords" content="python,string">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pythonic方式创建一个长的多行字符串">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/pythonic-way-to-create-a-long-multi-line-string/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个很长的查询。我想在Python中分成几行。一种在JavaScript中使用的方法是使用几个句子，并用+操作符连接它们（我知道，也许这不是最有效的方式，但我并不担心性能在这个阶段，只是代码的可读性）。例如： var long_string = &amp;apos;some text not important. just garbage to&amp;apos; +                   &amp;a">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pythonic方式创建一个长的多行字符串">
+<meta name="twitter:description" content="我有一个很长的查询。我想在Python中分成几行。一种在JavaScript中使用的方法是使用几个句子，并用+操作符连接它们（我知道，也许这不是最有效的方式，但我并不担心性能在这个阶段，只是代码的可读性）。例如： var long_string = &amp;apos;some text not important. just garbage to&amp;apos; +                   &amp;a">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/pythonic-way-to-create-a-long-multi-line-string/" title="Pythonic方式创建一个长的多行字符串" itemprop="url">Pythonic方式创建一个长的多行字符串</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个很长的查询。我想在Python中分成几行。一种在JavaScript中使用的方法是使用几个句子，并用<code>+</code>操作符连接它们（我知道，也许这不是最有效的方式，但我并不担心性能在这个阶段，只是代码的可读性）。例如：</p>
+<pre><code>var long_string = &apos;some text not important. just garbage to&apos; +
+                  &apos;illustrate my example&apos;;
+</code></pre><p>我试着在Python中做类似的事情，但是没有成功，所以我使用<code>\</code>来分割长字符串。但是，我不确定这是否是唯一的/最好的/<br>pythonicest的方式。看起来很尴尬。 实际的代码：</p>
+<pre><code>query = &apos;SELECT action.descr as &quot;action&quot;, &apos;\
+    &apos;role.id as role_id,&apos;\
+    &apos;role.descr as role&apos;\
+    &apos;FROM &apos;\
+    &apos;public.role_action_def,&apos;\
+    &apos;public.role,&apos;\
+    &apos;public.record_def, &apos;\
+    &apos;public.action&apos;\
+    &apos;WHERE role.id = role_action_def.role_id AND&apos;\
+    &apos;record_def.id = role_action_def.def_id AND&apos;\
+    &apos;action.id = role_action_def.action_id AND&apos;\
+    &apos;role_action_def.account_id = &apos; + account_id + &apos; AND&apos;\
+    &apos;record_def.account_id=&apos; + account_id + &apos; AND&apos;\
+    &apos;def_id=&apos; + def_id
+</code></pre><p><a id="more"></a> 你在说多行字符串吗？很简单，使用三重引号开始和结束它们。</p>
+<pre><code>s = &quot;&quot;&quot; this is a very
+        long string if I had the
+        energy to type more and more ...&quot;&quot;&quot;
+</code></pre><p>你也可以使用单引号（当然在开始和结束时也是3个），并像结果字符串一样处理结果字符串<code>s</code>。</p>
+<p>与任何字符串一样，开始和结束引号之间的任何内容都成为字符串的一部分，所以这个例子有一个前导空白（如@<br>root45指出的那样）。这个字符串也将包含空格和换行符。</p>
+<p>即，：</p>
+<pre><code>&apos; this is a very\n        long string if I had the\n        energy to type more and more ...&apos;
+</code></pre><p>最后，还可以像这样在Python中构建长行：</p>
+<pre><code>s = (&quot;this is a very&quot;
+     &quot;long string too&quot;
+     &quot;for sure ...&quot;
+    )
+</code></pre><p><strong>**</strong> 不包含任何额外的空格或换行符（这是一个故意的例子，显示了跳过空白的效果）：</p>
+<pre><code>&apos;this is a verylong string toofor sure ...&apos;
+</code></pre><p>不需要逗号，只需将字符串连接到一对括号中，并确保说明所需的空格和换行符。</p>
+<p>如果你不想要多行字符串，但是只有一个长的单行字符串，你可以使用圆括号，只要确保在字符串段之间不包含逗号，那么它就是一个元组。 &gt;</p>
+<pre><code>query = (&apos;SELECT   action.descr as &quot;action&quot;, &apos;
+         &apos;role.id as role_id,&apos;
+         &apos;role.descr as role&apos;
+         &apos; FROM &apos;
+         &apos;public.role_action_def,&apos;
+         &apos;public.role,&apos;
+         &apos;public.record_def, &apos;
+         &apos;public.action&apos;
+         &apos; WHERE role.id = role_action_def.role_id AND&apos;
+         &apos; record_def.id = role_action_def.def_id AND&apos;
+         &apos; action.id = role_action_def.action_id AND&apos;
+         &apos; role_action_def.account_id = &apos;+account_id+&apos; AND&apos;
+         &apos; record_def.account_id=&apos;+account_id+&apos; AND&apos;
+         &apos; def_id=&apos;+def_id)
+</code></pre><p>在像你正在构造的SQL语句中，多行字符串也可以。但是，如果多行字符串包含的额外空格将是一个问题，那么这将是实现您想要的一个好方法。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/pythonic-way-to-create-a-long-multi-line-string/" data-title="Pythonic方式创建一个长的多行字符串 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/why-does-my-javascript-get-a-no-access-control-allow-origin-header-is-present/" title="为什么我的JavaScript得到一个“否”访问控制 - 允许来源“标题出现在请求的资源”错误时，邮差不？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  为什么我的JavaScript得到一个“否”访问控制 - 允许来源“标题出现在请求的资源”错误时，邮差不？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/random-string-generation-with-upper-case-letters-and-digits-in-python/"  title="在Python中用大写字母和数字随机生成字符串">
+ <strong>下一篇：</strong><br/> 
+ <span>在Python中用大写字母和数字随机生成字符串
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

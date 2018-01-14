@@ -1,0 +1,653 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>你如何返回Python中的多个值？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在支持它的语言中返回多个值的规范方法通常是几倍。 Option: Using a tuple考虑这个简单的例子： def f(x):   y0 = x + 1   y1 = x * 3   y2 = y0 ** y3   return (y0,y1,y2) 然而，随着返回值的数量增加，这很快就会出现问题。如果你想返回四个或五个值呢？当然，你可以继续打扰他们，但是很容易忘记哪个价值在哪里。将它们解包">
+<meta name="keywords" content="python,coding-style,return,return-value">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你如何返回Python中的多个值？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-do-you-return-multiple-values-in-python/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在支持它的语言中返回多个值的规范方法通常是几倍。 Option: Using a tuple考虑这个简单的例子： def f(x):   y0 = x + 1   y1 = x * 3   y2 = y0 ** y3   return (y0,y1,y2) 然而，随着返回值的数量增加，这很快就会出现问题。如果你想返回四个或五个值呢？当然，你可以继续打扰他们，但是很容易忘记哪个价值在哪里。将它们解包">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你如何返回Python中的多个值？">
+<meta name="twitter:description" content="在支持它的语言中返回多个值的规范方法通常是几倍。 Option: Using a tuple考虑这个简单的例子： def f(x):   y0 = x + 1   y1 = x * 3   y2 = y0 ** y3   return (y0,y1,y2) 然而，随着返回值的数量增加，这很快就会出现问题。如果你想返回四个或五个值呢？当然，你可以继续打扰他们，但是很容易忘记哪个价值在哪里。将它们解包">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-you-return-multiple-values-in-python/" title="你如何返回Python中的多个值？" itemprop="url">你如何返回Python中的多个值？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Option: Using a tuple</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Option: Using a dictionary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Option: Using a class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Option: Using a list</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Question</span></a>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在支持它的语言中返回多个值的规范方法通常是<a href="“https://stackoverflow.com/questions/38508/whats-
+the-best-way-to-return-multiple-values-从-A-功能合蟒“">几倍</a>。</p>
+<h3><span id="option-using-a-tuple">Option: Using a tuple</span></h3><p>考虑这个简单的例子：</p>
+<pre><code>def f(x):
+  y0 = x + 1
+  y1 = x * 3
+  y2 = y0 ** y3
+  return (y0,y1,y2)
+</code></pre><p>然而，随着返回值的数量增加，这很快就会出现问题。如果你想返回四个或五个值呢？当然，你可以继续打扰他们，但是很容易忘记哪个价值在哪里。将它们解包到任何你想接收的地方也是相当难看的。</p>
+<h3><span id="option-using-a-dictionary">Option: Using a dictionary</span></h3><p>下一个合乎逻辑的步骤似乎是引入某种“记录符号”。在python中，执行此操作的显而易见的方式是通过<code>dict</code>。</p>
+<p>考虑以下几点：</p>
+<pre><code>def g(x):
+  y0 = x + 1
+  y1 = x * 3
+  y2 = y0 ** y3
+  return {&apos;y0&apos;:y0, &apos;y1&apos;:y1 ,&apos;y2&apos;:y2 }
+</code></pre><p>（编辑 - 只是要清楚，y0，y1和y2只是作为抽象标识符。正如指出的那样，实际上你会使用有意义的标识符）</p>
+<p>现在，我们有一个机制，我们可以投射出返回对象的特定成员。例如，</p>
+<pre><code>result[&apos;y0&apos;]
+</code></pre><h3><span id="option-using-a-class">Option: Using a class</span></h3><p>不过，还有另外一个选择。我们可以返回一个专门的结构。我已经在Python的上下文框架，但我相信它也适用于其他语言。事实上，如果你在C工作，这可能是你唯一的选择。这里是：</p>
+<pre><code>class ReturnValue(object):
+  def __init__(self, y0, y1, y2):
+     self.y0 = y0
+     self.y1 = y1
+     self.y2 = y2
+
+def g(x):
+  y0 = x + 1
+  y1 = x * 3
+  y2 = y0 ** y3
+  return ReturnValue(y0, y1, y2)
+</code></pre><p>在Python中，前两者在管道方面可能非常相似 - 毕竟，{code&gt; {y0，y1，y2} <code>最终只是内部的</code> <strong> dict </strong> <code></code>ReturnValue `。</p>
+<p>对于小对象，Python提供了另一个特性，即<code>__ slots __</code>属性。这个类可以表示为：</p>
+<pre><code>class ReturnValue(object):
+  __slots__ = [&quot;y0&quot;, &quot;y1&quot;, &quot;y2&quot;]
+  def __init__(self, y0, y1, y2):
+     self.y0 = y0
+     self.y1 = y1
+     self.y2 = y2
+</code></pre><p>从<a href="http://www.network-theory.co.uk/docs/pylang/__slots__.html" target="_blank" rel="noopener"> Python参考手册</a>：</p>
+<blockquote>
+<p>The <code>__slots__</code> declaration takes a sequence of instance variables and<br>reserves just enough space in each instance to hold a value for each variable.<br>Space is saved because <code>__dict__</code> is not created for each instance.</p>
+</blockquote>
+<h3><span id="option-using-a-list">Option: Using a list</span></h3><p>另一个我忽略的建议是来自蜥蜴比尔：</p>
+<pre><code>def h(x):
+  result = [x + 1]
+  result.append(x * 3)
+  result.append(y0 ** y3)
+  return result
+</code></pre><p>不过这是我最不喜欢的方法。我想我已经接触到Haskell，但混合类型列表的想法一直感到不舒服。在这个特定的例子中，列表是非混合类型的，但是可以想象的是。就我所知，以这种方式使用的列表实际上并没有获得关于元组的任何东西。<br>Python中的列表和元组唯一真正的区别是列表是[可变的](<a href="http://docs.python.org/library/stdtypes.html" target="_blank" rel="noopener">http://docs.python.org/library/stdtypes.html</a></p>
+<p>#typesseq-mutable)<br>，元组不是。我个人倾向于继承函数式编程的惯例：使用相同类型的任意数量的元素的列表，以及用于固定数量的预定类型的元素的元组（element）。</p>
+<h1><span id="question">Question</span></h1><p>经过冗长的序言，就成了必然的问题。哪种方法（你认为）最好？</p>
+<p>我一般发现我自己去字典路线，因为它涉及较少的设置工作。然而，从类型的角度来看，您最好走上课程路线，因为这可能会帮助您避免混淆字典所代表的内容。另一方面，在Python社区中有一些人觉得[隐含的接口应该优先于显式接口&lt;<br>/ a&gt;，此时对象的类型实际上是不相关的，因为你基本上依赖于约定，即相同的属性总是具有相同的含义。</p>
+<p>那么，如何在Python中返回多个值？</p>
+<a id="more"></a>
+<p>[命名的元组_为了这个目的，在2.6中加入了a&gt;。另请参阅<a href="http://docs.python.org/library/os.html#os.stat" target="_blank" rel="noopener"> os.stat</a>，获取类似的内置示例。</p>
+<pre><code>&gt;&gt;&gt; import collections
+&gt;&gt;&gt; Point = collections.namedtuple(&apos;Point&apos;, [&apos;x&apos;, &apos;y&apos;])
+&gt;&gt;&gt; p = Point(1, y=2)
+&gt;&gt;&gt; p.x, p.y
+1 2
+&gt;&gt;&gt; p[0], p[1]
+1 2
+</code></pre><p>对于小型项目，我发现使用元组最容易。当它变得太难以管理（而不是之前），我开始将事物分组为逻辑结构，但是我认为你建议使用的字典和ReturnValue对象是错误的（或者过于简单）。</p>
+<p>用键y0，y1，y2等返回一个字典不会比元组提供任何优势。使用属性.y0 .y1<br>.y2等返回一个ReturnValue实例不会比元组提供任何优势。你需要开始命名的东西，如果你想得到任何地方，你可以用元组来做到这一点：</p>
+<pre><code>def getImageData(filename):
+  [snip]
+  return size, (format, version, compression), (width,height)
+size, type, dimensions = getImageData(x)
+</code></pre><p>恕我直言，除了元组以外，唯一不错的技术就是使用正确的方法和属性返回真实的对象，就像你从<code>re.match（）</code>或者<code>open（file）</code></p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/coding-style/">coding-style</a><a href="/tags/return/">return</a><a href="/tags/return-value/">return-value</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-do-you-return-multiple-values-in-python/" data-title="你如何返回Python中的多个值？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-do-you-remove-duplicates-from-a-list-in-whilst-preserving-order/" title="如何在维护秩序的同时从列表中删除重复项？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何在维护秩序的同时从列表中删除重复项？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-do-you-split-a-list-into-evenly-sized-chunks/"  title="你如何将一个列表分成均匀大小的块？">
+ <strong>下一篇：</strong><br/> 
+ <span>你如何将一个列表分成均匀大小的块？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Option: Using a tuple</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Option: Using a dictionary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Option: Using a class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Option: Using a list</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Question</span></a>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

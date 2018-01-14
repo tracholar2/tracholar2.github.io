@@ -4,20 +4,24 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>check-if-object-is-array | 智子</title>
+    <title>检查对象是否是数组？ | 智子</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="zhizi">
     
 
     
-    <meta property="og:type" content="article">
-<meta property="og:title" content="check-if-object-is-array">
+    <meta name="description" content="我试图编写一个接受一个字符串列表或一个字符串的函数。如果它是一个字符串，那么我想将它转换为只有一个项目的数组。然后我可以循环而不用担心错误。 那么如何检查变量是否是一个数组？  我已经搜集了下面的各种解决方案，并创建了 jsperf测试。">
+<meta name="keywords" content="javascript,arrays">
+<meta property="og:type" content="article">
+<meta property="og:title" content="检查对象是否是数组？">
 <meta property="og:url" content="https://www.tracholar.top/2018/01/14/check-if-object-is-array/index.html">
 <meta property="og:site_name" content="智子">
-<meta property="og:updated_time" content="2018-01-13T17:47:39.000Z">
+<meta property="og:description" content="我试图编写一个接受一个字符串列表或一个字符串的函数。如果它是一个字符串，那么我想将它转换为只有一个项目的数组。然后我可以循环而不用担心错误。 那么如何检查变量是否是一个数组？  我已经搜集了下面的各种解决方案，并创建了 jsperf测试。">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="check-if-object-is-array">
+<meta name="twitter:title" content="检查对象是否是数组？">
+<meta name="twitter:description" content="我试图编写一个接受一个字符串列表或一个字符串的函数。如果它是一个字符串，那么我想将它转换为只有一个项目的数组。然后我可以循环而不用担心错误。 那么如何检查变量是否是一个数组？  我已经搜集了下面的各种解决方案，并创建了 jsperf测试。">
 
     
     <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
@@ -75,7 +79,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -91,7 +95,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -107,21 +111,21 @@ var _hmt = _hmt || [];
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/check-if-object-is-array/" title="check-if-object-is-array" itemprop="url">check-if-object-is-array</a>
+      <a href="/2018/01/14/check-if-object-is-array/" title="检查对象是否是数组？" itemprop="url">检查对象是否是数组？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-13T17:47:39.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			
 		
@@ -139,7 +143,44 @@ var _hmt = _hmt || [];
 </script>
 
 
-		
+		<p>我试图编写一个接受一个字符串列表或一个字符串的函数。如果它是一个字符串，那么我想将它转换为只有一个项目的数组。然后我可以循环而不用担心错误。</p>
+<p>那么如何检查变量是否是一个数组？</p>
+<hr>
+<p>我已经搜集了下面的各种解决方案，并创建了<a href="http://jsperf.com/js-isarray-comparison" target="_blank" rel="noopener"> jsperf测试</a>。</p>
+<p><a id="more"></a> 我会首先检查你的实现是否支持<code>isArray</code>：</p>
+<pre><code>if (Array.isArray)
+    return Array.isArray(v);
+</code></pre><p>您也可以尝试使用<code>instanceof</code>运算符</p>
+<pre><code>v instanceof Array
+</code></pre><p>在ECMAScript标准中给出的找到Object类的方法是使用<code>Object.prototype</code>中的<code>toString</code>方法。</p>
+<pre><code>if( Object.prototype.toString.call( someVar ) === &apos;[object Array]&apos; ) {
+    alert( &apos;Array!&apos; );
+}
+</code></pre><p>或者你可以使用<code>typeof</code>来测试它是否是一个String：</p>
+<pre><code>if( typeof someVar === &apos;string&apos; ) {
+    someVar = [ someVar ];
+}
+</code></pre><p>或者，如果您不关心性能，则可以对<code>concat</code>执行一个新的空数组。</p>
+<pre><code>someVar = [].concat( someVar );
+</code></pre><p>还有你可以直接查询的构造函数：</p>
+<pre><code>if (somevar.constructor.name == &quot;Array&quot;) {
+    // do something
+}
+</code></pre><hr>
+<p><strong>编辑</strong> ：<strong>请查看[彻底治疗</strong> a&gt;来自<a href="https://stackoverflow.com/users/157247/tj-crowder" target="_blank" rel="noopener"> @TJ<br>Crowder的</a>博客，发表在他的评论如下。</p>
+<p><strong>编辑2：</strong> 查看这个<a href="http://jsben.ch/#/QgYAV" target="_blank" rel="noopener">基准</a>，了解哪种方法性能更好：<a href="http://jsben.ch/#/QgYAV" target="_blank" rel="noopener">http://jsben.ch/#/QgYAV </a></p>
+<p>编辑3：**从<a href="https://stackoverflow.com/users/8432239/bharath?tab=profile" target="_blank" rel="noopener"> @Bharath</a>使用Es6将字符串转换为数组对于问的问题：</p>
+<pre><code>const convertStringToArray = (object) =&gt; {
+   return (typeof object === &apos;string&apos;) ? Array(object) : object 
+}
+</code></pre><p>假设：</p>
+<pre><code>let m = &apos;bla&apos;
+let n = [&apos;bla&apos;,&apos;Meow&apos;]
+let y = convertStringToArray(m)
+let z = convertStringToArray(n)
+console.log(&apos;check y: &apos;+JSON.stringify(y)) . // check y: [&apos;bla&apos;]
+console.log(&apos;check y: &apos;+JSON.stringify(z)) . // check y: [&apos;bla&apos;,&apos;Meow&apos;]
+</code></pre>
 
         <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
 	</div>
@@ -147,13 +188,18 @@ var _hmt = _hmt || [];
 <div class="article-catetags">
 
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/arrays/">arrays</a>
+  </div>
+
 </div>
 
 
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="https://www.tracholar.top/2018/01/14/check-if-object-is-array/" data-title="check-if-object-is-array | 智子" data-tsina="" class="share clearfix">
+	  <div data-url="https://www.tracholar.top/2018/01/14/check-if-object-is-array/" data-title="检查对象是否是数组？ | 智子" data-tsina="" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -166,11 +212,19 @@ var _hmt = _hmt || [];
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2018/01/14/check-if-element-is-visible-after-scrolling/" title="滚动后检查元素是否可见">
+  <strong>上一篇：</strong><br/>
+  <span>
+  滚动后检查元素是否可见</span>
+</a>
+</div>
+
 
 <div class="next">
-<a href="/2018/01/14/check-for-an-empty-string-in-javascript/"  title="check-for-an-empty-string-in-javascript">
+<a href="/2018/01/14/compare-two-dates-with-javascript/"  title="用JavaScript比较两个日期">
  <strong>下一篇：</strong><br/> 
- <span>check-for-an-empty-string-in-javascript
+ <span>用JavaScript比较两个日期
 </span>
 </a>
 </div>
@@ -183,17 +237,17 @@ var _hmt = _hmt || [];
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
+  <strong class="toc-title">Contents</strong>
  
  
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -212,7 +266,7 @@ var _hmt = _hmt || [];
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分类</p>
+	<p class="asidetitle">Categories</p>
 		<ul>
 		
 		  
@@ -233,19 +287,87 @@ var _hmt = _hmt || [];
 
   
 <div class="tagslist">
-	<p class="asidetitle">标签</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/javascript/" title="javascript">javascript<sup>10</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>1</sup></a></li>
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
 			
 		
 		</ul>
@@ -253,7 +375,7 @@ var _hmt = _hmt || [];
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
+  <p class="asidetitle">Links</p>
     <ul>
         
           <li>
@@ -266,7 +388,7 @@ var _hmt = _hmt || [];
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
 </aside>
@@ -478,7 +600,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

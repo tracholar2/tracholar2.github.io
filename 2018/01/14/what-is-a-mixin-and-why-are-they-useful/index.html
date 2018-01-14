@@ -1,0 +1,633 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>什么是混合，为什么他们有用？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在“编程Python ”中，MarkLutz提到了“mixins”。我来自C / C ++ / C＃的背景，我以前没有听说过这个词。什么是混合？ 阅读[我已经链接到，因为它是相当长的），我假设这是一个使用多继承来扩展一个类，而不是’适当’的子类。这是正确的吗？ 为什么我要这样做，而不是把新功能放到子类中？就此而言，为什么mixin / multiple inheritance方法比使用compos">
+<meta name="keywords" content="python,multiple-inheritance,oop,mixins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是混合，为什么他们有用？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/what-is-a-mixin-and-why-are-they-useful/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在“编程Python ”中，MarkLutz提到了“mixins”。我来自C / C ++ / C＃的背景，我以前没有听说过这个词。什么是混合？ 阅读[我已经链接到，因为它是相当长的），我假设这是一个使用多继承来扩展一个类，而不是’适当’的子类。这是正确的吗？ 为什么我要这样做，而不是把新功能放到子类中？就此而言，为什么mixin / multiple inheritance方法比使用compos">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是混合，为什么他们有用？">
+<meta name="twitter:description" content="在“编程Python ”中，MarkLutz提到了“mixins”。我来自C / C ++ / C＃的背景，我以前没有听说过这个词。什么是混合？ 阅读[我已经链接到，因为它是相当长的），我假设这是一个使用多继承来扩展一个类，而不是’适当’的子类。这是正确的吗？ 为什么我要这样做，而不是把新功能放到子类中？就此而言，为什么mixin / multiple inheritance方法比使用compos">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-a-mixin-and-why-are-they-useful/" title="什么是混合，为什么他们有用？" itemprop="url">什么是混合，为什么他们有用？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在“<a href="http://rads.stackoverflow.com/amzn/click/0596009259" target="_blank" rel="noopener">编程Python </a>”中，Mark<br>Lutz提到了“mixins”。我来自C / C ++ / C＃的背景，我以前没有听说过这个词。什么是混合？</p>
+<p>阅读[我已经链接到，因为它是相当长的），我假设这是一个使用多继承来扩展一个类，而不是’适当’的子类。这是正确的吗？</p>
+<p>为什么我要这样做，而不是把新功能放到子类中？就此而言，为什么mixin / multiple inheritance方法比使用composition更好？</p>
+<p>混合与多重继承分开了什么？这只是一个语义问题吗？</p>
+<p><a id="more"></a> mixin是一种特殊的多重继承。混合使用有两种主要情况：</p>
+<ul>
+<li>您想为类提供许多可选功能。</li>
+<li>您想在许多不同的类中使用一个特定的功能。</li>
+</ul>
+<p>举一个例子，请考虑<a href="http://werkzeug.pocoo.org/docs/wrappers/" target="_blank" rel="noopener">werkzeug的请求和响应系统</a>。我可以说一个普通的旧请求对象：</p>
+<pre><code>from werkzeug import BaseRequest
+
+class Request(BaseRequest):
+    pass
+</code></pre><p>如果我想添加接受标题支持，那么我会做这个</p>
+<pre><code>from werkzeug import BaseRequest, AcceptMixin
+
+class Request(BaseRequest, AcceptMixin):
+    pass
+</code></pre><p>如果我想创建一个支持Accept头，etags，验证和用户代理支持的请求对象，我可以这样做：</p>
+<pre><code>from werkzeug import BaseRequest, AcceptMixin, ETagRequestMixin, UserAgentMixin, AuthenticationMixin
+
+class Request(BaseRequest, AcceptMixin, ETagRequestMixin, UserAgentMixin, AuthenticationMixin):
+    pass
+</code></pre><p>这个差别是微妙的，但是在上面的例子中，混合类并不是独立存在的。在更传统的多重继承中，<code>AuthenticationMixin</code>（例如）可能更像是<code>Authenticator</code>。也就是说，这个班可能会被设计成独立的。</p>
+<p>首先，你应该注意到mixin只存在于多继承语言中。你不能在Java或C＃中进行混音。</p>
+<p>基本上，mixin是一个独立的基本类型，为儿童课程提供有限的功能和多态共鸣。如果你想用C＃，想一下你不必实际实现的接口，因为它已经实现了;你只是从它继承，并从其功能中受益。</p>
+<p>Mixins的范围通常很窄，并不意味着延长。</p>
+<p>[编辑 - 至于为什么：]</p>
+<p>我想我应该解释为什么，因为你问。最大的好处就是你不必一遍又一遍地自己做。在C＃中，mixin最大的优势可能来自<a href="http://blog.jawaji.com/2008/08
+/disposal-
+pattern-c.html" target="_blank" rel="noopener">处置模式</a>。每当你实现IDisposable时，你几乎总是想要遵循相同的模式，但是最终你会写出和重写相同的基本代码，只需稍作修改。如果有可扩展的Disposal<br>mixin，你可以节省很多额外的输入。</p>
+<p>[编辑2 - 回答你的其他问题]</p>
+<blockquote>
+<p>What separates a mixin from multiple inheritance? Is it just a matter of<br>semantics?</p>
+</blockquote>
+<p>是。 mixin和标准多重继承之间的区别只是一个语义问题;一个具有多重继承的类可能会使用一个mixin作为多重继承的一部分。</p>
+<p>一个mixin的目的是创建一个类型，可以通过继承“混合”到任何其他类型，而不会影响继承类型，同时仍然为该类型提供一些有益的功能。</p>
+<p>再一次，想一下已经实现的接口。</p>
+<p>我个人不使用mixins，因为我主要是用一种不支持他们的语言来开发，所以我很难想出一个体面的例子来提供这个“ahah！”。给你的时刻。但我会再试一次。我将使用一个人为设计的例子</p>
+<ul>
+<li>大多数语言已经以某种方式提供了这个功能，但希望能够解释mixin是如何被创建和使用的。这里是：</li>
+</ul>
+<p>假设你有一个类型，你想能够序列化XML和XML。您希望类型提供一个“ToXML”方法，该方法返回一个字符串，该字符串包含带有该类型数据值的XML片段，以及允许该类型从字符串中的XML片段重新构建其数据值的“FromXML”。再次，这是一个人为的例子，所以也许你使用一个文件流，或从你的语言的运行时库中的XML编写器类…无论如何。重点是你想要序列化你的对象到XML，并从XML返回一个新的对象。</p>
+<p>在这个例子中的另一个重点是你想以通用的方式做到这一点。你不想为每一个你想要序列化的类型都实现一个“ToXML”和“FromXML”方法，你需要一些通用的方法来确保你的类型能够做到这一点，它只是工作。你想要重复使用代码。</p>
+<p>如果你的语言支持它，你可以创建XmlSerializable<br>mixin为你完成你的工作。这种类型将实现ToXML和FromXML方法。如果使用一些对本示例不重要的机制，就可以从任何类型中收集所有必要的数据，以便构建ToXML返回的XML片段，并且在FromXML为调用。</p>
+<p>而且就是这样。要使用它，你将有任何需要被序列化为从XmlSerializable继承的XML的类型。无论何时需要序列化或反序列化该类型，都可以简单地调用ToXML或FromXML。事实上，由于XmlSerializable是一个完全成熟的类型和多态，你可以想象，构建一个文档序列化程序，它不知道任何关于你的原始类型，只接受一个XmlSerializable类型的数组。</p>
+<p>现在想象一下使用这个场景来做其他的事情，比如创建一个mixin，确保每个混合它的类都记录每个方法的调用，或者是一个为混合类型提供事务性的混合。列表可以继续上。</p>
+<p>如果你只是想把一个mixin作为一个小型的基础类型来设计，为一个类型添加少量的功能，而不会影响这种类型，那么你就是个好主意。</p>
+<p>希望。 ：）</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/multiple-inheritance/">multiple-inheritance</a><a href="/tags/oop/">oop</a><a href="/tags/mixins/">mixins</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/what-is-a-mixin-and-why-are-they-useful/" data-title="什么是混合，为什么他们有用？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/what-ide-to-use-for-python/" title="什么IDE用于Python？ [关闭]">
+  <strong>上一篇：</strong><br/>
+  <span>
+  什么IDE用于Python？ [关闭]</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/what-is-init-py-for/"  title="什么是__init__.py？">
+ <strong>下一篇：</strong><br/> 
+ <span>什么是__init__.py？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

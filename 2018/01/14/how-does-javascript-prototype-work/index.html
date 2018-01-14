@@ -1,0 +1,689 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>JavaScript .prototype如何工作？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我并不是那么喜欢动态编程语言，但是我已经写下了自己的JavaScript代码。我从来没有真正理解这个基于原型的编程，有没有人知道这是如何工作的？ var obj = new Object(); // not a functional object obj.prototype.test = function() { alert(&amp;apos;Hello?&amp;apos;); }; // this is w">
+<meta name="keywords" content="javascript,prototype-oriented">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript .prototype如何工作？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-does-javascript-prototype-work/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我并不是那么喜欢动态编程语言，但是我已经写下了自己的JavaScript代码。我从来没有真正理解这个基于原型的编程，有没有人知道这是如何工作的？ var obj = new Object(); // not a functional object obj.prototype.test = function() { alert(&amp;apos;Hello?&amp;apos;); }; // this is w">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript .prototype如何工作？">
+<meta name="twitter:description" content="我并不是那么喜欢动态编程语言，但是我已经写下了自己的JavaScript代码。我从来没有真正理解这个基于原型的编程，有没有人知道这是如何工作的？ var obj = new Object(); // not a functional object obj.prototype.test = function() { alert(&amp;apos;Hello?&amp;apos;); }; // this is w">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-does-javascript-prototype-work/" title="JavaScript .prototype如何工作？" itemprop="url">JavaScript .prototype如何工作？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Edit</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我并不是那么喜欢动态编程语言，但是我已经写下了自己的JavaScript代码。我从来没有真正理解这个基于原型的编程，有没有人知道这是如何工作的？</p>
+<pre><code>var obj = new Object(); // not a functional object
+obj.prototype.test = function() { alert(&apos;Hello?&apos;); }; // this is wrong!
+
+function MyObject() {} // a first class functional object
+MyObject.prototype.test = function() { alert(&apos;OK&apos;); } // OK
+</code></pre><p>我记得曾经跟人们讨论过很多次（我不太确定自己在做什么），但据我所知，没有一个班级的概念。这只是一个对象，这些对象的实例是原始的克隆，对吧？</p>
+<p>但是，在JavaScript中这个<code>.prototype</code>属性的确切目的是什么呢？它与实例化对象有什么关系？</p>
+<hr>
+<h3><span id="edit">Edit</span></h3><p>这些<a href="http://ejohn.org/apps/learn/#64" target="_blank" rel="noopener">幻灯片</a>的确帮助我们理解了这个话题。</p>
+<p><a id="more"></a> 每个JavaScript对象都有一个名为 <em>[[Prototype]]</em> 的内部属性。如果通过<code>obj.propName</code>或<code>obj
+[&#39;propName&#39;]</code>查找属性，并且对象没有这样的属性 - 可以通过<code>obj .hasOwnProperty（&#39;propName&#39;）</code> -<br>运行时查找由[[Prototype]]引用的对象中的属性。如果原型对象也没有这样的属性，则依次检查其原型，从而遍历原始对象的 <em>原型链</em><br>，直到找到匹配或到达结尾。</p>
+<p>一些JavaScript实现允许直接访问[[Prototype]]属性，例如通过名为<code>__ proto __</code>的非标准属性。通常，在对象创建过程中只能设置对象的原型：如果通过<code>new
+Func（）</code>创建一个新对象，则该对象的[[Prototype]]属性将被设置为由&lt;代码&gt; Func.prototype</p>
+<p>这允许在JavaScript中模拟类，尽管JavaScript的继承系统（正如我们所看到的）是原型的，而不是基于类的：</p>
+<p>只要将构造函数想象为类和原型的属性（即由构造函数的<code>prototype</code>属性引用的对象）作为共享成员即每个实例相同的成员即可。在基于类的系统中，方法对于每个实例都以相同的方式实现，所以方法通常被添加到原型中，而对象的字段是特定于实例的，因此在构建过程中添加到对象本身。</p>
+<p>在使用Java，C＃或C ++等经典继承的语言中，首先创建一个类 - 对象的蓝图 - 然后可以从该类创建新对象，或者扩展该类，定义新的类增加了原来的类。</p>
+<p>在JavaScript中你首先创建一个对象（没有类的概念），那么你可以增加你自己的对象或者从中创建新的对象。这并不难，但有点外国人，很难代谢习惯古典的人。</p>
+<p>示例：</p>
+<pre><code>//Define a functional object to hold persons in JavaScript
+var Person = function(name) {
+  this.name = name;
+};
+
+//Add dynamically to the already defined object a new getter
+Person.prototype.getName = function() {
+  return this.name;
+};
+
+//Create a new object of type Person
+var john = new Person(&quot;John&quot;);
+
+//Try the getter
+alert(john.getName());
+
+//If now I modify person, also John gets the updates
+Person.prototype.sayMyName = function() {
+  alert(&apos;Hello, my name is &apos; + this.getName());
+};
+
+//Call the new method on john
+john.sayMyName();
+</code></pre><p>到目前为止，我一直在扩展基础对象，现在我创建了另一个对象，然后从Person继承。</p>
+<pre><code>//Create a new object of type Customer by defining its constructor. It&apos;s not 
+//related to Person for now.
+var Customer = function(name) {
+    this.name = name;
+};
+
+//Now I link the objects and to do so, we link the prototype of Customer to 
+//a new instance of Person. The prototype is the base that will be used to 
+//construct all new instances and also, will modify dynamically all already 
+//constructed objects because in JavaScript objects retain a pointer to the 
+//prototype
+Customer.prototype = new Person();     
+
+//Now I can call the methods of Person on the Customer, let&apos;s try, first 
+//I need to create a Customer.
+var myCustomer = new Customer(&apos;Dream Inc.&apos;);
+myCustomer.sayMyName();
+
+//If I add new methods to Person, they will be added to Customer, but if I
+//add new methods to Customer they won&apos;t be added to Person. Example:
+Customer.prototype.setAmountDue = function(amountDue) {
+    this.amountDue = amountDue;
+};
+Customer.prototype.getAmountDue = function() {
+    return this.amountDue;
+};
+
+//Let&apos;s try:       
+myCustomer.setAmountDue(2000);
+alert(myCustomer.getAmountDue());
+
+
+
+var Person = function (name) {
+    this.name = name;
+};
+Person.prototype.getName = function () {
+    return this.name;
+};
+var john = new Person(&quot;John&quot;);
+alert(john.getName());
+Person.prototype.sayMyName = function () {
+    alert(&apos;Hello, my name is &apos; + this.getName());
+};
+john.sayMyName();
+var Customer = function (name) {
+    this.name = name;
+};
+Customer.prototype = new Person();
+
+var myCustomer = new Customer(&apos;Dream Inc.&apos;);
+myCustomer.sayMyName();
+Customer.prototype.setAmountDue = function (amountDue) {
+    this.amountDue = amountDue;
+};
+Customer.prototype.getAmountDue = function () {
+    return this.amountDue;
+};
+myCustomer.setAmountDue(2000);
+alert(myCustomer.getAmountDue());
+</code></pre><p>正如我所说，我不能在一个Person上调用setAmountDue（），getAmountDue（）。</p>
+<pre><code>//The following statement generates an error.
+john.setAmountDue(1000);
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/prototype-oriented/">prototype-oriented</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-does-javascript-prototype-work/" data-title="JavaScript .prototype如何工作？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/" title="Facebook如何禁用浏览器的集成开发者工具？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Facebook如何禁用浏览器的集成开发者工具？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-does-pythons-super-work-with-multiple-inheritance/"  title="Python的super（）如何处理多重继承？">
+ <strong>下一篇：</strong><br/> 
+ <span>Python的super（）如何处理多重继承？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Edit</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,691 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>在JavaScript中按字符串属性值排序对象数组 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个JavaScript对象数组： var objs = [      { first_nom: &amp;apos;Lazslo&amp;apos;, last_nom: &amp;apos;Jamf&amp;apos;     },     { first_nom: &amp;apos;Pig&amp;apos;,    last_nom: &amp;apos;Bodine&amp;apos;   },     { first_nom: &amp;apos;P">
+<meta name="keywords" content="javascript,arrays,sorting,properties">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在JavaScript中按字符串属性值排序对象数组">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/sort-array-of-objects-by-string-property-value-in-javascript/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个JavaScript对象数组： var objs = [      { first_nom: &amp;apos;Lazslo&amp;apos;, last_nom: &amp;apos;Jamf&amp;apos;     },     { first_nom: &amp;apos;Pig&amp;apos;,    last_nom: &amp;apos;Bodine&amp;apos;   },     { first_nom: &amp;apos;P">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/sort-array-of-objects-by-string-property-value-in-javascript/“https://i.stack.imgur.com/kL8So.png”alt">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在JavaScript中按字符串属性值排序对象数组">
+<meta name="twitter:description" content="我有一个JavaScript对象数组： var objs = [      { first_nom: &amp;apos;Lazslo&amp;apos;, last_nom: &amp;apos;Jamf&amp;apos;     },     { first_nom: &amp;apos;Pig&amp;apos;,    last_nom: &amp;apos;Bodine&amp;apos;   },     { first_nom: &amp;apos;P">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/sort-array-of-objects-by-string-property-value-in-javascript/“https://i.stack.imgur.com/kL8So.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/sort-array-of-objects-by-string-property-value-in-javascript/" title="在JavaScript中按字符串属性值排序对象数组" itemprop="url">在JavaScript中按字符串属性值排序对象数组</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Multiple Parameters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Adding It To The Prototype</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">The “OK” Way Of Adding It To The Prototype</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">You Should Read This</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个JavaScript对象数组：</p>
+<pre><code>var objs = [ 
+    { first_nom: &apos;Lazslo&apos;, last_nom: &apos;Jamf&apos;     },
+    { first_nom: &apos;Pig&apos;,    last_nom: &apos;Bodine&apos;   },
+    { first_nom: &apos;Pirate&apos;, last_nom: &apos;Prentice&apos; }
+];
+</code></pre><p>如何使用JavaScript中的<code>last_nom</code>的值对它们进行排序？</p>
+<p>我知道<code>sort（a，b）</code>，但是这似乎只适用于字符串和数字。我是否需要将toString方法添加到我的对象？</p>
+<p><a id="more"></a> 编写自己的比较函数很容易：</p>
+<pre><code>function compare(a,b) {
+  if (a.last_nom &lt; b.last_nom)
+    return -1;
+  if (a.last_nom &gt; b.last_nom)
+    return 1;
+  return 0;
+}
+
+objs.sort(compare);
+</code></pre><p>（p / o Marco Demaio）：</p>
+<pre><code>objs.sort(function(a,b) {return (a.last_nom &gt; b.last_nom) ? 1 : ((b.last_nom &gt; a.last_nom) ? -1 : 0);} ); 
+</code></pre><p>您也可以创建一个动态排序函数，按照您传递的值排序对象：</p>
+<pre><code>function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === &quot;-&quot;) {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] &lt; b[property]) ? -1 : (a[property] &gt; b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+</code></pre><p>所以你可以有一个这样的对象数组：</p>
+<pre><code>var People = [        {Name: &quot;Name&quot;, Surname: &quot;Surname&quot;},
+    {Name:&quot;AAA&quot;, Surname:&quot;ZZZ&quot;},
+    {Name: &quot;Name&quot;, Surname: &quot;AAA&quot;}
+];
+</code></pre><p>…当你这样做的时候它就会工作：</p>
+<pre><code>People.sort(dynamicSort(&quot;Name&quot;));
+People.sort(dynamicSort(&quot;Surname&quot;));
+People.sort(dynamicSort(&quot;-Surname&quot;));
+</code></pre><p>其实这已经回答了这个问题。下面是因为很多人联系我写的，抱怨说<a href="https://stackoverflow.com/questions/11379361" target="_blank" rel="noopener">它不适用于多个参数</a>。</p>
+<h2><span id="multiple-parameters">Multiple Parameters</span></h2><p>您可以使用下面的函数来生成具有多个排序参数的排序函数。</p>
+<pre><code>function dynamicSortMultiple() {
+    /*
+     * save the arguments object as it will be overwritten
+     * note that arguments object is an array-like object
+     * consisting of the names of the properties to sort by
+     */
+    var props = arguments;
+    return function (obj1, obj2) {
+        var i = 0, result = 0, numberOfProperties = props.length;
+        /* try getting a different result from 0 (equal)
+         * as long as we have extra properties to compare
+         */
+        while(result === 0 &amp;&amp; i &lt; numberOfProperties) {
+            result = dynamicSort(props[i])(obj1, obj2);
+            i++;
+        }
+        return result;
+    }
+}
+</code></pre><p>这可以让你做这样的事情：</p>
+<pre><code>People.sort(dynamicSortMultiple(&quot;Name&quot;, &quot;-Surname&quot;));
+</code></pre><h2><span id="adding-it-to-the-prototype">Adding It To The Prototype</span></h2><p>（下面的实现是从<a href="https://stackoverflow.com/users/2312161/mike-r" target="_blank" rel="noopener"> Mike R </a>的<a href="“">answer</a>）_</p>
+<p>**我不建议更改本机对象原型，只是举一个例子，以便您可以在自己的对象上实现它（对于支持它的环境，也可以使用<a href="“https://developer.mozilla.org/en-
+US/docs/JavaScript/Reference/Global_Objects/Object/defineProperty”rel"> Object.defineProperty</a>，如下一节所示，它在至少没有可被枚举的负面影响，如最后一部分所述）</p>
+<p>原型实现将如下所示（<a href="http://jsfiddle.net/M2ESb/" target="_blank" rel="noopener">这是一个工作示例</a>）：</p>
+<pre><code>//Don&apos;t just copy-paste this code. You will break the &quot;for-in&quot; loops
+!function() {
+    function _dynamicSortMultiple(attr) {
+       /* dynamicSortMultiple function body comes here */
+    }
+    function _dynamicSort(property) {
+        /* dynamicSort function body comes here */
+    }
+    Array.prototype.sortBy = function() {
+        return this.sort(_dynamicSortMultiple.apply(null, arguments));
+    }
+}();
+</code></pre><h3><span id="the-ok-way-of-adding-it-to-the-prototype">The “OK” Way Of Adding It To The Prototype</span></h3><p>如果您的目标是IE v9.0，那么就像我之前提到的那样，使用<a href="“https://developer.mozilla.org/en-
+US/docs/JavaScript/Reference/Global_Objects/Object"> Object.defineProperty</a>像这样（<a href="http://jsfiddle.net/K7Lt8/" target="_blank" rel="noopener">工作示例</a>）：&lt;<br>/ p&gt;</p>
+<pre><code>//Won&apos;t work below IE9, but totally safe otherwise
+!function() {
+    function _dynamicSortMultiple(attr) {
+       /* dynamicSortMultiple function body comes here */
+    }
+    function _dynamicSort(property) {
+        /* dynamicSort function body comes here */
+    }
+    Object.defineProperty(Array.prototype, &quot;sortBy&quot;, {
+        enumerable: false,
+        writable: true,
+        value: function() {
+            return this.sort(_dynamicSortMultiple.apply(null, arguments));
+        }
+    });
+}();
+</code></pre><p>在<a href="https://github.com/zenparsing/es-function-bind" title="bind operator
+proposal" target="_blank" rel="noopener">绑定运算符</a>到达。</p>
+<p>所有这些原型乐趣使这个：</p>
+<pre><code>People.sortBy(&quot;Name&quot;, &quot;-Surname&quot;);
+</code></pre><h3><span id="you-should-read-this">You Should Read This</span></h3><p>如果使用直接原型访问方法（Object.defineProperty是好的），而其他代码不检查<a href="“https://developer.mozilla.org/en-
+US/docs/JavaScript/Reference/Global_Objects"> hasOwnProperty</a>，小猫死亡！好吧，说实话，对任何小猫都没有什么坏处，但是可能的事情会破坏，你们团队中的其他开发人员都会恨你们：</p>
+<p><img src="“https://i.stack.imgur.com/kL8So.png”alt" alt=""></p>
+<p>看到最后的“SortBy”？是啊。不爽。在可以的地方使用Object.defineProperty，否则保持Array.prototype不变。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/arrays/">arrays</a><a href="/tags/sorting/">sorting</a><a href="/tags/properties/">properties</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/sort-array-of-objects-by-string-property-value-in-javascript/" data-title="在JavaScript中按字符串属性值排序对象数组 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/single-quotes-vs-double-quotes-in-python/" title="单引号与Python中的双引号[closed]">
+  <strong>上一篇：</strong><br/>
+  <span>
+  单引号与Python中的双引号[closed]</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/sorting-an-array-of-javascript-objects/"  title="排序JavaScript对象的数组">
+ <strong>下一篇：</strong><br/> 
+ <span>排序JavaScript对象的数组
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Multiple Parameters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Adding It To The Prototype</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">The “OK” Way Of Adding It To The Prototype</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">You Should Read This</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

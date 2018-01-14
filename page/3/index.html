@@ -74,7 +74,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -90,7 +90,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -109,38 +109,40 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/12/RDD-guide/" title="RDD 编程指南" itemprop="url">RDD 编程指南</a>
+      <a href="/2018/01/14/check-if-object-is-array/" title="检查对象是否是数组？" itemprop="url">检查对象是否是数组？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-12T14:23:30.000Z" itemprop="datePublished"> 发表于 2018-01-12</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <h2 id="概观"><a href="#概观" class="headerlink" title="概观"></a>概观</h2><p>在高层次上，每个Spark应用程序都包含一个驱动程序，该程序运行用户的main功能，并在集群上执行各种并行操作。Spark提供的主要抽象是一个弹性分布式数据集（RDD），它是在集群节点间进行分区的元素集合，可以并行操作。RDD是通过从Hadoop文件系统（或任何其他Hadoop支持的文件系统）中的文件或驱动程序中现有的Scala集合开始创建的，并对其进行转换。用户还可以要求火花持续存储器中的RDD，允许其有效地跨越并行操作被重复使用。最后，RDD自动从节点故障中恢复。</p>
-<p>Spark中的第二个抽象是可用于并行操作的共享变量。默认情况下，Spark在不同节点上并行执行一组任务时，会将该函数中使用的每个变量的副本传送给每个任务。有时候，变量需要在任务之间，或任务与驱动程序之间共享。Spark支持两种类型的共享变量：广播变量，可用于在所有节点上缓存内存中的值，以及累加器，这些变量只是“添加”到的变量，如计数器和总和。</p>
-<p>本指南显示了Spark支持的各种语言中的每个功能。如果您启动Spark的交互式shell（无论bin/spark-shell是Scala shell还是 bin/pysparkPython的），最容易跟随。</p>
+        <p>我试图编写一个接受一个字符串列表或一个字符串的函数。如果它是一个字符串，那么我想将它转换为只有一个项目的数组。然后我可以循环而不用担心错误。</p>
+<p>那么如何检查变量是否是一个数组？</p>
+<hr>
+<p>我已经搜集了下面的各种解决方案，并创建了<a href="http://jsperf.com/js-isarray-comparison" target="_blank" rel="noopener"> jsperf测试</a>。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/12/RDD-guide/#more">Read More</a>
+            <a href="/2018/01/14/check-if-object-is-array/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/spark/">spark</a>
-</div>
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/arrays/">arrays</a>
+  </div>
 
 </div>
 
@@ -179,38 +181,36 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/12/spark-tutorial/" title="spark 官方教程" itemprop="url">spark 官方教程</a>
+      <a href="/2018/01/14/compare-two-dates-with-javascript/" title="用JavaScript比较两个日期" itemprop="url">用JavaScript比较两个日期</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-12T14:08:50.000Z" itemprop="datePublished"> 发表于 2018-01-12</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>本教程提供了使用Spark的快速入门。我们将首先通过Spark的交互式shell（Python或Scala）介绍API，然后展示如何用Java，Scala和Python编写应用程序。</p>
-<p>要遵循本指南，请先从Spark网站下载Spark的打包版本 。由于我们不会使用HDFS，因此您可以下载任何版本的Hadoop的软件包。</p>
-<p>请注意，在Spark 2.0之前，Spark的主要编程接口是弹性分布式数据集（RDD）。在Spark 2.0之后，RDD被数据集取代，数据集类似于RDD类型强大的类型，但在引擎盖下有更丰富的优化。RDD接口仍然受支持，您可以在RDD编程指南中获得更完整的参考资料。但是，我们强烈建议您切换到使用数据集，这比RDD具有更好的性能。请参阅SQL编程指南以获取有关数据集的更多信息。</p>
+        <p>有人可以提供一种方法来比较 <strong>两个日期</strong> 的值大于，小于，而不是过去使用JavaScript？这些值将来自文本框…</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/12/spark-tutorial/#more">Read More</a>
+            <a href="/2018/01/14/compare-two-dates-with-javascript/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/spark/">spark</a>
-</div>
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/date/">date</a><a href="/tags/datetime/">datetime</a><a href="/tags/object/">object</a><a href="/tags/compare/">compare</a>
+  </div>
 
 </div>
 
@@ -238,37 +238,38 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/12/python-metaclass/" title="python metaclass" itemprop="url">python metaclass</a>
+      <a href="/2018/01/14/convert-hex-string-to-int-in-python/" title="在Python中将十六进制字符串转换为int" itemprop="url">在Python中将十六进制字符串转换为int</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-12T13:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-12</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>元类是一个类的类。就像一个类定义一个类的实例的行为一样，元类定义了一个类的行为。一个类是一个元类的一个实例。</p>
-<p><img src="https://i.stack.imgur.com/QQ0OK.png" alt="元类图"></p>
+        <p>如何在Python中将十六进制字符串转换为int？</p>
+<p>我可以把它当作“<code>0xffff</code>”或者只是“<code>ffff</code>”。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/12/python-metaclass/#more">Read More</a>
+            <a href="/2018/01/14/convert-hex-string-to-int-in-python/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/python/">python</a>
-</div>
 
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a><a href="/tags/hex/">hex</a>
+  </div>
 
 </div>
 
@@ -296,41 +297,232 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/12/python-yield/" title="python yield 关键字" itemprop="url">python yield 关键字</a>
+      <a href="/2018/01/14/convert-bytes-to-a-string/" title="将字节转换为字符串？" itemprop="url">将字节转换为字符串？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-12T08:02:23.000Z" itemprop="datePublished"> 发表于 2018-01-12</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>要理解什么yield，你必须了解什么是 generator。</p>
-<h2 id="Iterables"><a href="#Iterables" class="headerlink" title="Iterables"></a>Iterables</h2><p>当你创建一个列表，你可以逐个读取它的项目。逐个读取它的项目称为迭代：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>mylist = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> mylist:</span><br><span class="line"><span class="meta">... </span>   print(i)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
-<p>mylist是一个迭代。当你使用列表推导，你创建一个列表，和一个可迭代的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>mylist = [x*x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> mylist:</span><br><span class="line"><span class="meta">... </span>   print(i)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
-<p>你可以使用<code>for... in...</code>的所有东西都是可迭代的; lists，strings，file …</p>
-<p>这些迭代器很方便，因为您可以随心所欲地读取它们，但是将所有值存储在内存中，而且当有很多值时，并不总是您想要的值。</p>
+        <p>我使用此代码从外部程序获取标准输出：</p>
+<pre><code>&gt;&gt;&gt; from subprocess import *
+&gt;&gt;&gt; command_stdout = Popen([&apos;ls&apos;, &apos;-l&apos;], stdout=PIPE).communicate()[0]
+</code></pre><p>通信（）方法返回一个字节数组：</p>
+<pre><code>&gt;&gt;&gt; command_stdout
+b&apos;total 0\n-rw-rw-r-- 1 thomas thomas 0 Mar  3 07:03 file1\n-rw-rw-r-- 1 thomas thomas 0 Mar  3 07:03 file2\n&apos;
+</code></pre><p>不过，我想用普通的Python字符串来处理输出。所以我可以像这样打印：</p>
+<pre><code>&gt;&gt;&gt; print(command_stdout)
+-rw-rw-r-- 1 thomas thomas 0 Mar  3 07:03 file1
+-rw-rw-r-- 1 thomas thomas 0 Mar  3 07:03 file2
+</code></pre><p>我以为这就是<a href="http://docs.python.org/3.0/library/binascii.html?highlight=b2a#binascii.b2a_qp" target="_blank" rel="noopener"> binascii.b2a_qp（）</a>方法是，但是当我尝试它时，我又得到了相同的字节数组：</p>
+<pre><code>&gt;&gt;&gt; binascii.b2a_qp(command_stdout)
+b&apos;total 0\n-rw-rw-r-- 1 thomas thomas 0 Mar  3 07:03 file1\n-rw-rw-r-- 1 thomas thomas 0 Mar  3 07:03 file2\n&apos;
+</code></pre><p>有谁知道如何将字节值转换回字符串？我的意思是，使用“电池”，而不是手动进行。我希望Python 3可以正常工作。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/12/python-yield/#more">Read More</a>
+            <a href="/2018/01/14/convert-bytes-to-a-string/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/python/">python</a>
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a><a href="/tags/python-3-x/">python-3.x</a>
+  </div>
+
 </div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/convert-js-object-to-json-string/" title="将JS对象转换为JSON字符串" itemprop="url">将JS对象转换为JSON字符串</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如果我用JS定义了一个对象：</p>
+<pre><code>var j={&quot;name&quot;:&quot;binchen&quot;};
+</code></pre><p>如何将对象转换为JSON？输出字符串应该是：</p>
+<pre><code>&apos;{&quot;name&quot;:&quot;binchen&quot;}&apos;
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/convert-js-object-to-json-string/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/json/">json</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/convert-javascript-string-to-be-all-lower-case/" title="转换JavaScript字符串是全部小写？" itemprop="url">转换JavaScript字符串是全部小写？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何将JavaScript字符串值转换为全部小写字母？</p>
+<p>例如：“您的姓名”改为“您的姓名”</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/convert-javascript-string-to-be-all-lower-case/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/string/">string</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/converting-integer-to-string-in-python/" title="在Python中整数转换为字符串？" itemprop="url">在Python中整数转换为字符串？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想在Python中将一个整数转换为一个字符串。我徒劳地压制它：</p>
+<pre><code>t=raw_input()
+c=[]
+for j in range(0,int(t)):
+    n=raw_input()
+    a=[]
+    a,b= (int(i) for i in n.split(&apos; &apos;))
+    d=pow(a,b)
+    d.str()
+    c.append(d[0])
+for j in c:
+    print j
+</code></pre><p>当我尝试将其转换为字符串时，它显示一个错误，如<code>int</code>没有任何称为<code>str</code>的属性。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/converting-integer-to-string-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
 
 
   <div class="article-tags">
@@ -358,17 +550,206 @@ var _hmt = _hmt || [];
 
   
 
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/checking-whether-a-variable-is-an-integer-or-not/" title="检查一个变量是否是一个整数" itemprop="url">检查一个变量是否是一个整数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何检查一个变量是否是一个整数？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/checking-whether-a-variable-is-an-integer-or-not/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-use-redux-over-facebook-flux/" title="为什么在Facebook上使用Redux？" itemprop="url">为什么在Facebook上使用Redux？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我已阅读[此答案&lt; /<br>a&gt;，<a href="http://redux.js.org/docs/recipes/ReducingBoilerplate.html" target="_blank" rel="noopener">减少样板</a>，看了几个GitHub的例子，甚至尝试了一下一点点（todo应用程序）。</p>
+<p>据我所知，<a href="http://redux.js.org/docs/introduction/Motivation.html" target="_blank" rel="noopener">官方的redux文档动机</a>提供了优于传统的MVC架构。但是它没有提供一个问题的答案：</p>
+<p>为什么你应该使用Facebook上的Flux的Redux？**</p>
+<p>这只是一个编程风格的问题：功能与非功能？或者问题是在redux方法中的能力/开发工具？也许缩放？或测试？_</p>
+<p><em>我是否正确，如果我说，redux对于来自功能语言的人来说是一种流量？</em></p>
+<p><strong>为了回答这个问题，你可以比较实现redux在flux和redux上的动机点的复杂性。</strong></p>
+<p>以下是来自<a href="http://redux.js.org/docs/introduction/Motivation.html" target="_blank" rel="noopener">官方文档动机</a>的动机要点：</p>
+<ul>
+<li>处理乐观的更新（据我所知，它几乎不取决于第五点，难以在fb flux中实现）_</li>
+<li>在服务器上进行渲染（ <em>fb flux也可以做到这一点，与redux相比有什么好处？</em> ）</li>
+<li>在执行路由转换之前获取数据（ <em>为什么无法在fb flux中实现？有什么好处？</em> ）</li>
+<li>重新加载（ <em><a href="http://gaearon.github.io/react-hot-loader/" target="_blank" rel="noopener"> React Hot Reload </a>）。为什么我们需要减少？</em> ）</li>
+<li>撤销/重做功能</li>
+<li>其他要点？像持续状态… </li>
+</ul>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/why-use-redux-over-facebook-flux/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/reactjs/">reactjs</a><a href="/tags/reactjs-flux/">reactjs-flux</a><a href="/tags/flux/">flux</a><a href="/tags/redux/">redux</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/correct-way-to-write-line-to-file/" title="正确的方式写入文件？" itemprop="url">正确的方式写入文件？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我习惯了<code>print＆gt;＆gt; f，“hi there”</code><br>不过，看起来<code>print&gt;＆gt;＆gt;</code>已经被弃用了。什么是建议的方式做上面的行？</p>
+<p><strong>更新</strong> 的： 关于<code>“\ n”</code>的所有答案……这是通用还是Unix特有的？ IE，我应该在Windows上做<code>“\ r \ n”</code>？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/correct-way-to-write-line-to-file/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/file-io/">file-io</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/2/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="extend next" rel="next" href="/page/4/">Next<span></span></a>
   </nav>
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -387,7 +768,7 @@ var _hmt = _hmt || [];
 
   
 <div class="categorieslist">
-	<p class="asidetitle">分类</p>
+	<p class="asidetitle">Categories</p>
 		<ul>
 		
 		  
@@ -408,19 +789,87 @@ var _hmt = _hmt || [];
 
   
 <div class="tagslist">
-	<p class="asidetitle">标签</p>
+	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/javascript/" title="javascript">javascript<sup>10</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>1</sup></a></li>
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/jQuery/" title="jQuery">jQuery<sup>1</sup></a></li>
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
 			
 		
 		</ul>
@@ -428,7 +877,7 @@ var _hmt = _hmt || [];
 
 
   <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
+  <p class="asidetitle">Links</p>
     <ul>
         
           <li>
@@ -441,7 +890,7 @@ var _hmt = _hmt || [];
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
 </div>
 
 </aside>
@@ -576,7 +1025,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 

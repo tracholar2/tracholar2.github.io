@@ -1,0 +1,626 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>分发，distutils，setuptools和distutils2之间的区别？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="The Situation我正尝试将一个开源库移植到Python 3.（ SymPy ，如果有人想知道的话） 因此，当为Python 3构建时，我需要自动运行2to3。为此，我需要使用distribute。因此，我需要移植当前的系统，其中（根据doctest）是distutils。 结果 The Problem不幸的是，我不知道这些模块之间的区别是什么，distutils distribution">
+<meta name="keywords" content="python,packaging,setuptools,distutils,distribute">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分发，distutils，setuptools和distutils2之间的区别？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/differences-between-distribute-distutils-setuptools-and-distutils2/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="The Situation我正尝试将一个开源库移植到Python 3.（ SymPy ，如果有人想知道的话） 因此，当为Python 3构建时，我需要自动运行2to3。为此，我需要使用distribute。因此，我需要移植当前的系统，其中（根据doctest）是distutils。 结果 The Problem不幸的是，我不知道这些模块之间的区别是什么，distutils distribution">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分发，distutils，setuptools和distutils2之间的区别？">
+<meta name="twitter:description" content="The Situation我正尝试将一个开源库移植到Python 3.（ SymPy ，如果有人想知道的话） 因此，当为Python 3构建时，我需要自动运行2to3。为此，我需要使用distribute。因此，我需要移植当前的系统，其中（根据doctest）是distutils。 结果 The Problem不幸的是，我不知道这些模块之间的区别是什么，distutils distribution">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/differences-between-distribute-distutils-setuptools-and-distutils2/" title="分发，distutils，setuptools和distutils2之间的区别？" itemprop="url">分发，distutils，setuptools和distutils2之间的区别？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">The Situation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">The Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">The Question</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Summary of tools:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Supported tools:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.2.</span> <span class="toc-text">Deprecated/abandoned tools:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.3.</span> <span class="toc-text">Alpha software:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Recommendation:</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h2><span id="the-situation">The Situation</span></h2><p>我正尝试将一个开源库移植到Python 3.（<a href="http://sympy.org/" target="_blank" rel="noopener"> SymPy </a>，如果有人想知道的话）</p>
+<p>因此，当为Python 3构建时，我需要自动运行<code>2to3</code>。为此，我需要使用<code>distribute</code>。因此，我需要移植当前的系统，其中（根据doctest）是<code>distutils</code>。</p>
+<p>结果</p>
+<h2><span id="the-problem">The Problem</span></h2><p>不幸的是，我不知道这些模块之间的区别是什么，distutils <code>distribution</code>，<code>setuptools</code>。文档最好是粗略的，因为它们似乎都是彼此的分支，旨在在大多数情况下（但实际上并非全部）兼容，等等。</p>
+<p>结果</p>
+<h2><span id="the-question">The Question</span></h2><p>有人能解释一下这个区别吗？**我应该用什么？什么是最现代化的解决方案？ （另外，我也很欣赏一些关于移植到<code>Distribute</code>的指南，但是这超出了问题的范围。）</p>
+<p><a id="more"></a> 截至2017年1月，这个问题的所有其他答案至少有两年过时了。当您遇到有关Python包装问题的建议时，请记住查看发布日期，不要信任过时的信息。</p>
+<p><a href="https://packaging.python.org/" target="_blank" rel="noopener">Python打包用户指南</a>值得一读。每个页面都显示“上次检查”日期，因此您可以检查手册的新近性，这是相当全面的。它被托管在Python<br>Software Foundation的python.org的一个子域名上的事实只是增加了它的可信度。<br><a href="https://packaging.python.org/key_projects/" target="_blank" rel="noopener">项目摘要</a>页面在这里特别相关。</p>
+<h2><span id="summary-of-tools">Summary of tools:</span></h2><p>下面是2017年1月份Python包装的总结：</p>
+<h3><span id="supported-tools">Supported tools:</span></h3><ul>
+<li><p><strong>Distutils</strong> 仍然是Python打包的标准工具。它包含在标准库（Python 2和Python 3.0到3.6）中。这对于简单的Python发行版很有用，但缺乏特性。它引入了可以在<code>setup.py</code>脚本中导入的<code>distutils</code> Python包。</p>
+<ul>
+<li><p><a href="https://docs.python.org/3/library/distutils.html" target="_blank" rel="noopener">官方文档</a> | Python包用户指南<a href="https://packaging.python.org/key_projects/#distutils" target="_blank" rel="noopener"> <code>distutils</code>部分</a><br>Setuptools **是为了克服Distutils的限制而开发的，并没有包含在标准库中。它引入了一个名为<code>easy_install</code>的命令行工具。它还介绍了可以导入到您的<code>setup.py</code>脚本中的<code>setuptools</code> Python包，以及可以导入到您的<code>pkg_resources</code>代码来查找与分配一起安装的数据文件。其中一个问题是，它会对<code>distutils</code> Python包进行修补。它应该与<code>pip</code>一起使用。 <a href="https://github.com/pypa/setuptools/releases" target="_blank" rel="noopener">它看到正规版本。</a></p>
+</li>
+<li><p><a href="https://setuptools.readthedocs.io/en/latest/" target="_blank" rel="noopener">官方文档</a> | <a href="https://pypi.python.org/pypi/setuptools" target="_blank" rel="noopener"> Pypi页面</a> | <a href="https://github.com/pypa/setuptools" target="_blank" rel="noopener"> GitHub repo </a> | Python包用户指南的<a href="https://packaging.python.org/key_projects/#setuptools" target="_blank" rel="noopener"> <code>setuptools</code>部分</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3><span id="deprecatedabandoned-tools">Deprecated/abandoned tools:</span></h3><ul>
+<li><strong>分发</strong> 是Setuptools的一个分支。它共享相同的命名空间，所以如果您安装了Distribute，<code>import setuptools</code>实际上会导入使用Distribute分发的程序包。分发被合并回到Setuptools 0.7 _ **，所以你不需要再使用Distribute了。实际上，Pypi上的版本只是安装Setuptools的兼容层。</li>
+</ul>
+<p>Distutils2是一个试图充分利用Distutils，Setuptools和Distribute的工具，并成为Python标准库中的标准工具。这个想法是Distutils2将分发给旧的Python版本，并且Distutils2将被重新命名为Python<br>3.3的<code>packaging</code>，这将包含在它的标准库中。然而，这些计划并没有按预期进行，目前，Distutils2是一个被遗弃的项目_<br>**。最新版本是在2012年3月，其Pypi主页已经更新，以反映其死亡。</p>
+<h3><span id="alpha-software">Alpha software:</span></h3><p>Distlib <strong>是一个工具，旨在实现以前的工具功能的一个子集，但只有在接受的PEP中定义良好的功能。它是PyPA（Python Package<br>Authority）的一个工具，有望在某一天最终被包含在Python标准库中。 </strong><em>它仍然被认为是alpha软件，所以最终用户要小心。</em> **</p>
+<pre><code>* [官方文档](http://pythonhosted.org/distlib/) | [ Pypi页面](https://pypi.python.org/pypi/distlib) | [ Bitbucket回购](https://bitbucket.org/vinay.sajip/distlib) | Python包用户指南[ ` distlib `部分](https://packaging.python.org/key_projects/#distlib)
+</code></pre><ul>
+<li>有<a href="https://packaging.python.org/key_projects/" target="_blank" rel="noopener">更多的工具</a>（例如：Bento），但是我赢了“不要提他们，因为他们太晦涩或利基或早或未开发这个回答帖子，否则他们不是直接的选择。</li>
+</ul>
+<h2><span id="recommendation">Recommendation:</span></h2><p>因此，最后，除了所有这些选项之外， <strong>我会推荐Setuptools</strong> ，除非您的要求非常基本，您只需要Distutils。<br>Setuptools与Virtualenv和Pip，我强烈推荐的工具很好地工作。<br>Virtualenv和Pip都可以被认为是官方的，因为它们是PyPA的一部分，现在Python 3发布了<a href="“https://docs.python.org/3/library/ensurepip.html”rel"> <code>ensurepip</code></a>（这可以帮助您在某些系统上安装<code>pip</code>）。</p>
+<p>如果你正在寻找Virtualenv，你可能会对这个问题感兴趣：[ <code>venv</code> <code>，</code> pyvenv <code>，</code> pyenv <code>，</code> virtualenv<br><code>，</code> virtualenvwrapper `等等。 （是的，我知道，我呻吟着。）</p>
+<p>作为一个侧面说明，我建议使用Virtualenv 1.10或更高版本，因为它是Python 2和3的第一个识别Setuptools /<br>Distribute合并的版本。</p>
+<p>我是一个distutils维护者和distutils2 /包装贡献者。我在ConFoo<br>2011上做了一个关于Python打包的讨论，现在我正在写一个扩展版本。这还没有发布，所以这里有一些节录可以帮助定义一些东西。</p>
+<ul>
+<li><strong>Distutils</strong> 是用于打包的标准工具。它对于简单的需求来说工作起来相当好，但是有限而且不是微不足道的。<br>Setuptools<br>**是一个出于填补遗漏distutils功能和探索新方向的愿望而诞生的项目。在一些分社区，这是一个事实上的标准。它使用猴子补丁和魔术，这是Python核心开发人员所不满的。</li>
+</ul>
+<p>分发**是Setuptools的一个分支，开发人员认为它的开发速度太慢，而且无法发展。当同一组发动distutils2时，其发展速度大大减慢。<br>2013年8月更新：分发合并到setuptools并停止。</p>
+<p>Distutils2是一个新的distutils库，作为distutils代码库的一个分支开始，从设置工具（其中一些在PEP中进行了深入的讨论）中获得了很好的想法，一个基本的安装程序的灵感来自点。<br><del>用于导入Distutils2的实际名称是Python 3.3+标准库中的<code>packaging</code>，或2.4 +和3.1-3.2中的<code>distutils2</code>。 （很快就会有一个backport。）</del> Distutils2并没有使Python 3.3发布，而是被搁置了。</p>
+<p>更多信息：</p>
+<ul>
+<li><a href="“http://tarekziade.wordpress.com/2010/03/03/the-fate-of-distutils-pycon-summit-packaging-sprint-detailed-report/”rel"> Distutils的命运–Pycon Summit + Packaging Sprint详细报告</a></li>
+<li><a href="http://wokslog.wordpress.com/2011/06/04/distutils-diff/" target="_blank" rel="noopener"> Distutils与Distutils2之间的快速差异</a></li>
+</ul>
+<p>我希望尽快完成我的指导，它将包含有关每个图书馆的强大和弱点以及过渡指南的更多信息。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/packaging/">packaging</a><a href="/tags/setuptools/">setuptools</a><a href="/tags/distutils/">distutils</a><a href="/tags/distribute/">distribute</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/differences-between-distribute-distutils-setuptools-and-distutils2/" data-title="分发，distutils，setuptools和distutils2之间的区别？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/document-ready-equivalent-without-jquery/" title="$（document）.ready没有jQuery">
+  <strong>上一篇：</strong><br/>
+  <span>
+  $（document）.ready没有jQuery</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/why-use-pip-over-easy-install/"  title="为什么使用易于安装的点子？ [关闭]">
+ <strong>下一篇：</strong><br/> 
+ <span>为什么使用易于安装的点子？ [关闭]
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">The Situation</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">The Problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">The Question</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Summary of tools:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Supported tools:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.2.</span> <span class="toc-text">Deprecated/abandoned tools:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.3.</span> <span class="toc-text">Alpha software:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Recommendation:</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

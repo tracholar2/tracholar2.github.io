@@ -1,0 +1,744 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何在JavaScript中获取对象类型的名称？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="是否存在Java的class.getName（）？ 的JavaScript等价物">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在JavaScript中获取对象类型的名称？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-do-i-get-the-name-of-an-objects-type-in-javascript/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="是否存在Java的class.getName（）？ 的JavaScript等价物">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何在JavaScript中获取对象类型的名称？">
+<meta name="twitter:description" content="是否存在Java的class.getName（）？ 的JavaScript等价物">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-i-get-the-name-of-an-objects-type-in-javascript/" title="如何在JavaScript中获取对象类型的名称？" itemprop="url">如何在JavaScript中获取对象类型的名称？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Using the constructor property…</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Caveats</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Using the instanceof operator…</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">Will not work cross-frame and cross-window</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Using the name property of the constructor property…</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Does not work AT ALL in many cases</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Does NOT work in &lt;IE9</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Using Object.prototype.toString</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Caveats for all…</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.1.</span> <span class="toc-text">NOTE:</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>是否存在Java的<code>class.getName（）</code>？</p>
+<p>的JavaScript等价物 <a id="more"></a></p>
+<p>您可以使用</p>
+<pre><code>function getType( obj )
+{
+  return Object.prototype.toString.call(obj);
+}
+alert( getType( &apos;str&apos; ) );     // [object String]
+alert( getType( 55 ) );        // [object Number]
+alert( getType( new Date() ) );// [object Date]
+alert( getType( null ) );      // [object Null]
+</code></pre><p><strong>ES2015更新</strong> ：<a href="“https://developer.mozilla.org/en-
+US/docs/Web/JavaScript/Reference/Global_Objects/Function/name#Function_names_in_classes”rel"> <code>class Foo {}</code>的名字是<code>Foo.name</code></a>。无论是<code>thing</code>的类型，<code>thing</code>的类的名字是<code>thing.constructor.name</code>。 ES2015环境中的内建构造函数具有正确的<code>name</code>属性;例如<code>（2）.constructor.name</code>是<code>“Number”</code>。</p>
+<hr>
+<p>但是，这里有各种各样的黑客，都以某种方式下跌：</p>
+<p>这是一个破解你需要的破解 - 注意它修改了对象的原型，让人们皱眉（通常是出于很好的理由）</p>
+<pre><code>Object.prototype.getName = function() { 
+   var funcNameRegex = /function (.{1,})\(/;
+   var results = (funcNameRegex).exec((this).constructor.toString());
+   return (results &amp;&amp; results.length &gt; 1) ? results[1] : &quot;&quot;;
+};
+</code></pre><p>现在，所有对象都将具有函数getName（）<code>，它将以字符串的形式返回构造函数的名称。我已经在</code> FF3 <code>和</code> IE7 `中测试过了，我不能说其他的实现。</p>
+<p>如果你不想这样做的话，下面是关于在JavaScript中确定类型的各种方法的讨论…</p>
+<hr>
+<p>我最近更新了这个更详尽一点，虽然它几乎没有。更正欢迎…</p>
+<h2><span id="using-the-constructor-property">Using the <code>constructor</code> property…</span></h2><p>每个<code>object</code>对于它的<code>构造函数</code>属性都有一个值，但是取决于<code>object</code>的构造方式以及你想做什么有了这个价值，它可能会或可能不会有用。</p>
+<p>一般来说，您可以使用<code>constructor</code>属性来测试对象的类型，如下所示：</p>
+<pre><code>var myArray = [1,2,3];
+(myArray.constructor == Array); // true
+</code></pre><p>所以，对于大多数需求来说，这样做足够好。这就是说…</p>
+<h3><span id="caveats">Caveats</span></h3><p><strong>在很多情况下<em> </em> 无法使用</strong></p>
+<p>这种模式虽然破损，但是相当普遍：</p>
+<pre><code>function Thingy() {
+}
+Thingy.prototype = {
+    method1: function() {
+    },
+    method2: function() {
+    }
+};
+</code></pre><p>通过<code>new Thingy</code>构造的Objects <code>将具有指向</code> Object<br><code>的</code>构造函数<code>属性，而不是</code>啄。所以我们一开始就落伍了。你不能信任你不能控制的代码库中的<code>constructor</code>。</p>
+<p><strong>多重继承</strong></p>
+<p>一个不太明显的例子是使用多重继承：</p>
+<pre><code>function a() { this.foo = 1;}
+function b() { this.bar = 2; }
+b.prototype = new a(); // b inherits from a
+</code></pre><p>现在事情并不像你预期的那样工作：</p>
+<pre><code>var f = new b(); // instantiate a new object with the b constructor
+(f.constructor == b); // false
+(f.constructor == a); // true
+</code></pre><p>因此，如果<code>object</code>测试将<code>object</code>设置为<code>原型</code>，那么您可能会得到意想不到的结果。这个讨论的范围之外有办法解决这个问题。</p>
+<p><code></code> constructor `属性还有其他用途，其中一些是有趣的，有些则不是那么多;现在我们不会深入研究这些用途，因为它与这个讨论无关。</p>
+<p><strong>跨框架和跨窗口不能工作</strong></p>
+<p>当你想要检查来自不同的<code>window</code>对象的对象的类型时，使用<code>.constructor</code>进行类型检查将会中断，比如iframe或者一个弹出窗口。这是因为每个“窗口”中的每个核心类型<code>constructor</code>都有不同的版本，即</p>
+<pre><code>iframe.contentWindow.Array === Array // false
+</code></pre><hr>
+<h2><span id="using-the-instanceof-operator">Using the <code>instanceof</code> operator…</span></h2><p><code>instanceof</code>运算符也是测试<code>object</code>类型的干净方式，但是它有自己的潜在问题，就像<code>constructor</code>属性一样</p>
+<pre><code>var myArray = [1,2,3];
+(myArray instanceof Array); // true
+(myArray instanceof Object); // true
+</code></pre><p>但是<code>instanceof</code>无法用于文字值（因为文字不是<code>Objects</code>）</p>
+<pre><code>3 instanceof Number // false
+&apos;abc&apos; instanceof String // false
+true instanceof Boolean // false
+</code></pre><p>为了让<code>instanceof</code>工作，文字需要被封装在<code>Object</code>中，例如</p>
+<pre><code>new Number(3) instanceof Number // true
+</code></pre><p><code>.constructor</code>检查可以正常工作，因为<code>。</code>方法调用隐式地将文字包装在各自的对象类型中</p>
+<pre><code>3..constructor === Number // true
+&apos;abc&apos;.constructor === String // true
+true.constructor === Boolean // true
+</code></pre><p>为什么两个点为3？因为JavaScript将第一个点解释为小数点;）</p>
+<h3><span id="will-not-work-cross-frame-and-cross-window">Will not work cross-frame and cross-window</span></h3><p><code>instanceof</code>也不能在不同的窗口中工作，这与<code>constructor</code>属性检查的原因是一样的。</p>
+<hr>
+<h2><span id="using-the-name-property-of-the-constructor-property">Using the <code>name</code> property of the <code>constructor</code> property…</span></h2><h3><span id="does-not-work-at-all-in-many-cases">Does not work <em>AT ALL</em> in many cases</span></h3><p>再次，见上面; <code>constructor</code>是非常普遍的，完全错误和无用的。</p>
+<h3><span id="does-not-work-in-ltie9">Does NOT work in &lt;IE9</span></h3><p>使用<code>myObjectInstance.constructor.name</code>会给你一个字符串，它包含所使用的<code>构造函数</code>函数的名字，但是会受到关于`构造函数&lt; / code&gt;属性，前面提到过。</p>
+<p>对于IE9及以上版本，您可以<a href="http://matt.scharley.me/2012/03/monkey-patch-name-
+ie.html" target="_blank" rel="noopener">猴子补丁支持</a>：</p>
+<pre><code>if (Function.prototype.name === undefined &amp;&amp; Object.defineProperty !== undefined) {
+    Object.defineProperty(Function.prototype, &apos;name&apos;, {
+        get: function() {
+            var funcNameRegex = /function\s+([^\s(]+)\s*\(/;
+            var results = (funcNameRegex).exec((this).toString());
+            return (results &amp;&amp; results.length &gt; 1) ? results[1] : &quot;&quot;;
+        },
+        set: function(value) {}
+    });
+}
+</code></pre><p>来自相关文章的</p>
+<p><strong>更新版本</strong> 。这是在文章发表3个月后添加的，这是本文作者Matthew<br>Scharley推荐使用的版本。这个变化是由<a href="http://matt.scharley.me/2012/03/monkey-
+patch-name-ie.html#comment-551654096" target="_blank" rel="noopener">意见指出潜在的陷阱</a>在前面的代码中。</p>
+<pre><code>if (Function.prototype.name === undefined &amp;&amp; Object.defineProperty !== undefined) {
+    Object.defineProperty(Function.prototype, &apos;name&apos;, {
+        get: function() {
+            var funcNameRegex = /function\s([^(]{1,})\(/;
+            var results = (funcNameRegex).exec((this).toString());
+            return (results &amp;&amp; results.length &gt; 1) ? results[1].trim() : &quot;&quot;;
+        },
+        set: function(value) {}
+    });
+}
+</code></pre><hr>
+<h2><span id="using-objectprototypetostring">Using Object.prototype.toString</span></h2><p>事实证明，正如[ this可以使用<code>Object.prototype.toString</code> - <code>toString</code>的低级别和通用实现 -<br>获取所有内置类型的类型&lt; / p&gt;</p>
+<pre><code>Object.prototype.toString.call(&apos;abc&apos;) // [object String]
+Object.prototype.toString.call(/abc/) // [object RegExp]
+Object.prototype.toString.call([1,2,3]) // [object Array]
+</code></pre><p>人们可以写一个简短的帮助函数，比如</p>
+<pre><code>function type(obj){
+    return Object.prototype.toString.call(obj).slice(8, -1);
+}
+</code></pre><p>删除cruft并获取类型名称</p>
+<pre><code>type(&apos;abc&apos;) // String
+</code></pre><p>但是，它将为所有用户定义的类型返回<code>Object</code>。</p>
+<hr>
+<h2><span id="caveats-for-all">Caveats for all…</span></h2><p>所有这些都有一个潜在的问题，那就是这个问题是如何构建的。以下是构建对象的各种方法，以及类型检查的不同方法将返回的值：</p>
+<pre><code>// using a named function:
+function Foo() { this.a = 1; }
+var obj = new Foo();
+(obj instanceof Object);          // true
+(obj instanceof Foo);             // true
+(obj.constructor == Foo);         // true
+(obj.constructor.name == &quot;Foo&quot;);  // true
+
+// let&apos;s add some prototypical inheritance
+function Bar() { this.b = 2; }
+Foo.prototype = new Bar();
+obj = new Foo();
+(obj instanceof Object);          // true
+(obj instanceof Foo);             // true
+(obj.constructor == Foo);         // false
+(obj.constructor.name == &quot;Foo&quot;);  // false
+
+
+// using an anonymous function:
+obj = new (function() { this.a = 1; })();
+(obj instanceof Object);              // true
+(obj.constructor == obj.constructor); // true
+(obj.constructor.name == &quot;&quot;);         // true
+
+
+// using an anonymous function assigned to a variable
+var Foo = function() { this.a = 1; };
+obj = new Foo();
+(obj instanceof Object);      // true
+(obj instanceof Foo);         // true
+(obj.constructor == Foo);     // true
+(obj.constructor.name == &quot;&quot;); // true
+
+
+// using object literal syntax
+obj = { foo : 1 };
+(obj instanceof Object);            // true
+(obj.constructor == Object);        // true
+(obj.constructor.name == &quot;Object&quot;); // true
+</code></pre><p>虽然并不是所有的排列都出现在这一套例子中，但希望能够为您提供一个关于如何根据您的需要得到混乱的东西的想法。不要假设任何事情，如果你不能完全理解你的想法，那么你可能会因为缺乏对微妙的东西的熟悉而导致代码被破坏。</p>
+<h3><span id="note">NOTE:</span></h3><p><code>typeof</code>运算符的讨论可能看起来是一个明显的漏洞，但它确实无助于识别<code>object</code>是否为给定类型，因为这是非常简单的。了解<code>typeof</code>的用处很重要，但是我现在不觉得这与这个讨论非常相关。尽管我的想法可以改变。 ：）</p>
+<p>Jason Bunting的回答给了我足够的线索来找到我需要的东西：</p>
+<pre><code>&lt;&lt;Object instance&gt;&gt;.constructor.name
+</code></pre><p>所以，例如，在下面这段代码中：</p>
+<pre><code>function MyObject() {}
+var myInstance = new MyObject();
+</code></pre><p><code>myInstance.constructor.name</code>会返回<code>“MyObject”</code>。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-do-i-get-the-name-of-an-objects-type-in-javascript/" data-title="如何在JavaScript中获取对象类型的名称？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-do-i-list-all-files-of-a-directory/" title="如何列出目录的所有文件？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何列出目录的所有文件？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-do-i-install-a-python-package-with-a-whl-file/"  title="如何用.whl文件安装Python包？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何用.whl文件安装Python包？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Using the constructor property…</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Caveats</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Using the instanceof operator…</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">Will not work cross-frame and cross-window</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Using the name property of the constructor property…</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Does not work AT ALL in many cases</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Does NOT work in &lt;IE9</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Using Object.prototype.toString</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Caveats for all…</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.1.</span> <span class="toc-text">NOTE:</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

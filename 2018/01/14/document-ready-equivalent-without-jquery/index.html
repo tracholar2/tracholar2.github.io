@@ -1,0 +1,898 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>$（document）.ready没有jQuery | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个使用$（document）.ready的脚本，但是它没有使用jQuery中的其他任何东西。我想通过删除jQuery依赖来减轻它的负担。 如何在不使用jQuery的情况下实现自己的$（document）.ready功能？我知道使用window.onload不会像window.onload在所有的图像，框架等被加载后触发。">
+<meta name="keywords" content="javascript,jquery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="$（document）.ready没有jQuery">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/document-ready-equivalent-without-jquery/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个使用$（document）.ready的脚本，但是它没有使用jQuery中的其他任何东西。我想通过删除jQuery依赖来减轻它的负担。 如何在不使用jQuery的情况下实现自己的$（document）.ready功能？我知道使用window.onload不会像window.onload在所有的图像，框架等被加载后触发。">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="$（document）.ready没有jQuery">
+<meta name="twitter:description" content="我有一个使用$（document）.ready的脚本，但是它没有使用jQuery中的其他任何东西。我想通过删除jQuery依赖来减轻它的负担。 如何在不使用jQuery的情况下实现自己的$（document）.ready功能？我知道使用window.onload不会像window.onload在所有的图像，框架等被加载后触发。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/document-ready-equivalent-without-jquery/" title="$（document）.ready没有jQuery" itemprop="url">$（document）.ready没有jQuery</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Here is a viable replacement for jQuery ready</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个使用<code>$（document）.ready</code>的脚本，但是它没有使用jQuery中的其他任何东西。我想通过删除jQuery依赖来减轻它的负担。</p>
+<p>如何在不使用jQuery的情况下实现自己的<code>$（document）.ready</code>功能？我知道使用<code>window.onload</code>不会像<code>window.onload</code>在所有的图像，框架等被加载后触发。</p>
+<a id="more"></a>
+<p>有一个基于标准的替换，<code>DOMContentLoaded</code>，它支持超过<a href="http://caniuse.com/#search=DOMContentLoaded" target="_blank" rel="noopener">98％的浏览器</a>，但不是IE8：</p>
+<pre><code>document.addEventListener(&quot;DOMContentLoaded&quot;, function(event) { 
+  //do work
+});
+</code></pre><p>jQuery的原生函数比window.onload复杂得多，如下所示。</p>
+<pre><code>function bindReady(){
+    if ( readyBound ) return;
+    readyBound = true;
+
+    // Mozilla, Opera and webkit nightlies currently support this event
+    if ( document.addEventListener ) {
+        // Use the handy event callback
+        document.addEventListener( &quot;DOMContentLoaded&quot;, function(){
+            document.removeEventListener( &quot;DOMContentLoaded&quot;, arguments.callee, false );
+            jQuery.ready();
+        }, false );
+
+    // If IE event model is used
+    } else if ( document.attachEvent ) {
+        // ensure firing before onload,
+        // maybe late but safe also for iframes
+        document.attachEvent(&quot;onreadystatechange&quot;, function(){
+            if ( document.readyState === &quot;complete&quot; ) {
+                document.detachEvent( &quot;onreadystatechange&quot;, arguments.callee );
+                jQuery.ready();
+            }
+        });
+
+        // If IE and not an iframe
+        // continually check to see if the document is ready
+        if ( document.documentElement.doScroll &amp;&amp; window == window.top ) (function(){
+            if ( jQuery.isReady ) return;
+
+            try {
+                // If IE is used, use the trick by Diego Perini
+                // http://javascript.nwbox.com/IEContentLoaded/
+                document.documentElement.doScroll(&quot;left&quot;);
+            } catch( error ) {
+                setTimeout( arguments.callee, 0 );
+                return;
+            }
+
+            // and execute any waiting functions
+            jQuery.ready();
+        })();
+    }
+
+    // A fallback to window.onload, that will always work
+    jQuery.event.add( window, &quot;load&quot;, jQuery.ready );
+}
+</code></pre><p>编辑：</p>
+<h2><span id="here-is-a-viable-replacement-for-jquery-ready">Here is a viable replacement for jQuery ready</span></h2><pre><code>function ready(callback){
+    // in case the document is already rendered
+    if (document.readyState!=&apos;loading&apos;) callback();
+    // modern browsers
+    else if (document.addEventListener) document.addEventListener(&apos;DOMContentLoaded&apos;, callback);
+    // IE &lt;= 8
+    else document.attachEvent(&apos;onreadystatechange&apos;, function(){
+        if (document.readyState==&apos;complete&apos;) callback();
+    });
+}
+
+ready(function(){
+    // do something
+});
+</code></pre><p>取自 <a href="https://plainjs.com/javascript/events/running-code-when-the-document-is-
+ready-15/" target="_blank" rel="noopener"> https://plainjs.com/javascript /活动/运行-代码时最文档是就绪-15 /</a></p>
+<hr>
+<p>由于接受的答案还远远没有完成，所以我根据jQuery 1.6.2源代码将jQuery.ready（）`这样的“ready”函数拼接在一起：</p>
+<pre><code>var ready = (function(){
+
+    var readyList,
+        DOMContentLoaded,
+        class2type = {};
+        class2type[&quot;[object Boolean]&quot;] = &quot;boolean&quot;;
+        class2type[&quot;[object Number]&quot;] = &quot;number&quot;;
+        class2type[&quot;[object String]&quot;] = &quot;string&quot;;
+        class2type[&quot;[object Function]&quot;] = &quot;function&quot;;
+        class2type[&quot;[object Array]&quot;] = &quot;array&quot;;
+        class2type[&quot;[object Date]&quot;] = &quot;date&quot;;
+        class2type[&quot;[object RegExp]&quot;] = &quot;regexp&quot;;
+        class2type[&quot;[object Object]&quot;] = &quot;object&quot;;
+
+    var ReadyObj = {
+        // Is the DOM ready to be used? Set to true once it occurs.
+        isReady: false,
+        // A counter to track how many items to wait for before
+        // the ready event fires. See #6781
+        readyWait: 1,
+        // Hold (or release) the ready event
+        holdReady: function( hold ) {
+            if ( hold ) {
+                ReadyObj.readyWait++;
+            } else {
+                ReadyObj.ready( true );
+            }
+        },
+        // Handle when the DOM is ready
+        ready: function( wait ) {
+            // Either a released hold or an DOMready/load event and not yet ready
+            if ( (wait === true &amp;&amp; !--ReadyObj.readyWait) || (wait !== true &amp;&amp; !ReadyObj.isReady) ) {
+                // Make sure body exists, at least, in case IE gets a little overzealous (ticket #5443).
+                if ( !document.body ) {
+                    return setTimeout( ReadyObj.ready, 1 );
+                }
+
+                // Remember that the DOM is ready
+                ReadyObj.isReady = true;
+                // If a normal DOM Ready event fired, decrement, and wait if need be
+                if ( wait !== true &amp;&amp; --ReadyObj.readyWait &gt; 0 ) {
+                    return;
+                }
+                // If there are functions bound, to execute
+                readyList.resolveWith( document, [ ReadyObj ] );
+
+                // Trigger any bound ready events
+                //if ( ReadyObj.fn.trigger ) {
+                //    ReadyObj( document ).trigger( &quot;ready&quot; ).unbind( &quot;ready&quot; );
+                //}
+            }
+        },
+        bindReady: function() {
+            if ( readyList ) {
+                return;
+            }
+            readyList = ReadyObj._Deferred();
+
+            // Catch cases where $(document).ready() is called after the
+            // browser event has already occurred.
+            if ( document.readyState === &quot;complete&quot; ) {
+                // Handle it asynchronously to allow scripts the opportunity to delay ready
+                return setTimeout( ReadyObj.ready, 1 );
+            }
+
+            // Mozilla, Opera and webkit nightlies currently support this event
+            if ( document.addEventListener ) {
+                // Use the handy event callback
+                document.addEventListener( &quot;DOMContentLoaded&quot;, DOMContentLoaded, false );
+                // A fallback to window.onload, that will always work
+                window.addEventListener( &quot;load&quot;, ReadyObj.ready, false );
+
+            // If IE event model is used
+            } else if ( document.attachEvent ) {
+                // ensure firing before onload,
+                // maybe late but safe also for iframes
+                document.attachEvent( &quot;onreadystatechange&quot;, DOMContentLoaded );
+
+                // A fallback to window.onload, that will always work
+                window.attachEvent( &quot;onload&quot;, ReadyObj.ready );
+
+                // If IE and not a frame
+                // continually check to see if the document is ready
+                var toplevel = false;
+
+                try {
+                    toplevel = window.frameElement == null;
+                } catch(e) {}
+
+                if ( document.documentElement.doScroll &amp;&amp; toplevel ) {
+                    doScrollCheck();
+                }
+            }
+        },
+        _Deferred: function() {
+            var // callbacks list
+                callbacks = [],
+                // stored [ context , args ]
+                fired,
+                // to avoid firing when already doing so
+                firing,
+                // flag to know if the deferred has been cancelled
+                cancelled,
+                // the deferred itself
+                deferred  = {
+
+                    // done( f1, f2, ...)
+                    done: function() {
+                        if ( !cancelled ) {
+                            var args = arguments,
+                                i,
+                                length,
+                                elem,
+                                type,
+                                _fired;
+                            if ( fired ) {
+                                _fired = fired;
+                                fired = 0;
+                            }
+                            for ( i = 0, length = args.length; i &lt; length; i++ ) {
+                                elem = args[ i ];
+                                type = ReadyObj.type( elem );
+                                if ( type === &quot;array&quot; ) {
+                                    deferred.done.apply( deferred, elem );
+                                } else if ( type === &quot;function&quot; ) {
+                                    callbacks.push( elem );
+                                }
+                            }
+                            if ( _fired ) {
+                                deferred.resolveWith( _fired[ 0 ], _fired[ 1 ] );
+                            }
+                        }
+                        return this;
+                    },
+
+                    // resolve with given context and args
+                    resolveWith: function( context, args ) {
+                        if ( !cancelled &amp;&amp; !fired &amp;&amp; !firing ) {
+                            // make sure args are available (#8421)
+                            args = args || [];
+                            firing = 1;
+                            try {
+                                while( callbacks[ 0 ] ) {
+                                    callbacks.shift().apply( context, args );//shifts a callback, and applies it to document
+                                }
+                            }
+                            finally {
+                                fired = [ context, args ];
+                                firing = 0;
+                            }
+                        }
+                        return this;
+                    },
+
+                    // resolve with this as context and given arguments
+                    resolve: function() {
+                        deferred.resolveWith( this, arguments );
+                        return this;
+                    },
+
+                    // Has this deferred been resolved?
+                    isResolved: function() {
+                        return !!( firing || fired );
+                    },
+
+                    // Cancel
+                    cancel: function() {
+                        cancelled = 1;
+                        callbacks = [];
+                        return this;
+                    }
+                };
+
+            return deferred;
+        },
+        type: function( obj ) {
+            return obj == null ?
+                String( obj ) :
+                class2type[ Object.prototype.toString.call(obj) ] || &quot;object&quot;;
+        }
+    }
+    // The DOM ready check for Internet Explorer
+    function doScrollCheck() {
+        if ( ReadyObj.isReady ) {
+            return;
+        }
+
+        try {
+            // If IE is used, use the trick by Diego Perini
+            // http://javascript.nwbox.com/IEContentLoaded/
+            document.documentElement.doScroll(&quot;left&quot;);
+        } catch(e) {
+            setTimeout( doScrollCheck, 1 );
+            return;
+        }
+
+        // and execute any waiting functions
+        ReadyObj.ready();
+    }
+    // Cleanup functions for the document ready method
+    if ( document.addEventListener ) {
+        DOMContentLoaded = function() {
+            document.removeEventListener( &quot;DOMContentLoaded&quot;, DOMContentLoaded, false );
+            ReadyObj.ready();
+        };
+
+    } else if ( document.attachEvent ) {
+        DOMContentLoaded = function() {
+            // Make sure body exists, at least, in case IE gets a little overzealous (ticket #5443).
+            if ( document.readyState === &quot;complete&quot; ) {
+                document.detachEvent( &quot;onreadystatechange&quot;, DOMContentLoaded );
+                ReadyObj.ready();
+            }
+        };
+    }
+    function ready( fn ) {
+        // Attach the listeners
+        ReadyObj.bindReady();
+
+        var type = ReadyObj.type( fn );
+
+        // Add the callback
+        readyList.done( fn );//readyList is result of _Deferred()
+    }
+    return ready;
+})();
+</code></pre><p>如何使用：</p>
+<pre><code>&lt;script&gt;
+    ready(function(){
+        alert(&apos;It works!&apos;);
+    });
+    ready(function(){
+        alert(&apos;Also works!&apos;);
+    });
+&lt;/script&gt;
+</code></pre><p>我不确定这个代码是如何运作的，但是在我的表面测试中效果很好。这花了一段时间，所以我希望你和其他人能从中受益。</p>
+<p>PS：我建议<a href="http://closure-compiler.appspot.com/home" target="_blank" rel="noopener">编译</a>它。</p>
+<p>或者您可以使用<a href="http://dustindiaz.com
+/smallest-domready-ever" target="_blank" rel="noopener"> http://dustindiaz.com/smallest-domready-ever </a> ：</p>
+<pre><code>function r(f){/in/.test(document.readyState)?setTimeout(r,9,f):f()}
+r(function(){/*code to run*/});
+</code></pre><p>如果你只需要支持新的浏览器，就可以使用本地函数（不像jQuery准备好，如果你在页面加载之后添加这个函数，就不会运行）。</p>
+<pre><code>document.addEventListener(&apos;DOMContentLoaded&apos;,function(){/*fun code to run*/})
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/document-ready-equivalent-without-jquery/" data-title="$（document）.ready没有jQuery | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/does-django-scale/" title="Django是否缩放？ [关闭]">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Django是否缩放？ [关闭]</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/differences-between-distribute-distutils-setuptools-and-distutils2/"  title="分发，distutils，setuptools和distutils2之间的区别？">
+ <strong>下一篇：</strong><br/> 
+ <span>分发，distutils，setuptools和distutils2之间的区别？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Here is a viable replacement for jQuery ready</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

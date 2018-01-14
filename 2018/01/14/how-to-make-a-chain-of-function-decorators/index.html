@@ -1,0 +1,1335 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何做一个功能装饰链？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何在Python中创建两个装饰器来执行以下操作？ @makebold @makeitalic def say():    return &amp;quot;Hello&amp;quot; …应该返回： &amp;quot;&amp;lt;b&amp;gt;&amp;lt;i&amp;gt;Hello&amp;lt;/i&amp;gt;&amp;lt;/b&amp;gt;&amp;quot; 我没有试图在真正的应用程序中使用HTML，只是试图理解装饰器和装饰器链接是如何工作的。">
+<meta name="keywords" content="python,decorator,python-decorators">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何做一个功能装饰链？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-to-make-a-chain-of-function-decorators/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何在Python中创建两个装饰器来执行以下操作？ @makebold @makeitalic def say():    return &amp;quot;Hello&amp;quot; …应该返回： &amp;quot;&amp;lt;b&amp;gt;&amp;lt;i&amp;gt;Hello&amp;lt;/i&amp;gt;&amp;lt;/b&amp;gt;&amp;quot; 我没有试图在真正的应用程序中使用HTML，只是试图理解装饰器和装饰器链接是如何工作的。">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何做一个功能装饰链？">
+<meta name="twitter:description" content="如何在Python中创建两个装饰器来执行以下操作？ @makebold @makeitalic def say():    return &amp;quot;Hello&amp;quot; …应该返回： &amp;quot;&amp;lt;b&amp;gt;&amp;lt;i&amp;gt;Hello&amp;lt;/i&amp;gt;&amp;lt;/b&amp;gt;&amp;quot; 我没有试图在真正的应用程序中使用HTML，只是试图理解装饰器和装饰器链接是如何工作的。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-make-a-chain-of-function-decorators/" title="如何做一个功能装饰链？" itemprop="url">如何做一个功能装饰链？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Decorator Basics</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Pythonas functions are objects</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Functions references</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Handcrafted decorators</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">Decorators demystified</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Now: to answer the question…</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Taking decorators to the next level</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Passing arguments to the decorated function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Decorating methods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text">Passing arguments to the decorator</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Letas practice: decorating a decorator</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Best practices: decorators</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">How can the decorators be useful?</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如何在Python中创建两个装饰器来执行以下操作？</p>
+<pre><code>@makebold
+@makeitalic
+def say():
+   return &quot;Hello&quot;
+</code></pre><p>…应该返回：</p>
+<pre><code>&quot;&lt;b&gt;&lt;i&gt;Hello&lt;/i&gt;&lt;/b&gt;&quot;
+</code></pre><p>我没有试图在真正的应用程序中使用<code>HTML</code>，只是试图理解装饰器和装饰器链接是如何工作的。</p>
+<a id="more"></a>
+<p>查看<a href="http://docs.python.org/reference/compound_stmts.html#function" target="_blank" rel="noopener">文档</a>，了解装饰器是如何工作的。这是你要求的：</p>
+<pre><code>def makebold(fn):
+    def wrapped():
+        return &quot;&lt;b&gt;&quot; + fn() + &quot;&lt;/b&gt;&quot;
+    return wrapped
+
+def makeitalic(fn):
+    def wrapped():
+        return &quot;&lt;i&gt;&quot; + fn() + &quot;&lt;/i&gt;&quot;
+    return wrapped
+
+@makebold
+@makeitalic
+def hello():
+    return &quot;hello world&quot;
+
+print hello() ## returns &quot;&lt;b&gt;&lt;i&gt;hello world&lt;/i&gt;&lt;/b&gt;&quot;
+</code></pre><p>如果您没有详细解释，请参阅<a href="https://stackoverflow.com/questions/739654
+/understanding-python-decorators#answer-739665" target="_blank" rel="noopener"> Paolo Bergantino的答案</a></p>
+<h1><span id="decorator-basics">Decorator Basics</span></h1><h2><span id="pythonas-functions-are-objects">Pythonas functions are objects</span></h2><p>为了理解装饰器，你必须首先理解函数是Python中的对象。这有重要的后果。让我们来看一个简单的例子：</p>
+<pre><code>def shout(word=&quot;yes&quot;):
+    return word.capitalize()+&quot;!&quot;
+
+print(shout())
+# outputs : &apos;Yes!&apos;
+
+# As an object, you can assign the function to a variable like any other object 
+scream = shout
+
+# Notice we don&apos;t use parentheses: we are not calling the function,
+# we are putting the function &quot;shout&quot; into the variable &quot;scream&quot;.
+# It means you can then call &quot;shout&quot; from &quot;scream&quot;:
+
+print(scream())
+# outputs : &apos;Yes!&apos;
+
+# More than that, it means you can remove the old name &apos;shout&apos;,
+#Â and the function will still be accessible from &apos;scream&apos;
+
+del shout
+try:
+    print(shout())
+except NameError, e:
+    print(e)
+    #outputs: &quot;name &apos;shout&apos; is not defined&quot;
+
+print(scream())
+# outputs: &apos;Yes!&apos;
+</code></pre><p>记住这一点。我们很快会回头看看。</p>
+<p>Python函数的另一个有趣的属性是它们可以在另一个函数内部定义！</p>
+<pre><code>def talk():
+
+    # You can define a function on the fly in &quot;talk&quot; ...
+    def whisper(word=&quot;yes&quot;):
+        return word.lower()+&quot;...&quot;
+
+    # ... and use it right away!
+    print(whisper())
+
+# You call &quot;talk&quot;, that defines &quot;whisper&quot; EVERY TIME you call it, then
+# &quot;whisper&quot; is called in &quot;talk&quot;. 
+talk()
+# outputs: 
+# &quot;yes...&quot;
+
+# But &quot;whisper&quot; DOES NOT EXIST outside &quot;talk&quot;:
+
+try:
+    print(whisper())
+except NameError, e:
+    print(e)
+    #outputs : &quot;name &apos;whisper&apos; is not defined&quot;*
+    #Python&apos;s functions are objects
+</code></pre><h2><span id="functions-references">Functions references</span></h2><p>好的，还在吗？现在有趣的部分…</p>
+<p>你已经看到函数是对象。所以，功能：</p>
+<ul>
+<li>可以分配给一个变量</li>
+<li>可以在另一个功能<br>中定义</li>
+</ul>
+<p>这意味着 <strong>函数可以<code>返回</code>另一个函数</strong> 。</p>
+<pre><code>def getTalk(kind=&quot;shout&quot;):
+
+    # We define functions on the fly
+    def shout(word=&quot;yes&quot;):
+        return word.capitalize()+&quot;!&quot;
+
+    def whisper(word=&quot;yes&quot;) :
+        return word.lower()+&quot;...&quot;;
+
+    # Then we return one of them
+    if kind == &quot;shout&quot;:
+        # We don&apos;t use &quot;()&quot;, we are not calling the function,
+        # we are returning the function object
+        return shout  
+    else:
+        return whisper
+
+# How do you use this strange beast?
+
+# Get the function and assign it to a variable
+talk = getTalk()      
+
+# You can see that &quot;talk&quot; is here a function object:
+print(talk)
+#outputs : &lt;function shout at 0xb7ea817c&gt;
+
+# The object is the one returned by the function:
+print(talk())
+#outputs : Yes!
+
+# And you can even use it directly if you feel wild:
+print(getTalk(&quot;whisper&quot;)())
+#outputs : yes...
+</code></pre><p>还有更多！</p>
+<p>如果您可以<code>返回</code>函数，您可以将其作为参数传递：</p>
+<pre><code>def doSomethingBefore(func): 
+    print(&quot;I do something before then I call the function you gave me&quot;)
+    print(func())
+
+doSomethingBefore(scream)
+#outputs: 
+#I do something before then I call the function you gave me
+#Yes!
+</code></pre><p>那么，你只需要了解装饰器所需的一切。你看，装饰器是“包装器”，这意味着 <strong>它们让你在装饰功能之前和之后执行代码</strong> 而不用修改函数本身。</p>
+<h2><span id="handcrafted-decorators">Handcrafted decorators</span></h2><p>你如何手动完成：</p>
+<pre><code># A decorator is a function that expects ANOTHER function as parameter
+def my_shiny_new_decorator(a_function_to_decorate):
+
+    # Inside, the decorator defines a function on the fly: the wrapper.
+    # This function is going to be wrapped around the original function
+    # so it can execute code before and after it.
+    def the_wrapper_around_the_original_function():
+
+        # Put here the code you want to be executed BEFORE the original function is called
+        print(&quot;Before the function runs&quot;)
+
+        # Call the function here (using parentheses)
+        a_function_to_decorate()
+
+        # Put here the code you want to be executed AFTER the original function is called
+        print(&quot;After the function runs&quot;)
+
+    # At this point, &quot;a_function_to_decorate&quot; HAS NEVER BEEN EXECUTED.
+    # We return the wrapper function we have just created.
+    # The wrapper contains the function and the code to execute before and after. Itas ready to use!
+    return the_wrapper_around_the_original_function
+
+# Now imagine you create a function you don&apos;t want to ever touch again.
+def a_stand_alone_function():
+    print(&quot;I am a stand alone function, don&apos;t you dare modify me&quot;)
+
+a_stand_alone_function() 
+#outputs: I am a stand alone function, don&apos;t you dare modify me
+
+# Well, you can decorate it to extend its behavior.
+# Just pass it to the decorator, it will wrap it dynamically in 
+# any code you want and return you a new function ready to be used:
+
+a_stand_alone_function_decorated = my_shiny_new_decorator(a_stand_alone_function)
+a_stand_alone_function_decorated()
+#outputs:
+#Before the function runs
+#I am a stand alone function, don&apos;t you dare modify me
+#After the function runs
+</code></pre><p>现在，您可能希望每次调用<code>a_stand_alone_function</code>时，调用<code>a_stand_alone_function_decorated</code>。这很简单，只需用<code>my_shiny_new_decorator</code>返回的函数覆盖<code>a_stand_alone_function</code>：</p>
+<pre><code>a_stand_alone_function = my_shiny_new_decorator(a_stand_alone_function)
+a_stand_alone_function()
+#outputs:
+#Before the function runs
+#I am a stand alone function, don&apos;t you dare modify me
+#After the function runs
+
+# Thatas EXACTLY what decorators do!
+</code></pre><h2><span id="decorators-demystified">Decorators demystified</span></h2><p>上一个使用装饰器语法的例子：</p>
+<pre><code>@my_shiny_new_decorator
+def another_stand_alone_function():
+    print(&quot;Leave me alone&quot;)
+
+another_stand_alone_function()  
+#outputs:  
+#Before the function runs
+#Leave me alone
+#After the function runs
+</code></pre><p>是的，就是这么简单。 <code>@decorator</code>只是一个捷径：</p>
+<pre><code>another_stand_alone_function = my_shiny_new_decorator(another_stand_alone_function)
+</code></pre><p>装饰器只是<a href="http://en.wikipedia.org/wiki/Decorator_pattern" target="_blank" rel="noopener">装饰器设计模式</a>的pythonic变体。有几种经典的设计模式嵌入在Python中以简化开发（如迭代器）。</p>
+<p>当然，你可以累积装饰器：</p>
+<pre><code>def bread(func):
+    def wrapper():
+        print(&quot;&lt;/&apos;&apos;&apos;&apos;&apos;&apos;\&gt;&quot;)
+        func()
+        print(&quot;&lt;\______/&gt;&quot;)
+    return wrapper
+
+def ingredients(func):
+    def wrapper():
+        print(&quot;#tomatoes#&quot;)
+        func()
+        print(&quot;~salad~&quot;)
+    return wrapper
+
+def sandwich(food=&quot;--ham--&quot;):
+    print(food)
+
+sandwich()
+#outputs: --ham--
+sandwich = bread(ingredients(sandwich))
+sandwich()
+#outputs:
+#&lt;/&apos;&apos;&apos;&apos;&apos;&apos;\&gt;
+# #tomatoes#
+# --ham--
+# ~salad~
+#&lt;\______/&gt;
+</code></pre><p>使用Python装饰器语法：</p>
+<pre><code>@bread
+@ingredients
+def sandwich(food=&quot;--ham--&quot;):
+    print(food)
+
+sandwich()
+#outputs:
+#&lt;/&apos;&apos;&apos;&apos;&apos;&apos;\&gt;
+# #tomatoes#
+# --ham--
+# ~salad~
+#&lt;\______/&gt;
+</code></pre><p>您设置装饰器的顺序重要：</p>
+<pre><code>@ingredients
+@bread
+def strange_sandwich(food=&quot;--ham--&quot;):
+    print(food)
+
+strange_sandwich()
+#outputs:
+##tomatoes#
+#&lt;/&apos;&apos;&apos;&apos;&apos;&apos;\&gt;
+# --ham--
+#&lt;\______/&gt;
+# ~salad~
+</code></pre><hr>
+<h1><span id="now-to-answer-the-question">Now: to answer the question…</span></h1><p>作为结论，你可以很容易地看到如何回答这个问题：</p>
+<pre><code># The decorator to make it bold
+def makebold(fn):
+    # The new function the decorator returns
+    def wrapper():
+        # Insertion of some code before and after
+        return &quot;&lt;b&gt;&quot; + fn() + &quot;&lt;/b&gt;&quot;
+    return wrapper
+
+# The decorator to make it italic
+def makeitalic(fn):
+    # The new function the decorator returns
+    def wrapper():
+        # Insertion of some code before and after
+        return &quot;&lt;i&gt;&quot; + fn() + &quot;&lt;/i&gt;&quot;
+    return wrapper
+
+@makebold
+@makeitalic
+def say():
+    return &quot;hello&quot;
+
+print(say())
+#outputs: &lt;b&gt;&lt;i&gt;hello&lt;/i&gt;&lt;/b&gt;
+
+# This is the exact equivalent to 
+def say():
+    return &quot;hello&quot;
+say = makebold(makeitalic(say))
+
+print(say())
+#outputs: &lt;b&gt;&lt;i&gt;hello&lt;/i&gt;&lt;/b&gt;
+</code></pre><p>现在你可以快乐起来，或者多一点点燃你的大脑，看看修饰器的高级用法。</p>
+<hr>
+<h1><span id="taking-decorators-to-the-next-level">Taking decorators to the next level</span></h1><h2><span id="passing-arguments-to-the-decorated-function">Passing arguments to the decorated function</span></h2><pre><code># Itas not black magic, you just have to let the wrapper 
+# pass the argument:
+
+def a_decorator_passing_arguments(function_to_decorate):
+    def a_wrapper_accepting_arguments(arg1, arg2):
+        print(&quot;I got args! Look: {0}, {1}&quot;.format(arg1, arg2))
+        function_to_decorate(arg1, arg2)
+    return a_wrapper_accepting_arguments
+
+# Since when you are calling the function returned by the decorator, you are
+# calling the wrapper, passing arguments to the wrapper will let it pass them to 
+# the decorated function
+
+@a_decorator_passing_arguments
+def print_full_name(first_name, last_name):
+    print(&quot;My name is {0} {1}&quot;.format(first_name, last_name))
+
+print_full_name(&quot;Peter&quot;, &quot;Venkman&quot;)
+# outputs:
+#I got args! Look: Peter Venkman
+#My name is Peter Venkman
+</code></pre><h2><span id="decorating-methods">Decorating methods</span></h2><p>关于Python的一个很好的事情是方法和函数真的是一样的。唯一的区别是方法期望他们的第一个参数是对当前对象的引用（<code>self</code>）。</p>
+<p>这意味着你可以用同样的方法为方法构建一个装饰器。请记住<code>self</code>：</p>
+<pre><code>def method_friendly_decorator(method_to_decorate):
+    def wrapper(self, lie):
+        lie = lie - 3 # very friendly, decrease age even more :-)
+        return method_to_decorate(self, lie)
+    return wrapper
+
+
+class Lucy(object):
+
+    def __init__(self):
+        self.age = 32
+
+    @method_friendly_decorator
+    def sayYourAge(self, lie):
+        print(&quot;I am {0}, what did you think?&quot;.format(self.age + lie))
+
+l = Lucy()
+l.sayYourAge(-3)
+#outputs: I am 26, what did you think?
+</code></pre><p>如果你正在制作通用的装饰器 - 你可以将其应用于任何函数或方法，不管它的参数是什么 - 那么就使用<code>* args，** kwargs</code>：</p>
+<pre><code>def a_decorator_passing_arbitrary_arguments(function_to_decorate):
+    # The wrapper accepts any arguments
+    def a_wrapper_accepting_arbitrary_arguments(*args, **kwargs):
+        print(&quot;Do I have args?:&quot;)
+        print(args)
+        print(kwargs)
+        # Then you unpack the arguments, here *args, **kwargs
+        # If you are not familiar with unpacking, check:
+        # http://www.saltycrane.com/blog/2008/01/how-to-use-args-and-kwargs-in-python/
+        function_to_decorate(*args, **kwargs)
+    return a_wrapper_accepting_arbitrary_arguments
+
+@a_decorator_passing_arbitrary_arguments
+def function_with_no_argument():
+    print(&quot;Python is cool, no argument here.&quot;)
+
+function_with_no_argument()
+#outputs
+#Do I have args?:
+#()
+#{}
+#Python is cool, no argument here.
+
+@a_decorator_passing_arbitrary_arguments
+def function_with_arguments(a, b, c):
+    print(a, b, c)
+
+function_with_arguments(1,2,3)
+#outputs
+#Do I have args?:
+#(1, 2, 3)
+#{}
+#1 2 3 
+
+@a_decorator_passing_arbitrary_arguments
+def function_with_named_arguments(a, b, c, platypus=&quot;Why not ?&quot;):
+    print(&quot;Do {0}, {1} and {2} like platypus? {3}&quot;.format(a, b, c, platypus))
+
+function_with_named_arguments(&quot;Bill&quot;, &quot;Linus&quot;, &quot;Steve&quot;, platypus=&quot;Indeed!&quot;)
+#outputs
+#Do I have args ? :
+#(&apos;Bill&apos;, &apos;Linus&apos;, &apos;Steve&apos;)
+#{&apos;platypus&apos;: &apos;Indeed!&apos;}
+#Do Bill, Linus and Steve like platypus? Indeed!
+
+class Mary(object):
+
+    def __init__(self):
+        self.age = 31
+
+    @a_decorator_passing_arbitrary_arguments
+    def sayYourAge(self, lie=-3): # You can now add a default value
+        print(&quot;I am {0}, what did you think?&quot;.format(self.age + lie))
+
+m = Mary()
+m.sayYourAge()
+#outputs
+# Do I have args?:
+#(&lt;__main__.Mary object at 0xb7d303ac&gt;,)
+#{}
+#I am 28, what did you think?
+</code></pre><h2><span id="passing-arguments-to-the-decorator">Passing arguments to the decorator</span></h2><p>很好，现在你会怎么说将修饰符传递给装饰器本身呢？</p>
+<p>这可能会有些扭曲，因为装饰器必须接受一个函数作为参数。因此，你不能将修饰函数的参数直接传递给装饰器。</p>
+<p>在急于解决问题之前，让我们先写一点提示：</p>
+<pre><code># Decorators are ORDINARY functions
+def my_decorator(func):
+    print(&quot;I am an ordinary function&quot;)
+    def wrapper():
+        print(&quot;I am function returned by the decorator&quot;)
+        func()
+    return wrapper
+
+# Therefore, you can call it without any &quot;@&quot;
+
+def lazy_function():
+    print(&quot;zzzzzzzz&quot;)
+
+decorated_function = my_decorator(lazy_function)
+#outputs: I am an ordinary function
+
+# It outputs &quot;I am an ordinary function&quot;, because thatas just what you do:
+# calling a function. Nothing magic.
+
+@my_decorator
+def lazy_function():
+    print(&quot;zzzzzzzz&quot;)
+
+#outputs: I am an ordinary function
+</code></pre><p>这完全一样。 “<code>my_decorator</code>”被调用。因此，当您<code>@my_decorator</code>时，您告诉Python调用由变量“<code>my_decorator</code>”标记的函数。</p>
+<p>这很重要！你给的标签可以直接指向装饰器 - <strong>或不是</strong> 。</p>
+<p>让我们变得邪恶。 â~º</p>
+<pre><code>def decorator_maker():
+
+    print(&quot;I make decorators! I am executed only once: &quot;
+          &quot;when you make me create a decorator.&quot;)
+
+    def my_decorator(func):
+
+        print(&quot;I am a decorator! I am executed only when you decorate a function.&quot;)
+
+        def wrapped():
+            print(&quot;I am the wrapper around the decorated function. &quot;
+                  &quot;I am called when you call the decorated function. &quot;
+                  &quot;As the wrapper, I return the RESULT of the decorated function.&quot;)
+            return func()
+
+        print(&quot;As the decorator, I return the wrapped function.&quot;)
+
+        return wrapped
+
+    print(&quot;As a decorator maker, I return a decorator&quot;)
+    return my_decorator
+
+# Letas create a decorator. Itas just a new function after all.
+new_decorator = decorator_maker()       
+#outputs:
+#I make decorators! I am executed only once: when you make me create a decorator.
+#As a decorator maker, I return a decorator
+
+# Then we decorate the function
+
+def decorated_function():
+    print(&quot;I am the decorated function.&quot;)
+
+decorated_function = new_decorator(decorated_function)
+#outputs:
+#I am a decorator! I am executed only when you decorate a function.
+#As the decorator, I return the wrapped function
+
+# Letas call the function:
+decorated_function()
+#outputs:
+#I am the wrapper around the decorated function. I am called when you call the decorated function.
+#As the wrapper, I return the RESULT of the decorated function.
+#I am the decorated function.
+</code></pre><p>这里不足为奇。</p>
+<p>让我们做完全相同的事情，但跳过所有讨厌的中间变量：</p>
+<pre><code>def decorated_function():
+    print(&quot;I am the decorated function.&quot;)
+decorated_function = decorator_maker()(decorated_function)
+#outputs:
+#I make decorators! I am executed only once: when you make me create a decorator.
+#As a decorator maker, I return a decorator
+#I am a decorator! I am executed only when you decorate a function.
+#As the decorator, I return the wrapped function.
+
+# Finally:
+decorated_function()    
+#outputs:
+#I am the wrapper around the decorated function. I am called when you call the decorated function.
+#As the wrapper, I return the RESULT of the decorated function.
+#I am the decorated function.
+</code></pre><p>让它缩短_：</p>
+<pre><code>@decorator_maker()
+def decorated_function():
+    print(&quot;I am the decorated function.&quot;)
+#outputs:
+#I make decorators! I am executed only once: when you make me create a decorator.
+#As a decorator maker, I return a decorator
+#I am a decorator! I am executed only when you decorate a function.
+#As the decorator, I return the wrapped function.
+
+#Eventually: 
+decorated_function()    
+#outputs:
+#I am the wrapper around the decorated function. I am called when you call the decorated function.
+#As the wrapper, I return the RESULT of the decorated function.
+#I am the decorated function.
+</code></pre><p>嘿，你看到了吗？我们使用了“<code>@</code>”语法的函数调用！ ： - ）</p>
+<p>所以，回到带有参数的装饰器。如果我们可以使用函数来动态生成装饰器，我们可以将参数传递给该函数，对吧？</p>
+<pre><code>def decorator_maker_with_arguments(decorator_arg1, decorator_arg2):
+
+    print(&quot;I make decorators! And I accept arguments: {0}, {1}&quot;.format(decorator_arg1, decorator_arg2))
+
+    def my_decorator(func):
+        # The ability to pass arguments here is a gift from closures.
+        # If you are not comfortable with closures, you can assume itas ok,
+        # or read: https://stackoverflow.com/questions/13857/can-you-explain-closures-as-they-relate-to-python
+        print(&quot;I am the decorator. Somehow you passed me arguments: {0}, {1}&quot;.format(decorator_arg1, decorator_arg2))
+
+        # Don&apos;t confuse decorator arguments and function arguments!
+        def wrapped(function_arg1, function_arg2) :
+            print(&quot;I am the wrapper around the decorated function.\n&quot;
+                  &quot;I can access all the variables\n&quot;
+                  &quot;\t- from the decorator: {0} {1}\n&quot;
+                  &quot;\t- from the function call: {2} {3}\n&quot;
+                  &quot;Then I can pass them to the decorated function&quot;
+                  .format(decorator_arg1, decorator_arg2,
+                          function_arg1, function_arg2))
+            return func(function_arg1, function_arg2)
+
+        return wrapped
+
+    return my_decorator
+
+@decorator_maker_with_arguments(&quot;Leonard&quot;, &quot;Sheldon&quot;)
+def decorated_function_with_arguments(function_arg1, function_arg2):
+    print(&quot;I am the decorated function and only knows about my arguments: {0}&quot;
+           &quot; {1}&quot;.format(function_arg1, function_arg2))
+
+decorated_function_with_arguments(&quot;Rajesh&quot;, &quot;Howard&quot;)
+#outputs:
+#I make decorators! And I accept arguments: Leonard Sheldon
+#I am the decorator. Somehow you passed me arguments: Leonard Sheldon
+#I am the wrapper around the decorated function. 
+#I can access all the variables 
+#   - from the decorator: Leonard Sheldon 
+#   - from the function call: Rajesh Howard 
+#Then I can pass them to the decorated function
+#I am the decorated function and only knows about my arguments: Rajesh Howard
+</code></pre><p>这是一个带参数的装饰器。参数可以设置为变量：</p>
+<pre><code>c1 = &quot;Penny&quot;
+c2 = &quot;Leslie&quot;
+
+@decorator_maker_with_arguments(&quot;Leonard&quot;, c1)
+def decorated_function_with_arguments(function_arg1, function_arg2):
+    print(&quot;I am the decorated function and only knows about my arguments:&quot;
+           &quot; {0} {1}&quot;.format(function_arg1, function_arg2))
+
+decorated_function_with_arguments(c2, &quot;Howard&quot;)
+#outputs:
+#I make decorators! And I accept arguments: Leonard Penny
+#I am the decorator. Somehow you passed me arguments: Leonard Penny
+#I am the wrapper around the decorated function. 
+#I can access all the variables 
+#   - from the decorator: Leonard Penny 
+#   - from the function call: Leslie Howard 
+#Then I can pass them to the decorated function
+#I am the decorated function and only knows about my arguments: Leslie Howard
+</code></pre><p>正如你所看到的，你可以像使用这个技巧的任何函数一样将参数传递给装饰器。如果你愿意，你甚至可以使用<code>* args，** kwargs</code>。但是请记住，装饰器只能被称为 <strong>** 。就在Python导入脚本的时候。之后不能动态设置参数。当你做“导入x”时， </strong>该功能已经被装饰**<br>，所以你不能 改变任何事情。</p>
+<hr>
+<h1><span id="letas-practice-decorating-a-decorator">Letas practice: decorating a decorator</span></h1><p>好吧，作为一个奖励，我会给你一个片段，让任何装饰者接受一般的任何论点。毕竟，为了接受参数，我们使用另一个函数创建了我们的装饰器。</p>
+<p>我们包装了装饰者。</p>
+<p>还有什么我们最近看到的包装功能？</p>
+<p>哦，是的，装饰者！</p>
+<p>让我们有一些乐趣，为装饰者写一个装饰器：</p>
+<pre><code>def decorator_with_args(decorator_to_enhance):
+    &quot;&quot;&quot; 
+    This function is supposed to be used as a decorator.
+    It must decorate an other function, that is intended to be used as a decorator.
+    Take a cup of coffee.
+    It will allow any decorator to accept an arbitrary number of arguments,
+    saving you the headache to remember how to do that every time.
+    &quot;&quot;&quot;
+
+    # We use the same trick we did to pass arguments
+    def decorator_maker(*args, **kwargs):
+
+        # We create on the fly a decorator that accepts only a function
+        # but keeps the passed arguments from the maker.
+        def decorator_wrapper(func):
+
+            # We return the result of the original decorator, which, after all, 
+            # IS JUST AN ORDINARY FUNCTION (which returns a function).
+            # Only pitfall: the decorator must have this specific signature or it won&apos;t work:
+            return decorator_to_enhance(func, *args, **kwargs)
+
+        return decorator_wrapper
+
+    return decorator_maker
+</code></pre><p>它可以使用如下：</p>
+<pre><code># You create the function you will use as a decorator. And stick a decorator on it :-)
+# Don&apos;t forget, the signature is &quot;decorator(func, *args, **kwargs)&quot;
+@decorator_with_args 
+def decorated_decorator(func, *args, **kwargs): 
+    def wrapper(function_arg1, function_arg2):
+        print(&quot;Decorated with {0} {1}&quot;.format(args, kwargs))
+        return func(function_arg1, function_arg2)
+    return wrapper
+
+# Then you decorate the functions you wish with your brand new decorated decorator.
+
+@decorated_decorator(42, 404, 1024)
+def decorated_function(function_arg1, function_arg2):
+    print(&quot;Hello {0} {1}&quot;.format(function_arg1, function_arg2))
+
+decorated_function(&quot;Universe and&quot;, &quot;everything&quot;)
+#outputs:
+#Decorated with (42, 404, 1024) {}
+#Hello Universe and everything
+
+# Whoooot!
+</code></pre><p>我知道，最后一次有这种感觉的时候，听到一个人说：“在理解递归之前，你必须先了解递归”。但现在，你不觉得掌握这个好吗？</p>
+<hr>
+<h1><span id="best-practices-decorators">Best practices: decorators</span></h1><ul>
+<li>装饰器是在Python 2.4中引入的，因此请确保您的代码在＆gt; = 2.4上运行。 </li>
+<li><p>装饰器减慢函数调用。记住这一点。<br><strong>你不能去装饰一个函数。</strong> （有 _<em> 是创建可以被删除，但没有人使用它们的修饰器）。所以一旦函数被修饰，它的所有代码都是用 </em>装饰的_ 。</p>
+</li>
+<li><p>装饰器包装函数，这可能使他们很难调试。 （从Python＆gt; = 2.5变得更好;见下文。）</p>
+</li>
+</ul>
+<p><code>functools</code>模块是在Python 2.5中引入的。它包含函数<code>functools.wraps（）</code>，它将装饰函数的名称，模块和docstring复制到它的包装器中。</p>
+<p>（有趣的是：<code>functools.wraps（）</code>是一个装饰器！）</p>
+<pre><code># For debugging, the stacktrace prints you the function __name__
+def foo():
+    print(&quot;foo&quot;)
+
+print(foo.__name__)
+#outputs: foo
+
+# With a decorator, it gets messy    
+def bar(func):
+    def wrapper():
+        print(&quot;bar&quot;)
+        return func()
+    return wrapper
+
+@bar
+def foo():
+    print(&quot;foo&quot;)
+
+print(foo.__name__)
+#outputs: wrapper
+
+# &quot;functools&quot; can help for that
+
+import functools
+
+def bar(func):
+    # We say that &quot;wrapper&quot;, is wrapping &quot;func&quot;
+    # and the magic begins
+    @functools.wraps(func)
+    def wrapper():
+        print(&quot;bar&quot;)
+        return func()
+    return wrapper
+
+@bar
+def foo():
+    print(&quot;foo&quot;)
+
+print(foo.__name__)
+#outputs: foo
+</code></pre><hr>
+<h1><span id="how-can-the-decorators-be-useful">How can the decorators be useful?</span></h1><p>现在是个大问题：**我可以使用装饰器来做什么？</p>
+<p>看起来很酷很强大，但是一个实际的例子会很棒。那么有1000个可能性。经典用途是从外部库扩展一个函数行为（你不能修改它）或调试（你不想修改它，因为它是暂时的）。</p>
+<p>你可以用DRY的方式来扩展几个函数，就像这样：</p>
+<pre><code>def benchmark(func):
+    &quot;&quot;&quot;
+    A decorator that prints the time a function takes
+    to execute.
+    &quot;&quot;&quot;
+    import time
+    def wrapper(*args, **kwargs):
+        t = time.clock()
+        res = func(*args, **kwargs)
+        print(&quot;{0} {1}&quot;.format(func.__name__, time.clock()-t))
+        return res
+    return wrapper
+
+
+def logging(func):
+    &quot;&quot;&quot;
+    A decorator that logs the activity of the script.
+    (it actually just prints it, but it could be logging!)
+    &quot;&quot;&quot;
+    def wrapper(*args, **kwargs):
+        res = func(*args, **kwargs)
+        print(&quot;{0} {1} {2}&quot;.format(func.__name__, args, kwargs))
+        return res
+    return wrapper
+
+
+def counter(func):
+    &quot;&quot;&quot;
+    A decorator that counts and prints the number of times a function has been executed
+    &quot;&quot;&quot;
+    def wrapper(*args, **kwargs):
+        wrapper.count = wrapper.count + 1
+        res = func(*args, **kwargs)
+        print(&quot;{0} has been used: {1}x&quot;.format(func.__name__, wrapper.count))
+        return res
+    wrapper.count = 0
+    return wrapper
+
+@counter
+@benchmark
+@logging
+def reverse_string(string):
+    return str(reversed(string))
+
+print(reverse_string(&quot;Able was I ere I saw Elba&quot;))
+print(reverse_string(&quot;A man, a plan, a canoe, pasta, heros, rajahs, a coloratura, maps, snipe, percale, macaroni, a gag, a banana bag, a tan, a tag, a banana bag again (or a camel), a crepe, pins, Spam, a rut, a Rolo, cash, a jar, sore hats, a peon, a canal: Panama!&quot;))
+
+#outputs:
+#reverse_string (&apos;Able was I ere I saw Elba&apos;,) {}
+#wrapper 0.0
+#wrapper has been used: 1x 
+#ablE was I ere I saw elbA
+#reverse_string (&apos;A man, a plan, a canoe, pasta, heros, rajahs, a coloratura, maps, snipe, percale, macaroni, a gag, a banana bag, a tan, a tag, a banana bag again (or a camel), a crepe, pins, Spam, a rut, a Rolo, cash, a jar, sore hats, a peon, a canal: Panama!&apos;,) {}
+#wrapper 0.0
+#wrapper has been used: 2x
+#!amanaP :lanac a ,noep a ,stah eros ,raj a ,hsac ,oloR a ,tur a ,mapS ,snip ,eperc a ,)lemac a ro( niaga gab ananab a ,gat a ,nat a ,gab ananab a ,gag a ,inoracam ,elacrep ,epins ,spam ,arutaroloc a ,shajar ,soreh ,atsap ,eonac a ,nalp a ,nam A
+</code></pre><p>当然，装饰者的好处是你可以立即使用它们而不用重写。干，我说：</p>
+<pre><code>@counter
+@benchmark
+@logging
+def get_random_futurama_quote():
+    from urllib import urlopen
+    result = urlopen(&quot;http://subfusion.net/cgi-bin/quote.pl?quote=futurama&quot;).read()
+    try:
+        value = result.split(&quot;&lt;br&gt;&lt;b&gt;&lt;hr&gt;&lt;br&gt;&quot;)[1].split(&quot;&lt;br&gt;&lt;br&gt;&lt;hr&gt;&quot;)[0]
+        return value.strip()
+    except:
+        return &quot;No, I&apos;m ... doesn&apos;t!&quot;
+
+
+print(get_random_futurama_quote())
+print(get_random_futurama_quote())
+
+#outputs:
+#get_random_futurama_quote () {}
+#wrapper 0.02
+#wrapper has been used: 1x
+#The laws of science be a harsh mistress.
+#get_random_futurama_quote () {}
+#wrapper 0.01
+#wrapper has been used: 2x
+#Curse you, merciful Poseidon!
+</code></pre><p>Python本身提供了几个装饰器：<code>property</code>，<code>staticmethod</code>等等。</p>
+<p>Django使用装饰器来管理缓存和查看权限。</p>
+<ul>
+<li>扭曲了内联异步函数调用。</li>
+</ul>
+<p>这真的是一个很大的游乐场。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/decorator/">decorator</a><a href="/tags/python-decorators/">python-decorators</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-to-make-a-chain-of-function-decorators/" data-title="如何做一个功能装饰链？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-to-loop-through-plain-javascript-object-with-objects-as-members/" title="如何通过普通的JavaScript对象与对象作为成员循环？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何通过普通的JavaScript对象与对象作为成员循环？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-to-make-ipython-notebook-matplotlib-plot-inline/"  title="如何使IPython笔记本matplotlib图内联">
+ <strong>下一篇：</strong><br/> 
+ <span>如何使IPython笔记本matplotlib图内联
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Decorator Basics</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Pythonas functions are objects</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Functions references</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Handcrafted decorators</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">Decorators demystified</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Now: to answer the question…</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Taking decorators to the next level</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Passing arguments to the decorated function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Decorating methods</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text">Passing arguments to the decorator</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Letas practice: decorating a decorator</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Best practices: decorators</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">How can the decorators be useful?</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

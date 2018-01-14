@@ -1,0 +1,665 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>在JavaScript中按值复制数组 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="将JavaScript中的数组复制到另一个数组时： var arr1 = [&amp;apos;a&amp;apos;,&amp;apos;b&amp;apos;,&amp;apos;c&amp;apos;]; var arr2 = arr1; arr2.push(&amp;apos;d&amp;apos;);  //Now, arr1 = [&amp;apos;a&amp;apos;,&amp;apos;b&amp;apos;,&amp;apos;c&amp;apos;,&amp;apos;d&amp;apos;] 我意">
+<meta name="keywords" content="javascript,arrays">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在JavaScript中按值复制数组">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/copying-array-by-value-in-javascript/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="将JavaScript中的数组复制到另一个数组时： var arr1 = [&amp;apos;a&amp;apos;,&amp;apos;b&amp;apos;,&amp;apos;c&amp;apos;]; var arr2 = arr1; arr2.push(&amp;apos;d&amp;apos;);  //Now, arr1 = [&amp;apos;a&amp;apos;,&amp;apos;b&amp;apos;,&amp;apos;c&amp;apos;,&amp;apos;d&amp;apos;] 我意">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/copying-array-by-value-in-javascript/“https://i.stack.imgur.com/OnwBf.png">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在JavaScript中按值复制数组">
+<meta name="twitter:description" content="将JavaScript中的数组复制到另一个数组时： var arr1 = [&amp;apos;a&amp;apos;,&amp;apos;b&amp;apos;,&amp;apos;c&amp;apos;]; var arr2 = arr1; arr2.push(&amp;apos;d&amp;apos;);  //Now, arr1 = [&amp;apos;a&amp;apos;,&amp;apos;b&amp;apos;,&amp;apos;c&amp;apos;,&amp;apos;d&amp;apos;] 我意">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/copying-array-by-value-in-javascript/“https://i.stack.imgur.com/OnwBf.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/copying-array-by-value-in-javascript/" title="在JavaScript中按值复制数组" itemprop="url">在JavaScript中按值复制数组</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Three types of elements</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Deep copy techniques depend on the three array types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">So to answer the question…</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>将JavaScript中的数组复制到另一个数组时：</p>
+<pre><code>var arr1 = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;];
+var arr2 = arr1;
+arr2.push(&apos;d&apos;);  //Now, arr1 = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;]
+</code></pre><p>我意识到<code>arr2</code>引用与<code>arr1</code>相同的数组，而不是一个新的独立数组。我怎样才能复制数组获得两个独立的数组？</p>
+<a id="more"></a>
+<p>使用这个：</p>
+<pre><code>var newArray = oldArray.slice();
+</code></pre><p>基本上，[ slice（） a&gt;操作克隆数组，并将引用返回给新数组。另请注意：</p>
+<p>对于引用，字符串和数字（​​而不是实际对象），切片将对象引用复制到新数组中。原始数组和新数组都指向同一个对象。如果引用的对象发生更改，则新的和原始数组都可以看到这些更改。</p>
+<p>字符串和数字等原语是不可变的，所以对字符串或数字的修改是不可能的。</p>
+<p>在Javascript中，深度复制技术依赖于数组中的元素 我们从这里开始。</p>
+<h2><span id="three-types-of-elements">Three types of elements</span></h2><p>元素可以是：文字值，文字结构或原型。</p>
+<pre><code>// Literal values (type1)
+var booleanLiteral = true;
+var numberLiteral = 1;
+var stringLiteral = &apos;true&apos;;
+
+// Literal structures (type2)
+var arrayLiteral = [];
+var objectLiteral = {};
+
+// Prototypes (type3)
+var booleanPrototype = new Bool(true);
+var numberPrototype = new Number(1);
+var stringPrototype = new String(&apos;true&apos;);
+var arrayPrototype = new Array();
+var objectPrototype = new Object(); # or &quot;new function () {}&quot;
+</code></pre><p>从这些元素中，我们可以创建三种类型的数组。</p>
+<pre><code>// 1) Array of literal-values (boolean, number, string) 
+var type1 = [true, 1, &quot;true&quot;];
+
+// 2) Array of literal-structures (array, object)
+var type2 = [[], {}];
+
+// 3) Array of prototype-objects (function)
+var type3 = [function () {}, function () {}];
+</code></pre><h2><span id="deep-copy-techniques-depend-on-the-three-array-types">Deep copy techniques depend on the three array types</span></h2><p>根据数组中元素的类型，我们可以使用各种技术来深度复制。</p>
+<p><a href="https://i.stack.imgur.com/OnwBf.png" target="_blank" rel="noopener"> <img src="“https://i.stack.imgur.com/OnwBf.png" alt=""></a></p>
+<ul>
+<li><p><strong>字面值数组（类型1）</strong><br>可以使用<code>myArray.splice（0）</code>，<code>myArray.slice（）</code>和<code>myArray.concat（）</code>文字值（布尔值，数字和字符串）;切片比Concat有更高的性能（<a href="http://jsperf.com/duplicate-array-
+slice-vs-concat/3" target="_blank" rel="noopener"> http://jsperf.com<br>/duplicate-array -slice-VS-的concat / 3 </a>）。</p>
+</li>
+<li><p><strong>文字值（类型1）和文字结构（类型2）的数组</strong><br>可以使用<code>JSON.parse（JSON.stringify（myArray））</code>技术深度复制文字值（布尔值，数字，字符串）和文字结构（数组，对象），但不能使用原型对象。<br>/ p&gt;</p>
+</li>
+<li><p><strong>所有数组（type1，type2，type3）</strong><br>可以使用jQuery <code>$。extend（myArray）</code>技术深度复制所有数组类型。像<a href="http://underscorejs.org" target="_blank" rel="noopener"> Underscore</a>和[ Lo-dash &lt; / a&gt;为<a href="http://jquery.com" target="_blank" rel="noopener"> jQuery </a> <code>$。extend（）</code>提供类似的深层复制功能，性能。更令人惊讶的是，<code>$。extend（）</code>比JSON.parse（JSON.stringify（myArray））`技术具有更高的性能<a href="“http：//"> http://jsperf.com<br>/js-deep-copy/15 </a>。<br>对于那些回避第三方库（比如jQuery）的开发者，可以使用下面的自定义函数;它比$ .extend具有更高的性能，并且可以深度复制所有数组。</p>
+</li>
+</ul>
+<pre><code>      //警告：在Node.js中，这个解决方案是有问题的。
+//深度复制数组中的任何`null`元素将会被执行
+//被转换为空对象文字`{}`。
+函数副本（o）{
+  var output，v，key;
+  output = Array.isArray（o）？ []：{};
+  for（key in o）{
+    v = o [key];
+    输出[键] =（typeof v ===“object”）？ copy（v）：v;
+  }
+  返回输出;
+}
+</code></pre><h2><span id="so-to-answer-the-question">So to answer the question…</span></h2><p><strong>问题</strong></p>
+<pre><code>var arr1 = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;];
+var arr2 = arr1;
+</code></pre><blockquote>
+<p>I realized that arr2 refers to the same array as arr1, rather than a new,<br>independent array. How can I copy the array to get two independent arrays?</p>
+</blockquote>
+<p><strong>答案</strong></p>
+<p>因为<code>arr1</code>是一个字面值（布尔值，数字或字符串）的数组，所以您可以使用上面讨论的任何深度复制技术，其中<code>slice</code>具有最高的性能</p>
+<pre><code>// Highest performance for deep copying literal values
+arr2 = arr1.slice();
+
+// Any of these techniques will deep copy literal values as well,
+//   but with lower performance.
+arr2 = arr1.splice(0);
+arr2 = arr1.concat();
+arr2 = JSON.parse(JSON.stringify(arr1));
+arr2 = $.extend(true, [], arr1); // jQuery.js needed
+arr2 = _.extend(arr1); // Underscore.js needed
+arr2 = _.cloneDeep(arr1); // Lo-dash.js needed
+arr2 = copy(arr1); // Custom-function needed - as provided above
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/arrays/">arrays</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/copying-array-by-value-in-javascript/" data-title="在JavaScript中按值复制数组 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/delete-an-item-from-a-dictionary/" title="从字典中删除一个项目">
+  <strong>上一篇：</strong><br/>
+  <span>
+  从字典中删除一个项目</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/converting-string-into-datetime/"  title="将字符串转换为日期时间">
+ <strong>下一篇：</strong><br/> 
+ <span>将字符串转换为日期时间
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Three types of elements</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Deep copy techniques depend on the three array types</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">So to answer the question…</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

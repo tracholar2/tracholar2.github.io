@@ -1,0 +1,670 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>JavaScript中的“新”关键字是什么？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="JavaScript中的new关键字在第一次遇到时可能会相当混乱，因为人们倾向于认为JavaScript不是面向对象的编程语言。  这是什么？ 它解决了什么问题？ 什么时候适合，什么时候不适合">
+<meta name="keywords" content="javascript,new-operator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript中的“新”关键字是什么？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/what-is-the-new-keyword-in-javascript/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="JavaScript中的new关键字在第一次遇到时可能会相当混乱，因为人们倾向于认为JavaScript不是面向对象的编程语言。  这是什么？ 它解决了什么问题？ 什么时候适合，什么时候不适合">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript中的“新”关键字是什么？">
+<meta name="twitter:description" content="JavaScript中的new关键字在第一次遇到时可能会相当混乱，因为人们倾向于认为JavaScript不是面向对象的编程语言。  这是什么？ 它解决了什么问题？ 什么时候适合，什么时候不适合">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-the-new-keyword-in-javascript/" title="JavaScript中的“新”关键字是什么？" itemprop="url">JavaScript中的“新”关键字是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>JavaScript中的<code>new</code>关键字在第一次遇到时可能会相当混乱，因为人们倾向于认为JavaScript不是面向对象的编程语言。</p>
+<ul>
+<li>这是什么？</li>
+<li>它解决了什么问题？</li>
+<li>什么时候适合，什么时候不适合</li>
+</ul>
+<p><a id="more"></a> 它有5件事：</p>
+<ul>
+<li>它创建一个新的对象。这个对象的类型只是 <em>object</em> 。</li>
+<li>它将这个新对象的内部的，不可访问的 _[[prototype]]（即 <strong><strong> proto </strong></strong> ）属性设置为构造函数的外部可访问 _prototype &lt; / em&gt;对象（每个函数对象自动拥有一个 <em>prototype</em> 属性）</li>
+<li>它使<code>这个</code>变量指向新创建的对象。</li>
+<li>它执行构造函数，每当<code>this</code>被提及时使用新创建的对象。</li>
+<li>它返回新创建的对象，除非构造函数返回一个非<code>null</code>对象引用。在这种情况下，将返回该对象引用。</li>
+</ul>
+<p>注意： <em>构造函数</em> 指向<code>new</code>关键字之后的函数，如</p>
+<pre><code>new ConstructorFunction(arg1, arg2)
+</code></pre><p>一旦完成，如果新对象的未定义属性被请求，那么脚本将检查该属性的对象的 <em>[[prototype]]</em><br>对象。这就是你如何获得类似JavaScript中传统的类继承的东西。</p>
+<p>关于这一点最困难的部分是点号2.每个对象（包括函数）都有这个内部属性，称为 <em>[[prototype]]</em> 。它只能在创建对象的时候使用 <em>new</em> ，<br><em>Object.create</em> ，或者基于文字（函数默认为Function<br>.prototype，数字到Number.prototype等）。只能使用Object.getPrototypeOf（someObject）<br>___来读取。没有其他方法可以设置或读取这个值。</p>
+<p>除了隐藏的 <em>[[prototype]]</em> 属性外，函数也有一个名为 <em>prototype</em><br>的属性，正是这个属性可以访问和修改，为您制作的对象提供继承的属性和方法。</p>
+<hr>
+<p>这是一个例子：</p>
+<pre><code>ObjMaker = function() {this.a = &apos;first&apos;;};
+// ObjMaker is just a function, there&apos;s nothing special about it that makes 
+// it a constructor.
+
+ObjMaker.prototype.b = &apos;second&apos;;
+// like all functions, ObjMaker has an accessible prototype property that 
+// we can alter. I just added a property called &apos;b&apos; to it. Like 
+// all objects, ObjMaker also has an inaccessible [[prototype]] property
+// that we can&apos;t do anything with
+
+obj1 = new ObjMaker();
+// 3 things just happened.
+// A new, empty object was created called obj1.  At first obj1 was the same
+// as {}. The [[prototype]] property of obj1 was then set to the current
+// object value of the ObjMaker.prototype (if ObjMaker.prototype is later
+// assigned a new object value, obj1&apos;s [[prototype]] will not change, but you
+// can alter the properties of ObjMaker.prototype to add to both the
+// prototype and [[prototype]]). The ObjMaker function was executed, with
+// obj1 in place of this... so obj1.a was set to &apos;first&apos;.
+
+obj1.a;
+// returns &apos;first&apos;
+obj1.b;
+// obj1 doesn&apos;t have a property called &apos;b&apos;, so JavaScript checks 
+// its [[prototype]]. Its [[prototype]] is the same as ObjMaker.prototype
+// ObjMaker.prototype has a property called &apos;b&apos; with value &apos;second&apos;
+// returns &apos;second&apos;
+</code></pre><p>这就像类继承，因为现在，使用<code>new ObjMaker（）</code>创建的任何对象也将继承“b”属性。</p>
+<p>如果你想要一个子类，那么你可以这样做：</p>
+<pre><code>SubObjMaker = function () {};
+SubObjMaker.prototype = new ObjMaker(); // note: this pattern is deprecated!
+// Because we used &apos;new&apos;, the [[prototype]] property of SubObjMaker.prototype
+// is now set to the object value of ObjMaker.prototype.
+// The modern way to do this is with Object.create(), which was added in ECMAScript 5:
+// SubObjMaker.prototype = Object.create(ObjMaker.prototype);
+
+SubObjMaker.prototype.c = &apos;third&apos;;  
+obj2 = new SubObjMaker();
+// [[prototype]] property of obj2 is now set to SubObjMaker.prototype
+// Remember that the [[prototype]] property of SubObjMaker.prototype
+// is ObjMaker.prototype. So now obj2 has a prototype chain!
+// obj2 ---&gt; SubObjMaker.prototype ---&gt; ObjMaker.prototype
+
+obj2.c;
+// returns &apos;third&apos;, from SubObjMaker.prototype
+
+obj2.b;
+// returns &apos;second&apos;, from ObjMaker.prototype
+
+obj2.a;
+// returns &apos;first&apos;, from SubObjMaker.prototype, because SubObjMaker.prototype 
+// was created with the ObjMaker function, which assigned a for us
+</code></pre><hr>
+<p>我在这个问题上读了大量的垃圾，最终找到[这个页面&lt; / a&gt;，这里用很好的图解释了这一点。</p>
+<p>假设你有这个功能：</p>
+<pre><code>var Foo = function(){
+  this.A = 1;
+  this.B = 2;
+};
+</code></pre><p>如果您将其作为独立函数调用，如下所示：</p>
+<pre><code>Foo();
+</code></pre><p>执行这个函数会为<code>window</code>对象（<code>A</code>和<code>B</code>）添加两个属性。它将它添加到<code>window</code>中，因为<code>window</code>是当你像这样执行时调用函数的对象，并且<code>this</code>在函数中是调用函数的对象。至少在Javascript中。</p>
+<p>现在，用<code>new</code>来调用它：</p>
+<pre><code>var bar = new Foo();
+</code></pre><p>将<code>new</code>添加到函数调用时发生的情况是创建了一个新对象（仅仅是<code>var bar = new
+Object（）</code>），<code>这个函数内的</code>指向刚刚创建的新的<code>Object</code>，而不是指向调用该函数的对象。所以<code>bar</code>现在是一个具有属性<code>A</code>和<code>B</code>的对象。任何函数都可以是一个构造函数，它并不总是有意义的。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/new-operator/">new-operator</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/what-is-the-new-keyword-in-javascript/" data-title="JavaScript中的“新”关键字是什么？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/what-is-the-meaning-of-a-single-and-a-double-underscore-before-an-object-name/" title="对象名称之前的单下划线和双下划线的含义是什么？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  对象名称之前的单下划线和双下划线的含义是什么？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/what-is-the-purpose-of-self/"  title="自我的目的是什么？">
+ <strong>下一篇：</strong><br/> 
+ <span>自我的目的是什么？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

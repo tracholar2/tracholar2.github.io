@@ -1,0 +1,702 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>在Python中手动提高（抛出）异常 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何在Python中引发异常，以便通过除块之外的其他方法捕获异常？">
+<meta name="keywords" content="python,exception,exception-handling">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Python中手动提高（抛出）异常">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/manually-raising-throwing-an-exception-in-python/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何在Python中引发异常，以便通过除块之外的其他方法捕获异常？">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Python中手动提高（抛出）异常">
+<meta name="twitter:description" content="如何在Python中引发异常，以便通过除块之外的其他方法捕获异常？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/manually-raising-throwing-an-exception-in-python/" title="在Python中手动提高（抛出）异常" itemprop="url">在Python中手动提高（抛出）异常</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">How do I manually throw/raise an exception in Python?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Don’t raise generic exceptions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">Problem 1: Hiding bugs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">Problem 2: Won’t catch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Best Practices: raise statement</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Best Practices: except clause</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Don’t modify your errors… but if you insist.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.2.</span> <span class="toc-text">Python 3, Exception chaining</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.3.</span> <span class="toc-text">Deprecated Methods:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Example Usage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Create your own error types when apropos</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如何在Python中引发异常，以便通过<code>除</code>块之外的其他方法捕获异常？</p>
+<a id="more"></a>
+<blockquote>
+<h2><span id="how-do-i-manually-throwraise-an-exception-in-python">How do I manually throw/raise an exception in Python?</span></h2></blockquote>
+<p>[使用语义上符合您的问题的最具体的Exception构造函数](<a href="https://docs.python.org/3/library/exceptions.html" target="_blank" rel="noopener">https://docs.python.org/3/library/exceptions.html</a></p>
+<p>#exception-hierarchy)。</p>
+<p>具体在您的信息中，例如：</p>
+<pre><code>raise ValueError(&apos;A very specific bad thing happened.&apos;)
+</code></pre><h2><span id="dont-raise-generic-exceptions">Don’t raise generic exceptions</span></h2><p>避免提出一个通用的异常。为了抓住它，你必须捕获所有其他更具体的例外。</p>
+<h3><span id="problem-1-hiding-bugs">Problem 1: Hiding bugs</span></h3><pre><code>raise Exception(&apos;I know Python!&apos;) # Don&apos;t! If you catch, likely to hide bugs.
+</code></pre><p>例如：</p>
+<pre><code>def demo_bad_catch():
+    try:
+        raise ValueError(&apos;Represents a hidden bug, do not catch this&apos;)
+        raise Exception(&apos;This is the exception you expect to handle&apos;)
+    except Exception as error:
+        print(&apos;Caught this error: &apos; + repr(error))
+
+&gt;&gt;&gt; demo_bad_catch()
+Caught this error: ValueError(&apos;Represents a hidden bug, do not catch this&apos;,)
+</code></pre><h3><span id="problem-2-wont-catch">Problem 2: Won’t catch</span></h3><p>更具体的渔获量将不会捕捉到一般的例外：</p>
+<pre><code>def demo_no_catch():
+    try:
+        raise Exception(&apos;general exceptions not caught by specific handling&apos;)
+    except ValueError as e:
+        print(&apos;we will not catch exception: Exception&apos;)
+
+
+&gt;&gt;&gt; demo_no_catch()
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;&lt;stdin&gt;&quot;, line 3, in demo_no_catch
+Exception: general exceptions not caught by specific handling
+</code></pre><h2><span id="best-practices-raise-statement">Best Practices: <code>raise</code> statement</span></h2><p>[相反，使用语义上适合您的问题的最具体的Exception构造函数&lt; / A&gt;</p>
+<pre><code>raise ValueError(&apos;A very specific bad thing happened&apos;)
+</code></pre><p>它还可以轻松地将任意数量的参数传递给构造函数：</p>
+<pre><code>raise ValueError(&apos;A very specific bad thing happened&apos;, &apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;) 
+</code></pre><p>这些参数是由Exception对象的<code>args</code>属性访问的。例如：</p>
+<pre><code>try:
+    some_code_that_may_raise_our_value_error()
+except ValueError as err:
+    print(err.args)
+</code></pre><p>打印</p>
+<pre><code>(&apos;message&apos;, &apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;)    
+</code></pre><p>在Python 2.5中，一个实际的<code>message</code>属性被添加到了BaseException中，以鼓励用户子类化异常并停止使用<code>args</code>，但<a href="“http："><code>message</code>的引入和args的原始弃用已被撤销</a></p>
+<h2><span id="best-practices-except-clause">Best Practices: <code>except</code> clause</span></h2><p>在一个except子句中，例如，你可能想要记录一个特定类型的错误发生，然后重新提升。在保留堆栈跟踪的同时，最好的办法就是使用裸语句。例如：</p>
+<pre><code>logger = logging.getLogger(__name__)
+
+try:
+    do_something_in_app_that_breaks_easily()
+except AppError as error:
+    logger.error(error)
+    raise                 # just this!
+    # raise AppError      # Don&apos;t do this, you&apos;ll lose the stack trace!
+</code></pre><h3><span id="dont-modify-your-errors-but-if-you-insist">Don’t modify your errors… but if you insist.</span></h3><p>您可以使用<code>sys.exc_info（）</code>保留堆栈跟踪（和错误值），但 <strong>这样更容易出错</strong> ， <strong>在Python之间有兼容性问题2和3</strong><br>，更喜欢用<code>raise</code>来重新加注。</p>
+<p>解释 - <code>sys.exc_info（）</code>返回类型，值和回溯。</p>
+<pre><code>type, value, traceback = sys.exc_info()
+</code></pre><p>这是Python 2中的语法 - 注意这与Python 3不兼容：</p>
+<pre><code>raise AppError, error, sys.exc_info()[2] # avoid this.
+# Equivalently, as error *is* the second object:
+raise sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]
+</code></pre><p>如果你愿意，你可以修改你的新筹码发生了什么 - 例如为实例设置新的参数：</p>
+<pre><code>def error():
+    raise ValueError(&apos;oops!&apos;)
+
+def catch_error_modify_message():
+    try:
+        error()
+    except ValueError:
+        error_type, error_instance, traceback = sys.exc_info()
+        error_instance.args = (error_instance.args[0] + &apos; &lt;modification&gt;&apos;,)
+        raise error_type, error_instance, traceback
+</code></pre><p>我们在修改参数时保留了整个回溯。请注意，这是 <strong>不是最佳实践</strong> ，它是Python 3中的 <strong>无效语法</strong> （使兼容性难以解决）。</p>
+<pre><code>&gt;&gt;&gt; catch_error_modify_message()
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;&lt;stdin&gt;&quot;, line 3, in catch_error_modify_message
+  File &quot;&lt;stdin&gt;&quot;, line 2, in error
+ValueError: oops! &lt;modification&gt;
+</code></pre><p>在<a href="https://docs.python.org/3/reference/simple_stmts.html#the-raise-
+statement" target="_blank" rel="noopener"> Python 3 </a>中：</p>
+<pre><code>raise error.with_traceback(sys.exc_info()[2])
+</code></pre><p>再一次：避免手动操作回溯。这是[效率较低](<a href="https://docs.python.org/2/reference/simple_stmts.html" target="_blank" rel="noopener">https://docs.python.org/2/reference/simple_stmts.html</a></p>
+<p>#the-raise-statement)，更容易出错。如果你正在使用线程和<code>sys.exc_info</code>，你甚至可能会得到错误的回溯（特别是如果你使用控制流的异常处理 - 我个人倾向于避免这种情况） p&gt;</p>
+<h3><span id="python-3-exception-chaining">Python 3, Exception chaining</span></h3><p>在Python 3中，可以链接异常，从而保留回溯：</p>
+<pre><code>raise RuntimeError(&apos;specific message&apos;) from error
+</code></pre><p>请注意：</p>
+<ul>
+<li>__ 允许更改引发的错误类型，</li>
+<li>__ 与Python 2不兼容</li>
+</ul>
+<h3><span id="deprecated-methods">Deprecated Methods:</span></h3><p>这些可以很容易地隐藏甚至进入生产代码。你想抛出一个异常，而这样做会引发一个异常， <strong>但不是那个打算的！</strong></p>
+<p><a href="http://www.python.org/dev/peps/pep-3109/" target="_blank" rel="noopener">在Python 2中有效，但不在Python 3中</a>是以下内容：</p>
+<pre><code>raise ValueError, &apos;message&apos; # Don&apos;t do this, it&apos;s deprecated!
+</code></pre><p>只有<a href="https://docs.python.org/2/whatsnew/2.5.html#pep-352
+-exceptions-as-new-style-classes" target="_blank" rel="noopener">有效旧版本的Python </a>（2.4及更低版本），你仍然可以看到人们提高字符串：</p>
+<pre><code>raise &apos;message&apos; # really really wrong. don&apos;t do this.
+</code></pre><p>在所有现代版本中，这实际上会引发一个TypeError，因为你没有引发一个BaseException类型。如果您没有检查正确的例外情况，而且没有意识到问题的审核人员，则可能投入生产。</p>
+<h2><span id="example-usage">Example Usage</span></h2><p>如果错误地使用了API，我会引发Exceptions来警告消费者：</p>
+<pre><code>def api_func(foo):
+    &apos;&apos;&apos;foo should be either &apos;baz&apos; or &apos;bar&apos;. returns something very useful.&apos;&apos;&apos;
+    if foo not in _ALLOWED_ARGS:
+        raise ValueError(&apos;{foo} wrong, use &quot;baz&quot; or &quot;bar&quot;&apos;.format(foo=repr(foo)))
+</code></pre><h2><span id="create-your-own-error-types-when-apropos">Create your own error types when apropos</span></h2><blockquote>
+<p><strong>“I want to make an error on purpose, so that it would go into the<br>except”</strong></p>
+</blockquote>
+<p>你可以创建你自己的错误类型，如果你想指出你的应用程序有特定的错误，只需要在异常层次结构中指定适当的点：</p>
+<pre><code>class MyAppLookupError(LookupError):
+    &apos;&apos;&apos;raise this when there&apos;s a lookup error for my app&apos;&apos;&apos;
+</code></pre><p>和用法：</p>
+<pre><code>if important_key not in resource_dict and not ok_to_be_missing:
+    raise MyAppLookupError(&apos;resource is missing, and that is not ok.&apos;)
+</code></pre><blockquote>
+<p><strong>DON’T DO THIS</strong>. Raising a bare <code>Exception</code> is absolutely <strong>not</strong> the<br>right thing to do; see <a href="https://stackoverflow.com/a/24065533" target="_blank" rel="noopener">Aaron Hall’s excellent<br>answer</a> instead.</p>
+</blockquote>
+<p>不能得到比这更pythonic：</p>
+<pre><code>raise Exception(&quot;I know python!&quot;)
+</code></pre><p>请参阅<a href="http://docs.python.org/reference/simple_stmts.html#the-
+raise-statement" target="_blank" rel="noopener"> python的raise语句文档</a>我喜欢更多信息。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/exception/">exception</a><a href="/tags/exception-handling/">exception-handling</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/manually-raising-throwing-an-exception-in-python/" data-title="在Python中手动提高（抛出）异常 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/making-a-flat-list-out-of-list-of-lists-in-python/" title="从Python列表中列出一个扁平列表">
+  <strong>上一篇：</strong><br/>
+  <span>
+  从Python列表中列出一个扁平列表</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/map-two-lists-into-a-dictionary-in-python/"  title="将两个列表映射到Python中的字典中">
+ <strong>下一篇：</strong><br/> 
+ <span>将两个列表映射到Python中的字典中
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">How do I manually throw/raise an exception in Python?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Don’t raise generic exceptions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">Problem 1: Hiding bugs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">Problem 2: Won’t catch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Best Practices: raise statement</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Best Practices: except clause</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Don’t modify your errors… but if you insist.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.2.</span> <span class="toc-text">Python 3, Exception chaining</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.3.</span> <span class="toc-text">Deprecated Methods:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Example Usage</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Create your own error types when apropos</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

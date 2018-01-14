@@ -1,0 +1,665 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>从Python运行shell命令并捕获输出 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我想编写一个函数来执行一个shell命令并返回它的输出 作为一个字符串 ，不管它是一个错误还是成功的消息。我只想得到和命令行一样的结果。 什么样的代码可以做这样的事情？ 例如： def run_command(cmd):     # ??????  print run_command(&amp;apos;mysqladmin create test -uroot -pmysqladmin12&amp;apos;)">
+<meta name="keywords" content="python,shell,subprocess">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从Python运行shell命令并捕获输出">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/running-shell-command-from-python-and-capturing-the-output/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我想编写一个函数来执行一个shell命令并返回它的输出 作为一个字符串 ，不管它是一个错误还是成功的消息。我只想得到和命令行一样的结果。 什么样的代码可以做这样的事情？ 例如： def run_command(cmd):     # ??????  print run_command(&amp;apos;mysqladmin create test -uroot -pmysqladmin12&amp;apos;)">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从Python运行shell命令并捕获输出">
+<meta name="twitter:description" content="我想编写一个函数来执行一个shell命令并返回它的输出 作为一个字符串 ，不管它是一个错误还是成功的消息。我只想得到和命令行一样的结果。 什么样的代码可以做这样的事情？ 例如： def run_command(cmd):     # ??????  print run_command(&amp;apos;mysqladmin create test -uroot -pmysqladmin12&amp;apos;)">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/running-shell-command-from-python-and-capturing-the-output/" title="从Python运行shell命令并捕获输出" itemprop="url">从Python运行shell命令并捕获输出</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Modern versions of Python (3.5 or higher): run</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Older versions of Python (2.7-3.4): check_output</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Complex applications &amp; legacy versions of Python (2.6 and below): Popen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Notes</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我想编写一个函数来执行一个shell命令并返回它的输出 <strong>作为一个字符串</strong> ，不管它是一个错误还是成功的消息。我只想得到和命令行一样的结果。</p>
+<p>什么样的代码可以做这样的事情？</p>
+<p>例如：</p>
+<pre><code>def run_command(cmd):
+    # ??????
+
+print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
+# Should output something like:
+# mysqladmin: CREATE DATABASE failed; error: &apos;Can&apos;t create database &apos;test&apos;; database exists&apos;
+</code></pre><a id="more"></a>
+<p>这个问题的答案取决于你使用的Python版本。最简单的方法是使用<a href="https://docs.python.org/3/library/subprocess.html#subprocess.check_output" target="_blank" rel="noopener"> <code>subprocess.check_output</code></a>功能：</p>
+<pre><code>&gt;&gt;&gt; subprocess.check_output([&apos;ls&apos;, &apos;-l&apos;])
+b&apos;total 0\n-rw-r--r--  1 memyself  staff  0 Mar 14 11:04 files\n&apos;
+</code></pre><p>check_output <code>运行一个只有参数作为输入的程序。 1 它返回的结果与打印到</code> stdout <code>完全一样。如果您需要将输入写入</code> stdin<br><code>，请跳到</code> run <code>或部分。如果您想执行复杂的shell命令，请参阅本答案末尾</code> shell = True `的注释。</p>
+<p><code>check_output</code>功能几乎适用于广泛使用的所有版本的Python（2.7 +）。 2 但是对于更新的版本，它不再是推荐的方法</p>
+<h3><span id="modern-versions-of-python-35-or-higher-run">Modern versions of Python (3.5 or higher): <code>run</code></span></h3><p>如果您使用 <strong>Python 3.5</strong> 或更高版本，并且 <strong>不需要向后兼容性</strong> ，<a href="“https://docs.python.org/"> new <code>run</code> function</a>。它为<code>subprocess</code>模块提供了一个非常通用的高级API。要捕获程序的输出，请将<code>subprocess.PIPE</code>标志传递给<code>stdout</code>关键字参数。然后访问返回的<a href="https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess" target="_blank" rel="noopener"> &lt;代码&gt;的<code>stdout</code>属性&gt;<br>CompletedProcess `</a>对象：</p>
+<pre><code>&gt;&gt;&gt; import subprocess
+&gt;&gt;&gt; result = subprocess.run([&apos;ls&apos;, &apos;-l&apos;], stdout=subprocess.PIPE)
+&gt;&gt;&gt; result.stdout
+b&apos;total 0\n-rw-r--r--  1 memyself  staff  0 Mar 14 11:04 files\n&apos;
+</code></pre><p>返回值是一个<code>bytes</code>对象，所以如果你想要一个合适的字符串，你需要<code>decode</code>它。假设被调用的进程返回一个UTF-8编码的字符串：</p>
+<pre><code>&gt;&gt;&gt; result.stdout.decode(&apos;utf-8&apos;)
+&apos;total 0\n-rw-r--r--  1 memyself  staff  0 Mar 14 11:04 files\n&apos;
+</code></pre><p>这可以全部压缩成一行：</p>
+<pre><code>&gt;&gt;&gt; subprocess.run([&apos;ls&apos;, &apos;-l&apos;], stdout=subprocess.PIPE).stdout.decode(&apos;utf-8&apos;)
+&apos;total 0\n-rw-r--r--  1 memyself  staff  0 Mar 14 11:04 files\n&apos;
+</code></pre><p>如果要将输入传递给进程的<code>stdin</code>，请将<code>bytes</code>对象传递给<code>input</code>关键字参数：</p>
+<pre><code>&gt;&gt;&gt; cmd = [&apos;awk&apos;, &apos;length($0) &gt; 5&apos;]
+&gt;&gt;&gt; input = &apos;foo\nfoofoo\n&apos;.encode(&apos;utf-8&apos;)
+&gt;&gt;&gt; result = subprocess.run(cmd, stdout=subprocess.PIPE, input=input)
+&gt;&gt;&gt; result.stdout.decode(&apos;utf-8&apos;)
+&apos;foofoo\n&apos;
+</code></pre><p>通过传递<code>stderr = subprocess.PIPE</code>（capture到<code>result.stderr</code>）或<code>stderr =
+subprocess.STDOUT</code>到<code>result.stdout</code>以及常规输出）。如果不担心安全问题，则还可以通过传递<code>shell = True</code>来运行更复杂的shell命令，如下面的注释中所述。</p>
+<p>与旧的做事方式相比，这增加了一点复杂性。但是我认为这是值得的：现在你几乎可以做任何事情，你需要做的就是<code>run</code>函数。</p>
+<h3><span id="older-versions-of-python-27-34-check_output">Older versions of Python (2.7-3.4): <code>check_output</code></span></h3><p>如果您使用的是旧版本的Python，或者需要适度的向后兼容性，则可以使用上面简要描述的<code>check_output</code>函数。从Python<br>2.7开始，它就已经可用了。</p>
+<pre><code>subprocess.check_output(*popenargs, **kwargs)  
+</code></pre><p>它需要与<code>Popen</code>（见下文）相同的参数，并返回一个包含程序输出的字符串。这个答案的开头有一个更详细的使用例子。</p>
+<p><code>你可以传递</code> stderr = subprocess.STDOUT <code>来确保返回的输出中包含错误信息 - 但是不要将</code> stderr =<br>subprocess.PIPE <code>传递给&lt;代码&gt; check_output
+。它可能导致[死锁](http://docs.python.org/library/subprocess.html#subprocess.check_output)。如果不担心安全问题，则还可以通过传递</code>shell = True `来运行更复杂的shell命令，如下面的注释中所述。</p>
+<p>如果您需要从<code>stderr</code>进行管道输入或将输入传递给进程，则<code>check_output</code>将不能执行任务。在这种情况下，请参阅下面的<code>Popen</code>示例。</p>
+<h3><span id="complex-applications-amp-legacy-versions-of-python-26-and-below-popen">Complex applications &amp; legacy versions of Python (2.6 and below): <code>Popen</code></span></h3><p>如果您需要深度向后兼容性，或者您需要比<code>check_output</code>提供的更复杂的功能，则必须直接使用<code>Popen</code>对象，这些对象封装了低子进程的API级别。</p>
+<p>Popen <code>构造函数接受 **没有参数的单个命令** ，或 **列表** ，其中包含命令作为其第一项，各自作为列表中的单独项目。 [</code>shlex.split <code>](https://docs.python.org/3/library/shlex.html)可以帮助将字符串解析为适当的格式名单。 Popen</code>对象还接受一个[不同参数的主机&lt; /进程IO管理和低级配置。</p>
+<p>要发送输入和捕获输出，<code>沟通</code>几乎总是首选的方法。如：</p>
+<pre><code>output = subprocess.Popen([&quot;mycmd&quot;, &quot;myarg&quot;], 
+                          stdout=subprocess.PIPE).communicate()[0]
+</code></pre><p>或者</p>
+<pre><code>&gt;&gt;&gt; import subprocess
+&gt;&gt;&gt; p = subprocess.Popen([&apos;ls&apos;, &apos;-a&apos;], stdout=subprocess.PIPE, 
+...                                    stderr=subprocess.PIPE)
+&gt;&gt;&gt; out, err = p.communicate()
+&gt;&gt;&gt; print out
+.
+..
+foo
+</code></pre><p>如果您设置了<code>stdin = PIPE</code>，那么<code>communicate</code>也允许您通过<code>stdin</code>将数据传递给进程：</p>
+<pre><code>&gt;&gt;&gt; cmd = [&apos;awk&apos;, &apos;length($0) &gt; 5&apos;]
+&gt;&gt;&gt; p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+...                           stderr=subprocess.PIPE,
+...                           stdin=subprocess.PIPE)
+&gt;&gt;&gt; out, err = p.communicate(&apos;foo\nfoofoo\n&apos;)
+&gt;&gt;&gt; print out
+foofoo
+</code></pre><p>请注意<a href="https://stackoverflow.com/a/21867841/577088" target="_blank" rel="noopener"> Aaron<br>Hall的答案</a>，这表明在某些系统上，您可能需要设置<code>stdout</code>代码&gt;，<code>stderr</code>和<code>stdin</code>全部转换成<code>PIPE</code>（或<code>DEVNULL</code>代码&gt;来工作。</p>
+<p>在极少数情况下，您可能需要复杂的实时输出捕获。 <a href="https://stackoverflow.com/a/4760274/577088" target="_blank" rel="noopener"> Vartec</a>的答案提出了一个前进的方向，但<code>通信</code>以外的方法很容易发生死锁不要小心使用。</p>
+<p>与所有上述函数一样，当安全性不是问题时，您可以通过传递<code>shell = True</code>来运行更复杂的shell命令。</p>
+<h3><span id="notes">Notes</span></h3><p>&lt;强&gt; 1。运行shell命令：<code>shell = True</code>参数**</p>
+<p>通常，每次调用<code>run</code>，<code>check_output</code>或<code>Popen</code>构造函数都会执行一个 <em>单个程序</em><br>。这意味着没有花哨的bash式管道。如果要运行复杂的shell命令，则可以传递<code>shell = True</code>这三个函数都支持。</p>
+<p>不过，这样做会引发<a href="https://docs.python.org/3/library/subprocess.html#security-
+considerations" target="_blank" rel="noopener">安全问题</a>。如果你所做的不是轻脚本，最好是分别调用每个进程，并将每个进程的输出作为输入传递给下一个进程，通过</p>
+<pre><code>run(cmd, [stdout=etc...], input=other_output)
+</code></pre><p>或者</p>
+<pre><code>Popen(cmd, [stdout=etc...]).communicate(other_output)
+</code></pre><p>直接连接管道的诱惑力很强，抵制它。否则，你可能会看到死锁，或者不得不做些黑客行为，比如<a href="https://stackoverflow.com/questions/6341451
+/piping-together-several-subprocesses" target="_blank" rel="noopener">这个</a>。</p>
+<p>&lt;强&gt; 2。 Unicode考虑因素**</p>
+<p>check_output <code>在Python 2中返回一个字符串，但在Python 3中返回一个</code> bytes `对象。值得花点时间阅读<a href="“https：//">了解unicode</a>，如果你还没有的话。</p>
+<p>这样比较简单，但只适用于Unix（包括Cygwin）。</p>
+<pre><code>import commands
+print commands.getstatusoutput(&apos;wc -l file&apos;)
+</code></pre><p>它返回一个带有（return_value，output）</p>
+<p>的元组</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/shell/">shell</a><a href="/tags/subprocess/">subprocess</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/running-shell-command-from-python-and-capturing-the-output/" data-title="从Python运行shell命令并捕获输出 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/reverse-a-string-in-python/" title="在Python中反转一个字符串">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在Python中反转一个字符串</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/round-to-at-most-2-decimal-places-only-if-necessary/"  title="四舍五入至多2位小数（只在必要时）">
+ <strong>下一篇：</strong><br/> 
+ <span>四舍五入至多2位小数（只在必要时）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Modern versions of Python (3.5 or higher): run</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Older versions of Python (2.7-3.4): check_output</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Complex applications &amp; legacy versions of Python (2.6 and below): Popen</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Notes</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

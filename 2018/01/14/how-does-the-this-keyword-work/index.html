@@ -1,0 +1,971 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>“this”这个关键字是如何工作的？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我注意到，关于这个关键字是什么以及它是如何在堆栈溢出网站的JavaScript中正确使用（和不正确）的，似乎并没有明确的解释。 p&amp;gt;我目睹了一些非常奇怪的行为，并没有明白为什么会发生。">
+<meta name="keywords" content="javascript,this">
+<meta property="og:type" content="article">
+<meta property="og:title" content="“this”这个关键字是如何工作的？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-does-the-this-keyword-work/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我注意到，关于这个关键字是什么以及它是如何在堆栈溢出网站的JavaScript中正确使用（和不正确）的，似乎并没有明确的解释。 p&amp;gt;我目睹了一些非常奇怪的行为，并没有明白为什么会发生。">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="“this”这个关键字是如何工作的？">
+<meta name="twitter:description" content="我注意到，关于这个关键字是什么以及它是如何在堆栈溢出网站的JavaScript中正确使用（和不正确）的，似乎并没有明确的解释。 p&amp;gt;我目睹了一些非常奇怪的行为，并没有明白为什么会发生。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-does-the-this-keyword-work/" title="“this”这个关键字是如何工作的？" itemprop="url">“this”这个关键字是如何工作的？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我注意到，关于<code>这个</code>关键字是什么以及它是如何在堆栈溢出网站的JavaScript中正确使用（和不正确）的，似乎并没有明确的解释。 p&gt;<br>我目睹了一些非常奇怪的行为，并没有明白为什么会发生。</p>
+<p><code></code> <code></code> <code></code> <code></code> <code></code> <a id="more"></a></p>
+<p>我推荐阅读<a href="https://mikewest.org" target="_blank" rel="noopener"> Mike West </a>的文章<a href="“http：//www
+.digital-web。"> JavaScript范围</a>（<a href="”http://web.archive.org/web/20110725013125/http://www.digital-web"> mirror</a>）。这是对<code>this</code>和JavaScript中的作用域链的概念的一个很好的友好的介绍。</p>
+<p>一旦你开始习惯<code>这个</code>，这个规则其实很简单。 <a href="http://www.ecma-
+international.org/publications/standards/Ecma-262.htm" target="_blank" rel="noopener"> ECMAScript标准</a>定义<code>this</code>作为一个关键字：</p>
+<blockquote>
+<p>evaluates to the value of the ThisBinding of the current execution context;</p>
+</blockquote>
+<p>（Â§11.1.1）。<br>ThisBinding是JavaScript解释器在评估JavaScript代码时所维护的东西，就像一个特殊的CPU寄存器，它持有一个对象的引用。每当建立执行上下文时，解释器都会更新ThisBinding，只有三种情况之一：</p>
+<ul>
+<li>初始全局执行上下文</li>
+</ul>
+<p>遇到<code>＆lt; script＆gt;</code>元素时评估的JavaScript代码就是这种情况：</p>
+<pre><code>     ＆lt; script type =“text / javascript”＆gt; //＆lt;！[CDATA [    警报（“我在最初的全球执行环境中评估！”）;
+
+setTimeout（function（）{
+    alert（“我不在最初的全局执行上下文中进行评估”）;
+}，1）;
+//]] GT;＆LT; /脚本＆GT;
+</code></pre><p>在初始全局执行上下文中计算代码时，ThisBinding被设置为全局对象<code>window</code>（§10.4.1.1）。</p>
+<ul>
+<li><p>输入评估代码</p>
+<ul>
+<li><p>…通过直接调用<code>eval（）</code><br>这个绑定保持不变;它与调用执行上下文的thisBinding（§10.4.2（2）（a））具有相同的值。</p>
+</li>
+<li><p>…如果不是直接调用<code>eval（）</code><br>ThisBinding在初始全局执行上下文（§10.4.2（1））中设置为全局对象 <em>，就像</em> 执行一样。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>§15.1.2.1.1定义了对<code>eval（）</code>的直接调用。基本上，<code>eval（...）</code>是直接调用，而<code>（0，eval）（...）</code>或<code>var
+indirectEval = eval; indirectEval（...）;</code>是对<code>eval（）</code>的间接调用。有关<a href="https://stackoverflow.com/q/9107240/196844" target="_blank" rel="noopener">（1<br>，eval）（’this’）vs eval（’this’）in<br>JavaScript？</a>和<a href="“http://dmitrysoshnikov.com/ecmascript/es5-chapter-2-strict-
+mode/#indirect"> Dmitry<br>Soshnikov撰写的博客文章</a>，您可以使用间接的<code>eval（）</code>调用。</p>
+<ul>
+<li>输入功能代码</li>
+</ul>
+<p>调用函数时发生这种情况。如果在一个对象上调用一个函数，比如在<code>obj.myMethod（）</code>或者等效的<code>obj
+[“myMethod”]（）</code>中，那么ThisBinding被设置为对象（例子中的<code>obj</code>;§13.2.1）。在大多数情况下，ThisBinding被设置为全局对象（§10.4.3）。</p>
+<p>在其他大多数情况下编写的原因是因为有八个ECMAScript 5内置函数允许在参数列表中指定ThisBinding。这些特殊函数采用所谓的<code>thisArg</code>，当调用函数（§10.4.3）时，它成为ThisBinding。</p>
+<p>这些特殊的内置函数是：</p>
+<pre><code>* ` Function.prototype.apply（thisArg，argArray）`    * ` Function.prototype.call（thisArg [，arg1 [，arg2，...]]）`    * ` Function.prototype.bind（thisArg [，arg1 [，arg2，...]]）`    * ` Array.prototype.every（callbackfn [，thisArg]）`    * ` Array.prototype.some（callbackfn [，thisArg]）`    * ` Array.prototype.forEach（callbackfn [，thisArg]）`    * ` Array.prototype.map（callbackfn [，thisArg]）`    * ` Array.prototype.filter（callbackfn [，thisArg]）`在` Function.prototype
+</code></pre><p><code>函数的情况下，它们在函数对象上被调用，而不是将ThisBinding设置为函数对象，ThisBinding被设置为</code> thisArg</p>
+<p>对于<code>Array.prototype</code>函数，给定的 <em>callbackfn</em> 在执行上下文中被调用，其中ThisBinding被设置为<code>thisArg</code> if供给;否则，转到全局对象。</p>
+<p>这些是纯JavaScript的规则。当您开始使用JavaScript库（例如jQuery）时，您可能会发现某些库函数处理<code>this</code>的值。这些JavaScript库的开发人员这样做是因为它倾向于支持最常见的用例，而库的用户通常会发现这种行为更方便。在将<code>this</code>引用到库函数的回调函数时，您应该参考文档以确保<code>this</code>在函数调用时的值是什么。</p>
+<p>如果您想知道JavaScript库如何处理<code>this</code>的值，那么库只需使用接受<code>thisArg</code>的内置JavaScript函数之一。你也可以编写你自己的函数来获取回调函数，<code>thisArg</code>：</p>
+<pre><code>function doWork(callbackfn, thisArg) {
+    //...
+    if (callbackfn != null) callbackfn.call(thisArg);
+}
+</code></pre><p>**修改</p>
+<p>我忘记了一个特例。当通过<code>new</code>运算符构造一个新对象时，JavaScript解释器创建一个新的空对象，设置一些内部属性，然后调用新对象的构造函数。因此，当在构造函数上下文中调用一个函数时，<code>this</code>的值是解释器创建的新对象：</p>
+<pre><code>function MyType() {
+    this.someData = &quot;a string&quot;;
+}
+
+var instance = new MyType();
+// Kind of like the following, but there are more steps involved:
+// var instance = {};
+// MyType.call(instance);
+</code></pre><p>测验：** 为了好玩，用下面的例子来测试你的理解。</p>
+<p>要显示答案，请将鼠标悬停在浅黄色的框中。_</p>
+<ul>
+<li><p>A行的<code>this</code>的值是多少？为什么呢？</p>
+<pre><code>＆lt; script type =“text / javascript”＆gt;
+</code></pre><p>如果属实） {</p>
+<pre><code>//线A
+</code></pre><p>}<br>＆LT; /脚本＆GT;</p>
+</li>
+</ul>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p><code>window</code>  行A在初始全局执行上下文中被评估。</p>
+</blockquote>
+<ul>
+<li><p>**在执行<code>obj.staticFunction（）</code>时，B行的<code>this</code>的值是多少？为什么呢？</p>
+<pre><code>＆lt; script type =“text / javascript”＆gt;
+</code></pre><p>var obj = {</p>
+<pre><code>someData：“一个字符串”
+</code></pre><p>};</p>
+<p>function myFun（）{</p>
+<pre><code>//线B
+</code></pre><p>}</p>
+<p>obj.staticFunction = myFun;</p>
+<p>obj.staticFunction（）;<br>＆LT; /脚本＆GT;</p>
+</li>
+</ul>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p><code>obj</code>  当在对象上调用一个函数时，ThisBinding被设置为该对象。</p>
+</blockquote>
+<ul>
+<li><p>C行的<code>this</code>的值是多少？为什么呢？</p>
+<pre><code>＆lt; script type =“text / javascript”＆gt;
+</code></pre><p>var obj = {</p>
+<pre><code>myMethod：function（）{
+    // C行
+}
+</code></pre><p>};<br>var myFun = obj.myMethod;<br>myFun（）;<br>＆LT; /脚本＆GT;</p>
+</li>
+</ul>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p><code>window</code>  在这个例子中，JavaScript解释器输入函数代码，但是因为<code>myFun</code> / <code>obj.myMethod</code>没有在对象上调用，所以ThisBinding被设置为&lt;代码&gt;窗口。</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>这与Python不同，在Python中访问方法（<code>obj.myMethod</code>）创建一个<a href="“http://docs.python.org/3/library">绑定方法对象</a>。</p>
+</blockquote>
+<p>D行的<code>this</code>的值是多少？为什么呢？</p>
+<pre><code>     ＆lt; script type =“text / javascript”＆gt;
+function myFun（）{
+    //行D
+}
+var obj = {
+    myMethod：function（）{
+        的eval（ “myFun（）”）;
+    }
+};
+obj.myMethod（）;
+＆LT; /脚本＆GT;
+</code></pre><p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p><code>window</code></p>
+<p>这个很棘手。在评估代码时，<code>this</code>是<code>obj</code>。但是，在eval代码中，<code>myFun</code>不在对象上调用，因此ThisBinding被设置为<code>window</code>用于调用。</p>
+</blockquote>
+<ul>
+<li><p>E行<code>this</code>的值是多少？</p>
+<pre><code>＆lt; script type =“text / javascript”＆gt;
+</code></pre><p>function myFun（）{</p>
+<pre><code>// E行
+</code></pre><p>}<br>var obj = {</p>
+<pre><code>someData：“一个字符串”
+</code></pre><p>};<br>myFun.call（OBJ）;<br>＆LT; /脚本＆GT;</p>
+</li>
+</ul>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p><code>obj</code>  <code>myFun.call（obj）;</code>是调用特殊的内置函数<code>Function.prototype.call（）</code>，它接受<code>&gt;
+thisArg</code>作为第一个参数。</p>
+</blockquote>
+<p>与其他语言相比，<code>this</code>关键字在JavaScript中的表现有所不同。在面向对象的语言中，<code>this</code>关键字指向类的当前实例。在JavaScript中，<code>this</code>的值主要是由函数（ <em><code>context.function（）</code> </em><br>）的调用上下文来决定的。 / p&gt;</p>
+<p>&lt;强&gt; 1。在全球范围内使用时**</p>
+<p>在全局上下文中使用<code>this</code>时，它将绑定到全局对象（浏览器中的<code>window</code>）</p>
+<pre><code>document.write(this);  //[object Window]
+</code></pre><p><code>当在全局上下文中定义的函数中使用</code> this <code>时，</code> this `仍然绑定到全局对象，因为该函数实际上是一个全局上下文的方法。 / p&gt;</p>
+<pre><code>function f1()
+{
+   return this;
+}
+document.write(f1());  //[object Window]
+</code></pre><p>上面的<code>f1</code>是一个全局对象的方法。因此，我们也可以在<code>window</code>对象上调用它，如下所示：</p>
+<pre><code>function f()
+{
+    return this;
+}
+
+document.write(window.f()); //[object Window]
+</code></pre><p>&lt;强&gt; 2。在对象方法中使用时**</p>
+<p><code>在对象方法中使用</code> this <code>关键字时，</code> this `绑定到“immediate”封闭对象。</p>
+<pre><code>var obj = {
+    name: &quot;obj&quot;,
+    f: function () {
+        return this + &quot;:&quot; + this.name;
+    }
+};
+document.write(obj.f());  //[object Object]:obj
+</code></pre><p>上面我已经把立即用双引号括起来了。要明确的是，如果将对象嵌套在另一个对象中，则<code>this</code>绑定到直接父对象。</p>
+<pre><code>var obj = {
+    name: &quot;obj1&quot;,
+    nestedobj: {
+        name:&quot;nestedobj&quot;,
+        f: function () {
+            return this + &quot;:&quot; + this.name;
+        }
+    }            
+}
+
+document.write(obj.nestedobj.f()); //[object Object]:nestedobj
+</code></pre><p>即使你将函数显式地添加到对象作为方法，它仍然遵循上面的规则，即<code>this</code>仍然指向直接的父对象。</p>
+<pre><code>var obj1 = {
+    name: &quot;obj1&quot;,
+}
+
+function returnName() {
+    return this + &quot;:&quot; + this.name;
+}
+
+obj1.f = returnName; //add method to object
+document.write(obj1.f()); //[object Object]:obj1
+</code></pre><p><strong>第3。当调用无环境功能</strong></p>
+<p>时</p>
+<p>当你使用<code>this</code>里面没有任何上下文（即不在任何对象上）调用的函数时，它绑定到全局对象（浏览器中的<code>window</code>）即使函数是在对象内定义的）。</p>
+<pre><code>var context = &quot;global&quot;;
+
+var obj = {  
+    context: &quot;object&quot;,
+    method: function () {                  
+        function f() {
+            var context = &quot;function&quot;;
+            return this + &quot;:&quot; +this.context; 
+        };
+        return f(); //invoked without context
+    }
+};
+
+document.write(obj.method()); //[object Window]:global 
+</code></pre><p>尝试所有功能**</p>
+<p>我们也可以用功能来尝试以上几点。但是有一些差异。</p>
+<ul>
+<li>上面我们使用对象文字符号将成员添加到对象。我们可以使用<code>this</code>将成员添加到函数中。指定它们。</li>
+<li>对象文字符号创建一个我们可以立即使用的对象实例。有了函数，我们可能需要先使用<code>new</code>运算符来创建它的实例。</li>
+<li>在对象文字方法中，我们可以使用点运算符显式地将成员添加到已定义的对象。这只会被添加到特定的实例。不过，我已经为函数原型添加了变量，以便它在函数的所有实例中得到反映。</li>
+</ul>
+<p>下面我尝试了上面用Object和<code>this</code>所做的所有事情，但是通过首先创建函数而不是直接编写对象。</p>
+<pre><code>/********************************************************************* 
+  1. When you add variable to the function using this keyword, it 
+     gets added to the function prototype, thus allowing all function 
+     instances to have their own copy of the variables added.
+*********************************************************************/
+function functionDef()
+{
+    this.name = &quot;ObjDefinition&quot;;
+    this.getName = function(){                
+        return this+&quot;:&quot;+this.name;
+    }
+}        
+
+obj1 = new functionDef();
+document.write(obj1.getName() + &quot;&lt;br /&gt;&quot;); //[object Object]:ObjDefinition   
+
+/********************************************************************* 
+   2. Members explicitly added to the function protorype also behave 
+      as above: all function instances have their own copy of the 
+      variable added.
+*********************************************************************/
+functionDef.prototype.version = 1;
+functionDef.prototype.getVersion = function(){
+    return &quot;v&quot;+this.version; //see how this.version refers to the
+                             //version variable added through 
+                             //prototype
+}
+document.write(obj1.getVersion() + &quot;&lt;br /&gt;&quot;); //v1
+
+/********************************************************************* 
+   3. Illustrating that the function variables added by both above 
+      ways have their own copies across function instances
+*********************************************************************/
+functionDef.prototype.incrementVersion = function(){
+    this.version = this.version + 1;
+}
+var obj2 = new functionDef();
+document.write(obj2.getVersion() + &quot;&lt;br /&gt;&quot;); //v1
+
+obj2.incrementVersion();      //incrementing version in obj2
+                              //does not affect obj1 version
+
+document.write(obj2.getVersion() + &quot;&lt;br /&gt;&quot;); //v2
+document.write(obj1.getVersion() + &quot;&lt;br /&gt;&quot;); //v1
+
+/********************************************************************* 
+   4. `this` keyword refers to the immediate parent object. If you 
+       nest the object through function prototype, then `this` inside 
+       object refers to the nested object not the function instance
+*********************************************************************/
+functionDef.prototype.nestedObj = { name: &apos;nestedObj&apos;, 
+                                    getName1 : function(){
+                                        return this+&quot;:&quot;+this.name;
+                                    }                            
+                                  };
+
+document.write(obj2.nestedObj.getName1() + &quot;&lt;br /&gt;&quot;); //[object Object]:nestedObj
+
+/********************************************************************* 
+   5. If the method is on an object&apos;s prototype chain, `this` refers 
+      to the object the method was called on, as if the method was on 
+      the object.
+*********************************************************************/
+var ProtoObj = { fun: function () { return this.a } };
+var obj3 = Object.create(ProtoObj); //creating an object setting ProtoObj
+                                    //as its prototype
+obj3.a = 999;                       //adding instance member to obj3
+document.write(obj3.fun()+&quot;&lt;br /&gt;&quot;);//999
+                                    //calling obj3.fun() makes 
+                                    //ProtoObj.fun() to access obj3.a as 
+                                    //if fun() is defined on obj3
+</code></pre><p>&lt;强&gt; 4。在构造函数中使用**。</p>
+<p>当函数被用作构造函数时（也就是用<code>new</code>关键字调用的时候），函数体内的this `指向正在构造的新对象。 / p&gt;</p>
+<pre><code>var myname = &quot;global context&quot;;
+function SimpleFun()
+{
+    this.myname = &quot;simple function&quot;;
+}
+
+var obj1 = new SimpleFun(); //adds myname to obj1
+//1. `new` causes `this` inside the SimpleFun() to point to the
+//   object being constructed thus adding any member
+//   created inside SimipleFun() using this.membername to the
+//   object being constructed
+//2. And by default `new` makes function to return newly 
+//   constructed object if no explicit return value is specified
+
+document.write(obj1.myname); //simple function
+</code></pre><p>&lt;强&gt; 5。在原型链上定义的函数内使用时**</p>
+<p>如果方法位于对象的原型链上，则此方法内的<code>this</code>是指方法被调用的对象，就像方法在对象上定义一样。</p>
+<pre><code>var ProtoObj = {
+    fun: function () {
+        return this.a;
+    }
+};
+//Object.create() creates object with ProtoObj as its
+//prototype and assigns it to obj3, thus making fun() 
+//to be the method on its prototype chain
+
+var obj3 = Object.create(ProtoObj);
+obj3.a = 999;
+document.write(obj3.fun()); //999
+
+//Notice that fun() is defined on obj3&apos;s prototype but 
+//`this.a` inside fun() retrieves obj3.a   
+</code></pre><p>&lt;强&gt; 6。内部调用（），apply（）和bind（）函数**</p>
+<ul>
+<li><p>所有这些方法都在<code>Function.prototype</code>。<br>上定义</p>
+</li>
+<li><p>这些方法允许编写一个函数，并在不同的上下文中调用它。换句话说，它们允许指定<code>this</code>在执行函数时使用的值。它们还可以在调用时将任何参数传递给原始函数。<br><code>fun.apply（obj1 [，argsArray]）</code> **将<code>obj1</code>设置为<code>this &lt;代码&gt; fun（）</code>，并调用<code>fun（）</code>传递<code>argsArray</code>的元素作为参数。</p>
+</li>
+</ul>
+<p><code></code> <code></code> <code>obj1</code> <code></code> &gt;作为<code>this</code>中的<code>funval（）</code>的值，并且通过` arg1，arg2，arg3，… &lt; /<br>code&gt;作为参数。</p>
+<p><code>fun.bind（obj1 [，arg1 [，arg2 [，arg3 [，...]]]]）</code> ** - 返回函数<code></code>里面有<code>this</code>的乐趣<code>绑定到</code> obj1 <code>和</code> fun `的参数绑定到参数arg1，arg2， ARG3，…</p>
+<ul>
+<li>现在，<code>apply</code>，<code>call</code>和<code>bind</code>之间的区别必定会变得明显。 <code>apply</code>允许将参数指定为类似数组的对象，即具有数字<code>length</code>属性和相应的非负整数属性的对象。而<code>call</code>允许直接指定函数的参数。 <code>apply</code>和<code>call</code>都立即调用指定的上下文中的函数并使用指定的参数。另一方面，<code>bind</code>只是返回绑定到指定的<code>this</code>值和参数的函数。我们可以通过把它分配给一个变量来捕获这个返回函数的引用，随后我们可以随时调用它。</li>
+</ul>
+<pre><code>function add(inc1, inc2)
+{
+    return this.a + inc1 + inc2;
+}
+
+var o = { a : 4 };
+document.write(add.call(o, 5, 6)+&quot;&lt;br /&gt;&quot;); //15
+      //above add.call(o,5,6) sets `this` inside
+      //add() to `o` and calls add() resulting:
+      // this.a + inc1 + inc2 = 
+      // `o.a` i.e. 4 + 5 + 6 = 15
+document.write(add.apply(o, [5, 6]) + &quot;&lt;br /&gt;&quot;); //15
+      // `o.a` i.e. 4 + 5 + 6 = 15
+
+var g = add.bind(o, 5, 6);       //g: `o.a` i.e. 4 + 5 + 6
+document.write(g()+&quot;&lt;br /&gt;&quot;);    //15
+
+var h = add.bind(o, 5);          //h: `o.a` i.e. 4 + 5 + ?
+document.write(h(6) + &quot;&lt;br /&gt;&quot;); //15
+      // 4 + 5 + 6 = 15
+document.write(h() + &quot;&lt;br /&gt;&quot;);  //NaN
+      //no parameter is passed to h()
+      //thus inc2 inside add() is `undefined`          //4 + 5 + undefined = NaN&lt;/code&gt;
+</code></pre><p>&lt;强&gt; 7。 <code>this</code>里面的事件处理程序**</p>
+<ul>
+<li>将函数直接分配给元素的事件处理程序时，直接在事件处理函数内使用<code>this</code>即可引用相应的元素。这种直接的函数分配可以使用<code>addeventListener</code>方法或通过传统的事件注册方法（如<code>onclick</code>）来完成。</li>
+<li>类似地，当您在元素的事件属性（如<code>＆lt; button onclick =“... this ...”＆gt;</code>）中直接使用<code>this</code>时它指的是元素。</li>
+<li>然而，通过在事件处理函数或事件属性中调用的其他函数间接使用<code>this</code>解析为全局对象<code>window</code>。</li>
+<li>当我们使用Microsoft的事件注册模型方法<code>attachEvent</code>将函数附加到事件处理函数时，上面的行为就可以实现。它不是将函数分配给事件处理程序（从而制作元素的函数方法），而是调用事件上的函数（在全局上下文中有效地调用它）。</li>
+</ul>
+<p><em>我建议在<a href="http://jsfiddle.net/Mahesha999/xKtzC/8/embedded/html,js,result" target="_blank" rel="noopener"> JSFiddle</a>中更好地尝试。</em></p>
+<pre><code>&lt;script&gt; 
+    function clickedMe() {
+       alert(this + &quot; : &quot; + this.tagName + &quot; : &quot; + this.id);
+    } 
+    document.getElementById(&quot;button1&quot;).addEventListener(&quot;click&quot;, clickedMe, false);
+    document.getElementById(&quot;button2&quot;).onclick = clickedMe;
+    document.getElementById(&quot;button5&quot;).attachEvent(&apos;onclick&apos;, clickedMe);   
+&lt;/script&gt;
+
+&lt;h3&gt;Using `this` &quot;directly&quot; inside event handler or event property&lt;/h3&gt;
+&lt;button id=&quot;button1&quot;&gt;click() &quot;assigned&quot; using addEventListner() &lt;/button&gt;&lt;br /&gt;
+&lt;button id=&quot;button2&quot;&gt;click() &quot;assigned&quot; using click() &lt;/button&gt;&lt;br /&gt;
+&lt;button id=&quot;button3&quot; onclick=&quot;alert(this+ &apos; : &apos; + this.tagName + &apos; : &apos; + this.id);&quot;&gt;used `this` directly in click event property&lt;/button&gt;
+
+&lt;h3&gt;Using `this` &quot;indirectly&quot; inside event handler or event property&lt;/h3&gt;
+&lt;button onclick=&quot;alert((function(){return this + &apos; : &apos; + this.tagName + &apos; : &apos; + this.id;})());&quot;&gt;`this` used indirectly, inside function &lt;br /&gt; defined &amp; called inside event property&lt;/button&gt;&lt;br /&gt;
+
+&lt;button id=&quot;button4&quot; onclick=&quot;clickedMe()&quot;&gt;`this` used indirectly, inside function &lt;br /&gt; called inside event property&lt;/button&gt; &lt;br /&gt;
+
+IE only: &lt;button id=&quot;button5&quot;&gt;click() &quot;attached&quot; using attachEvent() &lt;/button&gt;
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/this/">this</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-does-the-this-keyword-work/" data-title="“this”这个关键字是如何工作的？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-to-check-for-undefined-in-javascript/" title="如何检查在JavaScript中的“未定义”？ [重复]">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何检查在JavaScript中的“未定义”？ [重复]</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-to-check-if-a-string-startswith-another-string/"  title="如何检查一个字符串“StartsWith”另一个字符串？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何检查一个字符串“StartsWith”另一个字符串？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

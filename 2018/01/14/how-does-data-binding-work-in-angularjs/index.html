@@ -1,0 +1,614 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>数据绑定在AngularJS中如何工作？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="数据绑定如何在AngularJS框架中工作 我还没有在他们的网站上找到技术细节。当数据从视图传播到模型时，它是如何工作的或多或少都很清楚。但是，AngularJS如何在没有setter和getters的情况下追踪模型属性的变化？ 我发现有可能做这项工作的 JavaScript观察者。但是，它们不支持 Internet Explorer 6和 Internet Explorer 7。那么，Angul">
+<meta name="keywords" content="javascript,angularjs,data-binding">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据绑定在AngularJS中如何工作？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-does-data-binding-work-in-angularjs/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="数据绑定如何在AngularJS框架中工作 我还没有在他们的网站上找到技术细节。当数据从视图传播到模型时，它是如何工作的或多或少都很清楚。但是，AngularJS如何在没有setter和getters的情况下追踪模型属性的变化？ 我发现有可能做这项工作的 JavaScript观察者。但是，它们不支持 Internet Explorer 6和 Internet Explorer 7。那么，Angul">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据绑定在AngularJS中如何工作？">
+<meta name="twitter:description" content="数据绑定如何在AngularJS框架中工作 我还没有在他们的网站上找到技术细节。当数据从视图传播到模型时，它是如何工作的或多或少都很清楚。但是，AngularJS如何在没有setter和getters的情况下追踪模型属性的变化？ 我发现有可能做这项工作的 JavaScript观察者。但是，它们不支持 Internet Explorer 6和 Internet Explorer 7。那么，Angul">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-does-data-binding-work-in-angularjs/" title="数据绑定在AngularJS中如何工作？" itemprop="url">数据绑定在AngularJS中如何工作？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Issues with change listeners:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">What about performance?</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>数据绑定如何在<code>AngularJS</code>框架中工作</p>
+<p>我还没有在<a href="http://angularjs.org" target="_blank" rel="noopener">他们的网站</a>上找到技术细节。当数据从视图传播到模型时，它是如何工作的或多或少都很清楚。但是，AngularJS如何在没有setter和getters的情况下追踪模型属性的变化？</p>
+<p>我发现有可能做这项工作的<a href="https://stackoverflow.com/questions/1029241
+/javascript-object-watch-for-all-browsers" target="_blank" rel="noopener"> JavaScript观察者</a>。但是，它们不支持<a href="http://en.wikipedia.org/wiki/Internet_Explorer_6" target="_blank" rel="noopener"> Internet Explorer 6</a>和<a href="“http：//"> Internet Explorer 7</a>。那么，AngularJS如何知道我改变了以下内容，并在视图上反映了这种变化？</p>
+<pre><code>myobject.myproperty=&quot;new value&quot;;
+</code></pre><p><a id="more"></a> AngularJS会记住这个值，并将其与之前的值进行比较。这是基本的脏检查。如果价值发生了变化，则会触发变更事件。</p>
+<p><code>$ apply（）</code>方法是从非AngularJS世界转换到AngularJS世界时所调用的方法，它调用<code>$
+digest（）</code>。摘要只是简单的旧脏检。它适用于所有的浏览器，完全可以预见。</p>
+<p>为了比较脏检查（AngularJS）和改变监听器（<a href="http://en.wikipedia.org/wiki/KnockoutJS" target="_blank" rel="noopener"> KnockoutJS</a>和<a href="“https：//">Backbone.js</a>）：虽然脏检查可能看起来简单，甚至效率低下（我将在以后解决），但事实证明，它在语义上是正确的这个时候，更改监听器有很多奇怪的角落案例，需要像依赖关系跟踪这样的东西，使其更加符合语义。<br>KnockoutJS依赖关系跟踪是AngularJS没有的一个聪明的功能。</p>
+<h1><span id="issues-with-change-listeners">Issues with change listeners:</span></h1><ul>
+<li>语法很残酷，因为浏览器本身不支持。是的，有代理，但在所有情况下，它们在语义上都是不正确的，当然在旧浏览器上没有代理。底线是脏检查允许你做<a href="http://en.wikipedia.org/wiki/Plain_Old_Java_Object" target="_blank" rel="noopener"> POJO </a>，而KnockoutJS和Backbone.js强迫你从他们的继承类，并通过访问者访问您的数据。</li>
+<li>改变合并。假设你有一个项目的数组。假设你想添加项目到一个数组中，当你循环添加的时候，每次添加的时候你都会触发改变的事件，这就是呈现UI。这对性能非常不利。你想要的只是一次更新UI，最后。变化事件太细。</li>
+<li>更改侦听器立即在setter上触发，这是一个问题，因为更改侦听器可以进一步更改数据，从而触发更多的更改事件。这是不好的，因为在你的堆栈中，你可能会同时发生多个更改事件。假设你有两个数组需要保持同步，无论出于何种原因。你只能添加到一个或另一个，但是每次添加时，您都会触发一个更改事件，这个事件现在对世界有不一致的看法。这与线程锁定非常类似，因为每个回调都是独占执行完成的，所以JavaScript避免了这种情况。变更事件破坏了这一点，因为变更者可能会产生意想不到的非显而易见的深远后果，从而再次产生线程问题。事实证明，你想要做的就是延迟监听器的执行，并且保证一次只能运行一个监听器，因此任何代码都可以自由地改变数据，并且知道在这个过程中没有其他代码在运行</li>
+</ul>
+<h1><span id="what-about-performance">What about performance?</span></h1><p>所以看起来我们很慢，因为脏检是无效的。这是我们需要看真实数据的地方，而不是只有理论上的论据，但首先让我们来定义一些限制。</p>
+<p>人类是：</p>
+<ul>
+<li><ul>
+<li>___ - 您无法在单个页面上向真人展示超过2000条信息。除此之外的任何东西都是非常糟糕的用户界面，而人类无法处理这个问题。</li>
+</ul>
+</li>
+</ul>
+<p>所以真正的问题是：你可以在50毫秒的浏览器上做多少次比较？这是一个很难回答的问题，因为许多因素起作用，但这里是一个测试案例：<a href="http://jsperf.com/angularjs-
+digest/6" target="_blank" rel="noopener">http://jsperf.com/angularjs -digest / 6 </a>，创造了10,000名观察者。在现代浏览器上，这需要不到6毫秒。在<a href="http://en.wikipedia.org/wiki/Internet_Explorer_8" target="_blank" rel="noopener"> Internet Explorer 8</a>大约需要40毫秒。正如你所看到的，即使在缓慢的浏览器这些日子，这不是一个问题。有一个警告：比较需要简单，以适应时间限制…不幸的是，添加到AngularJS的慢比较是太容易了，所以当你不知道你是什么时候，很容易建立缓慢的应用程序是做。但是我们希望通过提供一个仪器模块来给出答案，这个模块会告诉你哪些比较慢。</p>
+<p>事实证明，视频游戏和图形处理器使用脏检查的方法，具体来说是因为它是一致的。只要他们超过显示器的刷新频率（通常是50-60赫兹，或每16.6-20毫秒），任何性能超过这是浪费，所以你最好抽出更多的东西，比让FPS更高。<br>p&gt; Misko已经很好地描述了数据绑定是如何工作的，但是我想在数据绑定的性能问题上增加我的观点。</p>
+<p>正如Misko所说，2000年左右的绑定就是你开始看到问题的地方，但是你不应该在页面上有超过2000条的信息。这可能是事实，但不是每个数据绑定对用户都是可见的。一旦你开始用双向绑定来构建任何类型的小部件或数据网格，你就可以轻松地绑定2000个绑定，而不会产生不良的ux。</p>
+<p>例如，考虑一个组合框，您可以在其中键入文本来过滤可用的选项。这种控制可能有150个项目，仍然是高度可用的。如果它有一些额外的功能（例如当前选择的选项上的一个特定的类），你开始得到每个选项3-5绑定。将其中三个小部件放在一个页面上（例如，一个选择一个国家，另一个选择所在国家的一个城市，第三个选择一个酒店），你已经在1000到2000之间的绑定。</p>
+<p>或者考虑一个企业Web应用程序中的数据网格。每页50行不是不合理的，每行可能有10-20列。如果你用ng-<br>repeats来构建这个，并且/或者在一些使用绑定的单元格中有信息，那么你可以单独使用这个网格来接近2000个绑定。</p>
+<p>在使用AngularJS时，我发现这是一个巨大的问题，到目前为止，我唯一能找到的解决方案是构建小部件而不使用双向绑定，而是使用ngOnce<br>，注销观察者和类似的技巧，或者构建用jQuery和DOM操作构建DOM的指令。我觉得这首先打破了使用Angular的目的。</p>
+<p>我很乐意听取其他处理方法的建议，但也许我应该写一个自己的问题。我想把这个评论，但事实证明，这太长了…</p>
+<p>TL; DR **<br>数据绑定可能会导致复杂页面上的性能问题。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/angularjs/">angularjs</a><a href="/tags/data-binding/">data-binding</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-does-data-binding-work-in-angularjs/" data-title="数据绑定在AngularJS中如何工作？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-do-you-use-a-variable-in-a-regular-expression/" title="你如何在正则表达式中使用变量？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  你如何在正则表达式中使用变量？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/"  title="Facebook如何禁用浏览器的集成开发者工具？">
+ <strong>下一篇：</strong><br/> 
+ <span>Facebook如何禁用浏览器的集成开发者工具？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Issues with change listeners:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">What about performance?</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

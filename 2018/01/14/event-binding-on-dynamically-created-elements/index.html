@@ -1,0 +1,630 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>事件绑定动态创建的元素？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一些代码在循环浏览页面上的所有选择框，并绑定一个.hover事件给他们，在`鼠标上做一些小小的旋转开/关 这种情况发生在页面准备就绪，工作得很好。 我遇到的问题是，在初始循环之后，通过Ajax或DOM添加的所有选择框都不会有事件绑定。 我找到了这个插件（ jQuery Live Query Plugin ），但是在我之前用插件添加另一个5k到我的网页，我想看看是否有人知道这样做，无论是直接或通">
+<meta name="keywords" content="javascript,jquery,events,unobtrusive-javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件绑定动态创建的元素？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/event-binding-on-dynamically-created-elements/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一些代码在循环浏览页面上的所有选择框，并绑定一个.hover事件给他们，在`鼠标上做一些小小的旋转开/关 这种情况发生在页面准备就绪，工作得很好。 我遇到的问题是，在初始循环之后，通过Ajax或DOM添加的所有选择框都不会有事件绑定。 我找到了这个插件（ jQuery Live Query Plugin ），但是在我之前用插件添加另一个5k到我的网页，我想看看是否有人知道这样做，无论是直接或通">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="事件绑定动态创建的元素？">
+<meta name="twitter:description" content="我有一些代码在循环浏览页面上的所有选择框，并绑定一个.hover事件给他们，在`鼠标上做一些小小的旋转开/关 这种情况发生在页面准备就绪，工作得很好。 我遇到的问题是，在初始循环之后，通过Ajax或DOM添加的所有选择框都不会有事件绑定。 我找到了这个插件（ jQuery Live Query Plugin ），但是在我之前用插件添加另一个5k到我的网页，我想看看是否有人知道这样做，无论是直接或通">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/event-binding-on-dynamically-created-elements/" title="事件绑定动态创建的元素？" itemprop="url">事件绑定动态创建的元素？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一些代码在循环浏览页面上的所有选择框，并绑定一个<code>.hover</code>事件给他们，在`鼠标上做一些小小的旋转开/关</p>
+<p>这种情况发生在页面准备就绪，工作得很好。</p>
+<p>我遇到的问题是，在初始循环之后，通过Ajax或DOM添加的所有选择框都不会有事件绑定。</p>
+<p>我找到了这个插件（<a href="http://brandonaaron.net/docs/livequery
+/#getting-started" target="_blank" rel="noopener"> jQuery Live Query Plugin </a>），但是在我之前用插件添加另一个5k到我的网页，我想看看是否有人知道这样做，无论是直接或通过其他选择jQuery。</p>
+<a id="more"></a>
+<p><strong>从jQuery 1.7</strong> ，你应该使用<a href="“https://api.jquery.com/on/#on-
+events-selector-data-handler”rel"> &lt;代码&gt; jQuery.fn.on  </a>：</p>
+<pre><code>$(staticAncestors).on(eventName, dynamicChild, function() {});
+</code></pre><hr>
+<p><strong>之前，推荐的方法是使用[ ` live（）</strong> / code&gt; ](<a href="http://api.jquery.com/live)：" target="_blank" rel="noopener">http://api.jquery.com/live)：</a></p>
+<pre><code>$(selector).live( eventName, function(){} );
+</code></pre><p>但是，<code>live（）</code>在1.7中已被弃用，而在（）<code>中被弃用，并且在1.9中被完全删除。</code> live（）`签名：</p>
+<pre><code>$(selector).live( eventName, function(){} );
+</code></pre><p>…可以替换为以下<a href="http://api.jquery.com/on/" target="_blank" rel="noopener"> <code>on（）</code> </a>签名：</p>
+<pre><code>$(document).on( eventName, selector, function(){} );
+</code></pre><hr>
+<p>例如，如果你的页面是动态创建类名为<code>dosomething</code>的元素，你可以将事件绑定到已经存在的父对象上，通常是<code>document</code>。 &gt;</p>
+<pre><code>$(document).on(&apos;mouseover mouseout&apos;, &apos;.dosomething&apos;, function(){
+    // what you want to happen when mouseover and mouseout 
+    // occurs on elements that match &apos;.dosomething&apos;
+});
+</code></pre><p>任何在事件绑定时存在的父母都可以。例如</p>
+<pre><code>$(&apos;.buttons&apos;).on(&apos;click&apos;, &apos;button&apos;, function(){
+    // do something here
+});
+</code></pre><p>将适用于</p>
+<pre><code>&lt;div class=&quot;buttons&quot;&gt;
+    &lt;!-- &lt;button&gt;s that are generated dynamically and added here --&gt;
+&lt;/div&gt;
+</code></pre><p>在[ <code>jQuery.fn.on</code> `文档中有一个很好的解释。一&gt;</p>
+<p>总之：</p>
+<blockquote>
+<p>Event handlers are bound only to the currently selected elements; they must<br>exist on the page at the time your code makes the call to <code>.on()</code>.</p>
+</blockquote>
+<p>因此，在下面的例子中，代码生成之前必须存在<code>#dataTable tbody tr</code>。</p>
+<pre><code>$(&quot;#dataTable tbody tr&quot;).on(&quot;click&quot;, function(event){
+    console.log($(this).text());
+});
+</code></pre><p>如果将新的HTML注入到页面中，则最好使用委托事件来附加事件处理程序，如下所述。</p>
+<p>委托事件**具有的优点是，它们可以处理来自稍后添加到文档中的后代元素的事件。例如，如果表存在，但是行使用代码动态添加，则以下内容将处理它：</p>
+<pre><code>$(&quot;#dataTable tbody&quot;).on(&quot;click&quot;, &quot;tr&quot;, function(event){
+    console.log($(this).text());
+});
+</code></pre><p>除了能够处理尚未创建的后代元素上的事件之外，委托事件的另一个优点是当必须监视许多元素时，其开销要低得多。在其<code>tbody</code>中有1000行的数据表中，第一个代码示例将一个处理程序附加到1,000个元素。</p>
+<p>一个委托事件方法（第二个代码示例）只将一个事件处理程序附加到一个元素<code>tbody</code>上，而事件只需要冒泡一个级别（从点击的<code>tr</code> to <code>tbody</code>）。</p>
+<p><strong>注意：</strong> 委派的事件不适用于<a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics" target="_blank" rel="noopener"> SVG</a>。&lt; / p&gt;</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/events/">events</a><a href="/tags/unobtrusive-javascript/">unobtrusive-javascript</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/event-binding-on-dynamically-created-elements/" data-title="事件绑定动态创建的元素？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/extracting-extension-from-filename-in-python/" title="在Python中从文件名中提取扩展">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在Python中从文件名中提取扩展</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/find-all-files-in-a-directory-with-extension-txt-in-python/"  title="在Python中查找扩展名为.txt的目录中的所有文件">
+ <strong>下一篇：</strong><br/> 
+ <span>在Python中查找扩展名为.txt的目录中的所有文件
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

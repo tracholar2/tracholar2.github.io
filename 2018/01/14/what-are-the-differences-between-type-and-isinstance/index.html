@@ -1,0 +1,625 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>type（）和isinstance（）之间有什么区别？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="这两个代码段有什么区别？ 使用type（）： import types  if type(a) is types.DictType:     do_something() if type(b) in types.StringTypes:     do_something_else() 使用isinstance（）： if isinstance(a, dict):     do_something(">
+<meta name="keywords" content="python,types,oop,inheritance">
+<meta property="og:type" content="article">
+<meta property="og:title" content="type（）和isinstance（）之间有什么区别？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/what-are-the-differences-between-type-and-isinstance/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="这两个代码段有什么区别？ 使用type（）： import types  if type(a) is types.DictType:     do_something() if type(b) in types.StringTypes:     do_something_else() 使用isinstance（）： if isinstance(a, dict):     do_something(">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="type（）和isinstance（）之间有什么区别？">
+<meta name="twitter:description" content="这两个代码段有什么区别？ 使用type（）： import types  if type(a) is types.DictType:     do_something() if type(b) in types.StringTypes:     do_something_else() 使用isinstance（）： if isinstance(a, dict):     do_something(">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-are-the-differences-between-type-and-isinstance/" title="type（）和isinstance（）之间有什么区别？" itemprop="url">type（）和isinstance（）之间有什么区别？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>这两个代码段有什么区别？ 使用<code>type（）</code>：</p>
+<pre><code>import types
+
+if type(a) is types.DictType:
+    do_something()
+if type(b) in types.StringTypes:
+    do_something_else()
+</code></pre><p>使用<code>isinstance（）</code>：</p>
+<pre><code>if isinstance(a, dict):
+    do_something()
+if isinstance(b, str) or isinstance(b, unicode):
+    do_something_else()
+</code></pre><p><a id="more"></a> 为了总结其他（已经很好！）答案的内容，<code>isinstance</code>迎合了继承（派生类的一个实例也是基类的一个实例） ），而检查<code>type</code>是否相等（它要求类型的同一性，并拒绝子类的实例，AKA子类）。</p>
+<p>通常，在Python中，你希望你的代码支持继承，当然（因为继承是如此的方便，用你的代码来停止代码是不好的），所以<code>isinstance</code>是比检查<code>type</code>的身份差，因为它无缝地支持继承。</p>
+<p>这并不是说<code>isinstance</code>是 _<em> ，但是请注意，只是比检查类型的相等性更糟糕。正常的Pythonic首选解决方案几乎总是“duck<br>typing”：尝试使用参数 </em>，好像_ 它具有某种期望类型，可以在<code>try</code> /<br>&lt;除了<code>语句之外，</code>语句捕获所有可能出现的异常，如果该参数实际上不是该类型的（或者其他任何类型的鸭子模仿它;-)，并且在<code>except</code>子句，尝试别的东西（使用参数“好像”是其他类型的）。​​</p>
+<p>然而，相当特殊的情况是一个内置的类型，它只存在 <strong>** 来让你使用` isinstance </strong> / code&gt;（<code>str</code>和<code>unicode</code>子类<code>basestring</code>）。字符串是序列（你可以遍历它们，索引它们，将它们分割，…），但是你通常希望把它们当作“标量”类型 -<br>它有点不方便（但是相当频繁的用例）来处理所有的类型字符串（也可能是其他标量类型，也就是不能循环的字符串），所有容器（列表，集合，字典，…）都以另一种方式，而<code>basestring</code>加上&lt; code&gt; isinstance `可以帮助你做到这一点 - 这个成语的整体结构是这样的：</p>
+<pre><code>if isinstance(x, basestring)
+  return treatasscalar(x)
+try:
+  return treatasiter(iter(x))
+except TypeError:
+  return treatasscalar(x)
+</code></pre><p><code>basestring</code>是一个 <em>抽象基类</em> （“ABC”） - 它没有为子类提供具体的功能，而是作为一个“标记“，主要用于<code>isinstance</code>。由于<a href="http://www.python.org/dev/peps/pep-3119/" target="_blank" rel="noopener"> PEP 3119</a>，这个概念在Python中显然是一个越来越大的概念，它引入了它的泛化，被接受，并已从Python<br>2.6和3.0开始实施。</p>
+<p>PEP清楚地表明，虽然ABC通常可以代替鸭子打字，但通常没有很大的压力（见<a href="“http://www.python.org/dev/peps/pep"> here</a>）。然而，在最近的Python版本中实现的ABCs可以提供额外的好处：<code>isinstance</code>（和<code>issubclass</code>）现在不仅仅意味着“派生类的实例”特别是，任何一个类都可以用ABC注册，这样它就可以显示为子类，它的实例可以作为ABC的实例）。而且ABC还可以通过模板方法设计模式应用程序以非常自然的方式为实际的子类提供额外的便利（参见[这里&lt;<br>/ a&gt;和<a href="http://www.catonmat.net/blog/learning-python-design-patterns-
+through-video-lectures/" target="_blank" rel="noopener">此处</a> [[部分II]]更多的在TM DP上，一般来说，特别是在Python中，独立于ABCs）</p>
+<p>有关Python<br>2.6提供的ABC支持的基本机制，请参阅<a href="http://docs.python.org/library/abc.html" target="_blank" rel="noopener">此处</a>;对于他们的3.1版本，非常相似，请参阅<a href="http://docs.python.org/3.1/library/abc.html" target="_blank" rel="noopener">此处</a>。在这两个版本中，标准库模块[集合](<a href="http://docs.python.org/3.1/library/collections.html" target="_blank" rel="noopener">http://docs.python.org/3.1/library/collections.html</a></p>
+<p>#module-<br>collections)（这是3.1版本的€“为非常类似的2.6版本，请参阅[这里](<a href="http://docs.python.org/library/collections.html" target="_blank" rel="noopener">http://docs.python.org/library/collections.html</a></p>
+<p>#module-collections)）提供了一些有用的的ABC</p>
+<p>为了达到这个答案的目的，关于ABCs的关键是要保留关于ABCs的信息（除了TM<br>DP功能的更自然的布局之外，与经典的mixin类的Python替代方法相比，比如<a href="“http：//"> .python.org / library /<br>userdict.html？highlight = userdict＃UserDict.DictMixin“rel =”noreferrer“&gt;<br>UserDict.DictMixin </a>）是<code>isinstance</code> issubclass<br>`）比以前（在2.5和之前版本中）更具吸引力和普遍性（在Python<br>2.6中向前发展），因此，相比之下，在最近的Python版本中，检查类型相等性甚至更糟它已经习惯了。</p>
+<p>以下是<code>isinstance</code>比<code>type</code>更好的原因：</p>
+<pre><code>class Vehicle:
+    pass
+
+class Truck(Vehicle):
+    pass
+</code></pre><p>在这种情况下，卡车对象是一辆车，但你会得到这个：</p>
+<pre><code>isinstance(Vehicle(), Vehicle)  # returns True
+type(Vehicle()) == Vehicle      # returns True
+isinstance(Truck(), Vehicle)    # returns True
+type(Truck()) == Vehicle        # returns False, and this probably won&apos;t be what you want.
+</code></pre><p>换句话说，<code>isinstance</code>也适用于子类。</p>
+<p>另见：<a href="https://stackoverflow.com/q/707674/1341006" target="_blank" rel="noopener">如何比较Python中对象的类型？</a></p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/types/">types</a><a href="/tags/oop/">oop</a><a href="/tags/inheritance/">inheritance</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/what-are-the-differences-between-type-and-isinstance/" data-title="type（）和isinstance（）之间有什么区别？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/what-are-named-tuples-in-python/" title="什么是Python中的“命名元组”？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  什么是Python中的“命名元组”？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/what-does-double-star-asterisk-and-star-asterisk-do-for-parameters/"  title="（双星/星号）和（星号/星号）为参数做了什么？">
+ <strong>下一篇：</strong><br/> 
+ <span>（双星/星号）和（星号/星号）为参数做了什么？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

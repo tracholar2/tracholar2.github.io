@@ -1,0 +1,771 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>二维数组中的峰值检测 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我帮助兽医诊所测量狗爪下的压力。我使用Python进行数据分析，现在我试图将爪子分成（解剖）子区域。 我做了一个每个爪子的二维数组，每个爪子随着时间的推移装载的每个传感器的最大值。下面是一个爪子的例子，我用Excel来绘制我想要检测的区域。这些传感器周围有2x 2的盒子，并且有最大的总和。  所以我尝试了一些尝试，并决定只是寻找每一列和行的最大值（由于爪子的形状，不能在一个方向上看）。这似乎很好地">
+<meta name="keywords" content="python,image-processing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二维数组中的峰值检测">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/peak-detection-in-a-2d-array/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我帮助兽医诊所测量狗爪下的压力。我使用Python进行数据分析，现在我试图将爪子分成（解剖）子区域。 我做了一个每个爪子的二维数组，每个爪子随着时间的推移装载的每个传感器的最大值。下面是一个爪子的例子，我用Excel来绘制我想要检测的区域。这些传感器周围有2x 2的盒子，并且有最大的总和。  所以我尝试了一些尝试，并决定只是寻找每一列和行的最大值（由于爪子的形状，不能在一个方向上看）。这似乎很好地">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/peak-detection-in-a-2d-array/“https://i.stack.imgur.com/BuUbq.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/peak-detection-in-a-2d-array/“https://i.stack.imgur.com/UyNRU.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/peak-detection-in-a-2d-array/“https://i.stack.imgur.com/FFX0x.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/peak-detection-in-a-2d-array/“https://i.stack.imgur.com/iPXEv.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/peak-detection-in-a-2d-array/“https://i.stack.imgur.com/JEpIa.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/peak-detection-in-a-2d-array/“https://i.stack.imgur.com/Kgt4H.png”alt">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二维数组中的峰值检测">
+<meta name="twitter:description" content="我帮助兽医诊所测量狗爪下的压力。我使用Python进行数据分析，现在我试图将爪子分成（解剖）子区域。 我做了一个每个爪子的二维数组，每个爪子随着时间的推移装载的每个传感器的最大值。下面是一个爪子的例子，我用Excel来绘制我想要检测的区域。这些传感器周围有2x 2的盒子，并且有最大的总和。  所以我尝试了一些尝试，并决定只是寻找每一列和行的最大值（由于爪子的形状，不能在一个方向上看）。这似乎很好地">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/peak-detection-in-a-2d-array/“https://i.stack.imgur.com/BuUbq.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/peak-detection-in-a-2d-array/" title="二维数组中的峰值检测" itemprop="url">二维数组中的峰值检测</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Results</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Update:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">New update:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Solution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Some comments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text">Notes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.</span> <span class="toc-text">Choosing fingers (an idea)</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我帮助兽医诊所测量狗爪下的压力。我使用Python进行数据分析，现在我试图将爪子分成（解剖）子区域。</p>
+<p>我做了一个每个爪子的二维数组，每个爪子随着时间的推移装载的每个传感器的最大值。下面是一个爪子的例子，我用Excel来绘制我想要检测的区域。这些传感器周围有2<br>x 2的盒子，并且有最大的总和。</p>
+<p><img src="“https://i.stack.imgur.com/BuUbq.png”alt" alt=""></p>
+<p>所以我尝试了一些尝试，并决定只是寻找每一列和行的最大值（由于爪子的形状，不能在一个方向上看）。这似乎很好地“检测”了单独的脚趾的位置，但它也标记了相邻的传感器。</p>
+<p><img src="“https://i.stack.imgur.com/UyNRU.png”alt" alt=""></p>
+<p>那么告诉Python哪个最好的方法是我想要的呢？</p>
+<p>注意：2×2方格不能重叠，因为它们必须是分开的脚趾！**</p>
+<p>另外，为了方便起见，我还把2x2作为了一个更高级的解决方案，但是我只是一个人类运动科学家，所以我既不是真正的程序员，也不是数学家，所以请保持简单。</p>
+<p>以下是<a href="https://upl.io/0liy07" target="_blank" rel="noopener">版本，可以使用<code>np.loadtxt</code> </a>加载</p>
+<hr>
+<h2><span id="results">Results</span></h2><p>所以我试了@ jextee的解决方案（见下面的结果）。正如你所看到的，它在前爪上非常有效，但后腿的效果不太好。</p>
+<p>更具体地说，它不能识别第四个脚趾的小峰。这显然是固有的事实，即循环看起来低于最低值，而没有考虑到这一点。</p>
+<p>有人会知道如何调整@ jextee的算法，以便它能找到第四个脚趾吗？</p>
+<p><img src="“https://i.stack.imgur.com/FFX0x.png”alt" alt=""></p>
+<p>由于我还没有处理任何其他的审判，我不能提供任何其他样本。但是我之前给出的数据是每个爪子的平均值。这个文件是一个数组，其最大数据量为9个爪子</p>
+<p>这张图片显示了它们是如何在板子上空间分布的。</p>
+<p><img src="“https://i.stack.imgur.com/iPXEv.png”alt" alt=""></p>
+<h2><span id="update">Update:</span></h2><p><strong><a href="http://superivo.wordpress.com/" target="_blank" rel="noopener">我已经为所有感兴趣的人设置了博客</a> </strong><br>和<a href="“http://cid-
+0e685da213fd5935.skydrive.live.com/redir.aspx?page=browse&amp;resid=E685DA213FD5935!148&amp;type=6&amp;authkey=WOUgehAzQ!o%24&amp;Bsrc=EMSHGM&amp;Bpub=SN.Notifications">我已经用所有原始尺寸设置了SkyDrive。</a>因此，对于任何请求更多数据的人来说：给您更多的权力！</p>
+<hr>
+<h2><span id="new-update">New update:</span></h2><p>所以在获得了关于<a href="https://stackoverflow.com/q/4087919/77595" target="_blank" rel="noopener">爪子检测</a>和[，我终于能够检查每个爪子的脚趾检测！事实证明，除了我自己的例子中的那种尺寸的爪子之外，它的效果并不好。事后看来，如此任意选择2x2是我自己的错。</p>
+<p>这里有一个很好的例子，它出现了错误：一个钉子被认为是一个脚趾，“脚跟”是如此之宽，它被认可了两次！</p>
+<p><img src="“https://i.stack.imgur.com/JEpIa.png”alt" alt=""></p>
+<p>爪子太大，所以采取2×2大小没有重叠，导致一些脚趾被检测两次。反过来说，小狗往往没有找到第五个脚趾，我怀疑这是由于2x2面积太大造成的。</p>
+<p><a href="http://www.flipserd.com/blog/ivoflipse/post/toe-detection-
+revisited" target="_blank" rel="noopener">尝试所有测量结果的当前解决方案</a>得出令人咋舌的结论：几乎所有的小型犬都没有找到第五只脚趾，而在超过50％的大型狗的影响中，它会找到更多的！</p>
+<p>很显然，我需要改变它。我自己的猜测是将<code>邻域</code>的大小更改为对于小型狗较小的一些，对较大的狗则较大。但<code>generate_binary_structure</code>不会让我改变数组的大小。</p>
+<p>因此，我希望其他人有更好的建议来定位脚趾，也许脚趾面积与爪尺寸？ <a id="more"></a></p>
+<p>我使用 <strong>局部最大值过滤器</strong> 检测了峰值。这是你的第一个4爪子数据集的结果：<br><img src="“https://i.stack.imgur.com/Kgt4H.png”alt" alt=""></p>
+<p>我也跑了9个爪子的第二个数据集，并且<a href="https://i.stack.imgur.com/4CKCh.png" target="_blank" rel="noopener">它也起作用了</a></p>
+<p>以下是您的操作方法：</p>
+<pre><code>import numpy as np
+from scipy.ndimage.filters import maximum_filter
+from scipy.ndimage.morphology import generate_binary_structure, binary_erosion
+import matplotlib.pyplot as pp
+
+#for some reason I had to reshape. Numpy ignored the shape header.
+paws_data = np.loadtxt(&quot;paws.txt&quot;).reshape(4,11,14)
+
+#getting a list of images
+paws = [p.squeeze() for p in np.vsplit(paws_data,4)]
+
+
+def detect_peaks(image):
+    &quot;&quot;&quot;
+    Takes an image and detect the peaks usingthe local maximum filter.
+    Returns a boolean mask of the peaks (i.e. 1 when
+    the pixel&apos;s value is the neighborhood maximum, 0 otherwise)
+    &quot;&quot;&quot;
+
+    # define an 8-connected neighborhood
+    neighborhood = generate_binary_structure(2,2)
+
+    #apply the local maximum filter; all pixel of maximal value 
+    #in their neighborhood are set to 1
+    local_max = maximum_filter(image, footprint=neighborhood)==image
+    #local_max is a mask that contains the peaks we are 
+    #looking for, but also the background.
+    #In order to isolate the peaks we must remove the background from the mask.
+
+    #we create the mask of the background
+    background = (image==0)
+
+    #a little technicality: we must erode the background in order to 
+    #successfully subtract it form local_max, otherwise a line will 
+    #appear along the background border (artifact of the local maximum filter)
+    eroded_background = binary_erosion(background, structure=neighborhood, border_value=1)
+
+    #we obtain the final mask, containing only peaks, 
+    #by removing the background from the local_max mask (xor operation)
+    detected_peaks = local_max ^ eroded_background
+
+    return detected_peaks
+
+
+#applying the detection and plotting results
+for i, paw in enumerate(paws):
+    detected_peaks = detect_peaks(paw)
+    pp.subplot(4,2,(2*i+1))
+    pp.imshow(paw)
+    pp.subplot(4,2,(2*i+2) )
+    pp.imshow(detected_peaks)
+
+pp.show()
+</code></pre><p>所有你需要做的是在mask上使用 <em>scipy.ndimage.measurements.label</em> 来标记所有不同的对象。那么你就可以单独玩。</p>
+<p><strong>请注意</strong>该方法运作良好，因为背景不吵。如果是这样，你会在背景中检测到一堆其他不需要的峰值。另一个重要的因素是 <em>邻里</em><br>的大小。你需要调整它，如果峰值的大小变化（应保持大致成比例）。</p>
+<h3><span id="solution">Solution</span></h3><p>数据文件：<a href="http://pastebin.com/XX3Egq7x" target="_blank" rel="noopener"> paw.txt </a>。源代码：</p>
+<pre><code>from scipy import *
+from operator import itemgetter
+
+n = 5  # how many fingers are we looking for
+
+d = loadtxt(&quot;paw.txt&quot;)
+width, height = d.shape
+
+# Create an array where every element is a sum of 2x2 squares.
+
+fourSums = d[:-1,:-1] + d[1:,:-1] + d[1:,1:] + d[:-1,1:]
+
+# Find positions of the fingers.
+
+# Pair each sum with its position number (from 0 to width*height-1),
+
+pairs = zip(arange(width*height), fourSums.flatten())
+
+# Sort by descending sum value, filter overlapping squares
+
+def drop_overlapping(pairs):
+    no_overlaps = []
+    def does_not_overlap(p1, p2):
+        i1, i2 = p1[0], p2[0]
+        r1, col1 = i1 / (width-1), i1 % (width-1)
+        r2, col2 = i2 / (width-1), i2 % (width-1)
+        return (max(abs(r1-r2),abs(col1-col2)) &gt;= 2)
+    for p in pairs:
+        if all(map(lambda prev: does_not_overlap(p,prev), no_overlaps)):
+            no_overlaps.append(p)
+    return no_overlaps
+
+pairs2 = drop_overlapping(sorted(pairs, key=itemgetter(1), reverse=True))
+
+# Take the first n with the heighest values
+
+positions = pairs2[:n]
+
+# Print results
+
+print d, &quot;\n&quot;
+
+for i, val in positions:
+    row = i / (width-1)
+    column = i % (width-1)
+    print &quot;sum = %f @ %d,%d (%d)&quot; % (val, row, column, i)
+    print d[row:row+2,column:column+2], &quot;\n&quot;
+</code></pre><p><a href="http://pastebin.com/fgaGrsem" target="_blank" rel="noopener">输出</a>不重叠的正方形。看起来像你的例子一样选择了相同的区域。</p>
+<h3><span id="some-comments">Some comments</span></h3><p>棘手的部分是计算所有2x2平方的总和。我以为你需要所有这些，所以可能会有一些重叠。我使用切片从原始二维数组中切割第一/最后一列和第二列，然后将它们重叠在一起并计算总和。</p>
+<p>为了更好地理解它，成像一个3x3阵列：</p>
+<pre><code>&gt;&gt;&gt; a = arange(9).reshape(3,3) ; a
+array([[0, 1, 2],
+       [3, 4, 5],
+       [6, 7, 8]])
+</code></pre><p>然后你可以拿它的切片：</p>
+<pre><code>&gt;&gt;&gt; a[:-1,:-1]
+array([[0, 1],
+       [3, 4]])
+&gt;&gt;&gt; a[1:,:-1]
+array([[3, 4],
+       [6, 7]])
+&gt;&gt;&gt; a[:-1,1:]
+array([[1, 2],
+       [4, 5]])
+&gt;&gt;&gt; a[1:,1:]
+array([[4, 5],
+       [7, 8]])
+</code></pre><p>现在想象你把它们叠在一起，然后在相同的位置上加上元素。这些数字与左上角的2x2平方数在同一位置上将完全相同：</p>
+<pre><code>&gt;&gt;&gt; sums = a[:-1,:-1] + a[1:,:-1] + a[:-1,1:] + a[1:,1:]; sums
+array([[ 8, 12],
+       [20, 24]])
+</code></pre><p>如果您有超过2 x 2的正方形，您可以使用<code>max</code>查找最大值，或者<code>sort</code>或<code>sorted</code>来查找峰。</p>
+<p>为了记住峰值的位置，我将每个值（总和）与它在扁平数组中的顺序位置相耦合（见<code>zip</code>）。然后当我打印结果时，再次计算行/列位置。</p>
+<h3><span id="notes">Notes</span></h3><p>我允许2×2方块重叠。编辑过的版本会过滤掉其中的一些，这样只有非重叠的正方形出现在结果中。</p>
+<h3><span id="choosing-fingers-an-idea">Choosing fingers (an idea)</span></h3><p>另一个问题是如何选择可能是所有峰的手指。我有一个想法，可能会或可能不会工作。我现在没有时间去实现，所以只是伪代码。</p>
+<p>我注意到，如果前手指几乎是一个完美的圆圈，后手指应该在这个圆圈内。而且，正面的手指或多或少是等距的。我们可能会尝试使用这些启发式属性来检测手指。</p>
+<p>伪代码：</p>
+<pre><code>select the top N finger candidates (not too many, 10 or 12)
+consider all possible combinations of 5 out of N (use itertools.combinations)
+for each combination of 5 fingers:
+    for each finger out of 5:
+        fit the best circle to the remaining 4
+        =&gt; position of the center, radius
+        check if the selected finger is inside of the circle
+        check if the remaining four are evenly spread
+        (for example, consider angles from the center of the circle)
+        assign some cost (penalty) to this selection of 4 peaks + a rear finger
+        (consider, probably weighted:
+             circle fitting error,
+             if the rear finger is inside,
+             variance in the spreading of the front fingers,
+             total intensity of 5 peaks)
+choose a combination of 4 peaks + a rear peak with the lowest penalty
+</code></pre><p>这是一个暴力的方法。如果N相对较小，那我认为是可行的。对于N = 12，有C_12 ^ 5 =<br>792个组合，有5种方式选择一个后手指，因此每个爪子有3960个情况进行评估。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/image-processing/">image-processing</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/peak-detection-in-a-2d-array/" data-title="二维数组中的峰值检测 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/parsing-values-from-a-json-file/" title="从JSON文件解析值？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  从JSON文件解析值？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/pip-install-mysql-python-fails-with-environmenterror-mysql-config-not-found/"  title="pip安装mysql-python与EnvironmentError失败：找不到mysql_config">
+ <strong>下一篇：</strong><br/> 
+ <span>pip安装mysql-python与EnvironmentError失败：找不到mysql_config
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Results</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Update:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">New update:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Solution</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Some comments</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text">Notes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.</span> <span class="toc-text">Choosing fingers (an idea)</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

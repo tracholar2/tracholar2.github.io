@@ -1,0 +1,637 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Python类继承对象 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="是否有任何理由让类声明继承object？ 我刚刚发现了一些代码，我找不到一个好的理由。 class MyClass(object):     # class code follows...">
+<meta name="keywords" content="python,object,class,inheritance">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python类继承对象">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/python-class-inherits-object/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="是否有任何理由让类声明继承object？ 我刚刚发现了一些代码，我找不到一个好的理由。 class MyClass(object):     # class code follows...">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python类继承对象">
+<meta name="twitter:description" content="是否有任何理由让类声明继承object？ 我刚刚发现了一些代码，我找不到一个好的理由。 class MyClass(object):     # class code follows...">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/python-class-inherits-object/" title="Python类继承对象" itemprop="url">Python类继承对象</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Is there any reason for a class declaration to inherit from object?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Python 2.x story:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Python 3.x story:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">So, what should you I do?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Explanation:</span></a>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>是否有任何理由让类声明继承<code>object</code>？</p>
+<p>我刚刚发现了一些代码，我找不到一个好的理由。</p>
+<pre><code>class MyClass(object):
+    # class code follows...
+</code></pre><a id="more"></a>
+<blockquote>
+<h3><span id="is-there-any-reason-for-a-class-declaration-to-inherit-from-object">Is there any reason for a class declaration to inherit from <code>object</code>?</span></h3></blockquote>
+<p>在Python 3中，除了Python 2和3之间的兼容性外， <em>no</em> 。在Python 2中， <em>很多原因</em> 。</p>
+<hr>
+<h3><span id="python-2x-story">Python 2.x story:</span></h3><p>在Python<br>2.x中（从2.2开始）有两种类型的类，这取决于是否存在<a href="“https://docs.python.org/3/library/stdtypes.html”rel">内置类型</a>作为基类：</p>
+<p><strong> </strong> <strong> </strong> ** &lt;预&gt; &lt;代码&gt;＆GT;＆GT;＆GT; class ClassicSpam：＃没有基类 通过 ＆GT;＆GT;＆GT;<br>ClassicSpam .<strong> bases</strong> （）</p>
+<p>style **类：它们有一个内置类型作为基类，它们直接或间接地以<code>object</code>为基类：</p>
+<p>&lt;预&gt; &lt;代码&gt;＆GT;＆GT;＆GT;类NewSpam（object）：＃直接从对象继承 通过 ＆GT;＆GT;＆GT; NewSpam .<strong><br>bases</strong> （＆lt; type’object’＆gt ;,） ＆GT;＆GT;＆GT;类IntSpam（int）：＃间接继承对象… 通过<br>＆GT;＆GT;＆GT; IntSpam .<strong> bases</strong> （＆lt;类型’int’＆gt ;,） ＆GT;＆GT;＆GT; IntSpam .<strong><br>bases </strong> [0] .<strong> bases</strong>＃…因为int从object继承 （＆lt; type’object’＆gt ;,）</p>
+<p>毫无疑问，当你写一个类的时候，你总是希望去学习新的类。这样做的好处很多，列出其中的一些：</p>
+<ul>
+<li><p><a href="https://docs.python.org/3/howto/descriptor.html" target="_blank" rel="noopener">支持描述符</a>。具体来说，下面的结构是可能的描述符：</p>
+<ul>
+<li><a href="https://docs.python.org/3/library/functions.html#classmethod" target="_blank" rel="noopener"> <code>classmethod</code> </a>：一种方法接收该类作为隐式参数而不是实例。</li>
+<li><a href="https://docs.python.org/3/library/functions.html#staticmethod" target="_blank" rel="noopener"> <code>staticmethod</code> </a>：一种方法作为第一个参数没有收到隐式参数<code>self</code> 使用<a href="https://docs.python.org/3/library/functions.html#property" target="_blank" rel="noopener"> <code>property</code> </a>的</li>
+<li>属性：创建用于管理属性的获取，设置和删除的功能。</li>
+<li><a href="https://docs.python.org/3/reference/datamodel.html#slots" target="_blank" rel="noopener"> <code>__ slots __</code> </a>：节省内存消耗的类，也导致更快的属性访问。当然，它会<a href="https://docs.python.org/3/reference/datamodel.html#notes-on-using-slots" target="_blank" rel="noopener">施加限制</a>。 / LI&gt; </li>
+</ul>
+</li>
+<li><p>[ <code>__ new __</code> 静态方法：让你自定义如何创建新的类实例。 </p>
+</li>
+<li><p><a href="https://www.python.org/download/releases/2.3/mro/" target="_blank" rel="noopener">方法解析订单（MRO）</a>：以何种顺序在尝试解析要调用的方法时，将会搜索类的基类。 </p>
+</li>
+<li><p>与MRO相关，<a href="https://docs.python.org/3/library/functions.html#super" target="_blank" rel="noopener"> <code>超级</code>调用</a>。另请参阅<a href="https://rhettinger.wordpress.com/2011/05/26/super-considered-super/" target="_blank" rel="noopener"> <code>super（）</code>认为超级。 </a></p>
+</li>
+</ul>
+<p>如果你不从<code>object</code>继承，忘记这些。以前的要点以及“新”风格类的其他特性的更详尽的描述可以参见<a href="“https://www.python.org/download/releases/2.2.3/descrintro/”rel">此处</a>。</p>
+<p>新式课程的一个缺点是课程本身对内存的要求更高。除非你创建了许多类对象，否则我怀疑这将是一个问题，这是一个积极的消极的消极影响。</p>
+<hr>
+<h3><span id="python-3x-story">Python 3.x story:</span></h3><p>在Python 3中，事情被简化了。只有新的类存在（简单地称为类），所以添加<code>object</code>的唯一区别是要求输入8个以上的字符。这样：</p>
+<pre><code>class ClassicSpam:
+    pass
+</code></pre><p>完全相同（除了名称:-)：</p>
+<pre><code>class NewSpam(object):
+     pass
+</code></pre><p>和这个：</p>
+<pre><code>class Spam():
+    pass
+</code></pre><p>在<code>__ bases __</code>中都有<code>object</code>。</p>
+<pre><code>&gt;&gt;&gt; [object in cls.__bases__ for cls in {Spam, NewSpam, ClassicSpam}]
+[True, True, True]
+</code></pre><hr>
+<h2><span id="so-what-should-you-i-do">So, what should you I do?</span></h2><p>在Python 2中：** <em>始终明确地继承<code>object</code> </em> 。获得福利。</p>
+<p>在Python 3中：**继承自<code>object</code>，如果您正在编写试图成为Python不可知的代码，也就是说，它需要在Python<br>2和Python否则不要，这真的没有什么区别。</p>
+<p><strong>Python 3.x：</strong><br><code>class MyClass（object）：</code> =新风格的类 <code>class MyClass：</code> =新风格的类（隐式继承对象）</p>
+<p><strong>Python 2.x：</strong><br><code>class MyClass（object）：</code> =新风格的类 <code>class MyClass：</code> = <em>OLD-STYLE CLASS</em></p>
+<h2><span id="explanation">Explanation:</span></h2><p>在Python 3.x中定义基类时，您可以从定义中删除对象。但是，这可以打开一个严重的难以追踪问题的大门… …</p>
+<p>Python在Python 2.2中引入了新风格的类，到现在为止，旧风格的类已经很老了。讨论旧式的课程是将[埋在2.x文档中a&gt;，在3.x文档中不存在。</p>
+<p>问题是，<2.x> Python 2.x中旧式类的语法与Python 3.x中新式类的替代语法**相同。 Python<br>2.x仍然被广泛使用（例如GAE，Web2Py），任何代码（或者编码器）不知不觉地将2.x风格的类定义带入2.x代码，最终会导致一些严重过期的基础对象。而且因为老式的课程并不是任何人的雷达，他们可能不知道是什么打击了他们。</2.x></p>
+<p>所以，只要把它拼出来，节省一些2.x开发人员的眼泪。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/object/">object</a><a href="/tags/class/">class</a><a href="/tags/inheritance/">inheritance</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/python-class-inherits-object/" data-title="Python类继承对象 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/why-does-python-code-run-faster-in-a-function/" title="为什么Python代码在函数中运行得更快？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  为什么Python代码在函数中运行得更快？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/python-progression-path-from-apprentice-to-guru/"  title="Python进程路径 - 从徒弟到专家">
+ <strong>下一篇：</strong><br/> 
+ <span>Python进程路径 - 从徒弟到专家
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Is there any reason for a class declaration to inherit from object?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Python 2.x story:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Python 3.x story:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">So, what should you I do?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Explanation:</span></a>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

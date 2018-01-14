@@ -1,0 +1,634 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Django是否缩放？ [关闭] | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我正在用Django构建一个Web应用程序。我选择Django的原因是：  我想使用免费/开源工具。 我喜欢Python，觉得这是一个“长期”的语言，而关于Ruby我不确定，而PHP似乎是一个巨大的麻烦学习。 我正在为一个想法建立一个原型，并没有太多的考虑未来。开发速度是主要的因素，我已经知道Python。 如果将来我选择这样做，我知道迁移到Google App Engine会更容易。 我听说Dj">
+<meta name="keywords" content="python,django,web-applications,scalability">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django是否缩放？ [关闭]">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/does-django-scale/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我正在用Django构建一个Web应用程序。我选择Django的原因是：  我想使用免费/开源工具。 我喜欢Python，觉得这是一个“长期”的语言，而关于Ruby我不确定，而PHP似乎是一个巨大的麻烦学习。 我正在为一个想法建立一个原型，并没有太多的考虑未来。开发速度是主要的因素，我已经知道Python。 如果将来我选择这样做，我知道迁移到Google App Engine会更容易。 我听说Dj">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Django是否缩放？ [关闭]">
+<meta name="twitter:description" content="我正在用Django构建一个Web应用程序。我选择Django的原因是：  我想使用免费/开源工具。 我喜欢Python，觉得这是一个“长期”的语言，而关于Ruby我不确定，而PHP似乎是一个巨大的麻烦学习。 我正在为一个想法建立一个原型，并没有太多的考虑未来。开发速度是主要的因素，我已经知道Python。 如果将来我选择这样做，我知道迁移到Google App Engine会更容易。 我听说Dj">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/does-django-scale/" title="Django是否缩放？ [关闭]" itemprop="url">Django是否缩放？ [关闭]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我正在用Django构建一个Web应用程序。我选择Django的原因是：</p>
+<ul>
+<li>我想使用免费/开源工具。</li>
+<li>我喜欢Python，觉得这是一个“长期”的语言，而关于Ruby我不确定，而PHP似乎是一个巨大的麻烦学习。</li>
+<li>我正在为一个想法建立一个原型，并没有太多的考虑未来。开发速度是主要的因素，我已经知道Python。</li>
+<li>如果将来我选择这样做，我知道迁移到Google App Engine会更容易。</li>
+<li>我听说Django“很好”。</li>
+</ul>
+<p>现在我越来越考虑发表我的作品，我开始关注规模。<br>Django团队提供了关于Django扩展能力的唯一信息（我没有任何言语可以忽视它们，但这显然不是客观的信息）。</p>
+<p>我的问题：</p>
+<ul>
+<li>今天在Django上建立的“最大”网站是什么？ （我主要测量用户流量的大小）</li>
+<li>Django能够每天处理100,000个用户，每个用户访问该网站几个小时？</li>
+<li>堆栈溢出这样的网站能否在Django上运行？</li>
+</ul>
+<a id="more"></a>
+<ul>
+<li><strong>“今天在Django上建立的最大的网站是什么？”</strong></li>
+</ul>
+<p>没有任何一个地方收集有关Django网站流量的信息，所以我不得不使用来自不同地点的数据来刺探它。首先，我们在<a href="http://www.djangoproject.com/" target="_blank" rel="noopener">主Django项目页面</a>的首页上列出Django站点列表，然后列出Django在<a href="http://www.djangosites.org/" target="_blank" rel="noopener">djangosites.org </a>上构建了网站。通过列表，并选择我知道的一些流量，我们看到：</p>
+<pre><code>* **[ Instagram ](http://instagram.com) ** ：[什么能力的Instagram：数百个实例，数十种技术](“http：//)。
+
+* **[ Pinterest ](http://pinterest.com/) ** ：[ Alexa排名37（21.4.2015）](“http：//)，2013年用户达到7000万人
+* **[ Bitbucket ](http://bitbucket.org/) ** ：[ 200TB的代码和2.500.000用户](“https：//)
+
+* **[ Disqus ](http://disqus.com) ** ：[为Python服务4亿人](“http://pyvideo.org)。
+
+* **[ curse.com ](http://curse.com/) ** ：[每日访问量为600,000次。
+
+* **[ tabblo.com ](http://tabblo.com/) ** ：[每天访问量为44k次](“http：//)，请参阅Ned Batchelder的文章[现代网站的基础设施](”http://nedbatchelder.com/blog/200902/infrastructure_for_modern_web_sites.html“rel)。
+
+* **[ chesspark.com ](http://chesspark.com/) ** ：[ Alexa ](“http：//)排名大约179k。
+
+* **[ pownce.com ](http://pownce.com/) ** （不再有效）：[ alexa ](“http://www.alexa.com/siteinfo/pownce.com”rel)等级约65k。 Pownce的Mike Malone在他的EuroDjangoCon演讲中 **[扩展Django Web Apps ](http://www.slideshare.net/road76/scaling-django) &lt;强“说”每秒点击数百次“。这是一个关于如何扩展Django的非常好的演示，并且提供了一些很好的观点，包括Django可伸缩性方面的（当前）缺陷。
+</code></pre><p>惠普有一个使用Django 1.5构建的网站：<a href="http://www.eprintcenter.com" target="_blank" rel="noopener"> ePrint中心</a>。但是，对于novemer /<br>2015整个网站已经迁移，这个链接只是一个重定向。该网站是全球范围的服务，参与惠普提供的Instant Ink和相关服务的订阅（*）。</p>
+<p>Django能够每天处理100,000个用户，每个用户访问这个站点几个小时？“**</p>
+<p>是的，看上面。</p>
+<ul>
+<li><strong>“堆栈溢出”可以在Django上运行吗？</strong></li>
+</ul>
+<p>我的直觉是肯定的，但正如其他人的回答，Mike<br>Malone在演讲中提到的，数据库设计是至关重要的。如果我们能够找到任何可靠的流量统计数据，www.cnprog.com也可以找到有力的证据。无论如何，这不仅仅是通过把一堆Django模型扔在一起而发生的事情：）</p>
+<p>当然，还有更多的网站和博客感兴趣，但我必须停下来的地方！</p>
+<hr>
+<p>有关<a href="http://web.archive.org/web/20130307032621/http://concentricsky.com/blog/2009/oct/michaelmoorecom" target="_blank" rel="noopener">的博客文章使用Django建立高流量网站michaelmoore.com</a>描述为一个<a href="http://www.alexa.com/siteinfo/http%3A%2F%2Fmichaelmoore.com" target="_blank" rel="noopener">前10000名网站</a>。<br><a href="http://www.quantcast.com/michaelmoore.com" target="_blank" rel="noopener"> Quantcast stats </a>和<a href="“http://siteanalytics.compete.com/michaelmoore.com">contest.com统计</a>。</p>
+<hr>
+<p>（*）编辑的作者，包括这样的引用，曾经作为该项目的外包开发人员工作。</p>
+<p>我们现在正在进行负载测试。我们认为我们可以支持240个并发请求（24x7每秒120个点击率的持续速率），而不会显着降低服务器的性能。那将是每小时432,000次点击。响应时间并不短（我们的交易量很大），但是随着负载的增加，我们的基线性能没有下降。</p>
+<p>我们正在使用Apache前端Django和MySQL。操作系统是红帽企业Linux（RHEL）。<br>64位。我们在Django的守护进程模式下使用mod_wsgi。除了接受默认值之外，我们没有进行缓存或数据库优化。</p>
+<p>我们都在64位戴尔（我认为）32Gb内存的虚拟机上。</p>
+<p>由于20或200个并发用户的性能几乎相同，所以我们不需要花费大量时间“调整”。相反，我们只需要通过普通的SSL性能改进，普通的数据库设计和实现（索引等），普通的防火墙性能改进等来保持基本性能。</p>
+<p>我们测量的是我们的负载测试笔记本电脑在15个进程运行16个并发线程请求的疯狂工作负载下挣扎。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/django/">django</a><a href="/tags/web-applications/">web-applications</a><a href="/tags/scalability/">scalability</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/does-django-scale/" data-title="Django是否缩放？ [关闭] | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/differences-between-lodash-and-underscore/" title="lodash和下划线之间的区别">
+  <strong>上一篇：</strong><br/>
+  <span>
+  lodash和下划线之间的区别</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/document-ready-equivalent-without-jquery/"  title="$（document）.ready没有jQuery">
+ <strong>下一篇：</strong><br/> 
+ <span>$（document）.ready没有jQuery
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

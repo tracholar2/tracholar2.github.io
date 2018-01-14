@@ -1,0 +1,688 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为什么在Python 3中“1000000000000000（1000000000000001）”这么快？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="据我所知，range（）函数实际上是 Python3中的一个对象类型，即时生成其内容，类似于生成器。 如果是这样的话，我会预料到下面这一行会花费过多的时间，因为为了确定是否在这个范围内，需要生成一个四十亿个值： 1000000000000000 in range(1000000000000001) 此外：似乎不管我添加了多少个零，计算或多或少需要相同的时间量（基本上是瞬时的）。 我也尝试过这样的事">
+<meta name="keywords" content="python,python-3.x,performance,python-internals,range">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么在Python 3中“1000000000000000（1000000000000001）”这么快？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="据我所知，range（）函数实际上是 Python3中的一个对象类型，即时生成其内容，类似于生成器。 如果是这样的话，我会预料到下面这一行会花费过多的时间，因为为了确定是否在这个范围内，需要生成一个四十亿个值： 1000000000000000 in range(1000000000000001) 此外：似乎不管我添加了多少个零，计算或多或少需要相同的时间量（基本上是瞬时的）。 我也尝试过这样的事">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么在Python 3中“1000000000000000（1000000000000001）”这么快？">
+<meta name="twitter:description" content="据我所知，range（）函数实际上是 Python3中的一个对象类型，即时生成其内容，类似于生成器。 如果是这样的话，我会预料到下面这一行会花费过多的时间，因为为了确定是否在这个范围内，需要生成一个四十亿个值： 1000000000000000 in range(1000000000000001) 此外：似乎不管我添加了多少个零，计算或多或少需要相同的时间量（基本上是瞬时的）。 我也尝试过这样的事">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/" title="为什么在Python 3中“1000000000000000（1000000000000001）”这么快？" itemprop="url">为什么在Python 3中“1000000000000000（1000000000000001）”这么快？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>据我所知，<code>range（）</code>函数实际上是<a href="“https://docs.python.org/3/library/stdtypes.html#typesseq-
+range"> Python<br>3中的一个对象类型</a>，即时生成其内容，类似于生成器。</p>
+<p>如果是这样的话，我会预料到下面这一行会花费过多的时间，因为为了确定是否在这个范围内，需要生成一个四十亿个值：</p>
+<pre><code>1000000000000000 in range(1000000000000001)
+</code></pre><p>此外：似乎不管我添加了多少个零，计算或多或少需要相同的时间量（基本上是瞬时的）。</p>
+<p>我也尝试过这样的事情，但是计算仍然几乎是即时的：</p>
+<pre><code>1000000000000000000000 in range(0,1000000000000000000001,10) # count by tens
+</code></pre><p>如果我试图实现我自己的范围功能，结果是不是很好！</p>
+<pre><code>def my_crappy_range(N):
+    i = 0
+    while i &lt; N:
+        yield i
+        i += 1
+    return
+</code></pre><p><code></code> range（）`是什么使得它如此之快？</p>
+<hr>
+<p>编辑：事实证明，这是一个比我预想的更细致的话题 - 在<code>range（）</code>优化的背后似乎有点历史。</p>
+<p><a href="https://stackoverflow.com/a/30081318/2437514" target="_blank" rel="noopener"> Martijn<br>Pieters的答案</a>是因为它的完整性而被选中的，但也可以参考<a href="“https：//">abarnert的第一个答案</a>，以便很好地讨论在Python中<code>range</code>是一个完整的 <em>序列</em> 3，关于<code>__的潜在不一致性的一些信息/警告包含Python实现中的__</code>函数优化。 <a href="https://stackoverflow.com/a/30088140/2437514" target="_blank" rel="noopener">abarnert的其他答案</a>更详细一些，并提供了有关Python<br>3优化背后的历史感兴趣的链接（缺乏Python 2中<code>xrange</code>的优化）。<br><a href="https://stackoverflow.com/a/30081467/2437514" target="_blank" rel="noopener">通过戳</a>和<a href="https://stackoverflow.com/a/30081470/2437514" target="_blank" rel="noopener">通过wim</a>为有兴趣的人提供相关的C源代码和解释。</p>
+<p><a id="more"></a> Python 3 <code>range（）</code>对象不会立即生成数字;它是一个智能序列对象，可以根据需要产生数字_<br>。所有它包含的是你的开始，停止和步骤值，然后当你迭代对象时，每次迭代计算下一个整数。</p>
+<p>这个对象还实现了<a href="https://docs.python.org/3/reference/datamodel.html#object.__contains__" target="_blank" rel="noopener"> <code>object .__ contains __</code> hook</a>和<br><em>计算</em> 是否您的号码是其范围的一部分。计算是一个O（1）常数时间操作。从来没有必要扫描范围内的所有可能的整数。</p>
+<p>从<a href="https://docs.python.org/3/library/stdtypes.html#range" target="_blank" rel="noopener"> <code>range（）</code>对象文档</a>： p&gt;</p>
+<blockquote>
+<p>The advantage of the <code>range</code> type over a regular <code>list</code> or <code>tuple</code> is that a<br>range object will always take the same (small) amount of memory, no matter the<br>size of the range it represents (as it only stores the <code>start</code>, <code>stop</code> and<br><code>step</code> values, calculating individual items and subranges as needed).</p>
+</blockquote>
+<p>所以至少你的<code>range（）</code>对象会这样做：</p>
+<pre><code>class my_range(object):
+    def __init__(self, start, stop=None, step=1):
+        if stop is None:
+            start, stop = 0, start
+        self.start, self.stop, self.step = start, stop, step
+        if step &lt; 0:
+            lo, hi = stop, start
+        else:
+            lo, hi = start, stop
+        self.length = ((hi - lo - 1) // abs(step)) + 1
+
+    def __iter__(self):
+        current = self.start
+        if self.step &lt; 0:
+            while current &gt; self.stop:
+                yield current
+                current += self.step
+        else:
+            while current &lt; self.stop:
+                yield current
+                current += self.step
+
+    def __len__(self):
+        return self.length
+
+    def __getitem__(self, i):
+        if i &lt; 0:
+            i += self.length
+        if 0 &lt;= i &lt; self.length:
+            return self.start + i * self.step
+        raise IndexError(&apos;Index out of range: {}&apos;.format(i))
+
+    def __contains__(self, num):
+        if self.step &lt; 0:
+            if not (self.stop &lt; num &lt;= self.start):
+                return False
+        else:
+            if not (self.start &lt;= num &lt; self.stop):
+                return False
+        return (num - self.start) % self.step == 0
+</code></pre><p>这仍然缺少一些真正的<code>range（）</code>支持的东西（如<code>.index（）</code>或<code>.count（）</code>方法，哈希，平等测试或切片），但应该给你一个想法。</p>
+<p>我还简化了<code>__ contains __</code>实现，只关注整型测试;如果给一个真正的<code>range（）</code>对象一个非整数值（包括<code>int</code>的子类），就会启动慢速扫描来查看是否存在匹配如果对包含的所有值列表使用包含测试。这样做是为了继续支持其他刚好支持用整数进行等式测试的数字类型，但是也不希望支持整数算术。请参阅实施遏制测试的原始<a href="http://bugs.python.org/issue1766304" target="_blank" rel="noopener">Python问题</a>。</p>
+<p>这里的根本的误解是认为<code>range</code>是一个生成器。不是。事实上，它不是任何一种迭代器。</p>
+<p>你可以很简单地告诉你：</p>
+<pre><code>&gt;&gt;&gt; a = range(5)
+&gt;&gt;&gt; print(list(a))
+[0, 1, 2, 3, 4]
+&gt;&gt;&gt; print(list(a))
+[0, 1, 2, 3, 4]
+</code></pre><p>如果它是一个生成器，重复一次就会耗尽它：</p>
+<pre><code>&gt;&gt;&gt; b = my_crappy_range(5)
+&gt;&gt;&gt; print(list(b))
+[0, 1, 2, 3, 4]
+&gt;&gt;&gt; print(list(b))
+[]
+</code></pre><p>实际上，<code>range</code>是一个序列，就像一个列表。你甚至可以测试这个：</p>
+<pre><code>&gt;&gt;&gt; import collections.abc
+&gt;&gt;&gt; isinstance(a, collections.abc.Sequence)
+True
+</code></pre><p>这意味着它必须遵循作为序列的所有规则：</p>
+<pre><code>&gt;&gt;&gt; a[3]         # indexable
+3
+&gt;&gt;&gt; len(a)       # sized
+5
+&gt;&gt;&gt; 3 in a       # membership
+True
+&gt;&gt;&gt; reversed(a)  # reversible
+&lt;range_iterator at 0x101cd2360&gt;
+&gt;&gt;&gt; a.index(3)   # implements &apos;index&apos;
+3
+&gt;&gt;&gt; a.count(3)   # implements &apos;count&apos;
+1
+</code></pre><hr>
+<p><code></code> range <code>与</code> list <code>之间的区别在于</code> range <code>是 _lazy_ 或 _动态序列;它不记得它的所有值，它只是记住它的</code> start<br><code>，</code> stop <code>和</code> step `，并根据需要在&lt;代码&gt; <strong>的GetItem </strong></p>
+<p>（注意，如果你 （iter（a））<code>，你会注意到</code> range <code>使用了相同的</code> listiterator <code>类型为</code> list <code>。这是如何工作的？一个</code>listiterator <code>没有使用任何关于</code> list <code>的特殊内容，除了它提供了一个C实现</code> <strong> getitem </strong> <code>，所以它对</code> range<br>`也能正常工作。）</p>
+<hr>
+<p>现在，没有什么说<code>Sequence .__ contains __</code>必须是常量时间 - 事实上，对于像<code>list</code>这样的序列的明显例子，事实并非如此。但没有什么说它不能 _是。实现<code>range .__包含__</code>以便在数学上检查它（<code>（val-start）％step</code>，但处理负面步骤有一些额外的复杂性）比实际更容易生成和测试所有的值，那么为什么不应该这样做呢？</p>
+<p>但是在这种语言中似乎没有任何东西可以保证这种情况发生。正如Ashwini<br>Chaudhari所指出的那样，如果你给它一个非整数值，而不是转换为整数并进行数学测试，那么它将回落到迭代所有值并逐一比较它们。只是因为CPython<br>3.2+和PyPy 3.x版本碰巧包含了这个优化，而且这是一个明显的好主意，并且容易做到，IronPython或者NewKickAssPython<br>3.x没有任何理由不能忽略它。 （实际上CPython 3.0-3.1 _没有包含它。）</p>
+<hr>
+<p>如果<code>range</code>实际上是一个生成器，比如<code>my_crappy_range</code>，那么用这种方法测试<code>__ contains __</code>是没有意义的，或者至少它的道理是不明显的。如果你已经迭代了前三个值，发生器是<code>1</code>仍然是<code></code>测试<code>1</code>是否会导致它迭代并消耗所有的值到<code>1</code>（或者达到第一个值<code>＆gt; = 1</code>）？</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/python-3-x/">python-3.x</a><a href="/tags/performance/">performance</a><a href="/tags/python-internals/">python-internals</a><a href="/tags/range/">range</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/" data-title="为什么在Python 3中“1000000000000000（1000000000000001）”这么快？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-do-i-write-json-data-to-a-file/" title="如何将JSON数据写入文件？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何将JSON数据写入文件？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-do-you-access-the-matched-groups-in-a-javascript-regular-expression/"  title="如何访问JavaScript正则表达式中的匹配组？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何访问JavaScript正则表达式中的匹配组？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

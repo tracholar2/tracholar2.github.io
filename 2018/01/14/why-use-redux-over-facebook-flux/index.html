@@ -1,0 +1,645 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为什么在Facebook上使用Redux？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我已阅读[此答案&amp;lt; /a&amp;gt;，减少样板，看了几个GitHub的例子，甚至尝试了一下一点点（todo应用程序）。 据我所知，官方的redux文档动机提供了优于传统的MVC架构。但是它没有提供一个问题的答案： 为什么你应该使用Facebook上的Flux的Redux？** 这只是一个编程风格的问题：功能与非功能？或者问题是在redux方法中的能力/开发工具？也许缩放？或测试？_ 我是否正确，">
+<meta name="keywords" content="javascript,reactjs,reactjs-flux,flux,redux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么在Facebook上使用Redux？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/why-use-redux-over-facebook-flux/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我已阅读[此答案&amp;lt; /a&amp;gt;，减少样板，看了几个GitHub的例子，甚至尝试了一下一点点（todo应用程序）。 据我所知，官方的redux文档动机提供了优于传统的MVC架构。但是它没有提供一个问题的答案： 为什么你应该使用Facebook上的Flux的Redux？** 这只是一个编程风格的问题：功能与非功能？或者问题是在redux方法中的能力/开发工具？也许缩放？或测试？_ 我是否正确，">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/14/why-use-redux-over-facebook-flux/“https://camo.githubusercontent.com/a0d66cf145fe35cbe5fb341494b04f277d5d85dd/687474703a2f2f692e696d6775722e636f6d2f4a34476557304d2e676966”alt">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么在Facebook上使用Redux？">
+<meta name="twitter:description" content="我已阅读[此答案&amp;lt; /a&amp;gt;，减少样板，看了几个GitHub的例子，甚至尝试了一下一点点（todo应用程序）。 据我所知，官方的redux文档动机提供了优于传统的MVC架构。但是它没有提供一个问题的答案： 为什么你应该使用Facebook上的Flux的Redux？** 这只是一个编程风格的问题：功能与非功能？或者问题是在redux方法中的能力/开发工具？也许缩放？或测试？_ 我是否正确，">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/14/why-use-redux-over-facebook-flux/“https://camo.githubusercontent.com/a0d66cf145fe35cbe5fb341494b04f277d5d85dd/687474703a2f2f692e696d6775722e636f6d2f4a34476557304d2e676966”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-use-redux-over-facebook-flux/" title="为什么在Facebook上使用Redux？" itemprop="url">为什么在Facebook上使用Redux？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Reducer Composition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Server Rendering</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Developer Experience</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Ecosystem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Simplicity</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我已阅读[此答案&lt; /<br>a&gt;，<a href="http://redux.js.org/docs/recipes/ReducingBoilerplate.html" target="_blank" rel="noopener">减少样板</a>，看了几个GitHub的例子，甚至尝试了一下一点点（todo应用程序）。</p>
+<p>据我所知，<a href="http://redux.js.org/docs/introduction/Motivation.html" target="_blank" rel="noopener">官方的redux文档动机</a>提供了优于传统的MVC架构。但是它没有提供一个问题的答案：</p>
+<p>为什么你应该使用Facebook上的Flux的Redux？**</p>
+<p>这只是一个编程风格的问题：功能与非功能？或者问题是在redux方法中的能力/开发工具？也许缩放？或测试？_</p>
+<p><em>我是否正确，如果我说，redux对于来自功能语言的人来说是一种流量？</em></p>
+<p><strong>为了回答这个问题，你可以比较实现redux在flux和redux上的动机点的复杂性。</strong></p>
+<p>以下是来自<a href="http://redux.js.org/docs/introduction/Motivation.html" target="_blank" rel="noopener">官方文档动机</a>的动机要点：</p>
+<ul>
+<li>处理乐观的更新（据我所知，它几乎不取决于第五点，难以在fb flux中实现）_</li>
+<li>在服务器上进行渲染（ <em>fb flux也可以做到这一点，与redux相比有什么好处？</em> ）</li>
+<li>在执行路由转换之前获取数据（ <em>为什么无法在fb flux中实现？有什么好处？</em> ）</li>
+<li>重新加载（ <em><a href="http://gaearon.github.io/react-hot-loader/" target="_blank" rel="noopener"> React Hot Reload </a>）。为什么我们需要减少？</em> ）</li>
+<li>撤销/重做功能</li>
+<li>其他要点？像持续状态… </li>
+</ul>
+<p><a id="more"></a> Redux的作者在这里！</p>
+<p>Redux不是和Flux不同的 __ 。总的来说，它具有相同的体系结构，但是Redux能够通过使用Flux使用回调注册的功能组合来减少一些复杂的角落。</p>
+<p>在Redux中没有什么根本的不同，但是我发现Redux使得某些抽象更易于实现，或者至少可以实现，这在Flux中很难或者不可能实现。</p>
+<h2><span id="reducer-composition">Reducer Composition</span></h2><p>以分页为例。我的<a href="https://github.com/gaearon/flux-react-router-
+example" target="_blank" rel="noopener"> Flux + React Router示例</a>处理分页，但是代码非常糟糕。其糟糕的原因之一是Flux使得跨商店重用功能是不自然的。**如果两个商店需要处理分页以响应不同的操作，则它们需要从公共基本商店继承！当你使用继承的时候，你将自己锁定在一个特定的设计中），或者从处理函数中调用一个函数，这个函数需要以某种方式在Flux存储的私有状态下运行。整个事情是混乱的（尽管在可能的范围内）。</p>
+<p>另一方面，使用Redux分页是自然的减速器组成。它是减速器，所以你可以写一个<a href="“https://github.com/reactjs/redux/blob/ecb1bb453a60408543f5760bba0aa4c767650ba2/examples
+/real-
+world/reducers/paginate.js”rel">减速器工厂，生成分页减速器</a>，然后<a href="“https://github.com/reactjs/redux/blob/ecb1bb453a60408543f5760bba0aa4c767650ba2/examples
+/real-world/reducers/index.js#L29-L46”">在你的reducer树中使用它</a>。关键是为什么它很容易是因为Flux中的<br><strong>，商店是平坦的，但是在Redux中，reducer可以通过功能组合嵌套，就像React组件可以嵌套一样。</strong></p>
+<p>这种模式还可以实现诸如非用户代码<a href="https://github.com/omnidan/redux-undo" target="_blank" rel="noopener">撤销/重做</a>的精彩功能。<br><strong>你能想象将Undo / Redo插入到两行代码的Flux应用程序中吗？几乎不。有了Redux，它又是</strong><br>，这要归功于reducer组合模式。我需要强调一下，没有什么新东西 - 这是[榆树它本身就受到了Flux的影响。</p>
+<h2><span id="server-rendering">Server Rendering</span></h2><p>人们已经在服务器上使用Flux进行渲染了，但是看到我们有20个Flux库，每个都试图让服务器渲染“越来越难”，或许Flux在服务器上有一些粗糙的边缘。事实是，Facebook没有做太多的服务器渲染，所以他们一直没有十分关心它，并依靠这个生态系统来使其更容易。</p>
+<p>在传统的Flux中，商店是单身人士。这意味着很难将服务器上不同请求的数据分开。不是不可能的，但很难。这就是为什么大多数Flux库（以及新的<a href="https://facebook.github.io/flux/docs/flux-
+utils.html" target="_blank" rel="noopener"> Flux<br>Utils </a>）现在建议你使用类而不是单例，所以你可以为每个请求实例化商店。</p>
+<p>Flux还需要解决以下问题（无论是您自己还是您最喜欢的Flux库的帮助，例如<a href="“https://github.com/acdlite/flummox”rel"> Flummox</a>或<a href="https://github.com/goatslacker/alt" target="_blank" rel="noopener"> Alt</a>）：</p>
+<ul>
+<li>如果商店是类，如何根据请求创建和销毁调度程序？我什么时候注册商店？</li>
+<li>我如何从商店获取数据并在客户端补充水分？我是否需要为此执行特殊的方法？</li>
+</ul>
+<p>无可否认，Flux框架（不是vanilla Flux）可以解决这些问题，但是我发现它们过于复杂。例如，<a href="http://acdlite.github.io/flummox/docs/api/store" target="_blank" rel="noopener"> Flummox要求你实现<code>serialize（）</code>和<code>在您的商店中反序列化（）</code></a>。 Alt通过提供<a href="http://alt.js.org/docs/takeSnapshot/" target="_blank" rel="noopener"> <code>takeSnapshot（）</code></a>来解决这个问题，状态在JSON树中。</p>
+<p>Redux更进一步：由于只有一个商店（由许多reducer管理），因此您不需要任何特殊的API来管理（再）水合。**您不需要到“冲洗”或“水电”商店，只有一个商店，您可以阅读其当前状态，或创建一个新的状态的新商店。每个请求获取一个单独的商店实例。<br><a href="http://redux.js.org/docs/recipes/ServerRendering.html" target="_blank" rel="noopener">阅读更多关于使用Redux的服务器渲染。</a></p>
+<p>再次，这是Flux和Redux中可能的情况，但Flux库通过引入大量API和约定来解决这个问题，Redux甚至不需要解决这个问题，因为它没有首先由于简单的概念问题。</p>
+<h2><span id="developer-experience">Developer Experience</span></h2><p>我其实并不打算让Redux成为一个流行的Flux库 - 我是在写我的[可以通过消除动作来改变减速器代码甚至是“改变过去”，并且看到状态正在被重新计算。**</p>
+<p><img src="“https://camo.githubusercontent.com/a0d66cf145fe35cbe5fb341494b04f277d5d85dd/687474703a2f2f692e696d6775722e636f6d2f4a34476557304d2e676966”alt" alt=""></p>
+<p>我还没有看到能够做到这一点的单个Flux库。 React Hot Loader也不会让你这样做 -<br>事实上，如果你编辑Flux商店，它会中断，因为它不知道如何处理它们。</p>
+<p>当Redux需要重新加载Reducer代码时，它会调用<a href="http://redux.js.org/docs/api/Store.html#replaceReducer" target="_blank" rel="noopener"> <code>replaceReducer（ ）</code></a>，应用程序将使用新代码运行。在Flux中，数据和函数被Flux商店纠缠在一起，所以你不能“去替换函数”。此外，你必须以某种方式重新注册与Dispatcher的新版本</p>
+<ul>
+<li>Redux甚至没有。</li>
+</ul>
+<h2><span id="ecosystem">Ecosystem</span></h2><p>Redux有一个<a href="https://github.com/xgrommx/awesome-
+redux" target="_blank" rel="noopener">丰富且快速增长的生态系统</a>。这是因为它提供了一些扩展点，例如<a href="http://redux.js.org/docs/advanced/Middleware.html" target="_blank" rel="noopener">中间件</a>。它的设计与用例如<a href="https://github.com/fcomb
+/redux-logger" target="_blank" rel="noopener">日志记录</a>，支持<a href="“https：//">承诺</a>，[ Observables &lt;<br>a&gt;，<a href="https://github.com/reactjs/react-router-
+redux" target="_blank" rel="noopener">路由</a>，<a href="“https://github.com/leoasis">不可变性开关检查</a>，[持久性记住，等等。并不是所有这些都会变得有用，但是能够访问一系列可以轻松组合在一起工作的工具是非常好的。</p>
+<h2><span id="simplicity">Simplicity</span></h2><p>Redux保留了Flux的所有优点（记录和重播动作，单向数据流，相关突变），并且在不引入Dispatcher和商店注册的情况下增加了新的优点（简单的撤销 -<br>重做，热重载）。</p>
+<p>保持简单是很重要的，因为它让你保持理智，同时实现更高层次的抽象。</p>
+<p>与大多数Flux库不同，Redux API表面很小。如果您删除了开发人员的警告，注释和完整性检查，则<a href="https://gist.github.com/gaearon/ffd88b0e4f00b22c3159" target="_blank" rel="noopener">99行</a>。没有棘手的异步代码来调试。</p>
+<p>你实际上可以阅读并理解Redux的所有内容。</p>
+<hr>
+<p>另请参阅<a href="https://stackoverflow.com/a/32916602/458193" target="_blank" rel="noopener">关于使用Redux与Flux相比的不足之处</a>。</p>
+<p>你可能最好从Dan Abramov的这篇文章开始，在那里他讨论Flux的各种实现和他在编写redux时的权衡： <a href="https://medium.com/@dan_abramov/the-evolution-of-flux-frameworks-
+6c16ad26bb31" target="_blank" rel="noopener">Flux框架的发展</a></p>
+<p>其次，你链接到的动机页面并没有像Flux（和React）背后的动机一样讨论Redux的动机。虽然[三条原则更具体，但仍然不涉及实施差异来自标准Flux架构。</p>
+<p>基本上，Flux有多个存储计算状态变化，以响应与组件的UI /<br>API交互，并将这些更改作为组件可以订阅的事件广播。在Redux中，每个组件只订购一个商店。海事组织至少像Redux一样，通过统一（或减少，如Redux所说的）将数据流回到组件来进一步简化和统一数据流</p>
+<ul>
+<li>而Flux专注于统一数据流的另一端 - 视图模型。</li>
+</ul>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/reactjs/">reactjs</a><a href="/tags/reactjs-flux/">reactjs-flux</a><a href="/tags/flux/">flux</a><a href="/tags/redux/">redux</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/why-use-redux-over-facebook-flux/" data-title="为什么在Facebook上使用Redux？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/checking-whether-a-variable-is-an-integer-or-not/" title="检查一个变量是否是一个整数">
+  <strong>上一篇：</strong><br/>
+  <span>
+  检查一个变量是否是一个整数</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/correct-way-to-write-line-to-file/"  title="正确的方式写入文件？">
+ <strong>下一篇：</strong><br/> 
+ <span>正确的方式写入文件？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Reducer Composition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Server Rendering</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Developer Experience</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Ecosystem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Simplicity</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

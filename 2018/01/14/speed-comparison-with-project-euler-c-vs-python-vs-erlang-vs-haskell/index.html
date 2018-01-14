@@ -1,0 +1,832 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>与项目欧拉速度比较：C vs Python与Erlang vs Haskell | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我从问题＃12   ProjectEuler作为编程练习，并比较我在C，Python，Erlang和Haskell中的实现（当然不是最优）实现。为了获得更高的执行时间，我搜索了第一个有1000个以上因子的三角形数字，而不是原始问题中所述的500个。 结果如下： &amp;lt;强&amp;gt; C： lorenzo@enzo:~/erlang$ gcc -lm -o euler12.bin euler12.c">
+<meta name="keywords" content="python,performance,c,haskell,erlang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="与项目欧拉速度比较：C vs Python与Erlang vs Haskell">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/speed-comparison-with-project-euler-c-vs-python-vs-erlang-vs-haskell/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我从问题＃12   ProjectEuler作为编程练习，并比较我在C，Python，Erlang和Haskell中的实现（当然不是最优）实现。为了获得更高的执行时间，我搜索了第一个有1000个以上因子的三角形数字，而不是原始问题中所述的500个。 结果如下： &amp;lt;强&amp;gt; C： lorenzo@enzo:~/erlang$ gcc -lm -o euler12.bin euler12.c">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="与项目欧拉速度比较：C vs Python与Erlang vs Haskell">
+<meta name="twitter:description" content="我从问题＃12   ProjectEuler作为编程练习，并比较我在C，Python，Erlang和Haskell中的实现（当然不是最优）实现。为了获得更高的执行时间，我搜索了第一个有1000个以上因子的三角形数字，而不是原始问题中所述的500个。 结果如下： &amp;lt;强&amp;gt; C： lorenzo@enzo:~/erlang$ gcc -lm -o euler12.bin euler12.c">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/speed-comparison-with-project-euler-c-vs-python-vs-erlang-vs-haskell/" title="与项目欧拉速度比较：C vs Python与Erlang vs Haskell" itemprop="url">与项目欧拉速度比较：C vs Python与Erlang vs Haskell</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我从<a href="http://projecteuler.net/index.php?section=problems&amp;id=12" target="_blank" rel="noopener">问题＃12 </a> <a href="“"> Project<br>Euler</a>作为编程练习，并比较我在C，Python，Erlang和Haskell中的实现（当然不是最优）实现。为了获得更高的执行时间，我搜索了第一个有1000个以上因子的三角形数字，而不是原始问题中所述的500个。</p>
+<p>结果如下：</p>
+<p>&lt;强&gt; C：</p>
+<pre><code>lorenzo@enzo:~/erlang$ gcc -lm -o euler12.bin euler12.c
+lorenzo@enzo:~/erlang$ time ./euler12.bin
+842161320
+
+real    0m11.074s
+user    0m11.070s
+sys 0m0.000s
+</code></pre><p>&lt;强&gt;的Python：</p>
+<pre><code>lorenzo@enzo:~/erlang$ time ./euler12.py 
+842161320
+
+real    1m16.632s
+user    1m16.370s
+sys 0m0.250s
+</code></pre><p>Python与PyPy：**</p>
+<pre><code>lorenzo@enzo:~/Downloads/pypy-c-jit-43780-b590cf6de419-linux64/bin$ time ./pypy /home/lorenzo/erlang/euler12.py 
+842161320
+
+real    0m13.082s
+user    0m13.050s
+sys 0m0.020s
+</code></pre><p>&lt;强&gt;二郎：</p>
+<pre><code>lorenzo@enzo:~/erlang$ erlc euler12.erl 
+lorenzo@enzo:~/erlang$ time erl -s euler12 solve
+Erlang R13B03 (erts-5.7.4) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:0] [hipe] [kernel-poll:false]
+
+Eshell V5.7.4  (abort with ^G)
+1&gt; 842161320
+
+real    0m48.259s
+user    0m48.070s
+sys 0m0.020s
+</code></pre><p>&lt;强&gt; Haskell中：</p>
+<pre><code>lorenzo@enzo:~/erlang$ ghc euler12.hs -o euler12.hsx
+[1 of 1] Compiling Main             ( euler12.hs, euler12.o )
+Linking euler12.hsx ...
+lorenzo@enzo:~/erlang$ time ./euler12.hsx 
+842161320
+
+real    2m37.326s
+user    2m37.240s
+sys 0m0.080s
+</code></pre><p>&lt;强&gt;要点：</p>
+<ul>
+<li>C：100％</li>
+<li>Python：692％（使用PyPy的占118％）</li>
+<li>Erlang：436％（135％感谢RichardC）</li>
+<li>Haskell：1421％</li>
+</ul>
+<p>我认为C有一个很大的优势，因为它用了很长的时间来计算，而不是任意长度的整数。另外它不需要首先加载运行时（其他人？）。</p>
+<p><strong>问题1：</strong> Erlang，Python和Haskell会因为使用任意长度的整数而失去速度，或者只要值小于<code>MAXINT</code>？</p>
+<p><strong>问题2：</strong> 为什么Haskell这么慢？有没有编译器标志，关闭刹车或是我的实施？ （后者很可能，因为Haskell是一本有七个印章的书。）</p>
+<p><strong>问题3：</strong> 你可以提供一些提示，如何优化这些实现而不改变我确定因素的方式？以任何方式优化：更好，更快，更“原生”的语言。</p>
+<p>**修改</p>
+<p><strong>问题4：</strong> 我的功能实现是否允许LCO（最后一次调用优化，又名尾递归消除），从而避免在调用堆栈中添加不必要的帧？</p>
+<p>尽管我不得不承认我的Haskell和Erlang知识是非常有限的，但我真的试图在四种语言中尽可能地实现相同的算法。</p>
+<hr>
+<p>使用的源代码：</p>
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int factorCount (long n)
+{
+    double square = sqrt (n);
+    int isquare = (int) square;
+    int count = isquare == square ? -1 : 0;
+    long candidate;
+    for (candidate = 1; candidate &lt;= isquare; candidate ++)
+        if (0 == n % candidate) count += 2;
+    return count;
+}
+
+int main ()
+{
+    long triangle = 1;
+    int index = 1;
+    while (factorCount (triangle) &lt; 1001)
+    {
+        index ++;
+        triangle += index;
+    }
+    printf (&quot;%ld\n&quot;, triangle);
+}
+</code></pre><hr>
+<pre><code>#! /usr/bin/env python3.2
+
+import math
+
+def factorCount (n):
+    square = math.sqrt (n)
+    isquare = int (square)
+    count = -1 if isquare == square else 0
+    for candidate in range (1, isquare + 1):
+        if not n % candidate: count += 2
+    return count
+
+triangle = 1
+index = 1
+while factorCount (triangle) &lt; 1001:
+    index += 1
+    triangle += index
+
+print (triangle)
+</code></pre><hr>
+<pre><code>-module (euler12).
+-compile (export_all).
+
+factorCount (Number) -&gt; factorCount (Number, math:sqrt (Number), 1, 0).
+
+factorCount (_, Sqrt, Candidate, Count) when Candidate &gt; Sqrt -&gt; Count;
+
+factorCount (_, Sqrt, Candidate, Count) when Candidate == Sqrt -&gt; Count + 1;
+
+factorCount (Number, Sqrt, Candidate, Count) -&gt;
+    case Number rem Candidate of
+        0 -&gt; factorCount (Number, Sqrt, Candidate + 1, Count + 2);
+        _ -&gt; factorCount (Number, Sqrt, Candidate + 1, Count)
+    end.
+
+nextTriangle (Index, Triangle) -&gt;
+    Count = factorCount (Triangle),
+    if
+        Count &gt; 1000 -&gt; Triangle;
+        true -&gt; nextTriangle (Index + 1, Triangle + Index + 1)  
+    end.
+
+solve () -&gt;
+    io:format (&quot;~p~n&quot;, [nextTriangle (1, 1) ] ),
+    halt (0).
+</code></pre><hr>
+<pre><code>factorCount number = factorCount&apos; number isquare 1 0 - (fromEnum $ square == fromIntegral isquare)
+    where square = sqrt $ fromIntegral number
+          isquare = floor square
+
+factorCount&apos; number sqrt candidate count
+    | fromIntegral candidate &gt; sqrt = count
+    | number `mod` candidate == 0 = factorCount&apos; number sqrt (candidate + 1) (count + 2)
+    | otherwise = factorCount&apos; number sqrt (candidate + 1) count
+
+nextTriangle index triangle
+    | factorCount triangle &gt; 1000 = triangle
+    | otherwise = nextTriangle (index + 1) (triangle + index + 1)
+
+main = print $ nextTriangle 1 1
+</code></pre><p><a id="more"></a> 在x86_64 Core2 Duo（2.5GHz）机器上使用<code>GHC 7.0.3</code>，<code>gcc 4.4.6</code>，<code>Linux
+2.6.29</code>编译使用<code>ghc -O2 -fllvm -fforce-recomp</code>用于Haskell和<code>gcc -O3 -lm</code>用于C。</p>
+<ul>
+<li>您的C例程运行时间为8.4秒（比运行速度快，可能是因为<code>-O3</code>）</li>
+<li>Haskell解决方案在36秒内运行（由于<code>-O2</code>标志）</li>
+<li><p>您的<code>factorCount&#39;</code>代码没有显式键入，并且默认为<code>Integer</code>（感谢Daniel纠正我的错误！使用<code>Int</code>和时间更改为 <strong>11.1秒</strong><br>提供显式类型签名（这是标准练习） <code>在</code> factorCount’<code>中，你有不必要的</code> fromIntegral<br>`。修正后的结果没有改变（编译器很聪明，对你来说很幸运）。</p>
+</li>
+<li><p>您使用了<code>mod</code>，其中<code>rem</code>更快更充分。这会将时间更改为 <strong>8.5秒</strong> 。</p>
+</li>
+<li><code>factorCount&#39;</code>不断地应用两个额外的参数（<code>number</code>，<code>sqrt</code>）。工人/包装转换给我们：</li>
+</ul>
+<pre><code>$ time ./so
+842161320  
+
+real    0m7.954s  
+user    0m7.944s  
+sys     0m0.004s  
+</code></pre><p>没错， <strong>7.95秒</strong> 。始终比C解决方案快0.5秒。**如果没有<code>-fllvm</code>标志，我仍然得到<code>8.182秒</code>，所以NCG后端在这种情况下也做得很好。</p>
+<p>结论：Haskell真棒。</p>
+<p><strong>结果代码</strong></p>
+<pre><code>factorCount number = factorCount&apos; number isquare 1 0 - (fromEnum $ square == fromIntegral isquare)
+    where square = sqrt $ fromIntegral number
+          isquare = floor square
+
+factorCount&apos; :: Int -&gt; Int -&gt; Int -&gt; Int -&gt; Int
+factorCount&apos; number sqrt candidate0 count0 = go candidate0 count0
+  where
+  go candidate count
+    | candidate &gt; sqrt = count
+    | number `rem` candidate == 0 = go (candidate + 1) (count + 2)
+    | otherwise = go (candidate + 1) count
+
+nextTriangle index triangle
+    | factorCount triangle &gt; 1000 = triangle
+    | otherwise = nextTriangle (index + 1) (triangle + index + 1)
+
+main = print $ nextTriangle 1 1
+</code></pre><p>编辑：所以现在我们已经探索了，让我们解决问题</p>
+<blockquote>
+<p>Question 1: Do erlang, python and haskell lose speed due to using arbitrary<br>length integers or don’t they as long as the values are less than MAXINT?</p>
+</blockquote>
+<p>在Haskell中，使用<code>Integer</code>比<code>Int</code>慢，但是慢多少取决于所执行的计算。幸运的是（对于64位机器）<code>Int</code>就足够了。为了可移植性，你应该重写我的代码来使用<code>Int64</code>或者<code>Word64</code>（C不是唯一带有<code>long</code>的语言） p&gt;</p>
+<blockquote>
+<p>Question 2: Why is haskell so slow? Is there a compiler flag that turns off<br>the brakes or is it my implementation? (The latter is quite probable as<br>haskell is a book with seven seals to me.)</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Question 3: Can you offer me some hints how to optimize these<br>implementations without changing the way I determine the factors? Optimization<br>in any way: nicer, faster, more “native” to the language.</p>
+</blockquote>
+<p>这就是我上面回答的问题。答案是</p>
+<ul>
+<li><p>0）通过<code>-O2</code>使用优化</p>
+</li>
+<li><p>1）尽可能使用快速（特别是：取消箱式）类型<br>2）<code>rem</code>不是<code>mod</code>（一个经常被遗忘的优化）和</p>
+</li>
+</ul>
+<p>3）工人/包装转换（也许是最常见的优化）</p>
+<blockquote>
+<p>Question 4: Do my functional implementations permit LCO and hence avoid<br>adding unnecessary frames onto the call stack?</p>
+</blockquote>
+<p>是的，这不是问题。好的工作，很高兴你考虑这个。</p>
+<p>Erlang的实现有一些问题。作为以下的基准，我的未修改的Erlang程序的执行时间是47.6秒，而C代码是12.7秒。</p>
+<p>如果你想运行计算密集的Erlang代码，你应该做的第一件事就是使用本地代码。用<code>erlc + native
+euler12编译</code>的时间缩短到了41.3秒。然而，这种代码的本地编译速度要低很多（只有15％），问题在于你使用了<code>-compile（export_all）</code>。这对于实验是有用的，但所有功能都可以从外部访问的事实导致本地编译器非常保守。<br>（正常的BEAM模拟器没有太大的影响。）用<code>-export（[solve / 0]）替换这个声明。</code>提供了更好的加速：31.5秒（几乎是基线的35％）。</p>
+<p>但是代码本身存在一个问题：对于factorCount循环中的每次迭代_，执行此测试：</p>
+<pre><code>factorCount (_, Sqrt, Candidate, Count) when Candidate == Sqrt -&gt; Count + 1;
+</code></pre><p>C代码不这样做。一般来说，在相同代码的不同实现之间进行公平的比较是非常棘手的，特别是如果算法是数值的，因为你需要确定它们实际上是在做同样的事情。在一个实现中由于某种类型转换而导致的轻微舍入错误可能会导致它执行比其他更多的迭代，即使两者最终都达到相同的结果。</p>
+<p>为了消除这个可能的错误源（并且在每次迭代中摆脱额外的测试），我重写了factorCount函数，如下所示，精确地模拟C代码：</p>
+<pre><code>factorCount (N) -&gt;
+    Sqrt = math:sqrt (N),
+    ISqrt = trunc(Sqrt),
+    if ISqrt == Sqrt -&gt; factorCount (N, ISqrt, 1, -1);
+       true          -&gt; factorCount (N, ISqrt, 1, 0)
+    end.
+
+factorCount (_N, ISqrt, Candidate, Count) when Candidate &gt; ISqrt -&gt; Count;
+factorCount ( N, ISqrt, Candidate, Count) -&gt;
+    case N rem Candidate of
+        0 -&gt; factorCount (N, ISqrt, Candidate + 1, Count + 2);
+        _ -&gt; factorCount (N, ISqrt, Candidate + 1, Count)
+    end.
+</code></pre><p>这个重写，没有<code>export_all</code>和本地编译，给了我下面的运行时间：</p>
+<pre><code>$ erlc +native euler12.erl
+$ time erl -noshell -s euler12 solve
+842161320
+
+real    0m19.468s
+user    0m19.450s
+sys 0m0.010s
+</code></pre><p>这与C代码相比并不算太坏：</p>
+<pre><code>$ time ./a.out 
+842161320
+
+real    0m12.755s
+user    0m12.730s
+sys 0m0.020s
+</code></pre><p>考虑到Erlang完全不适合编写数字代码，在这样的程序上只比C慢50％。</p>
+<p>最后，关于你的问题：</p>
+<p>问题1：由于使用了任意长度的整数或者是erlang，python和haskell，所以速度很慢 只要数值小于MAXINT，是不是他们？**</p>
+<p>是的，有点。在Erlang中，没有办法说“使用32/64位算术进行换行”，所以除非编译器能够证明整数（通常不能），否则必须检查所有的计算才能看到如果他们可以适应一个单一的标签的单词，或者如果它必须把它们变成堆分配bignums。即使在运行时实际上没有使用过这样的元素，这些检查也必须执行。另一方面，这意味着你知道如果你突然给它比以前更大的输入，算法将永远不会失败，因为一个意外的整数回绕。</p>
+<p>问题4：我的功能实现是否允许使用LCO，从而避免在调用堆栈中添加不必要的帧？**</p>
+<p>是的，您的Erlang代码在上次调用优化方面是正确的。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/performance/">performance</a><a href="/tags/c/">c</a><a href="/tags/haskell/">haskell</a><a href="/tags/erlang/">erlang</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/speed-comparison-with-project-euler-c-vs-python-vs-erlang-vs-haskell/" data-title="与项目欧拉速度比较：C vs Python与Erlang vs Haskell | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/why-does-comparing-strings-in-python-using-either-or-is-sometimes-produce/" title="为什么在Python中使用&#39;==&#39;或&#39;is&#39;比较字符串有时会产生不同的结果？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  为什么在Python中使用&#39;==&#39;或&#39;is&#39;比较字符串有时会产生不同的结果？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/static-class-variables-in-python/"  title="Python中的静态类变量">
+ <strong>下一篇：</strong><br/> 
+ <span>Python中的静态类变量
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

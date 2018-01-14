@@ -1,0 +1,698 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何通过引用传递变量？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="Python文档似乎不清楚参数是通过引用还是值传递的，下面的代码会生成未更改的“原始”值 class PassByReference:     def __init__(self):         self.variable = &amp;apos;Original&amp;apos;         self.change(self.variable)         print(self.variable)">
+<meta name="keywords" content="python,reference,parameter-passing,pass-by-reference">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何通过引用传递变量？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/14/how-do-i-pass-a-variable-by-reference/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="Python文档似乎不清楚参数是通过引用还是值传递的，下面的代码会生成未更改的“原始”值 class PassByReference:     def __init__(self):         self.variable = &amp;apos;Original&amp;apos;         self.change(self.variable)         print(self.variable)">
+<meta property="og:updated_time" content="2018-01-14T04:20:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何通过引用传递变量？">
+<meta name="twitter:description" content="Python文档似乎不清楚参数是通过引用还是值传递的，下面的代码会生成未更改的“原始”值 class PassByReference:     def __init__(self):         self.variable = &amp;apos;Original&amp;apos;         self.change(self.variable)         print(self.variable)">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-i-pass-a-variable-by-reference/" title="如何通过引用传递变量？" itemprop="url">如何通过引用传递变量？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">List - a mutable type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">String - an immutable type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">How do we get around this?</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>Python文档似乎不清楚参数是通过引用还是值传递的，下面的代码会生成未更改的“原始”值</p>
+<pre><code>class PassByReference:
+    def __init__(self):
+        self.variable = &apos;Original&apos;
+        self.change(self.variable)
+        print(self.variable)
+
+    def change(self, var):
+        var = &apos;Changed&apos;
+</code></pre><p>有什么事情可以通过实际参考来传递变量吗？</p>
+<a id="more"></a>
+<p>参数是<a href="“http://docs.python.org/3/faq/programming.html#how-do-i-write-a
+-function-with-output-parameters-call-by-参考“rel">通过赋值传递</a>。这背后的理由是双重的：</p>
+<ul>
+<li>传入的参数实际上是对象的一个​​ <em>引用</em> （但引用是按值传递的）</li>
+<li>有些数据类型是可变的，但其他的不是</li>
+</ul>
+<p>所以：</p>
+<ul>
+<li>如果将一个 <em>mutable</em> 对象传递给一个方法，该方法将获得对该同一对象的引用，并且可以将其变为您的心中的喜悦，但是如果您重新绑定方法，外部作用域将一无所知，并在完成后，外部引用仍将指向原始对象。 </li>
+</ul>
+<p>如果你将一个 _不可变对象传递给一个方法，你仍然不能重新绑定外部引用，甚至不能改变对象。</p>
+<p>&gt;</p>
+<p>为了使其更清楚，我们举一些例子。</p>
+<h2><span id="list-a-mutable-type">List - a mutable type</span></h2><p>让我们尝试修改传递给方法的列表：**</p>
+<pre><code>def try_to_change_list_contents(the_list):
+    print(&apos;got&apos;, the_list)
+    the_list.append(&apos;four&apos;)
+    print(&apos;changed to&apos;, the_list)
+
+outer_list = [&apos;one&apos;, &apos;two&apos;, &apos;three&apos;]
+
+print(&apos;before, outer_list =&apos;, outer_list)
+try_to_change_list_contents(outer_list)
+print(&apos;after, outer_list =&apos;, outer_list)
+</code></pre><p>输出：</p>
+<pre><code>before, outer_list = [&apos;one&apos;, &apos;two&apos;, &apos;three&apos;]
+got [&apos;one&apos;, &apos;two&apos;, &apos;three&apos;]
+changed to [&apos;one&apos;, &apos;two&apos;, &apos;three&apos;, &apos;four&apos;]
+after, outer_list = [&apos;one&apos;, &apos;two&apos;, &apos;three&apos;, &apos;four&apos;]
+</code></pre><p>由于传入的参数是对<code>outer_list</code>的引用，而不是其副本，所以我们可以使用变异列表方法来更改它，并将变化反映在外部作用域中。</p>
+<p><strong>现在让我们看看当我们尝试更改作为参数传入的引用时会发生什么：</strong></p>
+<pre><code>def try_to_change_list_reference(the_list):
+    print(&apos;got&apos;, the_list)
+    the_list = [&apos;and&apos;, &apos;we&apos;, &apos;can&apos;, &apos;not&apos;, &apos;lie&apos;]
+    print(&apos;set to&apos;, the_list)
+
+outer_list = [&apos;we&apos;, &apos;like&apos;, &apos;proper&apos;, &apos;English&apos;]
+
+print(&apos;before, outer_list =&apos;, outer_list)
+try_to_change_list_reference(outer_list)
+print(&apos;after, outer_list =&apos;, outer_list)
+</code></pre><p>输出：</p>
+<pre><code>before, outer_list = [&apos;we&apos;, &apos;like&apos;, &apos;proper&apos;, &apos;English&apos;]
+got [&apos;we&apos;, &apos;like&apos;, &apos;proper&apos;, &apos;English&apos;]
+set to [&apos;and&apos;, &apos;we&apos;, &apos;can&apos;, &apos;not&apos;, &apos;lie&apos;]
+after, outer_list = [&apos;we&apos;, &apos;like&apos;, &apos;proper&apos;, &apos;English&apos;]
+</code></pre><p>因为<code>the_list</code>参数是按值传递的，所以给它分配一个新的列表并不会影响方法外部的代码。 <code>the_list</code>是<code>outer_list</code>引用的副本，我们将<code>the_list</code>指向一个新列表，但是没有办法改变where &lt; code&gt; outer_list `指出。</p>
+<h2><span id="string-an-immutable-type">String - an immutable type</span></h2><p><strong>它是不可改变的，所以我们无法改变字符串的内容</strong></p>
+<p><strong>现在，我们尝试更改参考</strong></p>
+<pre><code>def try_to_change_string_reference(the_string):
+    print(&apos;got&apos;, the_string)
+    the_string = &apos;In a kingdom by the sea&apos;
+    print(&apos;set to&apos;, the_string)
+
+outer_string = &apos;It was many and many a year ago&apos;
+
+print(&apos;before, outer_string =&apos;, outer_string)
+try_to_change_string_reference(outer_string)
+print(&apos;after, outer_string =&apos;, outer_string)
+</code></pre><p>输出：</p>
+<pre><code>before, outer_string = It was many and many a year ago
+got It was many and many a year ago
+set to In a kingdom by the sea
+after, outer_string = It was many and many a year ago
+</code></pre><p>同样，因为<code>the_string</code>参数是按值传递的，所以给它赋值一个新的字符串不会影响方法外部的代码。 <code>the_string</code>是<code>outer_string</code>引用的副本，我们把<code>the_string</code>指向一个新的字符串，但是没有办法改变where &lt; code&gt;<br>outer_string `指向。</p>
+<p>我希望这个清理一下。</p>
+<p><strong>编辑：</strong>已经注意到，这并没有回答@David最初问到的问题：“有什么我可以通过实际参考传递变量吗？”。我们来研究一下。</p>
+<h2><span id="how-do-we-get-around-this">How do we get around this?</span></h2><p>正如@Andrea的答案所显示的，你可以返回新的值。这不会改变事物的传递方式，但可以让您获得想要的信息：</p>
+<pre><code>def return_a_whole_new_string(the_string):
+    new_string = something_to_do_with_the_old_string(the_string)
+    return new_string
+
+# then you could call it like
+my_string = return_a_whole_new_string(my_string)
+</code></pre><p>如果你真的想避免使用返回值，你可以创建一个类来保存你的值，并将其传递给函数或使用现有的类，如列表：</p>
+<pre><code>def use_a_wrapper_to_simulate_pass_by_reference(stuff_to_change):
+    new_string = something_to_do_with_the_old_string(stuff_to_change[0])
+    stuff_to_change[0] = new_string
+
+# then you could call it like
+wrapper = [my_string]
+use_a_wrapper_to_simulate_pass_by_reference(wrapper)
+
+do_something_with(wrapper[0])
+</code></pre><p>虽然这看起来有些麻烦。</p>
+<p>问题来自于对Python中的变量的误解。如果您习惯了大多数传统语言，您可以通过以下顺序进行思考：</p>
+<pre><code>a = 1
+a = 2
+</code></pre><p>您相信<code>a</code>是存储值<code>1</code>的存储位置，然后被更新以存储值<code>2</code>。这不是Python中的事情。相反，<code>a</code>作为对具有值<code>1</code>的对象的引用开始，然后被重新分配为具有值<code>2</code>的对象的引用。即使<code>a</code>不再引用第一个对象，这两个对象也可以继续共存。实际上它们可以被程序中的任何其他引用所共享。</p>
+<p>使用参数调用函数时，会创建一个引用传入对象的新引用。它与函数调用中使用的引用分开，因此无法更新该引用并使其生成引用一个新的对象。在你的例子中：</p>
+<pre><code>def __init__(self):
+    self.variable = &apos;Original&apos;
+    self.Change(self.variable)
+
+def Change(self, var):
+    var = &apos;Changed&apos;
+</code></pre><p>self.variable <code>是对字符串对象</code>‘Original’<code>的引用。当您调用</code> Change <code>时，您将为对象创建第二个参考</code> var<br><code>。在函数内部，你可以将引用</code> var <code>重新分配给不同的字符串对象</code>‘Changed’<code>，但引用</code> self.variable `是分开的，不会改变</p>
+<p>唯一的方法是传递一个可变对象。因为两个引用都引用同一个对象，所以对对象的任何更改都会反映在这两个地方。</p>
+<pre><code>def __init__(self):         
+    self.variable = [&apos;Original&apos;]
+    self.Change(self.variable)
+
+def Change(self, var):
+    var[0] = &apos;Changed&apos;
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/reference/">reference</a><a href="/tags/parameter-passing/">parameter-passing</a><a href="/tags/pass-by-reference/">pass-by-reference</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/14/how-do-i-pass-a-variable-by-reference/" data-title="如何通过引用传递变量？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/14/how-do-i-loop-through-or-enumerate-a-javascript-object/" title="如何循环或枚举JavaScript对象？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何循环或枚举JavaScript对象？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/14/how-do-i-pass-command-line-arguments/"  title="我如何传递命令行参数？">
+ <strong>下一篇：</strong><br/> 
+ <span>我如何传递命令行参数？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">List - a mutable type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">String - an immutable type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">How do we get around this?</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/string/" title="string">string<sup>24</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/list/" title="list">list<sup>23</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/arrays/" title="arrays">arrays<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/performance/" title="performance">performance<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/exception/" title="exception">exception<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/random/" title="random">random<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/oop/" title="oop">oop<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ajax/" title="ajax">ajax<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/integer/" title="integer">integer<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variables/" title="variables">variables<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/date/" title="date">date<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sorting/" title="sorting">sorting<sup>5</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
