@@ -1,0 +1,1073 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+<meta property="og:type" content="website">
+<meta property="og:title" content="智子">
+<meta property="og:url" content="https://www.tracholar.top/page/106/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="智子">
+<meta name="twitter:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-8-listv-into-mapk-v/" title="Java 8列表V到地图K，V中" itemprop="url">Java 8列表V到地图K，V中</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想使用Java 8的流和lambdas将对象列表翻译成Map。</p>
+<p>这是我在Java 7及以下版本中编写的。</p>
+<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
+        final Map&lt;String, Choice&gt; hashMap = new HashMap&lt;&gt;();
+        for (final Choice choice : choices) {
+            hashMap.put(choice.getName(), choice);
+        }
+        return hashMap;
+}
+</code></pre><p>使用Java 8和Guava我可以轻松完成这个任务，但是我想知道如何在没有Guava的情况下做到这一点。</p>
+<p>在番石榴：</p>
+<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
+    return Maps.uniqueIndex(choices, new Function&lt;Choice, String&gt;() {
+
+        @Override
+        public String apply(final Choice input) {
+            return input.getName();
+        }
+    });
+}
+</code></pre><p>用Java 8 lambda表达番石榴。</p>
+<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
+    return Maps.uniqueIndex(choices, c -&gt; c.getName());
+}
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/java-8-listv-into-mapk-v/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+      <ins class="adsbygoogle"
+     style="display:block;  overflow:hidden;"
+     data-ad-format="fluid"
+     data-ad-layout-key="-ej+6f-q-c7+ou"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="5206371097"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-3-dots-in-parameters/" title="Java，参数中有3个点" itemprop="url">Java，参数中有3个点</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>以下方法中的3个点是什么意思？</p>
+<pre><code>public void myMethod(String... strings){
+    // method body
+}
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/java-3-dots-in-parameters/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/iterating-through-a-collection-avoiding-concurrentmodificationexception-when-re/" title="迭代集合，避免在循环中移除时出现ConcurrentModificationException异常" itemprop="url">迭代集合，避免在循环中移除时出现ConcurrentModificationException异常</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我们都知道你不能这样做：</p>
+<pre><code>for (Object i : l) {
+    if (condition(i)) {
+        l.remove(i);
+    }
+}
+</code></pre><p>ConcurrentModificationException `等…这显然有效，但并不总是。以下是一些特定的代码：</p>
+<pre><code>public static void main(String[] args) {
+    Collection&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+    for (int i=0; i &lt; 10; ++i) {
+        l.add(new Integer(4));
+        l.add(new Integer(5));
+        l.add(new Integer(6));
+    }
+
+    for (Integer i : l) {
+        if (i.intValue() == 5) {
+            l.remove(i);
+        }
+    }
+
+    System.out.println(l);
+}
+</code></pre><p>这当然会导致：</p>
+<pre><code>Exception in thread &quot;main&quot; java.util.ConcurrentModificationException
+</code></pre><p>即使多个线程没有这样做……无论如何。</p>
+<p>这个问题最好的解决办法是什么？我怎样才能从循环中删除一个项目而不会抛出这个异常？</p>
+<p>我也在这里使用一个任意的<code>Collection</code>，不一定是一个<code>ArrayList</code>，所以你不能依赖<code>get</code>。<code>p&gt; &lt;!-- more --&gt;
+Iterator.remove（）</code>是安全的，你可以像这样使用它：</p>
+<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
+
+// This is a clever way to create the iterator and call iterator.hasNext() like
+// you would do in a while-loop. It would be the same as doing:
+//     Iterator&lt;String&gt; iterator = list.iterator();
+//     while (iterator.hasNext()) {
+for (Iterator&lt;String&gt; iterator = list.iterator(); iterator.hasNext();) {
+    String string = iterator.next();
+    if (string.isEmpty()) {
+        // Remove the current element from the iterator and the list.
+        iterator.remove();
+    }
+}
+</code></pre><p>请注意，<code>Iterator.remove</code>是在迭代过程中修改集合的唯一安全方法。如果在迭代过程中以其他方式修改了底层集合，则行为是未指定的。</p>
+<p>来源：</p>
+<p><a href="http://docs.oracle.com/javase/tutorial/collections/interfaces/collection.html" target="_blank" rel="noopener"> http://docs.oracle.com/javase/tutorial/集合/接口/ collection.html</a></p>
+<hr>
+<p>同样，如果你有一个<code>ListIterator</code>并且想要添加_项，你可以使用<a href="“http://docs.oracle.com/javase"> <code>ListIterator＃add</code></a>，出于同样的原因，您可以使用<code>Iterator＃remove</code> - 它被设计为允许它。</p>
+<p>愚蠢的我：</p>
+<pre><code>Iterator&lt;Integer&gt; iter = l.iterator();
+while (iter.hasNext()) {
+    if (iter.next().intValue() == 5) {
+        iter.remove();
+    }
+}
+</code></pre><p>我认为，由于foreach循环是用于迭代的语法糖，所以使用迭代器将无济于事……但它为您提供了<code>.remove（）</code>功能。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/is-null-check-needed-before-calling-instanceof/" title="在调用instanceof之前是否需要空的检查？" itemprop="url">在调用instanceof之前是否需要空的检查？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>请问<code>null instanceof SomeClass</code>返回<code>false</code>或者抛出一个<code>NullPointerException</code>？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/is-null-check-needed-before-calling-instanceof/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/is-listdog-a-subclass-of-listanimal-why-are-java-generics-not-implicitly-po/" title="List Dog是List Animal的一个子类吗？为什么Java泛型不是隐含多态的？" itemprop="url">List Dog是List Animal的一个子类吗？为什么Java泛型不是隐含多态的？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我对Java泛型如何处理继承/多态性有些困惑。</p>
+<p>假设有以下层次结构 -</p>
+<p><strong>动物</strong> （家长）</p>
+<p>狗<strong> - </strong>猫** （儿童）</p>
+<p>假设我有一个方法<code>doSomething（List＆lt; Animal＆gt; animals）</code>。根据所有继承和多态的规则，我假定<code>List＆lt;
+Dog＆gt;</code> <em>是<code>List＆lt; Animal＆gt;</code>列表＆lt; Cat＆gt; ` </em>是<code>List＆lt; Animal＆gt;</code>- 所以任何一个都可以传递给这个方法。不是这样。如果我想要实现这个行为，我必须明确地告诉方法通过说 doSomething（List  &lt;？extends<br>Animal＆gt; animals `）接受动物子集的列表。</p>
+<p>我明白这是Java的行为。我的问题是 <em>为什么</em> ？为什么多态一般是隐含的，但是当涉及泛型时，必须指定它？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/is-listdog-a-subclass-of-listanimal-why-are-java-generics-not-implicitly-po/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/interview-can-we-instantiate-abstract-class/" title="采访：我们可以实例化抽象类吗？" itemprop="url">采访：我们可以实例化抽象类吗？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>面试官问 - 我们可以实例化一个抽象类吗？我说，不，他告诉我 - 错了，我们可以。</p>
+<p>我在这方面辩论了一下。然后他让我在你家里试试这个。</p>
+<pre><code>abstract class my {
+    public void mymethod() {
+        System.out.print(&quot;Abstract&quot;);
+    }
+}
+
+class poly {
+    public static void main(String a[]) {
+        my m = new my() {};
+        m.mymethod();
+    }
+}
+</code></pre><p>在这里，我正在创建我的类的实例并调用抽象类的方法。任何人都可以向我解释这个吗？我在采访中是否真的错了？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/interview-can-we-instantiate-abstract-class/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/including-all-the-jars-in-a-directory-within-the-java-classpath/" title="将Java类路径中的所有jar包括在一个目录中" itemprop="url">将Java类路径中的所有jar包括在一个目录中</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有没有一种方法可以将所有的jar文件包含在类路径的目录中？</p>
+<p>我正在尝试<code>java -classpath lib / *。jar :. my.package.Program</code>，它无法找到当然在这些罐子里的类文件。我是否需要将每个jar文件分别添加到类路径中？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/including-all-the-jars-in-a-directory-within-the-java-classpath/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/in-java-what-is-the-best-way-to-determine-the-size-of-an-object/" title="在Java中，确定对象大小的最佳方法是什么？" itemprop="url">在Java中，确定对象大小的最佳方法是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>例如，假设我有一个应用程序可以读取一堆数据行的CSV文件。我根据数据类型给用户一个行数的总结，但是我想确保我不读入太多的数据行，并导致<code>OutOfMemoryError</code>。每一行都翻译成一个对象。有没有一种简单的方法来以编程方式找出该对象的大小？是否有一个引用来定义一个<code>VM</code>的大型基本类型和对象引用？</p>
+<p>现在，我拥有读取 <strong>32,000行</strong> 的代码，但是我还想让代码读取尽可能多的行，直到我使用 **32MB记忆。也许这是一个不同的问题，但我仍然想知道。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/in-java-what-is-the-best-way-to-determine-the-size-of-an-object/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/implements-vs-extends-when-to-use-whats-the-difference/" title="实现vs扩展：何时使用？有什么不同？" itemprop="url">实现vs扩展：何时使用？有什么不同？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>请用简单易懂的语言解释或链接到某篇文章。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/implements-vs-extends-when-to-use-whats-the-difference/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/illegalargumentexception-or-nullpointerexception-for-a-null-parameter/" title="对于null参数，IllegalArgumentException或NullPointerException？ [关闭]" itemprop="url">对于null参数，IllegalArgumentException或NullPointerException？ [关闭]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>对于一个属性我有一个简单的setter方法，<code>null</code>不适合这个特定的属性。我一直在这种情况下被撕毁：我应该抛出一个<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html" target="_blank" rel="noopener"> <code>IllegalArgumentException</code></a>或者<a href="“http://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html”rel">&lt;代码&gt;的NullPointerException</a>？从javadocs，这两个看起来都合适。有一种被理解的标准吗？或者，这只是你应该做的任何事情之一，而且都是正确的？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/illegalargumentexception-or-nullpointerexception-for-a-null-parameter/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/page/105/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/104/">104</a><a class="page-number" href="/page/105/">105</a><span class="page-number current">106</span><a class="page-number" href="/page/107/">107</a><a class="page-number" href="/page/108/">108</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/107/">Next<span></span></a>
+  </nav>
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+ </html>

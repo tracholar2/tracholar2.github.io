@@ -1,0 +1,620 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>通过点击Enter阻止用户提交表单 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我在一个网站上进行了一项调查，似乎有一些用户打了一个问题（我不知道为什么），而不用点击提交按钮就意外地提交调查表（表单）。有没有办法来防止这一点？ 我在调查中使用HTML，PHP 5.2.9和jQuery。">
+<meta name="keywords" content="html,jquery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过点击Enter阻止用户提交表单">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/prevent-users-from-submitting-a-form-by-hitting-enter/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我在一个网站上进行了一项调查，似乎有一些用户打了一个问题（我不知道为什么），而不用点击提交按钮就意外地提交调查表（表单）。有没有办法来防止这一点？ 我在调查中使用HTML，PHP 5.2.9和jQuery。">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通过点击Enter阻止用户提交表单">
+<meta name="twitter:description" content="我在一个网站上进行了一项调查，似乎有一些用户打了一个问题（我不知道为什么），而不用点击提交按钮就意外地提交调查表（表单）。有没有办法来防止这一点？ 我在调查中使用HTML，PHP 5.2.9和jQuery。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/prevent-users-from-submitting-a-form-by-hitting-enter/" title="通过点击Enter阻止用户提交表单" itemprop="url">通过点击Enter阻止用户提交表单</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Disallow enter key anywhere</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Allow enter key on textareas only</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Allow enter key on textareas and submit buttons only</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我在一个网站上进行了一项调查，似乎有一些用户打了一个问题（我不知道为什么），而不用点击提交按钮就意外地提交调查表（表单）。有没有办法来防止这一点？</p>
+<p>我在调查中使用HTML，PHP 5.2.9和jQuery。</p>
+<a id="more"></a>
+<p>您可以使用诸如</p>
+<p>的方法</p>
+<pre><code>$(document).ready(function() {
+  $(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
+</code></pre><p>在阅读关于原文的评论时，为了使其更易于使用，并允许用户在完成所有字段时按<code>Enter</code>：</p>
+<pre><code>function validationFunction() {
+  $(&apos;input&apos;).each(function() {
+    ...
+
+  }
+  if(good) {
+    return true;
+  }
+  return false;
+}
+
+$(document).ready(function() {
+  $(window).keydown(function(event){
+    if( (event.keyCode == 13) &amp;&amp; (validationFunction() == false) ) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
+</code></pre><h2><span id="disallow-enter-key-anywhere">Disallow enter key anywhere</span></h2><p>如果您的表单中没有<code>＆lt; textarea＆gt;</code>，则只需将以下内容添加到<code>＆lt; form＆gt;</code>：</p>
+<pre><code>&lt;form ... onkeypress=&quot;return event.keyCode != 13;&quot;&gt;
+</code></pre><p>或者用jQuery：</p>
+<pre><code>$(document).on(&quot;keypress&quot;, &quot;form&quot;, function(event) { 
+    return event.keyCode != 13;
+});
+</code></pre><p>这将导致在表单中的每个按键将在keyCode上被检查。如果它不是13（Enter键），那么它将返回true，任何事情都会如预期的那样发生。如果是13（回车键），那么它将返回false，任何东西都会立即停止，所以表单不会被提交。</p>
+<p><code></code> keypress <code>事件优于</code> keydown <code>，因为只有在实际插入字符时才会触发该事件。当 _任何_ 键（包括控制键）被按下时，</code>keydown <code>（和</code> keyup <code>）会被触发。而且，</code> keypress <code>的</code> keyCode<br><code>表示正在插入的实际字符，而不是使用的物理键。这样你就不需要明确地检查Numpad Enter键（108）是否被按下了。</code> keyup<br>`太晚了，无法阻止表单提交。</p>
+<p>请注意，<code>$（window）</code>在<code>keydown</code> / &lt;代码&gt; keypress <code>/</code> keyup<br>`，所以如果你想覆盖那些不好的用户，那么这不是一个好的选择。</p>
+<h2><span id="allow-enter-key-on-textareas-only">Allow enter key on textareas only</span></h2><p>如果您的表单中有<code>＆lt; textarea＆gt;</code>（当然， _应接受Enter键），则将按键处理程序添加到每个单独的输入元素不是<code>＆lt;
+textarea＆gt;</code>。</p>
+<pre><code>&lt;input ... onkeypress=&quot;return event.keyCode != 13;&quot;&gt;
+&lt;select ... onkeypress=&quot;return event.keyCode != 13;&quot;&gt;
+...
+</code></pre><p>为了减少样板，最好用jQuery来完成：</p>
+<pre><code>$(document).on(&quot;keypress&quot;, &quot;:input:not(textarea)&quot;, function(event) {
+    return event.keyCode != 13;
+});
+</code></pre><p>如果在这些输入元素上还附加了其他事件处理函数，而您也希望在某些原因上输入密钥，那么只能防止事件的默认行为，而不是返回false，以便它可以正确传播给其他处理程序</p>
+<pre><code>$(document).on(&quot;keypress&quot;, &quot;:input:not(textarea)&quot;, function(event) {
+    if (event.keyCode == 13) {
+        event.preventDefault();
+    }
+});
+</code></pre><h2><span id="allow-enter-key-on-textareas-and-submit-buttons-only">Allow enter key on textareas and submit buttons only</span></h2><p>如果您希望在提交按钮<code>＆lt; input | button type =“submit”＆gt;</code>上允许回车键，那么您总是可以按照以下方式细化选择器。</p>
+<pre><code>$(document).on(&quot;keypress&quot;, &quot;:input:not(textarea):not([type=submit])&quot;, function(event) {
+    // ...
+});
+</code></pre><p>请注意，在某些其他答案中建议的<code>input [type = text]</code>并不包括那些HTML5非文本输入，所以这不是一个好的选择器。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/jquery/">jquery</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/prevent-users-from-submitting-a-form-by-hitting-enter/" data-title="通过点击Enter阻止用户提交表单 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/why-not-use-tables-for-layout-in-html/" title="为什么不在HTML中使用表格进行布局？ [关闭]">
+  <strong>上一篇：</strong><br/>
+  <span>
+  为什么不在HTML中使用表格进行布局？ [关闭]</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/how-can-i-know-which-radio-button-is-selected-via-jquery/"  title="我怎么知道哪个单选按钮是通过jQuery选择的？">
+ <strong>下一篇：</strong><br/> 
+ <span>我怎么知道哪个单选按钮是通过jQuery选择的？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Disallow enter key anywhere</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Allow enter key on textareas only</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Allow enter key on textareas and submit buttons only</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

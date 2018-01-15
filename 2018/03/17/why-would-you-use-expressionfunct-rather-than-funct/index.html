@@ -1,0 +1,584 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为什么要使用Expression Func T 而不是Func T？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我理解lambdas和Func和Action委托。但是表达式让我感到遗憾。在什么情况下，您会使用Expression＆lt; Func＆lt; T＆gt;＆gt;而不是普通的旧的Func＆lt; T＆gt;？">
+<meta name="keywords" content="c-sharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么要使用Expression Func T 而不是Func T？">
+<meta property="og:url" content="https://www.tracholar.top/2018/03/17/why-would-you-use-expressionfunct-rather-than-funct/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我理解lambdas和Func和Action委托。但是表达式让我感到遗憾。在什么情况下，您会使用Expression＆lt; Func＆lt; T＆gt;＆gt;而不是普通的旧的Func＆lt; T＆gt;？">
+<meta property="og:image" content="https://www.tracholar.top/2018/03/17/why-would-you-use-expressionfunct-rather-than-funct/“https://i.stack.imgur.com/gwU0E.jpg">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么要使用Expression Func T 而不是Func T？">
+<meta name="twitter:description" content="我理解lambdas和Func和Action委托。但是表达式让我感到遗憾。在什么情况下，您会使用Expression＆lt; Func＆lt; T＆gt;＆gt;而不是普通的旧的Func＆lt; T＆gt;？">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/03/17/why-would-you-use-expressionfunct-rather-than-funct/“https://i.stack.imgur.com/gwU0E.jpg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/17/why-would-you-use-expressionfunct-rather-than-funct/" title="为什么要使用Expression Func T 而不是Func T？" itemprop="url">为什么要使用Expression Func T 而不是Func T？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-03-17T01:34:08.000Z" itemprop="datePublished"> Published 2018-03-17</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我理解lambdas和<code>Func</code>和<code>Action</code>委托。但是表达式让我感到遗憾。在什么情况下，您会使用<code>Expression＆lt;
+Func＆lt; T＆gt;＆gt;</code>而不是普通的旧的<code>Func＆lt; T＆gt;</code>？</p>
+<p><a id="more"></a> 当你想把lambda表达式当作表达式树来看，而不是执行它们。例如，LINQ to<br>SQL获取表达式并将其转换为等效的SQL语句，并将其提交给服务器（而不是执行lambda）。</p>
+<p>从概念上讲，<code>Expression＆lt; Func＆lt; T＆gt;＆lt; / code＆gt;与</code> Func＆lt; T＆gt; <code>完全不同。
+Func＆lt; T＆gt;</code>表示一个<code>委托</code>，它几乎是指向一个方法的指针，而＆lt; code＆gt; Expression＆lt; Func＆lt;<br>T＆gt;＆lt; / code＆gt;表示一个 <em>&gt;树形数据结构</em> 为lambda表达式。这个树结构 <strong>描述了lambda表达式的作用</strong><br>，而不是做实际的事情。它基本上保存有关表达式，变量，方法调用，…的组成的数据（例如，它保存诸如这个lambda的信息是某个常量+某个参数）。你可以使用这个描述把它转换成一个实际的方法（用<code>Expression.Compile</code>）或者用其他的东西（比如LINQ to<br>SQL的例子）。把lambda作为匿名方法和表达式树对待纯粹是一个编译时间的事情。</p>
+<pre><code>Func&lt;int&gt; myFunc = () =&gt; 10; // similar to: int myAnonMethod() { return 10; }
+</code></pre><p>将有效地编译成一个没有任何东西并返回10的IL方法。</p>
+<pre><code>Expression&lt;Func&lt;int&gt;&gt; myExpression = () =&gt; 10;
+</code></pre><p>将被转换为描述一个表达式的数据结构，该表达式不会得到参数并返回值10：</p>
+<p><a href="https://i.stack.imgur.com/gwU0E.jpg" target="_blank" rel="noopener"> <img src="“https://i.stack.imgur.com/gwU0E.jpg" alt=""> <em>放大图像</em></a></p>
+<p>虽然在编译时它们看起来是一样的，但编译器产生的却是 <strong>完全不同的</strong> 。</p>
+<p>我加了一个答案，因为这些答案似乎凌驾于我的头上，直到我意识到它有多简单。有时候，你的期望是复杂的，使得你无法围绕它“</p>
+<p>”</p>
+<p>直到我走进一个非常恼人的“bug”，试图一般地使用LINQ到SQL：我不需要了解它们之间的区别。</p>
+<pre><code>public IEnumerable&lt;T&gt; Get(Func&lt;T, bool&gt; conditionLambda){
+  using(var db = new DbContext()){
+    return db.Set&lt;T&gt;.Where(conditionLambda);
+  }
+}
+</code></pre><p>这很好，直到我开始在较大的数据集上发生OutofMemoryExceptions。在lambda里面设置断点让我意识到，它是遍历我的表中的每一行一个接一个寻找匹配我的lambda条件。这难倒了我一段时间，因为为什么它是对待我的数据表作为一个巨大的IEnumerable而不是做LINQ到SQL像它应该？在我的LINQ到MongoDb版本中，它也完全一样。</p>
+<p>解决方法是将<code>Func＆lt; T，bool＆gt;</code>转换成<code>Expression＆lt; Func＆lt; T，bool＆gt;＆gt;</code>，所以我去Google为什么需要一个<code>表达式</code>，而不是<code>Func</code>，结束于此。</p>
+<p><strong>表达式只是简单地将委托转换为关于自己的数据。</strong> 所以<code>a =＆gt; a + 1</code>就像“在左边有一个<code>int a</code>，在右边你加1”。<br><strong>就是这样。</strong> 你现在可以回家了。这显然比这更结构化，但这基本上都是一个表达树 - 没有任何东西可以包裹你的头。</p>
+<p>理解这一点，很明显为什么LINQ-to-SQL需要一个<code>Expression</code>，而一个<code>Func</code>是不够的。 <code>Func</code>并没有提供一种进入自身的方法，以查看如何将其转换为SQL / MongoDb<br>/其他查询的细节。你不能看到是否加减乘法。你所能做的就是运行它。另一方面，表达式<code>允许您查看委托内部并查看它想要执行的任何操作，从而使您能够将其转换为所需的任何内容，如SQL查询。</code> Func<br>`不起作用，因为我的DbContext对于实际在lambda表达式中将其转换为SQL的内容是盲目的，所以它做了下一个最好的事情，并通过表中的每一行迭代该条件。<br>/ p&gt; 编辑：在约翰·彼得的请求上阐述我的最后一句话：</p>
+<p>IQueryable扩展IEnumerable，因此IEnumerable的方法（如<code>Where（）</code>）获取接受<code>Expression</code>的重载。当你将一个<code>Expression</code>传递给它的时候，你保留了一个IQueryable，但是当你传递一个<code>Func</code>的时候，你将回退到基本的IEnumerable，得到一个IEnumerable结果。换句话说，没有注意到你已经把你的数据集变成了一个被迭代的列表，而不是被查询的东西。直到你真正看到签名的底层，很难发现有什么不同。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/03/17/why-would-you-use-expressionfunct-rather-than-funct/" data-title="为什么要使用Expression Func T 而不是Func T？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/17/how-to-run-a-shell-script-on-a-unix-console-or-mac-terminal/" title="如何在Unix控制台或Mac终端上运行shell脚本？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何在Unix控制台或Mac终端上运行shell脚本？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/03/17/how-to-secure-database-passwords-in-php/"  title="如何在PHP中保护数据库密码？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何在PHP中保护数据库密码？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

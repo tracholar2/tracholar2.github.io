@@ -112,29 +112,44 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/meaning-of-classmethod-and-staticmethod-for-beginner/" title="classmethod和staticmethod对初学者的意义？" itemprop="url">classmethod和staticmethod对初学者的意义？</a>
+      <a href="/2018/04/16/best-way-to-do-multiple-constructors-in-php/" title="在PHP中执行多个构造函数的最佳方法" itemprop="url">在PHP中执行多个构造函数的最佳方法</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-16T01:12:31.000Z" itemprop="datePublished"> Published 2018-04-16</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>有人可以向我解释在python中<code>@classmethod</code>和<code>@staticmethod</code>的含义吗？我需要知道其中的差异和意义。</p>
-<p>就我所知，<code>@classmethod</code>告诉一个类，它是一个应该被继承到子类或者…东西的方法。但是，这是什么意思？为什么不在不添加<code>@classmethod</code>或<code>@staticmethod</code>或任何<code>@</code>定义的情况下定义类方法？</p>
-<p>我应该如何使用它们，为什么<em>我应该使用它们，而 </em>应该如何使用 _<em> ？</em>我使用它们？</p>
-<p>我很高级的C ++，所以使用更高级的编程概念不应该是一个问题。如果可能，请随意给我一个相应的C ++示例。</p>
+        <p>不能在PHP类中放置两个具有唯一参数签名的__construct函数。我想这样做：</p>
+<pre><code>class Student 
+{
+   protected $id;
+   protected $name;
+   // etc.
+
+   public function __construct($id){
+       $this-&gt;id = $id;
+      // other members are still uninitialized
+   }
+
+   public function __construct($row_from_database){
+       $this-&gt;id = $row_from_database-&gt;id;
+       $this-&gt;name = $row_from_database-&gt;name;
+       // etc.
+   }
+}
+</code></pre><p>在PHP中这样做的最好方法是什么？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/meaning-of-classmethod-and-staticmethod-for-beginner/#more">Read More</a>
+            <a href="/2018/04/16/best-way-to-do-multiple-constructors-in-php/#more">Read More</a>
           
        </p>
     </div>
@@ -144,7 +159,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/oop/">oop</a><a href="/tags/static-methods/">static-methods</a><a href="/tags/class-method/">class-method</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -184,14 +199,561 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/mkdir-p-functionality-in-python/" title="Python中的mkdir -p功能[复制]" itemprop="url">Python中的mkdir -p功能[复制]</a>
+      <a href="/2018/04/16/exploitable-php-functions/" title="可开发的PHP函数" itemprop="url">可开发的PHP函数</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-16T01:12:02.000Z" itemprop="datePublished"> Published 2018-04-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我试图建立一个可用于任意代码执行的函数列表。目的不是列出应被列入黑名单或不允许的功能。相反，当搜索受感染服务器的后门时，我希望有一个<code>grep</code>可用的<br><em>red-flag</em> 关键字列表。</p>
+<p>这个想法是，如果你想建立一个多用途的恶意PHP脚本 - 比如c99或r57等“web<br>shell”脚本，你将不得不使用一个或多个相对较小的脚本文件中某处的一组函数，以便允许用户执行任意代码。搜索这些函数可以帮助您更快速地将数以万计的PHP文件的大堆缩小到需要仔细检查的相对较小的脚本集。</p>
+<p>显然，举例来说，以下任何一种都会被认为是恶意的（或可怕的编码）：</p>
+<pre><code>&lt;? eval($_GET[&apos;cmd&apos;]); ?&gt;
+
+&lt;? system($_GET[&apos;cmd&apos;]); ?&gt;
+
+&lt;? preg_replace(&apos;/.*/e&apos;,$_POST[&apos;code&apos;]); ?&gt;
+</code></pre><p>等等。</p>
+<p>前几天通过一个被攻破的网站搜索，我没有注意到一个恶意代码，因为我没有意识到<code>preg_replace</code>可能会被<code>/ e</code>标志（<br><em>哪个，严重吗？为什么是那个</em> ？）。还有其他的我错过了吗？</p>
+<p>到目前为止，这是我的列表：</p>
+<p><strong>壳牌执行</strong></p>
+<ul>
+<li>&lt;代码&gt;系统</li>
+<li>&lt;代码&gt; EXEC </li>
+<li>&lt;代码&gt; POPEN </li>
+<li><em><code>反向运算符</code> </em></li>
+<li>&lt;代码&gt; pcntl_exec </li>
+</ul>
+<p><strong>PHP执行</strong></p>
+<ul>
+<li>&lt;代码&gt;评估</li>
+<li><code>preg_replace</code>（使用<code>/ e</code>修饰符）</li>
+<li>&lt;代码&gt; create_function </li>
+<li><code>include</code> [<code>_once</code>] / <code>require</code> [<code>_once</code>]（ _&gt;利用细节）</li>
+</ul>
+<p>有一个能够修改文件的函数列表也许是有用的，但我想99％的时间利用代码将至少包含上述功能之一。但是如果你有一个能够编辑或输出文件的所有功能的列表，发布它，我会在这里包括它。<br>（而且我不会统计<code>mysql_execute</code>，因为这是另一类漏洞利用的一部分。）</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/16/exploitable-php-functions/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/15/how-to-pass-an-object-from-one-activity-to-another-on-android/" title="如何在Android上将对象从一个活动传递给另一个活动" itemprop="url">如何在Android上将对象从一个活动传递给另一个活动</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-15T02:33:56.000Z" itemprop="datePublished"> Published 2018-04-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我正在尝试从一个<code>Activity</code>发送我的 <em>customer</em> 类的对象，并将其显示在另一个<code>Activity</code>中。</p>
+<p>&gt;</p>
+<p>客户类的代码：</p>
+<pre><code>public class Customer {
+
+    private String firstName, lastName, Address;
+    int Age;
+
+    public Customer(String fname, String lname, int age, String address) {
+
+        firstName = fname;
+        lastName = lname;
+        Age = age;
+        Address = address;
+    }
+
+    public String printValues() {
+
+        String data = null;
+
+        data = &quot;First Name :&quot; + firstName + &quot; Last Name :&quot; + lastName
+        + &quot; Age : &quot; + Age + &quot; Address : &quot; + Address;
+
+        return data;
+    }
+}
+</code></pre><p>我想从一个<code>Activity</code>发送它的对象到另一个，然后在另一个<code>Activity</code>上显示数据。</p>
+<p>我怎么能做到这一点？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/15/how-to-pass-an-object-from-one-activity-to-another-on-android/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/15/how-to-kill-all-processes-with-a-given-partial-name/" title="如何杀死具有给定部分名称的所有进程？" itemprop="url">如何杀死具有给定部分名称的所有进程？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-15T02:07:17.000Z" itemprop="datePublished"> Published 2018-04-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想杀死我得到的所有进程：</p>
+<pre><code>ps aux | grep my_pattern
+</code></pre><p>怎么做？</p>
+<p>这不起作用：</p>
+<pre><code>pkill my_pattern
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/15/how-to-kill-all-processes-with-a-given-partial-name/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/15/what-nosql-solutions-are-out-there-for-net/" title="NET中有哪些NoSQL解决方案？ [关闭]" itemprop="url">NET中有哪些NoSQL解决方案？ [关闭]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-15T01:37:59.000Z" itemprop="datePublished"> Published 2018-04-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><a href="https://stackoverflow.com/questions/tagged/nosql" target="_blank" rel="noopener"> NoSQL </a>解决方案在那里用于.NET？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/15/what-nosql-solutions-are-out-there-for-net/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/15/php-how-to-generate-a-random-unique-alphanumeric-string/" title="PHP：如何生成一个随机的，唯一的，字母数字字符串？" itemprop="url">PHP：如何生成一个随机的，唯一的，字母数字字符串？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-15T01:12:17.000Z" itemprop="datePublished"> Published 2018-04-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何使用数字和字母在验证链接中生成一个随机唯一的字符串？就像当你在一个网站上创建一个帐户，并且它向你发送一封带有链接的电子邮件一样，你必须点击该链接才能验证你的帐户…是的…其中之一。</p>
+<p>我如何使用PHP生成其中一个？</p>
+<p><strong>更新：</strong> 只记得<a href="http://php.net/uniqid" target="_blank" rel="noopener"> <code>uniqid（）</code> </a><br>。这是一个基于当前时间生成唯一标识符的PHP函数，以微秒为单位。我想我会使用它。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/15/php-how-to-generate-a-random-unique-alphanumeric-string/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/14/sending-email-in-android-using-javamail-api-without-using-the-default-built-in-a/" title="使用JavaMail API在Android中发送电子邮件，而不使用默认/内置应用程序" itemprop="url">使用JavaMail API在Android中发送电子邮件，而不使用默认/内置应用程序</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-14T02:33:54.000Z" itemprop="datePublished"> Published 2018-04-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我试图在Android中创建邮件发送应用程序。</p>
+<p>如果我使用：</p>
+<pre><code>Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+</code></pre><p>这将启动内置的Android应用程序;我正在尝试使用此应用程序直接发送 <em>**</em> 按钮上的邮件。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/14/sending-email-in-android-using-javamail-api-without-using-the-default-built-in-a/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/14/split-string-into-an-array-in-bash/" title="将字符串拆分成Bash中的数组" itemprop="url">将字符串拆分成Bash中的数组</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-14T02:07:06.000Z" itemprop="datePublished"> Published 2018-04-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在一个Bash脚本中，我想将一行分成几块，并把它们放到一个数组中。</p>
+<p>行：</p>
+<pre><code>Paris, France, Europe
+</code></pre><p>我想让他们像这样：</p>
+<pre><code>array[0] = Paris
+array[1] = France
+array[2] = Europe
+</code></pre><p>我想用简单的代码，命令的速度并不重要。我该怎么做？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/14/split-string-into-an-array-in-bash/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/14/how-do-i-get-the-path-of-the-assembly-the-code-is-in/" title="如何获取代码所在的程序集的路径？" itemprop="url">如何获取代码所在的程序集的路径？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-14T01:37:52.000Z" itemprop="datePublished"> Published 2018-04-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有没有办法获得当前代码所在的程序集的路径？我不想要调用程序集的路径，只是包含代码的路径。</p>
+<p>基本上我的单元测试需要读取一些相对于dll的xml测试文件。无论测试dll是从TestDriven.NET，MbUnit<br>GUI还是其他东西运行，我都希望路径能够正确解析。</p>
+<p><strong>编辑</strong> ：人们似乎误解了我所要求的内容。</p>
+<p>我的测试库位于</p>
+<p>中</p>
+<blockquote>
+<p>C:\projects\myapplication\daotests\bin\Debug\daotests.dll</p>
+</blockquote>
+<p>我想得到这个路径：</p>
+<blockquote>
+<p>C:\projects\myapplication\daotests\bin\Debug\</p>
+</blockquote>
+<p>当我从MbUnit Gui运行时，到目前为止的三条建议都失败了：</p>
+<ul>
+<li><p>&lt;代码&gt; Environment.CurrentDirectory  给出 <em>c：\ Program Files \ MbUnit</em></p>
+</li>
+<li><p>&lt;代码&gt; System.Reflection.Assembly.GetAssembly（typeof运算（DaoTests））。位置 给出了C：\ Documents和 设置\乔治\本地 Settings \ Temp \ …. \ DaoTests.dll _</p>
+</li>
+<li><p>&lt;代码&gt; System.Reflection.Assembly.GetExecutingAssembly（）。位置 与以前一样。</p>
+</li>
+</ul>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/14/how-do-i-get-the-path-of-the-assembly-the-code-is-in/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/14/how-to-check-if-a-string-starts-with-a-specified-string/" title="如何检查一个字符串是否以指定的字符串开头？" itemprop="url">如何检查一个字符串是否以指定的字符串开头？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-14T01:12:12.000Z" itemprop="datePublished"> Published 2018-04-14</time>
     
   </p>
 </header>
@@ -199,14 +761,17 @@ var _hmt = _hmt || [];
         
         <p>This question already has an answer here:</p>
 <ul>
-<li><a href="/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist">How can I create a directory if it does not exist?</a> 24 answers </li>
+<li><a href="/questions/834303/startswith-and-endswith-functions-in-php">startsWith() and endsWith() functions in PHP</a> 29 answers </li>
 </ul>
-<p>有没有一种方法可以从Python中获得类似于<code>mkdir -p</code>的shell的功能。我正在寻找一个解决方案，而不是系统调用。我相信代码少于20行，我想知道是否有人已经写了它？</p>
+<p>我试图检查一个字符串是否以<code>http</code>开头。我该如何做这个检查？</p>
+<pre><code>$string1 = &apos;google.com&apos;;
+$string2 = &apos;http://www.google.com&apos;;
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/mkdir-p-functionality-in-python/#more">Read More</a>
+            <a href="/2018/04/14/how-to-check-if-a-string-starts-with-a-specified-string/#more">Read More</a>
           
        </p>
     </div>
@@ -216,503 +781,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/mkdir/">mkdir</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/modify-the-url-without-reloading-the-page/" title="修改网址而不重新加载页面" itemprop="url">修改网址而不重新加载页面</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>有什么方法可以修改当前页面的URL，而无需重新加载页面？</p>
-<p>如果可能的话，我希望在之前访问 <strong>之前的部分 **</strong></p>
-<p>我只需要在<strong>域之后更改 </strong>部分，这样就不会像我违反跨域策略一样。</p>
-<pre><code>window.location.href = &quot;www.mysite.com/page2.php&quot;;  // sadly this reloads
-</code></pre><p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/modify-the-url-without-reloading-the-page/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/url/">url</a><a href="/tags/url-rewriting/">url-rewriting</a><a href="/tags/friendly-url/">friendly-url</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/most-elegant-way-to-check-if-the-string-is-empty-in-python/" title="最优雅的方法来检查在Python中的字符串是否为空？" itemprop="url">最优雅的方法来检查在Python中的字符串是否为空？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Python是否具有类似于空字符串变量的地方？</p>
-<pre><code>if myString == string.empty:
-</code></pre><p>不管什么是检查空字符串值的最优雅的方法？我发现硬编码<code>“”</code>每次检查一个空字符串都不好。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/most-elegant-way-to-check-if-the-string-is-empty-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a><a href="/tags/comparison-operators/">comparison-operators</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/must-override-a-superclass-method-errors-after-importing-a-project-into-eclips/" title="将项目导入Eclipse之后，必须覆盖超类方法错误" itemprop="url">将项目导入Eclipse之后，必须覆盖超类方法错误</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>任何时候，我必须将我的项目重新导入到Eclipse中（如果我重新安装了Eclipse，或者更改了项目的位置），几乎所有**的重写方法的格式不正确，导致错误<code>该方法必须重写超类方法</code>。</p>
-<p>值得一提的是，这是Android项目 - 无论出于何种原因，方法参数值并不总是被填充，所以我必须自己手动填充它们。比如：</p>
-<pre><code>list.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
-
-    //These arguments have their correct names
-    public void onCreateContextMenu(ContextMenu menu, View v, 
-                                    ContextMenuInfo menuInfo) {                 
-    }
-
-});
-</code></pre><p>最初会像这样填充：</p>
-<pre><code>list.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
-
-    //This methods arguments were not automatically provided    
-    public void onCreateContextMenu(ContextMenu arg1, View arg2,
-                                    ContextMenuInfo arg3) {
-    }
-
-});
-</code></pre><p>奇怪的是，如果我删除我的代码，并让Eclipse自动重新创建方法，它将使用我已有的相同的参数名称，所以我不知道问题出在哪里，除此之外它会自动格式化我的方法。</p>
-<p>这是一个非常痛苦的事情，不得不手动重新创建所有我重写的方法。如果任何人都可以解释为什么会发生这种情况，或者如何解决这个问题..我会非常高兴。</p>
-<p>也许这是由于我格式化的方法，这是在另一种方法的参数内？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/must-override-a-superclass-method-errors-after-importing-a-project-into-eclips/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/eclipse/">eclipse</a><a href="/tags/override/">override</a><a href="/tags/superclass/">superclass</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/nicest-way-to-pad-zeroes-to-string/" title="最好的方式填充零字符串" itemprop="url">最好的方式填充零字符串</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>填充数字字符串到左边的最有趣的方法是什么，即数字字符串有特定的长度？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/nicest-way-to-pad-zeroes-to-string/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/null-object-in-python/" title="Python中的空对象？" itemprop="url">Python中的空对象？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我如何引用Python中的空对象？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/null-object-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/open-a-url-in-a-new-tab-and-not-a-new-window-using-javascript/" title="使用JavaScript在新标签（而不是新窗口）中打开一个URL" itemprop="url">使用JavaScript在新标签（而不是新窗口）中打开一个URL</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我试图在新标签中打开<a href="http://en.wikipedia.org/wiki/Uniform_Resource_Locator" target="_blank" rel="noopener">网址</a>，而不是弹出窗口。我已经看到了相关的问题，其答案如下所示：</p>
-<pre><code>window.open(url,&apos;_blank&apos;);
-window.open(url);
-</code></pre><p>但是他们都没有为我工作，浏览器仍然试图打开一个弹出窗口。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/open-a-url-in-a-new-tab-and-not-a-new-window-using-javascript/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/parse-json-in-javascript/" title="在JavaScript中解析JSON？ [重复]" itemprop="url">在JavaScript中解析JSON？ [重复]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/45015/safely-turning-a-json-string-into-an-object">Safely turning a JSON string into an object</a> 21 answers </li>
-</ul>
-<p>我想在JavaScript中解析JSON字符串。回应是类似于</p>
-<pre><code>var response = &apos;{&quot;result&quot;:true,&quot;count&quot;:1}&apos;;
-</code></pre><p>我如何从这里获取值<code>result</code>和<code>count</code>？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/parse-json-in-javascript/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/json/">json</a><a href="/tags/parsing/">parsing</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/parse-string-to-float-or-int/" title="将字符串解析为Float或Int" itemprop="url">将字符串解析为Float或Int</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在Python中，如何将一个数字字符串（如<code>“545.2222”</code>）解析为相应的浮点值<code>542.2222</code>？或者将字符串<code>“31”</code>解析为一个整数，<code>31</code>？</p>
-<p>我只想知道如何将 <em>float</em> <code>string</code>解析为<code>float</code> em&gt; <code>string</code>添加到<code>int</code>。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/parse-string-to-float-or-int/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/string/">string</a><a href="/tags/integer/">integer</a><a href="/tags/floating-point/">floating-point</a><a href="/tags/parsing/">parsing</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -737,7 +806,7 @@ window.open(url);
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/38/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="page-number" href="/page/38/">38</a><span class="page-number current">39</span><a class="page-number" href="/page/40/">40</a><a class="page-number" href="/page/41/">41</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><a class="extend next" rel="next" href="/page/40/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/38/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/37/">37</a><a class="page-number" href="/page/38/">38</a><span class="page-number current">39</span><a class="page-number" href="/page/40/">40</a><a class="page-number" href="/page/41/">41</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/40/">Next<span></span></a>
   </nav>
 
 </div>
@@ -763,109 +832,84 @@ window.open(url);
 
 
   
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
-
-
-  
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
-			
 		
-			
-				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
 			
 		
 		</ul>

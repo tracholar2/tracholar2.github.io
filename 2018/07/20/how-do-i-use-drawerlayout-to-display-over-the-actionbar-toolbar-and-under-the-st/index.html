@@ -1,0 +1,862 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何使用DrawerLayout来显示在ActionBar /工具栏和状态栏下？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我在新的材料设计中看到 SideNav规范，您可以在操作栏和状态栏后面显示抽屉。我怎样才能实现这个？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使用DrawerLayout来显示在ActionBar &#x2F;工具栏和状态栏下？">
+<meta property="og:url" content="https://www.tracholar.top/2018/07/20/how-do-i-use-drawerlayout-to-display-over-the-actionbar-toolbar-and-under-the-st/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我在新的材料设计中看到 SideNav规范，您可以在操作栏和状态栏后面显示抽屉。我怎样才能实现这个？">
+<meta property="og:image" content="https://www.tracholar.top/2018/07/20/how-do-i-use-drawerlayout-to-display-over-the-actionbar-toolbar-and-under-the-st/“https://i.imgur.com/uG2mXrq.png”width">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何使用DrawerLayout来显示在ActionBar &#x2F;工具栏和状态栏下？">
+<meta name="twitter:description" content="我在新的材料设计中看到 SideNav规范，您可以在操作栏和状态栏后面显示抽屉。我怎样才能实现这个？">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/07/20/how-do-i-use-drawerlayout-to-display-over-the-actionbar-toolbar-and-under-the-st/“https://i.imgur.com/uG2mXrq.png”width">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/20/how-do-i-use-drawerlayout-to-display-over-the-actionbar-toolbar-and-under-the-st/" title="如何使用DrawerLayout来显示在ActionBar /工具栏和状态栏下？" itemprop="url">如何使用DrawerLayout来显示在ActionBar /工具栏和状态栏下？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-20T02:48:04.000Z" itemprop="datePublished"> Published 2018-07-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">EDIT: The new Design Support Library supports this and the previous method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Previous method:</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我在新的材料设计中看到<a href="“http://www.google.co.uk/design/spec/layout/structure.html#structure-
+side-nav”rel"> Side<br>Nav规范</a>，您可以在操作栏和状态栏后面显示抽屉。我怎样才能实现这个？</p>
+<a id="more"></a>
+<p>框架和支持库中的新功能允许这个。有三个难题：</p>
+<ul>
+<li>使用<a href="https://developer.android.com/reference/android/support/v7/widget/Toolbar.html" target="_blank" rel="noopener">工具栏</a>，以便嵌入您的操作栏添加到您的视图层次结构中。</li>
+<li>制作<a href="https://developer.android.com/reference/android/support/v4/widget/DrawerLayout.html" target="_blank" rel="noopener"> DrawerLayout </a> <code>fitsSystemWindows</code>代码&gt;以便它放在系统栏后面。</li>
+<li>禁用<code>Theme.Material</code>的正常状态栏着色，以便DrawerLayout可以在那里绘制。</li>
+</ul>
+<p>我假设你将使用新的appcompat。</p>
+<p>首先，你的布局应该如下所示：</p>
+<pre><code>&lt;!-- The important thing to note here is the added fitSystemWindows --&gt;
+&lt;android.support.v4.widget.DrawerLayout
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:id=&quot;@+id/my_drawer_layout&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:fitsSystemWindows=&quot;true&quot;&gt;
+
+    &lt;!-- Your normal content view --&gt;
+    &lt;LinearLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        android:orientation=&quot;vertical&quot;&gt;
+
+        &lt;!-- We use a Toolbar so that our drawer can be displayed
+             in front of the action bar --&gt;
+        &lt;android.support.v7.widget.Toolbar  
+            android:id=&quot;@+id/my_awesome_toolbar&quot;
+            android:layout_height=&quot;wrap_content&quot;
+            android:layout_width=&quot;match_parent&quot;
+            android:minHeight=&quot;?attr/actionBarSize&quot;
+            android:background=&quot;?attr/colorPrimary&quot; /&gt;
+
+        &lt;!-- The rest of your content view --&gt;
+
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- Your drawer view. This can be any view, LinearLayout
+         is just an example. As we have set fitSystemWindows=true
+         this will be displayed under the status bar. --&gt;
+    &lt;LinearLayout
+        android:layout_width=&quot;304dp&quot;
+        android:layout_height=&quot;match_parent&quot;
+        android:layout_gravity=&quot;left|start&quot;
+        android:fitsSystemWindows=&quot;true&quot;&gt;
+
+        &lt;!-- Your drawer content --&gt;
+
+    &lt;/LinearLayout&gt;
+
+&lt;/android.support.v4.widget.DrawerLayout&gt;
+</code></pre><p>然后在你的活动/片段：</p>
+<pre><code>public void onCreate(Bundled savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    // Your normal setup. Blah blah ...
+
+    // As we&apos;re using a Toolbar, we should retrieve it and set it
+    // to be our ActionBar
+    Toolbar toolbar = (...) findViewById(R.id.my_awesome_toolbar);
+    setSupportActionBar(toolbar);
+
+    // Now retrieve the DrawerLayout so that we can set the status bar color.
+    // This only takes effect on Lollipop, or when using translucentStatusBar
+    // on KitKat.
+    DrawerLayout drawerLayout = (...) findViewById(R.id.my_drawer_layout);
+    drawerLayout.setStatusBarBackgroundColor(yourChosenColor);
+}
+</code></pre><p>然后你需要确保DrawerLayout在状态栏后面可见。你可以通过改变你的values-v21主题来做到这一点：</p>
+<p>&lt;强&gt;值-V21 /的themes.xml</p>
+<pre><code>&lt;style name=&quot;Theme.MyApp&quot; parent=&quot;Theme.AppCompat.Light.NoActionBar&quot;&gt;
+    &lt;item name=&quot;android:windowDrawsSystemBarBackgrounds&quot;&gt;true&lt;/item&gt;
+    &lt;item name=&quot;android:statusBarColor&quot;&gt;@android:color/transparent&lt;/item&gt;
+    &lt;item name=&quot;android:windowTranslucentStatus&quot;&gt;true&lt;/item&gt;
+&lt;/style&gt;
+</code></pre><p>注意： 如果使用<code>＆lt; fragment android：name =“fragments.NavigationDrawerFragment”＆gt;</code>来代替</p>
+<pre><code>&lt;LinearLayout
+    android:layout_width=&quot;304dp&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:layout_gravity=&quot;left|start&quot;
+    android:fitsSystemWindows=&quot;true&quot;&gt;
+
+    &lt;!-- Your drawer content --&gt;
+
+&lt;/LinearLayout&gt;
+</code></pre><p>实际的布局，如果您在从<code>onCreateView</code>方法返回的视图上调用<code>fitsSystemWindows（boolean）</code>，则会获得预期的效果。</p>
+<pre><code>@Override
+public View onCreateView(LayoutInflater inflater, 
+                         ViewGroup container,
+                         Bundle savedInstanceState) {
+    View mDrawerListView = inflater.inflate(
+        R.layout.fragment_navigation_drawer, container, false);
+    mDrawerListView.setFitsSystemWindows(true);
+    return mDrawerListView;
+}
+</code></pre><h2><span id="edit-the-new-design-support-library-supports-this-and-the-previous-method">EDIT: The new Design Support Library supports this and the previous method</span></h2><p>is no longer required.</p>
+<p>现在可以使用新的<a href="http://android-developers.blogspot.in/2015/05/android-
+design-support-library.html" target="_blank" rel="noopener"> Android设计支持库</a>。</p>
+<p>您可以看到Chris Banes的<a href="https://github.com/chrisbanes/cheesesquare" target="_blank" rel="noopener">Cheesesquare示例应用程序</a>，它演示了所有新功能。</p>
+<hr>
+<h2><span id="previous-method">Previous method:</span></h2><p>由于没有完整的解决方案，这里是我达到预期结果的方式。</p>
+<p>首先包括<a href="“https://github.com/google/iosched/blob/master/android/src/main/java/com/google/samples/apps/iosched/ui/widget/ScrimInsetsFrameLayout"> ScrimInsetsFrameLayout</a>。</p>
+<pre><code>/*
+* Copyright 2014 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+/**
+* A layout that draws something in the insets passed to 
+* {@link #fitSystemWindows(Rect)}, i.e. the area above UI chrome
+* (status and navigation bars, overlay action bars).
+*/
+public class ScrimInsetsFrameLayout extends FrameLayout {
+    private Drawable mInsetForeground;
+
+    private Rect mInsets;
+    private Rect mTempRect = new Rect();
+    private OnInsetsCallback mOnInsetsCallback;
+
+    public ScrimInsetsFrameLayout(Context context) {
+        super(context);
+        init(context, null, 0);
+    }
+
+    public ScrimInsetsFrameLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context, attrs, 0);
+    }
+
+    public ScrimInsetsFrameLayout(
+        Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(context, attrs, defStyle);
+    }
+
+    private void init(Context context, AttributeSet attrs, int defStyle) {
+        final TypedArray a = context.obtainStyledAttributes(attrs,
+                R.styleable.ScrimInsetsView, defStyle, 0);
+        if (a == null) {
+            return;
+        }
+        mInsetForeground = a.getDrawable(
+            R.styleable.ScrimInsetsView_insetForeground);
+        a.recycle();
+
+        setWillNotDraw(true);
+    }
+
+    @Override
+    protected boolean fitSystemWindows(Rect insets) {
+        mInsets = new Rect(insets);
+        setWillNotDraw(mInsetForeground == null);
+        ViewCompat.postInvalidateOnAnimation(this);
+        if (mOnInsetsCallback != null) {
+            mOnInsetsCallback.onInsetsChanged(insets);
+        }
+        return true; // consume insets
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+
+        int width = getWidth();
+        int height = getHeight();
+        if (mInsets != null &amp;&amp; mInsetForeground != null) {
+            int sc = canvas.save();
+            canvas.translate(getScrollX(), getScrollY());
+
+            // Top
+            mTempRect.set(0, 0, width, mInsets.top);
+            mInsetForeground.setBounds(mTempRect);
+            mInsetForeground.draw(canvas);
+
+            // Bottom
+            mTempRect.set(0, height - mInsets.bottom, width, height);
+            mInsetForeground.setBounds(mTempRect);
+            mInsetForeground.draw(canvas);
+
+            // Left
+            mTempRect.set(
+                0, 
+                mInsets.top, 
+                mInsets.left, 
+                height - mInsets.bottom);
+            mInsetForeground.setBounds(mTempRect);
+            mInsetForeground.draw(canvas);
+
+            // Right
+            mTempRect.set(
+                width - mInsets.right, 
+                mInsets.top, width, 
+                height - mInsets.bottom);
+            mInsetForeground.setBounds(mTempRect);
+            mInsetForeground.draw(canvas);
+
+            canvas.restoreToCount(sc);
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mInsetForeground != null) {
+            mInsetForeground.setCallback(this);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mInsetForeground != null) {
+            mInsetForeground.setCallback(null);
+        }
+    }
+
+    /**
+     * Allows the calling container to specify a callback for custom 
+     * processing when insets change (i.e. when {@link #fitSystemWindows(Rect)}
+     * is called. This is useful for setting padding on UI elements 
+     * based on UI chrome insets (e.g. a Google Map or a ListView). 
+     * When using with ListView or GridView, remember to set
+     * clipToPadding to false.
+     */
+    public void setOnInsetsCallback(OnInsetsCallback onInsetsCallback) {
+        mOnInsetsCallback = onInsetsCallback;
+    }
+
+    public static interface OnInsetsCallback {
+        public void onInsetsChanged(Rect insets);
+    }
+}
+</code></pre><p>然后创建一个样式，以便可以设置<code>insetForeground</code>。</p>
+<p>&lt;强&gt;值/ attrs.xml</p>
+<pre><code>&lt;declare-styleable name=&quot;ScrimInsetsView&quot;&gt;
+    &lt;attr name=&quot;insetForeground&quot; format=&quot;reference|color&quot; /&gt;
+&lt;/declare-styleable&gt;
+</code></pre><p>更新您的活动的xml文件，并确保<code>DrawerLayout</code>和<code>ScrimInsetsFrameLayout</code>中的<code>android：fitsSystemWindows</code>设置为true。 / p&gt;</p>
+<p>&lt;强&gt;布局/ activity_main.xml中</p>
+<pre><code>&lt;android.support.v4.widget.DrawerLayout 
+    xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+    android:id=&quot;@+id/drawerLayout&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:fitsSystemWindows=&quot;true&quot;
+    tools:context=&quot;.MainActivity&quot;&gt;
+
+    &lt;!-- The main content view --&gt;
+    &lt;LinearLayout
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;match_parent&quot;
+        android:orientation=&quot;vertical&quot;&gt;
+
+        &lt;!-- Your main content --&gt;
+
+    &lt;/LinearLayout&gt;
+
+    &lt;!-- The navigation drawer --&gt;
+    &lt;com.example.app.util.ScrimInsetsFrameLayout 
+        xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+        android:id=&quot;@+id/scrimInsetsFrameLayout&quot;
+        android:layout_width=&quot;320dp&quot;
+        android:layout_height=&quot;match_parent&quot;
+        android:layout_gravity=&quot;start&quot;
+        android:background=&quot;@color/white&quot;
+        android:elevation=&quot;10dp&quot;
+        android:fitsSystemWindows=&quot;true&quot;
+        app:insetForeground=&quot;#4000&quot;&gt;
+
+        &lt;!-- Your drawer content --&gt;
+
+    &lt;/com.example.app.util.ScrimInsetsFrameLayout&gt;
+
+&lt;/android.support.v4.widget.DrawerLayout&gt;
+</code></pre><p>在活动的onCreate方法内部，在抽屉布局上设置状态栏背景颜色。</p>
+<p>&lt;强&gt; MainActivity.java</p>
+<pre><code>@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    // ...
+
+    mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+    mDrawerLayout.setStatusBarBackgroundColor(
+        getResources().getColor(R.color.primary_dark));
+}
+</code></pre><p>最后更新你的应用程序的主题，以便<code>DrawerLayout</code>在状态栏后面。</p>
+<p>&lt;强&gt;值-V21 / styles.xml</p>
+<pre><code>&lt;style name=&quot;AppTheme&quot; parent=&quot;Theme.AppCompat.Light.NoActionBar&quot;&gt;
+    &lt;item name=&quot;android:windowDrawsSystemBarBackgrounds&quot;&gt;true&lt;/item&gt;
+    &lt;item name=&quot;android:statusBarColor&quot;&gt;@android:color/transparent&lt;/item&gt;
+&lt;/style&gt;
+</code></pre><p>&lt;强&gt;结果：</p>
+<p><img src="“https://i.imgur.com/uG2mXrq.png”width" alt=""></p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/07/20/how-do-i-use-drawerlayout-to-display-over-the-actionbar-toolbar-and-under-the-st/" data-title="如何使用DrawerLayout来显示在ActionBar /工具栏和状态栏下？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/21/why-are-mutable-structs-evil/" title="为什么是可变的结构？邪恶？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  为什么是可变的结构？邪恶？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/20/how-to-use-find-to-search-for-files-created-on-a-specific-date/"  title="如何使用“查找”搜索在特定日期创建的文件？ [关闭]">
+ <strong>下一篇：</strong><br/> 
+ <span>如何使用“查找”搜索在特定日期创建的文件？ [关闭]
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">EDIT: The new Design Support Library supports this and the previous method</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Previous method:</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

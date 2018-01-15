@@ -1,0 +1,647 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何在Linux中改变echo的输出颜色 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我试图用echo命令在终端上打印文本。 我想用红色打印文字。我该怎么做？">
+<meta name="keywords" content="linux,bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在Linux中改变echo的输出颜色">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/29/how-to-change-the-output-color-of-echo-in-linux/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我试图用echo命令在终端上打印文本。 我想用红色打印文字。我该怎么做？">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/29/how-to-change-the-output-color-of-echo-in-linux/“https://i.stack.imgur.com/6tYnk.png”alt">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何在Linux中改变echo的输出颜色">
+<meta name="twitter:description" content="我试图用echo命令在终端上打印文本。 我想用红色打印文字。我该怎么做？">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/29/how-to-change-the-output-color-of-echo-in-linux/“https://i.stack.imgur.com/6tYnk.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/29/how-to-change-the-output-color-of-echo-in-linux/" title="如何在Linux中改变echo的输出颜色" itemprop="url">如何在Linux中改变echo的输出颜色</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-29T01:56:24.000Z" itemprop="datePublished"> Published 2018-01-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Usage</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text">Direct</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text">Shell variables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.3.</span> <span class="toc-text">Command substitution</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Example</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Foreground &amp; background colour commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Text mode commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Cursor movement commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Clear and insert commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Other commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">Scripts</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">See also</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我试图用echo命令在终端上打印文本。</p>
+<p>我想用红色打印文字。我该怎么做？</p>
+<a id="more"></a>
+<p>您可以使用这些<a href="https://en.wikipedia.org/wiki/ANSI_escape_code" target="_blank" rel="noopener"> ANSI转义码</a>：</p>
+<pre><code>Black        0;30     Dark Gray     1;30
+Red          0;31     Light Red     1;31
+Green        0;32     Light Green   1;32
+Brown/Orange 0;33     Yellow        1;33
+Blue         0;34     Light Blue    1;34
+Purple       0;35     Light Purple  1;35
+Cyan         0;36     Light Cyan    1;36
+Light Gray   0;37     White         1;37
+</code></pre><p>然后在脚本中使用它们：</p>
+<pre><code>#    .---------- constant part!
+#    vvvv vvvv-- the code from above
+RED=&apos;\033[0;31m&apos;
+NC=&apos;\033[0m&apos; # No Color
+printf &quot;I ${RED}love${NC} Stack Overflow\n&quot;
+</code></pre><p>用红色打印<code>love</code><br>从@ james-lim的评论来看，如果你使用<code>echo</code>命令，一定要使用-e标志来允许反斜杠转义。</p>
+<pre><code># Continued from above example
+echo -e &quot;I ${RED}love${NC} Stack Overflow&quot;
+</code></pre><p>（除非要添加额外的空行，否则在使用echo时不要添加<code>“\ n”</code>）</p>
+<p>您可以使用令人敬畏的<code>tput</code>命令（在<a href="https://stackoverflow.com/a/5947788/24874" target="_blank" rel="noopener">Ignacio的答案</a>中建议）来制作终端控制各种事物的代码。</p>
+<hr>
+<h1><span id="usage">Usage</span></h1><p>具体的<code>tput</code>子命令将在后面讨论。</p>
+<h3><span id="direct">Direct</span></h3><p>调用<code>tput</code>作为一系列命令的一部分：</p>
+<pre><code>tput setaf 1; echo &quot;this is red text&quot;
+</code></pre><p>使用<code>;</code>而不是<code>＆amp;＆amp;</code>，所以如果<code>tput</code>错误，文本仍然显示。</p>
+<h3><span id="shell-variables">Shell variables</span></h3><p>另一个选择是使用shell变量：</p>
+<pre><code>red=`tput setaf 1`    green=`tput setaf 2`    reset=`tput sgr0`    echo &quot;${red}red text ${green}green text${reset}&quot;
+</code></pre><p>tput `生成由终端解释为具有特殊含义的字符序列。他们不会被显示自己。请注意，他们仍然可以保存到文件或由终端以外的程序输入处理。</p>
+<h3><span id="command-substitution">Command substitution</span></h3><p>使用<a href="“http://tldp.org/LDP/abs直接将&lt;code"> tput <code>的输出插入到</code> echo `字符串中可能会更方便/html/commandsub.html“rel<br>=”noreferrer“&gt;命令替换</a>：</p>
+<pre><code>echo &quot;$(tput setaf 1)Red text $(tput setab 7)and white background$(tput sgr 0)&quot;
+</code></pre><hr>
+<h1><span id="example">Example</span></h1><p>上面的命令在Ubuntu上产生这个命令：</p>
+<p><img src="“https://i.stack.imgur.com/6tYnk.png”alt" alt=""></p>
+<hr>
+<h1><span id="foreground-amp-background-colour-commands">Foreground &amp; background colour commands</span></h1><pre><code>tput setab [1-7] # Set the background colour using ANSI escape
+tput setaf [1-7] # Set the foreground colour using ANSI escape
+</code></pre><p>颜色如下：</p>
+<pre><code>Num  Colour    #define         R G B
+
+0    black     COLOR_BLACK     0,0,0
+1    red       COLOR_RED       1,0,0
+2    green     COLOR_GREEN     0,1,0
+3    yellow    COLOR_YELLOW    1,1,0
+4    blue      COLOR_BLUE      0,0,1
+5    magenta   COLOR_MAGENTA   1,0,1
+6    cyan      COLOR_CYAN      0,1,1
+7    white     COLOR_WHITE     1,1,1
+</code></pre><p>还有非ANSI版本的颜色设置函数（<code>setb</code>，而不是<code>setab</code>，<code>setf</code>而不是<code>setaf</code>）使用不同的数字，这里没有给出。</p>
+<h1><span id="text-mode-commands">Text mode commands</span></h1><pre><code>tput bold    # Select bold mode
+tput dim     # Select dim (half-bright) mode
+tput smul    # Enable underline mode
+tput rmul    # Disable underline mode
+tput rev     # Turn on reverse video mode
+tput smso    # Enter standout (bold) mode
+tput rmso    # Exit standout mode
+</code></pre><h1><span id="cursor-movement-commands">Cursor movement commands</span></h1><pre><code>tput cup Y X # Move cursor to screen postion X,Y (top left is 0,0)
+tput cuf N   # Move N characters forward (right)
+tput cub N   # Move N characters back (left)
+tput cuu N   # Move N lines up
+tput ll      # Move to last line, first column (if no cup)
+tput sc      # Save the cursor position
+tput rc      # Restore the cursor position
+tput lines   # Output the number of lines of the terminal
+tput cols    # Output the number of columns of the terminal
+</code></pre><h1><span id="clear-and-insert-commands">Clear and insert commands</span></h1><pre><code>tput ech N   # Erase N characters
+tput clear   # Clear screen and move the cursor to 0,0
+tput el 1    # Clear to beginning of line
+tput el      # Clear to end of line
+tput ed      # Clear to end of screen
+tput ich N   # Insert N characters (moves rest of line forward!)
+tput il N    # Insert N lines
+</code></pre><h1><span id="other-commands">Other commands</span></h1><pre><code>tput sgr0    # Reset text format to the terminal&apos;s default
+tput bel     # Play a bell
+</code></pre><p><a href="https://extensions.gnome.org/extension/669/wobbly-
+windows/" target="_blank" rel="noopener"> compiz wobbly windows </a>，<code>bel</code>命令使终端摆动一秒钟以引起用户的注意。</p>
+<hr>
+<h1><span id="scripts">Scripts</span></h1><p>tput <code>接受包含每行一个命令的脚本，这些脚本在</code> tput `之前按顺序执行。</p>
+<p>通过回显多行字符串并管道来避免临时文件：</p>
+<pre><code>echo -e &quot;setf 7\nsetb 1&quot; | tput -S  # set fg white and bg red
+</code></pre><hr>
+<h1><span id="see-also">See also</span></h1><ul>
+<li>请参阅<a href="http://unixhelp.ed.ac.uk/CGI/man-cgi?tput+1" target="_blank" rel="noopener"> <code>man 1 tput</code> </a></li>
+<li>查看<a href="http://www.manpagez.com/man/5/terminfo/" target="_blank" rel="noopener"> <code>man 5 terminfo</code> </a>获取完整列表的命令和更多关于这些选项的细节。 （对应的<code>tput</code>命令列在第81行开始的巨大表的<code>Cap-name</code>列中。）</li>
+</ul>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/29/how-to-change-the-output-color-of-echo-in-linux/" data-title="如何在Linux中改变echo的输出颜色 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/29/what-is-the-difference-between-match-parent-and-fill-parent/" title="match_parent和fill_parent有什么区别？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  match_parent和fill_parent有什么区别？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/29/is-there-a-reason-for-cs-reuse-of-the-variable-in-a-foreach/"  title="是否有一个C＃在foreach中重用该变量的原因？">
+ <strong>下一篇：</strong><br/> 
+ <span>是否有一个C＃在foreach中重用该变量的原因？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Usage</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text">Direct</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text">Shell variables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.3.</span> <span class="toc-text">Command substitution</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Example</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Foreground &amp; background colour commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Text mode commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Cursor movement commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Clear and insert commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Other commands</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">Scripts</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">See also</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

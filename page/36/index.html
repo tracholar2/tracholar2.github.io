@@ -112,79 +112,30 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/iterating-through-a-collection-avoiding-concurrentmodificationexception-when-re/" title="迭代集合，避免在循环中移除时出现ConcurrentModificationException异常" itemprop="url">迭代集合，避免在循环中移除时出现ConcurrentModificationException异常</a>
+      <a href="/2018/04/23/how-to-find-the-last-day-of-the-month-from-date/" title="如何从日期找到月份的最后一天？" itemprop="url">如何从日期找到月份的最后一天？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-23T01:14:17.000Z" itemprop="datePublished"> Published 2018-04-23</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我们都知道你不能这样做：</p>
-<pre><code>for (Object i : l) {
-    if (condition(i)) {
-        l.remove(i);
-    }
-}
-</code></pre><p>ConcurrentModificationException `等…这显然有效，但并不总是。以下是一些特定的代码：</p>
-<pre><code>public static void main(String[] args) {
-    Collection&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
-
-    for (int i=0; i &lt; 10; ++i) {
-        l.add(new Integer(4));
-        l.add(new Integer(5));
-        l.add(new Integer(6));
-    }
-
-    for (Integer i : l) {
-        if (i.intValue() == 5) {
-            l.remove(i);
-        }
-    }
-
-    System.out.println(l);
-}
-</code></pre><p>这当然会导致：</p>
-<pre><code>Exception in thread &quot;main&quot; java.util.ConcurrentModificationException
-</code></pre><p>即使多个线程没有这样做……无论如何。</p>
-<p>这个问题最好的解决办法是什么？我怎样才能从循环中删除一个项目而不会抛出这个异常？</p>
-<p>我也在这里使用一个任意的<code>Collection</code>，不一定是一个<code>ArrayList</code>，所以你不能依赖<code>get</code>。<code>p&gt; &lt;!-- more --&gt;
-Iterator.remove（）</code>是安全的，你可以像这样使用它：</p>
-<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
-
-// This is a clever way to create the iterator and call iterator.hasNext() like
-// you would do in a while-loop. It would be the same as doing:
-//     Iterator&lt;String&gt; iterator = list.iterator();
-//     while (iterator.hasNext()) {
-for (Iterator&lt;String&gt; iterator = list.iterator(); iterator.hasNext();) {
-    String string = iterator.next();
-    if (string.isEmpty()) {
-        // Remove the current element from the iterator and the list.
-        iterator.remove();
-    }
-}
-</code></pre><p>请注意，<code>Iterator.remove</code>是在迭代过程中修改集合的唯一安全方法。如果在迭代过程中以其他方式修改了底层集合，则行为是未指定的。</p>
-<p>来源：</p>
-<p><a href="http://docs.oracle.com/javase/tutorial/collections/interfaces/collection.html" target="_blank" rel="noopener"> http://docs.oracle.com/javase/tutorial/集合/接口/ collection.html</a></p>
-<hr>
-<p>同样，如果你有一个<code>ListIterator</code>并且想要添加_项，你可以使用<a href="“http://docs.oracle.com/javase"> <code>ListIterator＃add</code></a>，出于同样的原因，您可以使用<code>Iterator＃remove</code> - 它被设计为允许它。</p>
-<p>愚蠢的我：</p>
-<pre><code>Iterator&lt;Integer&gt; iter = l.iterator();
-while (iter.hasNext()) {
-    if (iter.next().intValue() == 5) {
-        iter.remove();
-    }
-}
-</code></pre><p>我认为，由于foreach循环是用于迭代的语法糖，所以使用迭代器将无济于事……但它为您提供了<code>.remove（）</code>功能。</p>
-
+        <p>如何在PHP中获得本月的最后一天？</p>
+<p>假设：</p>
+<pre><code>$a_date = &quot;2009-11-23&quot;
+</code></pre><p>我想要2009-11-30;并给予</p>
+<pre><code>$a_date = &quot;2009-12-23&quot;
+</code></pre><p>我想要2009-12-31。</p>
         
         
         <p class="article-more-link">
+          
+            <a href="/2018/04/23/how-to-find-the-last-day-of-the-month-from-date/#more">Read More</a>
           
        </p>
     </div>
@@ -194,7 +145,7 @@ while (iter.hasNext()) {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/collections/">collections</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -234,121 +185,471 @@ while (iter.hasNext()) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-3-dots-in-parameters/" title="Java，参数中有3个点" itemprop="url">Java，参数中有3个点</a>
+      <a href="/2018/04/22/example-communication-between-activity-and-service-using-messaging/" title="示例：使用消息传递的活动和服务之间的通信" itemprop="url">示例：使用消息传递的活动和服务之间的通信</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-22T02:35:12.000Z" itemprop="datePublished"> Published 2018-04-22</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>以下方法中的3个点是什么意思？</p>
-<pre><code>public void myMethod(String... strings){
-    // method body
-}
-</code></pre><p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/java-3-dots-in-parameters/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
+        <p>我找不到任何如何在活动和服务之间发送消息的例子，我花了太多的时间来解决这个问题。这是一个供他人参考的示例项目。</p>
+<p>这个例子允许你直接启动或停止服务，并单独绑定/取消绑定服务。当服务正在运行时，它以10Hz递增一个数字。如果活动绑定到<code>Service</code>，它将显示当前值。数据以Integer形式传输，并以字符串形式传输，这样您就可以看到如何做到这两种不同的方式。活动中还有按钮可将消息发送到服务（更改递增值）。</p>
+<p>&lt;强&gt;截图：</p>
+<p><img src="“https://i.stack.imgur.com/CMPS7.png”alt" alt=""></p>
+<p>&lt;强&gt;的AndroidManifest.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+      package=&quot;com.exampleservice&quot;
+      android:versionCode=&quot;1&quot;
+      android:versionName=&quot;1.0&quot;&gt;
+    &lt;application android:icon=&quot;@drawable/icon&quot; android:label=&quot;@string/app_name&quot;&gt;
+        &lt;activity android:name=&quot;.MainActivity&quot;
+                  android:label=&quot;@string/app_name&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+    &lt;service android:name=&quot;.MyService&quot;&gt;&lt;/service&gt;
+    &lt;/application&gt;
+    &lt;uses-sdk android:minSdkVersion=&quot;8&quot; /&gt;
+&lt;/manifest&gt;
+</code></pre><p>&lt;强&gt; RES \值\ strings.xml中：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;resources&gt;
+    &lt;string name=&quot;app_name&quot;&gt;ExampleService&lt;/string&gt;
+    &lt;string name=&quot;service_started&quot;&gt;Example Service started&lt;/string&gt;
+    &lt;string name=&quot;service_label&quot;&gt;Example Service Label&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre><p>&lt;强&gt; RES \布局\ main.xml中：</p>
+<pre><code>&lt;RelativeLayout
+    android:id=&quot;@+id/RelativeLayout01&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot; &gt;
 
+    &lt;Button
+        android:id=&quot;@+id/btnStart&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Start Service&quot; &gt;
+    &lt;/Button&gt;
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/variadic-functions/">variadic-functions</a>
-  </div>
+    &lt;Button
+        android:id=&quot;@+id/btnStop&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:text=&quot;Stop Service&quot; &gt;
+    &lt;/Button&gt;
+&lt;/RelativeLayout&gt;
 
-</div>
+&lt;RelativeLayout
+    android:id=&quot;@+id/RelativeLayout02&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot; &gt;
 
+    &lt;Button
+        android:id=&quot;@+id/btnBind&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Bind to Service&quot; &gt;
+    &lt;/Button&gt;
 
+    &lt;Button
+        android:id=&quot;@+id/btnUnbind&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:text=&quot;Unbind from Service&quot; &gt;
+    &lt;/Button&gt;
+&lt;/RelativeLayout&gt;
 
+&lt;TextView
+    android:id=&quot;@+id/textStatus&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;Status Goes Here&quot;
+    android:textSize=&quot;24sp&quot; /&gt;
 
-<div class="comments-count">
-	
-</div>
+&lt;TextView
+    android:id=&quot;@+id/textIntValue&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;Integer Value Goes Here&quot;
+    android:textSize=&quot;24sp&quot; /&gt;
 
-</footer>
+&lt;TextView
+    android:id=&quot;@+id/textStrValue&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;String Value Goes Here&quot;
+    android:textSize=&quot;24sp&quot; /&gt;
 
+&lt;RelativeLayout
+    android:id=&quot;@+id/RelativeLayout03&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot; &gt;
 
-    </article>
+    &lt;Button
+        android:id=&quot;@+id/btnUpby1&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Increment by 1&quot; &gt;
+    &lt;/Button&gt;
 
+    &lt;Button
+        android:id=&quot;@+id/btnUpby10&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:text=&quot;Increment by 10&quot; &gt;
+    &lt;/Button&gt;
+&lt;/RelativeLayout&gt;
+</code></pre><p>&lt;强&gt; SRC \ com.exampleservice \ MainActivity.java：</p>
+<pre><code>package com.exampleservice;
 
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 
+public class MainActivity extends Activity {
+    Button btnStart, btnStop, btnBind, btnUnbind, btnUpby1, btnUpby10;
+    TextView textStatus, textIntValue, textStrValue;
+    Messenger mService = null;
+    boolean mIsBound;
+    final Messenger mMessenger = new Messenger(new IncomingHandler());
 
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/java-8-listv-into-mapk-v/" title="Java 8列表&lt;V&gt;到地图&lt;K，V&gt;中" itemprop="url">Java 8列表&lt;V&gt;到地图&lt;K，V&gt;中</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我想使用Java 8的流和lambdas将对象列表翻译成Map。</p>
-<p>这是我在Java 7及以下版本中编写的。</p>
-<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
-        final Map&lt;String, Choice&gt; hashMap = new HashMap&lt;&gt;();
-        for (final Choice choice : choices) {
-            hashMap.put(choice.getName(), choice);
-        }
-        return hashMap;
-}
-</code></pre><p>使用Java 8和Guava我可以轻松完成这个任务，但是我想知道如何在没有Guava的情况下做到这一点。</p>
-<p>在番石榴：</p>
-<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
-    return Maps.uniqueIndex(choices, new Function&lt;Choice, String&gt;() {
-
+    class IncomingHandler extends Handler {
         @Override
-        public String apply(final Choice input) {
-            return input.getName();
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MyService.MSG_SET_INT_VALUE:
+                textIntValue.setText(&quot;Int Message: &quot; + msg.arg1);
+                break;
+            case MyService.MSG_SET_STRING_VALUE:
+                String str1 = msg.getData().getString(&quot;str1&quot;);
+                textStrValue.setText(&quot;Str Message: &quot; + str1);
+                break;
+            default:
+                super.handleMessage(msg);
+            }
         }
-    });
+    }
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            mService = new Messenger(service);
+            textStatus.setText(&quot;Attached.&quot;);
+            try {
+                Message msg = Message.obtain(null, MyService.MSG_REGISTER_CLIENT);
+                msg.replyTo = mMessenger;
+                mService.send(msg);
+            }
+            catch (RemoteException e) {
+                // In this case the service has crashed before we could even do anything with it
+            }
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been unexpectedly disconnected - process crashed.
+            mService = null;
+            textStatus.setText(&quot;Disconnected.&quot;);
+        }
+    };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        btnStart = (Button)findViewById(R.id.btnStart);
+        btnStop = (Button)findViewById(R.id.btnStop);
+        btnBind = (Button)findViewById(R.id.btnBind);
+        btnUnbind = (Button)findViewById(R.id.btnUnbind);
+        textStatus = (TextView)findViewById(R.id.textStatus);
+        textIntValue = (TextView)findViewById(R.id.textIntValue);
+        textStrValue = (TextView)findViewById(R.id.textStrValue);
+        btnUpby1 = (Button)findViewById(R.id.btnUpby1);
+        btnUpby10 = (Button)findViewById(R.id.btnUpby10);
+
+        btnStart.setOnClickListener(btnStartListener);
+        btnStop.setOnClickListener(btnStopListener);
+        btnBind.setOnClickListener(btnBindListener);
+        btnUnbind.setOnClickListener(btnUnbindListener);
+        btnUpby1.setOnClickListener(btnUpby1Listener);
+        btnUpby10.setOnClickListener(btnUpby10Listener);
+
+        restoreMe(savedInstanceState);
+
+        CheckIfServiceIsRunning();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(&quot;textStatus&quot;, textStatus.getText().toString());
+        outState.putString(&quot;textIntValue&quot;, textIntValue.getText().toString());
+        outState.putString(&quot;textStrValue&quot;, textStrValue.getText().toString());
+    }
+    private void restoreMe(Bundle state) {
+        if (state!=null) {
+            textStatus.setText(state.getString(&quot;textStatus&quot;));
+            textIntValue.setText(state.getString(&quot;textIntValue&quot;));
+            textStrValue.setText(state.getString(&quot;textStrValue&quot;));
+        }
+    }
+    private void CheckIfServiceIsRunning() {
+        //If the service is running when the activity starts, we want to automatically bind to it.
+        if (MyService.isRunning()) {
+            doBindService();
+        }
+    }
+
+    private OnClickListener btnStartListener = new OnClickListener() {
+        public void onClick(View v){
+            startService(new Intent(MainActivity.this, MyService.class));
+        }
+    };
+    private OnClickListener btnStopListener = new OnClickListener() {
+        public void onClick(View v){
+            doUnbindService();
+            stopService(new Intent(MainActivity.this, MyService.class));
+        }
+    };
+    private OnClickListener btnBindListener = new OnClickListener() {
+        public void onClick(View v){
+            doBindService();
+        }
+    };
+    private OnClickListener btnUnbindListener = new OnClickListener() {
+        public void onClick(View v){
+            doUnbindService();
+        }
+    };
+    private OnClickListener btnUpby1Listener = new OnClickListener() {
+        public void onClick(View v){
+            sendMessageToService(1);
+        }
+    };
+    private OnClickListener btnUpby10Listener = new OnClickListener() {
+        public void onClick(View v){
+            sendMessageToService(10);
+        }
+    };
+    private void sendMessageToService(int intvaluetosend) {
+        if (mIsBound) {
+            if (mService != null) {
+                try {
+                    Message msg = Message.obtain(null, MyService.MSG_SET_INT_VALUE, intvaluetosend, 0);
+                    msg.replyTo = mMessenger;
+                    mService.send(msg);
+                }
+                catch (RemoteException e) {
+                }
+            }
+        }
+    }
+
+
+    void doBindService() {
+        bindService(new Intent(this, MyService.class), mConnection, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+        textStatus.setText(&quot;Binding.&quot;);
+    }
+    void doUnbindService() {
+        if (mIsBound) {
+            // If we have received the service, and hence registered with it, then now is the time to unregister.
+            if (mService != null) {
+                try {
+                    Message msg = Message.obtain(null, MyService.MSG_UNREGISTER_CLIENT);
+                    msg.replyTo = mMessenger;
+                    mService.send(msg);
+                }
+                catch (RemoteException e) {
+                    // There is nothing special we need to do if the service has crashed.
+                }
+            }
+            // Detach our existing connection.
+            unbindService(mConnection);
+            mIsBound = false;
+            textStatus.setText(&quot;Unbinding.&quot;);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            doUnbindService();
+        }
+        catch (Throwable t) {
+            Log.e(&quot;MainActivity&quot;, &quot;Failed to unbind from the service&quot;, t);
+        }
+    }
 }
-</code></pre><p>用Java 8 lambda表达番石榴。</p>
-<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
-    return Maps.uniqueIndex(choices, c -&gt; c.getName());
+</code></pre><p>&lt;强&gt; SRC \ com.exampleservice \ MyService.java：</p>
+<pre><code>package com.exampleservice;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
+
+public class MyService extends Service {
+    private NotificationManager nm;
+    private Timer timer = new Timer();
+    private int counter = 0, incrementby = 1;
+    private static boolean isRunning = false;
+
+    ArrayList&lt;Messenger&gt; mClients = new ArrayList&lt;Messenger&gt;(); // Keeps track of all current registered clients.
+    int mValue = 0; // Holds last value set by a client.
+    static final int MSG_REGISTER_CLIENT = 1;
+    static final int MSG_UNREGISTER_CLIENT = 2;
+    static final int MSG_SET_INT_VALUE = 3;
+    static final int MSG_SET_STRING_VALUE = 4;
+    final Messenger mMessenger = new Messenger(new IncomingHandler()); // Target we publish for clients to send messages to IncomingHandler.
+
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mMessenger.getBinder();
+    }
+    class IncomingHandler extends Handler { // Handler of incoming messages from clients.
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MSG_REGISTER_CLIENT:
+                mClients.add(msg.replyTo);
+                break;
+            case MSG_UNREGISTER_CLIENT:
+                mClients.remove(msg.replyTo);
+                break;
+            case MSG_SET_INT_VALUE:
+                incrementby = msg.arg1;
+                break;
+            default:
+                super.handleMessage(msg);
+            }
+        }
+    }
+    private void sendMessageToUI(int intvaluetosend) {
+        for (int i=mClients.size()-1; i&gt;=0; i--) {
+            try {
+                // Send data as an Integer
+                mClients.get(i).send(Message.obtain(null, MSG_SET_INT_VALUE, intvaluetosend, 0));
+
+                //Send data as a String
+                Bundle b = new Bundle();
+                b.putString(&quot;str1&quot;, &quot;ab&quot; + intvaluetosend + &quot;cd&quot;);
+                Message msg = Message.obtain(null, MSG_SET_STRING_VALUE);
+                msg.setData(b);
+                mClients.get(i).send(msg);
+
+            }
+            catch (RemoteException e) {
+                // The client is dead. Remove it from the list; we are going through the list from back to front so this is safe to do inside the loop.
+                mClients.remove(i);
+            }
+        }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.i(&quot;MyService&quot;, &quot;Service Started.&quot;);
+        showNotification();
+        timer.scheduleAtFixedRate(new TimerTask(){ public void run() {onTimerTick();}}, 0, 100L);
+        isRunning = true;
+    }
+    private void showNotification() {
+        nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        // In this sample, we&apos;ll use the same text for the ticker and the expanded notification
+        CharSequence text = getText(R.string.service_started);
+        // Set the icon, scrolling text and timestamp
+        Notification notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
+        // The PendingIntent to launch our activity if the user selects this notification
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        // Set the info for the views that show in the notification panel.
+        notification.setLatestEventInfo(this, getText(R.string.service_label), text, contentIntent);
+        // Send the notification.
+        // We use a layout id because it is a unique number.  We use it later to cancel.
+        nm.notify(R.string.service_started, notification);
+    }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(&quot;MyService&quot;, &quot;Received start id &quot; + startId + &quot;: &quot; + intent);
+        return START_STICKY; // run until explicitly stopped.
+    }
+
+    public static boolean isRunning()
+    {
+        return isRunning;
+    }
+
+
+    private void onTimerTick() {
+        Log.i(&quot;TimerTick&quot;, &quot;Timer doing work.&quot; + counter);
+        try {
+            counter += incrementby;
+            sendMessageToUI(counter);
+
+        }
+        catch (Throwable t) { //you should always ultimately catch all exceptions in timer tasks.
+            Log.e(&quot;TimerTick&quot;, &quot;Timer Tick Failed.&quot;, t);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {timer.cancel();}
+        counter=0;
+        nm.cancel(R.string.service_started); // Cancel the persistent notification.
+        Log.i(&quot;MyService&quot;, &quot;Service Stopped.&quot;);
+        isRunning = false;
+    }
 }
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-8-listv-into-mapk-v/#more">Read More</a>
+            <a href="/2018/04/22/example-communication-between-activity-and-service-using-messaging/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/java-8/">java-8</a><a href="/tags/lambda/">lambda</a><a href="/tags/java-stream/">java-stream</a>
-  </div>
 
 </div>
 
@@ -376,69 +677,27 @@ while (iter.hasNext()) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/" title="Java：检查与未经检查的异常说明" itemprop="url">Java：检查与未经检查的异常说明</a>
+      <a href="/2018/04/22/bash-tool-to-get-nth-line-from-a-file/" title="Bash工具从文件中获得第n行" itemprop="url">Bash工具从文件中获得第n行</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-22T02:08:06.000Z" itemprop="datePublished"> Published 2018-04-22</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我已经阅读StackOverFlow有关检查与未经检查的异常多个职位。我老实说还不太清楚如何正确使用它们。</p>
-<p>Joshua Bloch在“ <em>Effective Java</em> ”中表示，</p>
-<blockquote>
-<p>Use checked exceptions for recoverable conditions and runtime exceptions for<br>programming errors (Item 58 in 2nd edition)</p>
-</blockquote>
-<p>让我们看看我是否正确理解这一点。</p>
-<p>这里是我对被检查的异常的理解：</p>
-<pre><code>try{
-    String userInput = //read in user input
-    Long id = Long.parseLong(userInput);
-}catch(NumberFormatException e){
-    id = 0; //recover the situation by setting the id to 0
-}
-</code></pre><p>&lt;强&gt; 1。上面是否考虑过检查异常？**</p>
-<p>&lt;强&gt; 2。 RuntimeException是一个未经检查的异常吗？**</p>
-<p>以下是我对非检查异常的理解：</p>
-<pre><code>try{
-    File file = new File(&quot;my/file/path&quot;);
-    FileInputStream fis = new FileInputStream(file);   
-}catch(FileNotFoundException e){
-
-//3. What should I do here?
-    //Should I &quot;throw new FileNotFoundException(&quot;File not found&quot;);&quot;?
-    //Should I log?
-    //Or should I System.exit(0);?
-}
-</code></pre><p>&lt;强&gt; 4。现在，不能上面的代码也是一个检查异常？我可以尝试恢复这种情况？我可以吗？**（注意：我的第三个问题在上面的<code>catch</code>里面）</p>
-<pre><code>try{
-    String filePath = //read in from user input file path
-    File file = new File(filePath);
-    FileInputStream fis = new FileInputStream(file);   
-}catch(FileNotFoundException e){
-    //Kindly prompt the user an error message
-    //Somehow ask the user to re-enter the file path.
-}
-</code></pre><p>&lt;强&gt; 5。为什么人们这样做？**</p>
-<pre><code>public void someMethod throws Exception{
-
-}
-</code></pre><p>他们为什么让这个例外冒出来呢？没有更好地处理错误？为什么泡起来？</p>
-<p>编辑：我应该冒出确切的异常或使用异常屏蔽它？**</p>
-<p><strong>以下是我的读物</strong></p>
-<p>[<br><a href="https://stackoverflow.com/questions/27578/when-to-choose-
-checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已检查和未检查的例外情况</a></p>
+        <p>有没有一个“规范”的方式呢？我一直在使用<code>head -n |尾巴-1</code>这个技巧，但我一直在想如果有一个Bash工具，专门从文件中提取一行（或一系列的行）。</p>
+<p>“规范”是指主要功能正在这样做的程序。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/#more">Read More</a>
+            <a href="/2018/04/22/bash-tool-to-get-nth-line-from-a-file/#more">Read More</a>
           
        </p>
     </div>
@@ -448,7 +707,7 @@ checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/exception/">exception</a><a href="/tags/runtimeexception/">runtimeexception</a><a href="/tags/checked-exceptions/">checked-exceptions</a><a href="/tags/unchecked-exception/">unchecked-exception</a>
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a><a href="/tags/unix/">unix</a>
   </div>
 
 </div>
@@ -477,25 +736,35 @@ checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-inner-class-and-static-nested-class/" title="Java内部类和静态嵌套类" itemprop="url">Java内部类和静态嵌套类</a>
+      <a href="/2018/04/22/what-is-the-yield-keyword-used-for-in-c/" title="在C＃中使用的yield关键字是什么？" itemprop="url">在C＃中使用的yield关键字是什么？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-22T01:39:09.000Z" itemprop="datePublished"> Published 2018-04-22</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>Java中的内部类和静态嵌套类之间的主要区别是什么？设计/实现在选择其中一个方面起作用吗？</p>
+        <p>在<a href="https://stackoverflow.com/questions/39447/how-
+can-i-expose-only-a-fragment-of-ilist" target="_blank" rel="noopener">如何只暴露IList＆lt;片段＆lt; ;＆gt; </a>的问题其中一个答案有以下代码片段：</p>
+<pre><code>IEnumerable&lt;object&gt; FilteredList()
+{
+    foreach( object item in FullList )
+    {
+        if( IsItemInPartialList( item )
+            yield return item;
+    }
+}
+</code></pre><p>yield关键字在那里做什么？我已经在几个地方看到了这个引用，还有一个问题，但是我还没有弄明白它到底在做什么。我习惯于从一个线程向另一个线程屈服的意义上考虑产量，但在这里看起来并不重要。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-inner-class-and-static-nested-class/#more">Read More</a>
+            <a href="/2018/04/22/what-is-the-yield-keyword-used-for-in-c/#more">Read More</a>
           
        </p>
     </div>
@@ -505,7 +774,7 @@ checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/inner-classes/">inner-classes</a>
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
   </div>
 
 </div>
@@ -534,25 +803,33 @@ checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-optional-parameters/" title="Java可选参数" itemprop="url">Java可选参数</a>
+      <a href="/2018/04/22/whats-the-best-way-to-get-the-last-element-of-an-array-without-deleting-it/" title="获取数组的最后一个元素而不删除它的最好方法是什么？" itemprop="url">获取数组的最后一个元素而不删除它的最好方法是什么？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-22T01:14:10.000Z" itemprop="datePublished"> Published 2018-04-22</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何在Java中使用可选参数？什么规范支持可选参数？</p>
+        <p>确定，</p>
+<p>我完全了解<a href="http://www.php.net/array_pop" target="_blank" rel="noopener"> <code>array_pop（）</code></a>，但是删除了最后一个元件。获取数组的最后一个元素而不删除它的最好方法是什么？</p>
+<p>编辑：这是一个奖金：</p>
+<pre><code>$array = array(&apos;a&apos; =&gt; &apos;a&apos;, &apos;b&apos; =&gt; &apos;b&apos;, &apos;c&apos; =&gt; &apos;c&apos;);
+</code></pre><p>甚至</p>
+<pre><code>$array = array(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;);
+unset($array[2]);
+echo $array[sizeof($array) - 1]; // Output: PHP Notice:  Undefined offset:  2 in - on line 4
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-optional-parameters/#more">Read More</a>
+            <a href="/2018/04/22/whats-the-best-way-to-get-the-last-element-of-an-array-without-deleting-it/#more">Read More</a>
           
        </p>
     </div>
@@ -562,7 +839,7 @@ checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/optional-parameters/">optional-parameters</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -591,89 +868,50 @@ checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-util-date-to-xmlgregoriancalendar/" title="java.util.Date到XMLGregorianCalendar" itemprop="url">java.util.Date到XMLGregorianCalendar</a>
+      <a href="/2018/04/22/how-can-i-connect-to-a-tor-hidden-service-using-curl-in-php/" title="如何在PHP中使用cURL连接到Tor隐藏服务？" itemprop="url">如何在PHP中使用cURL连接到Tor隐藏服务？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-22T01:13:53.000Z" itemprop="datePublished"> Published 2018-04-22</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>没有从java.util.Date到XMLGregorianCalendar的简便方法吗？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/java-util-date-to-xmlgregoriancalendar/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
+        <p>我正尝试使用以下PHP代码连接到Tor隐藏服务：</p>
+<pre><code>$url = &apos;http://jhiwjjlqpyawmpjx.onion/&apos;
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_PROXY, &quot;http://127.0.0.1:9050/&quot;);
+curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+$output = curl_exec($ch);
+$curl_error = curl_error($ch);
+curl_close($ch);
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/date/">date</a><a href="/tags/xml/">xml</a><a href="/tags/xmlgregoriancalendar/">xmlgregoriancalendar</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/java-string-to-date-conversion/" title="Java字符串到日期的转换" itemprop="url">Java字符串到日期的转换</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>有人可以推荐最好的方式来转换格式’2010年1月2日’的字符串在Java中的日期？最终，我想把整个月份，每一天，每一年都分解为整数，以便我可以使用：</p>
-<pre><code>Date date = new Date();
-date.setMonth()..
-date.setYear()..
-date.setDay()..
-date.setlong currentTime = date.getTime();
-</code></pre><p>将日期转换成时间。</p>
+print_r($output);
+print_r($curl_error);
+</code></pre><p>当我运行它时，出现以下错误：</p>
+<blockquote>
+<p>Couldn’t resolve host name</p>
+</blockquote>
+<p>但是，当我从Ubuntu的命令行运行以下命令时：</p>
+<pre><code>curl -v --socks5-hostname localhost:9050 http://jhiwjjlqpyawmpjx.onion
+</code></pre><p>我得到了预期的回应</p>
+<p>PHP <a href="http://en.wikipedia.org/wiki/CURL" target="_blank" rel="noopener"> cURL </a>文件说明了这一点：</p>
+<pre><code>--socks5-hostname
+Use  the  specified  SOCKS5 proxy (and let the proxy resolve the host name).
+</code></pre><p>我相信它从命令行工作的原因是因为Tor（代理）正在解析它识别的.onion主机名。当运行上面的PHP代码时，我的猜测是cURL或PHP试图解析.onion主机名并且不能识别它。我已经搜索了一种方法来告诉cURL<br>/ PHP让代理解析主机名，但我找不到方法。</p>
+<p>有一个非常类似的Stack Overflow问题，使用PHP时使用socks5代理的cURL请求失败，但它通过命令行工作 _</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-string-to-date-conversion/#more">Read More</a>
+            <a href="/2018/04/22/how-can-i-connect-to-a-tor-hidden-service-using-curl-in-php/#more">Read More</a>
           
        </p>
     </div>
@@ -683,7 +921,7 @@ date.setlong currentTime = date.getTime();
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/date/">date</a><a href="/tags/string/">string</a><a href="/tags/data-conversion/">data-conversion</a><a href="/tags/time/">time</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -712,33 +950,31 @@ date.setlong currentTime = date.getTime();
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-url-encoding-of-query-string-parameters/" title="查询字符串参数的Java URL编码" itemprop="url">查询字符串参数的Java URL编码</a>
+      <a href="/2018/04/21/unfortunately-myapp-has-stopped-how-can-i-solve-this/" title="不幸的是，MyApp已经停止。我该如何解决这个问题？" itemprop="url">不幸的是，MyApp已经停止。我该如何解决这个问题？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-21T02:35:11.000Z" itemprop="datePublished"> Published 2018-04-21</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>假设我有一个网址</p>
-<pre><code>http://example.com/query?q=
-</code></pre><p>我有一个用户输入的查询，如：</p>
+        <p>我正在开发一个应用程序，每次运行它时，都会收到消息：</p>
 <blockquote>
-<p>random word Â£500 bank $</p>
+<p>Unfortunately, MyApp has stopped.</p>
 </blockquote>
-<p>我希望结果是一个正确编码的网址：</p>
-<pre><code>http://example.com/query?q=random%20word%20%A3500%20bank%20%24
-</code></pre><p>实现这个目标的最好方法是什么？我尝试了<code>URLEncoder</code>并创建了URI / URL对象，但是没有一个出来很正确。</p>
+<p>我能做些什么来解决这个问题？</p>
+<hr>
+<p>_关于这个问题 - 显然是受到启发的[<br>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-url-encoding-of-query-string-parameters/#more">Read More</a>
+            <a href="/2018/04/21/unfortunately-myapp-has-stopped-how-can-i-solve-this/#more">Read More</a>
           
        </p>
     </div>
@@ -748,7 +984,7 @@ date.setlong currentTime = date.getTime();
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/url/">url</a><a href="/tags/encoding/">encoding</a><a href="/tags/http/">http</a><a href="/tags/urlencode/">urlencode</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -777,33 +1013,90 @@ date.setlong currentTime = date.getTime();
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-when-to-use-static-methods/" title="Java：何时使用静态方法" itemprop="url">Java：何时使用静态方法</a>
+      <a href="/2018/04/21/how-do-i-pause-my-shell-script-for-a-second-before-continuing/" title="在继续之前，如何暂停我的shell脚本？" itemprop="url">在继续之前，如何暂停我的shell脚本？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-21T02:08:02.000Z" itemprop="datePublished"> Published 2018-04-21</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想知道什么时候使用静态方法？假如我有一个只有几个getter和setter的类，一个或两个方法，我希望这些方法只能在类的实例对象上调用。这是否意味着我应该使用静态方法？</p>
-<p>e.g</p>
-<pre><code>Obj x = new Obj();
-x.someMethod
+        <p>我只找到了如何等待用户输入。不过，我只想暂停，这样我的<code>while true</code>不会使我的计算机崩溃。</p>
+<p>我尝试了<code>pause（1）</code>，但是在意外的标记’1’附近写了<code>-bash：syntax error</code>。怎么做呢？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/21/how-do-i-pause-my-shell-script-for-a-second-before-continuing/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a><a href="/tags/unix/">unix</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/21/in-c-should-i-use-string-empty-or-string-empty-or-to-intitialize-a-string/" title="在C＃中，我应该使用string Empty或String Empty或“”来初始化一个字符串？" itemprop="url">在C＃中，我应该使用string Empty或String Empty或“”来初始化一个字符串？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-21T01:39:03.000Z" itemprop="datePublished"> Published 2018-04-21</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在C＃中，我想用一个空字符串初始化一个字符串值。</p>
+<p>我应该怎么做？ 什么是正确的方式，为什么？</p>
+<pre><code>string willi = string.Empty;
 </code></pre><p>或</p>
-<pre><code>Obj.someMethod
-</code></pre><p>（这是静态的方式？）</p>
-<p>我很困惑！</p>
-<p>
+<pre><code>string willi = String.Empty;
+</code></pre><p>或</p>
+<pre><code>string willi = &quot;&quot;;
+</code></pre><p>还是什么？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-when-to-use-static-methods/#more">Read More</a>
+            <a href="/2018/04/21/in-c-should-i-use-string-empty-or-string-empty-or-to-intitialize-a-string/#more">Read More</a>
           
        </p>
     </div>
@@ -813,7 +1106,64 @@ x.someMethod
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/static-methods/">static-methods</a>
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/21/how-to-get-last-key-in-an-array/" title="如何获得数组中的最后一个键？" itemprop="url">如何获得数组中的最后一个键？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-21T01:14:03.000Z" itemprop="datePublished"> Published 2018-04-21</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我怎样得到数组的最后一个键？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/21/how-to-get-last-key-in-an-array/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -838,7 +1188,7 @@ x.someMethod
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/35/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><a class="page-number" href="/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><a class="extend next" rel="next" href="/page/37/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/35/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="page-number" href="/page/35/">35</a><span class="page-number current">36</span><a class="page-number" href="/page/37/">37</a><a class="page-number" href="/page/38/">38</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/37/">Next<span></span></a>
   </nav>
 
 </div>
@@ -864,109 +1214,84 @@ x.someMethod
 
 
   
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
-
-
-  
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
-			
 		
-			
-				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
 			
 		
 		</ul>

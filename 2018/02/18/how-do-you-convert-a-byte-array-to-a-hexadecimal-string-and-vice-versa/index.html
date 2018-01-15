@@ -1,0 +1,794 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何将字节数组转换为十六进制字符串，反之亦然？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何将字节数组转换为十六进制字符串，反之亦然？">
+<meta name="keywords" content="c-sharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何将字节数组转换为十六进制字符串，反之亦然？">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/18/how-do-you-convert-a-byte-array-to-a-hexadecimal-string-and-vice-versa/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何将字节数组转换为十六进制字符串，反之亦然？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何将字节数组转换为十六进制字符串，反之亦然？">
+<meta name="twitter:description" content="如何将字节数组转换为十六进制字符串，反之亦然？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/18/how-do-you-convert-a-byte-array-to-a-hexadecimal-string-and-vice-versa/" title="如何将字节数组转换为十六进制字符串，反之亦然？" itemprop="url">如何将字节数组转换为十六进制字符串，反之亦然？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-18T01:30:00.000Z" itemprop="datePublished"> Published 2018-02-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Performance Analysis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Disclaimer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Results</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Testing Code</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Update (2010-01-13)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.2.</span> <span class="toc-text">Update (2011-10-05)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.3.</span> <span class="toc-text">Update (2012-02-05)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.4.</span> <span class="toc-text">Update (2012-04-03)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.5.</span> <span class="toc-text">Update (2013-01-15)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.6.</span> <span class="toc-text">Update (2013-05-23)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.7.</span> <span class="toc-text">Update (2014-07-31)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.8.</span> <span class="toc-text">Update (2015-08-20)</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如何将字节数组转换为十六进制字符串，反之亦然？</p>
+<a id="more"></a>
+<p>或者：</p>
+<pre><code>public static string ByteArrayToString(byte[] ba)
+{
+  StringBuilder hex = new StringBuilder(ba.Length * 2);
+  foreach (byte b in ba)
+    hex.AppendFormat(&quot;{0:x2}&quot;, b);
+  return hex.ToString();
+}
+</code></pre><p>或：</p>
+<pre><code>public static string ByteArrayToString(byte[] ba)
+{
+  string hex = BitConverter.ToString(ba);
+  return hex.Replace(&quot;-&quot;,&quot;&quot;);
+}
+</code></pre><p>还有更多的变种，例如<a href="“http://social.msdn.microsoft.com/Forums/en-
+US/csharpgeneral/thread/3928b8cb-3703-4672-8ccd-33718148d1e3">这里</a>。</p>
+<p>逆向转换将如下所示：</p>
+<pre><code>public static byte[] StringToByteArray(String hex)
+{
+  int NumberChars = hex.Length;
+  byte[] bytes = new byte[NumberChars / 2];
+  for (int i = 0; i &lt; NumberChars; i += 2)
+    bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+  return bytes;
+}
+</code></pre><hr>
+<p>使用<code>Substring</code>是与<code>Convert.ToByte</code>组合的最佳选择。有关更多信息，请参阅<a href="https://stackoverflow.com/a/26304129" target="_blank" rel="noopener">此答案</a>。如果您需要更好的性能，则必须避免<code>Convert.ToByte</code>，然后才能放弃<code>SubString</code>。</p>
+<h2><span id="performance-analysis">Performance Analysis</span></h2><p><em>注意：2015-08-20新领导者。</em></p>
+<p>我通过一些粗略的Stopwatch性能测试运行了各种转换方法，一个随机句子（n = 61,1000次迭代）和一个带有Gutenburg项目（n =<br>1,238,957,150次迭代）。这里是结果，大致从最快到最慢。所有的测量值都是蜱（<a href="http://msdn.microsoft.com/en-
+us/library/system.timespan.tickspermillisecond.aspx" target="_blank" rel="noopener"> 10,000 ticks = 1 ms</a> ），所有相关的注释都与[最慢的]<br>StringBuilder<br>`实现进行比较。对于所使用的代码，请参见下面或<a href="https://github.com/patridge/PerformanceStubs" target="_blank" rel="noopener">测试框架回购</a>，我现在维护运行该代码的代码。<br>/ p&gt;</p>
+<h2><span id="disclaimer">Disclaimer</span></h2><p>警告：不要依赖这些统计数据来做任何具体的事情。他们只是样本数据的一个样本运行。如果您真的需要一流的性能，请在代表您的生产需求的环境中使用代表您将使用的数据来测试这些方法。_</p>
+<h2><span id="results">Results</span></h2><ul>
+<li><a href="https://stackoverflow.com/a/24343727/48700" target="_blank" rel="noopener">按字节查找<code>unsafe</code>（通过CodesInChaos）</a>（添加到<a href="“https://github.com/airbreather”rel"> airbreather </a>） <ul>
+<li>文本：4,727.85（105.2X）</li>
+<li>句子：0.28（99.7X）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/24343727/48700" target="_blank" rel="noopener">按字节查找（通过CodesInChaos）</a><ul>
+<li>文本：10,853.96（快45.8倍）</li>
+<li>句子：0.65（快42.7倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/14333437/48700" target="_blank" rel="noopener">字节操作2（通过CodesInChaos）</a><ul>
+<li>文字：12,967.69（快38.4倍）</li>
+<li>句子：0.73（快37.9倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/632920/48700" target="_blank" rel="noopener">字节操作（通过Waleed Eissa）</a><ul>
+<li>文本：16,856.64（快29.5倍）</li>
+<li>句子：0.70（快39.5倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/5919521/48700" target="_blank" rel="noopener">查找/转换（通过Nathan Moinvaziri）</a><ul>
+<li>文字：23,201.23（快21.4倍）</li>
+<li>句子：1.24（快22.3倍）</li>
+</ul>
+</li>
+<li><a href="“http://blogs.msdn.com/b/blambert/archive/2009/02/22/blambert-codesnip-fast-byte-array-to-hex-string-conversion.aspx”">通过点击查找（通过Brian Lambert）</a><ul>
+<li>文本：23,879.41（快20.8倍）</li>
+<li>句子：1.15（快23.9倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/311179/48700" target="_blank" rel="noopener"> <code>BitConverter</code>（通过Tomalak）</a><ul>
+<li>文字：113,269.34（快4.4倍）</li>
+<li>句子：9.98（快2.8倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/2556329/48700" target="_blank" rel="noopener"> <code>{SoapHexBinary} .ToString</code>（通过Mykroft）</a><ul>
+<li>文字：178,601.39（快2.8倍）</li>
+<li>句子：10.68（快2.6倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/311382/48700" target="_blank" rel="noopener"> <code>{byte} .ToString（“X2”）</code>（使用<code>foreach</code> ）（源自Will Dean的答案）</a><ul>
+<li>文字：308,805.38（快2.4倍）</li>
+<li>句子：16.89（快2.4倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/3824807/48700" target="_blank" rel="noopener"> <code>{byte} .ToString（“X2”）</code>（使用<code>{IEnumerable} .Aggregate</code>，需要System.Linq）（通过Mark）</a><ul>
+<li>文字：352,828.20（快2.1倍）</li>
+<li>句子：16.87（快2.4倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/311382/48700" target="_blank" rel="noopener"> <code>Array.ConvertAll</code>（使用<code>string.Join</code>）（via Will Dean ）</a><ul>
+<li>文字：675,451.57（快1.1倍）</li>
+<li>句子：17.95（快2.2倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/311382/48700" target="_blank" rel="noopener"> <code>Array.ConvertAll</code>（使用<code>string.Concat</code>，需要.NET 4.0 ）（通过Will Dean）</a><ul>
+<li>文字：752,078.70（快1.0倍）</li>
+<li>句子：18.28（加快2.2倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/311179/48700" target="_blank" rel="noopener"> <code>{StringBuilder} .AppendFormat &lt;使用</code> foreach `（通过Tomalak） </a><ul>
+<li>文字：672,115.77（快1.1倍）</li>
+<li>句子：36.82（快1.1倍）</li>
+</ul>
+</li>
+<li><a href="https://stackoverflow.com/a/311179/48700" target="_blank" rel="noopener"> <code>{StringBuilder} .AppendFormat</code>（使用<code>{IEnumerable} .Aggregate</code>，需要System.Linq）（来自Tomalak的回答）</a><ul>
+<li>文字：718,380.63（快1.0倍）</li>
+<li>句子：39.71（快1.0倍）</li>
+</ul>
+</li>
+</ul>
+<p>查找表已经领先于字节操作。基本上，有一些形式的预先计算任何给定的半字节或字节将在十六进制。然后，在翻阅数据时，只需查看下一部分即可查看十六进制字符串。然后该值以某种方式添加到结果字符串输出中。对于很长时间的字节操作，一些开发人员可能难以阅读，是最高性能的方法。</p>
+<p>你最好的选择仍然是找到一些有代表性的数据，并在类似生产的环境中试用。如果你有不同的内存限制，你可能更喜欢一个分配较少的方法，而这个方法会更快，但是会消耗更多的内存。</p>
+<h2><span id="testing-code">Testing Code</span></h2><p>随意玩我使用的测试代码。这里包含一个版本，但可以随意克隆<a href="https://github.com/patridge/PerformanceStubs" target="_blank" rel="noopener">回购</a>并添加您自己的方法。如果您发现任何有趣的内容或想帮助改进它所使用的测试框架，请提交一个pull请求。</p>
+<ul>
+<li>将新的静态方法（<code>Func＆lt; byte []，string＆gt;</code>）添加到/Tests/ConvertByteArrayToHexString/Test.cs。</li>
+<li>将该方法的名称添加到同一个类中的<code>TestCandidates</code>返回值中。</li>
+<li>通过切换同一个类中的<code>GenerateTestInput</code>中的注释，确保您正在运行所需的输入版本，句子或文本。<br>点击<code>F5</code>并等待输出（在/ bin文件夹中也生成HTML转储）。</li>
+</ul>
+<pre><code>static string ByteArrayToHexStringViaStringJoinArrayConvertAll(byte[] bytes) {
+    return string.Join(string.Empty, Array.ConvertAll(bytes, b =&gt; b.ToString(&quot;X2&quot;)));
+}
+static string ByteArrayToHexStringViaStringConcatArrayConvertAll(byte[] bytes) {
+    return string.Concat(Array.ConvertAll(bytes, b =&gt; b.ToString(&quot;X2&quot;)));
+}
+static string ByteArrayToHexStringViaBitConverter(byte[] bytes) {
+    string hex = BitConverter.ToString(bytes);
+    return hex.Replace(&quot;-&quot;, &quot;&quot;);
+}
+static string ByteArrayToHexStringViaStringBuilderAggregateByteToString(byte[] bytes) {
+    return bytes.Aggregate(new StringBuilder(bytes.Length * 2), (sb, b) =&gt; sb.Append(b.ToString(&quot;X2&quot;))).ToString();
+}
+static string ByteArrayToHexStringViaStringBuilderForEachByteToString(byte[] bytes) {
+    StringBuilder hex = new StringBuilder(bytes.Length * 2);
+    foreach (byte b in bytes)
+        hex.Append(b.ToString(&quot;X2&quot;));
+    return hex.ToString();
+}
+static string ByteArrayToHexStringViaStringBuilderAggregateAppendFormat(byte[] bytes) {
+    return bytes.Aggregate(new StringBuilder(bytes.Length * 2), (sb, b) =&gt; sb.AppendFormat(&quot;{0:X2}&quot;, b)).ToString();
+}
+static string ByteArrayToHexStringViaStringBuilderForEachAppendFormat(byte[] bytes) {
+    StringBuilder hex = new StringBuilder(bytes.Length * 2);
+    foreach (byte b in bytes)
+        hex.AppendFormat(&quot;{0:X2}&quot;, b);
+    return hex.ToString();
+}
+static string ByteArrayToHexViaByteManipulation(byte[] bytes) {
+    char[] c = new char[bytes.Length * 2];
+    byte b;
+    for (int i = 0; i &lt; bytes.Length; i++) {
+        b = ((byte)(bytes[i] &gt;&gt; 4));
+        c[i * 2] = (char)(b &gt; 9 ? b + 0x37 : b + 0x30);
+        b = ((byte)(bytes[i] &amp; 0xF));
+        c[i * 2 + 1] = (char)(b &gt; 9 ? b + 0x37 : b + 0x30);
+    }
+    return new string(c);
+}
+static string ByteArrayToHexViaByteManipulation2(byte[] bytes) {
+    char[] c = new char[bytes.Length * 2];
+    int b;
+    for (int i = 0; i &lt; bytes.Length; i++) {
+        b = bytes[i] &gt;&gt; 4;
+        c[i * 2] = (char)(55 + b + (((b - 10) &gt;&gt; 31) &amp; -7));
+        b = bytes[i] &amp; 0xF;
+        c[i * 2 + 1] = (char)(55 + b + (((b - 10) &gt;&gt; 31) &amp; -7));
+    }
+    return new string(c);
+}
+static string ByteArrayToHexViaSoapHexBinary(byte[] bytes) {
+    SoapHexBinary soapHexBinary = new SoapHexBinary(bytes);
+    return soapHexBinary.ToString();
+}
+static string ByteArrayToHexViaLookupAndShift(byte[] bytes) {
+    StringBuilder result = new StringBuilder(bytes.Length * 2);
+    string hexAlphabet = &quot;0123456789ABCDEF&quot;;
+    foreach (byte b in bytes) {
+        result.Append(hexAlphabet[(int)(b &gt;&gt; 4)]);
+        result.Append(hexAlphabet[(int)(b &amp; 0xF)]);
+    }
+    return result.ToString();
+}
+static readonly uint* _lookup32UnsafeP = (uint*)GCHandle.Alloc(_Lookup32, GCHandleType.Pinned).AddrOfPinnedObject();
+static string ByteArrayToHexViaLookup32UnsafeDirect(byte[] bytes) {
+    var lookupP = _lookup32UnsafeP;
+    var result = new string((char)0, bytes.Length * 2);
+    fixed (byte* bytesP = bytes)
+    fixed (char* resultP = result) {
+        uint* resultP2 = (uint*)resultP;
+        for (int i = 0; i &lt; bytes.Length; i++) {
+            resultP2[i] = lookupP[bytesP[i]];
+        }
+    }
+    return result;
+}
+static uint[] _Lookup32 = Enumerable.Range(0, 255).Select(i =&gt; {
+    string s = i.ToString(&quot;X2&quot;);
+    return ((uint)s[0]) + ((uint)s[1] &lt;&lt; 16);
+}).ToArray();
+static string ByteArrayToHexViaLookupPerByte(byte[] bytes) {
+    var result = new char[bytes.Length * 2];
+    for (int i = 0; i &lt; bytes.Length; i++)
+    {
+        var val = _Lookup32[bytes[i]];
+        result[2*i] = (char)val;
+        result[2*i + 1] = (char) (val &gt;&gt; 16);
+    }
+    return new string(result);
+}
+static string ByteArrayToHexViaLookup(byte[] bytes) {
+    string[] hexStringTable = new string[] {
+        &quot;00&quot;, &quot;01&quot;, &quot;02&quot;, &quot;03&quot;, &quot;04&quot;, &quot;05&quot;, &quot;06&quot;, &quot;07&quot;, &quot;08&quot;, &quot;09&quot;, &quot;0A&quot;, &quot;0B&quot;, &quot;0C&quot;, &quot;0D&quot;, &quot;0E&quot;, &quot;0F&quot;,
+        &quot;10&quot;, &quot;11&quot;, &quot;12&quot;, &quot;13&quot;, &quot;14&quot;, &quot;15&quot;, &quot;16&quot;, &quot;17&quot;, &quot;18&quot;, &quot;19&quot;, &quot;1A&quot;, &quot;1B&quot;, &quot;1C&quot;, &quot;1D&quot;, &quot;1E&quot;, &quot;1F&quot;,
+        &quot;20&quot;, &quot;21&quot;, &quot;22&quot;, &quot;23&quot;, &quot;24&quot;, &quot;25&quot;, &quot;26&quot;, &quot;27&quot;, &quot;28&quot;, &quot;29&quot;, &quot;2A&quot;, &quot;2B&quot;, &quot;2C&quot;, &quot;2D&quot;, &quot;2E&quot;, &quot;2F&quot;,
+        &quot;30&quot;, &quot;31&quot;, &quot;32&quot;, &quot;33&quot;, &quot;34&quot;, &quot;35&quot;, &quot;36&quot;, &quot;37&quot;, &quot;38&quot;, &quot;39&quot;, &quot;3A&quot;, &quot;3B&quot;, &quot;3C&quot;, &quot;3D&quot;, &quot;3E&quot;, &quot;3F&quot;,
+        &quot;40&quot;, &quot;41&quot;, &quot;42&quot;, &quot;43&quot;, &quot;44&quot;, &quot;45&quot;, &quot;46&quot;, &quot;47&quot;, &quot;48&quot;, &quot;49&quot;, &quot;4A&quot;, &quot;4B&quot;, &quot;4C&quot;, &quot;4D&quot;, &quot;4E&quot;, &quot;4F&quot;,
+        &quot;50&quot;, &quot;51&quot;, &quot;52&quot;, &quot;53&quot;, &quot;54&quot;, &quot;55&quot;, &quot;56&quot;, &quot;57&quot;, &quot;58&quot;, &quot;59&quot;, &quot;5A&quot;, &quot;5B&quot;, &quot;5C&quot;, &quot;5D&quot;, &quot;5E&quot;, &quot;5F&quot;,
+        &quot;60&quot;, &quot;61&quot;, &quot;62&quot;, &quot;63&quot;, &quot;64&quot;, &quot;65&quot;, &quot;66&quot;, &quot;67&quot;, &quot;68&quot;, &quot;69&quot;, &quot;6A&quot;, &quot;6B&quot;, &quot;6C&quot;, &quot;6D&quot;, &quot;6E&quot;, &quot;6F&quot;,
+        &quot;70&quot;, &quot;71&quot;, &quot;72&quot;, &quot;73&quot;, &quot;74&quot;, &quot;75&quot;, &quot;76&quot;, &quot;77&quot;, &quot;78&quot;, &quot;79&quot;, &quot;7A&quot;, &quot;7B&quot;, &quot;7C&quot;, &quot;7D&quot;, &quot;7E&quot;, &quot;7F&quot;,
+        &quot;80&quot;, &quot;81&quot;, &quot;82&quot;, &quot;83&quot;, &quot;84&quot;, &quot;85&quot;, &quot;86&quot;, &quot;87&quot;, &quot;88&quot;, &quot;89&quot;, &quot;8A&quot;, &quot;8B&quot;, &quot;8C&quot;, &quot;8D&quot;, &quot;8E&quot;, &quot;8F&quot;,
+        &quot;90&quot;, &quot;91&quot;, &quot;92&quot;, &quot;93&quot;, &quot;94&quot;, &quot;95&quot;, &quot;96&quot;, &quot;97&quot;, &quot;98&quot;, &quot;99&quot;, &quot;9A&quot;, &quot;9B&quot;, &quot;9C&quot;, &quot;9D&quot;, &quot;9E&quot;, &quot;9F&quot;,
+        &quot;A0&quot;, &quot;A1&quot;, &quot;A2&quot;, &quot;A3&quot;, &quot;A4&quot;, &quot;A5&quot;, &quot;A6&quot;, &quot;A7&quot;, &quot;A8&quot;, &quot;A9&quot;, &quot;AA&quot;, &quot;AB&quot;, &quot;AC&quot;, &quot;AD&quot;, &quot;AE&quot;, &quot;AF&quot;,
+        &quot;B0&quot;, &quot;B1&quot;, &quot;B2&quot;, &quot;B3&quot;, &quot;B4&quot;, &quot;B5&quot;, &quot;B6&quot;, &quot;B7&quot;, &quot;B8&quot;, &quot;B9&quot;, &quot;BA&quot;, &quot;BB&quot;, &quot;BC&quot;, &quot;BD&quot;, &quot;BE&quot;, &quot;BF&quot;,
+        &quot;C0&quot;, &quot;C1&quot;, &quot;C2&quot;, &quot;C3&quot;, &quot;C4&quot;, &quot;C5&quot;, &quot;C6&quot;, &quot;C7&quot;, &quot;C8&quot;, &quot;C9&quot;, &quot;CA&quot;, &quot;CB&quot;, &quot;CC&quot;, &quot;CD&quot;, &quot;CE&quot;, &quot;CF&quot;,
+        &quot;D0&quot;, &quot;D1&quot;, &quot;D2&quot;, &quot;D3&quot;, &quot;D4&quot;, &quot;D5&quot;, &quot;D6&quot;, &quot;D7&quot;, &quot;D8&quot;, &quot;D9&quot;, &quot;DA&quot;, &quot;DB&quot;, &quot;DC&quot;, &quot;DD&quot;, &quot;DE&quot;, &quot;DF&quot;,
+        &quot;E0&quot;, &quot;E1&quot;, &quot;E2&quot;, &quot;E3&quot;, &quot;E4&quot;, &quot;E5&quot;, &quot;E6&quot;, &quot;E7&quot;, &quot;E8&quot;, &quot;E9&quot;, &quot;EA&quot;, &quot;EB&quot;, &quot;EC&quot;, &quot;ED&quot;, &quot;EE&quot;, &quot;EF&quot;,
+        &quot;F0&quot;, &quot;F1&quot;, &quot;F2&quot;, &quot;F3&quot;, &quot;F4&quot;, &quot;F5&quot;, &quot;F6&quot;, &quot;F7&quot;, &quot;F8&quot;, &quot;F9&quot;, &quot;FA&quot;, &quot;FB&quot;, &quot;FC&quot;, &quot;FD&quot;, &quot;FE&quot;, &quot;FF&quot;,
+    };
+    StringBuilder result = new StringBuilder(bytes.Length * 2);
+    foreach (byte b in bytes) {
+        result.Append(hexStringTable[b]);
+    }
+    return result.ToString();
+}
+</code></pre><h3><span id="update-2010-01-13">Update (2010-01-13)</span></h3><p>Waleed的分析答案增加了。非常快。</p>
+<h3><span id="update-2011-10-05">Update (2011-10-05)</span></h3><p>添加了<code>string.Concat</code> <code>Array.ConvertAll</code>变体的完整性（需要.NET 4.0）。与<code>string.Join</code>版本保持一致。</p>
+<h3><span id="update-2012-02-05">Update (2012-02-05)</span></h3><p>测试回购包括更多的变种，如<code>StringBuilder.Append（b.ToString（“X2”））</code>。没有打乱任何结果。 <code>foreach</code>比<code>{IEnumerable} .Aggregate</code>要快，但是<code>BitConverter</code>仍然胜利。</p>
+<h3><span id="update-2012-04-03">Update (2012-04-03)</span></h3><p>添加了Mykroft的<code>SoapHexBinary</code>答案来分析，占据了第三名。</p>
+<h3><span id="update-2013-01-15">Update (2013-01-15)</span></h3><p>新增了CodesInChaos的字节操作答案，占据了第一位（在大块文本上大幅度增加）。</p>
+<h3><span id="update-2013-05-23">Update (2013-05-23)</span></h3><p>添加了Nathan Moinvaziri的查找答案和Brian Lambert博客的变体。两者都比较快，但是没有在我使用的测试机器上领先（AMD<br>Phenom 9750）。</p>
+<h3><span id="update-2014-07-31">Update (2014-07-31)</span></h3><p>添加@ CodesInChaos的新的基于字节的查找答案。它似乎在句子测试和全文测试中都处于领先地位。</p>
+<h3><span id="update-2015-08-20">Update (2015-08-20)</span></h3><p><a href="https://github.com/airbreather" target="_blank" rel="noopener"> airbreather </a>的优化和<code>unsafe</code>变体对<a href="“https："> answer’s<br>repo </a>。如果你想玩不安全的游戏，你可以在短字符串和大文本上获得比以前任何优胜者都大的性能提升。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/18/how-do-you-convert-a-byte-array-to-a-hexadecimal-string-and-vice-versa/" data-title="如何将字节数组转换为十六进制字符串，反之亦然？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/18/how-to-iterate-over-arguments-in-a-bash-script/" title="如何迭代Bash脚本中的参数">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何迭代Bash脚本中的参数</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/18/sql-injection-that-gets-around-mysql-real-escape-string/"  title="SQL注入绕过mysql_real_escape_string（）">
+ <strong>下一篇：</strong><br/> 
+ <span>SQL注入绕过mysql_real_escape_string（）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Performance Analysis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Disclaimer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Results</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Testing Code</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Update (2010-01-13)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.2.</span> <span class="toc-text">Update (2011-10-05)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.3.</span> <span class="toc-text">Update (2012-02-05)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.4.</span> <span class="toc-text">Update (2012-04-03)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.5.</span> <span class="toc-text">Update (2013-01-15)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.6.</span> <span class="toc-text">Update (2013-05-23)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.7.</span> <span class="toc-text">Update (2014-07-31)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.8.</span> <span class="toc-text">Update (2015-08-20)</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

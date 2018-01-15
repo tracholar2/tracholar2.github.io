@@ -1,0 +1,734 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>试试赶上加快我的代码？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我写了一些代码来测试try-catch的影响，但看到了一些令人惊讶的结果。 static void Main(string[] args) {     Thread.CurrentThread.Priority = ThreadPriority.Highest;     Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass">
+<meta name="keywords" content="c-sharp,dot-net">
+<meta property="og:type" content="article">
+<meta property="og:title" content="试试赶上加快我的代码？">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/02/try-catch-speeding-up-my-code/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我写了一些代码来测试try-catch的影响，但看到了一些令人惊讶的结果。 static void Main(string[] args) {     Thread.CurrentThread.Priority = ThreadPriority.Highest;     Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="试试赶上加快我的代码？">
+<meta name="twitter:description" content="我写了一些代码来测试try-catch的影响，但看到了一些令人惊讶的结果。 static void Main(string[] args) {     Thread.CurrentThread.Priority = ThreadPriority.Highest;     Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/02/try-catch-speeding-up-my-code/" title="试试赶上加快我的代码？" itemprop="url">试试赶上加快我的代码？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-02T01:27:23.000Z" itemprop="datePublished"> Published 2018-02-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我写了一些代码来测试try-catch的影响，但看到了一些令人惊讶的结果。</p>
+<pre><code>static void Main(string[] args)
+{
+    Thread.CurrentThread.Priority = ThreadPriority.Highest;
+    Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
+
+    long start = 0, stop = 0, elapsed = 0;
+    double avg = 0.0;
+
+    long temp = Fibo(1);
+
+    for (int i = 1; i &lt; 100000000; i++)
+    {
+        start = Stopwatch.GetTimestamp();
+        temp = Fibo(100);
+        stop = Stopwatch.GetTimestamp();
+
+        elapsed = stop - start;
+        avg = avg + ((double)elapsed - avg) / i;
+    }
+
+    Console.WriteLine(&quot;Elapsed: &quot; + avg);
+    Console.ReadKey();
+}
+
+static long Fibo(int n)
+{
+    long n1 = 0, n2 = 1, fibo = 0;
+    n++;
+
+    for (int i = 1; i &lt; n; i++)
+    {
+        n1 = n2;
+        n2 = fibo;
+        fibo = n1 + n2;
+    }
+
+    return fibo;
+}
+</code></pre><p>在我的计算机上，这个值一直在0.96附近打印出一个值。</p>
+<p>当我使用try-catch块来封装Fibo（）中的for循环时：</p>
+<pre><code>static long Fibo(int n)
+{
+    long n1 = 0, n2 = 1, fibo = 0;
+    n++;
+
+    try
+    {
+        for (int i = 1; i &lt; n; i++)
+        {
+            n1 = n2;
+            n2 = fibo;
+            fibo = n1 + n2;
+        }
+    }
+    catch {}
+
+    return fibo;
+}
+</code></pre><p>现在它一直打印0.69 … - 它实际上运行得更快！但是为什么？</p>
+<p>注意：我使用Release配置进行编译，并直接运行EXE文件（在Visual Studio之外）。</p>
+<p>编辑：<a href="https://stackoverflow.com/a/8928476/282110" target="_blank" rel="noopener"> Jon Skeet的 <em>优秀</em> 分析</a>显示try-<br>catch以某种方式导致x86 CLR在这个特定情况下以更有利的方式使用CPU寄存器（我想我们还不明白为什么）。我确认了Jon的发现，x64<br>CLR没有这个差别，而且比x86 CLR更快。我还在Fibo方法中使用<code>int</code>类型来测试，而不是使用<code>long</code>类型，然后x86 CLR和x64<br>CLR一样快。</p>
+<hr>
+<p><strong>更新：</strong> 看起来像Roslyn修复了这个问题。同一台机器，相同的CLR版本 - 在使用VS 2013进行编译时，问题依然存在，但是使用VS<br>2015进行编译时问题就消失了。</p>
+<p><a id="more"></a> 专门理解堆栈使用优化的<a href="http://en.wikipedia.org/wiki/Microsoft_Roslyn" target="_blank" rel="noopener"> Roslyn</a>工程师之一看了这个并向我报告说，C＃编译器生成局部变量存储的方式与[编译器会在相应的x86代码中注册调度。结果是在当地人的加载和存储上产生了不理想的代码。</p>
+<p>由于某种原因我们都不清楚，当JITter知道块处于try-protected区域时，避免了有问题的代码生成路径。</p>
+<p>这很奇怪。我们将跟进JITter团队，看看我们是否可以得到一个错误输入，以便他们可以解决这个问题。</p>
+<p>另外，我们正在为Roslyn改进C＃和VB编译器的算法，以确定本地人什么时候可以做成“短暂的” -<br>也就是只是在堆栈上推送和弹出，而不是分配一个特定的位置激活期间的堆栈。我们相信JITter能够更好地完成寄存器分配工作，而且如果我们能够更好地提供一些关于什么时候可以让本地人“更早死”的提示。</p>
+<p>感谢您将此引起我们的注意，并对这种奇怪的行为表示歉意。</p>
+<p>那么，你正在计时的方式对我来说看起来相当恶劣。只需要整个循环就可以了：</p>
+<pre><code>var stopwatch = Stopwatch.StartNew();
+for (int i = 1; i &lt; 100000000; i++)
+{
+    Fibo(100);
+}
+stopwatch.Stop();
+Console.WriteLine(&quot;Elapsed time: {0}&quot;, stopwatch.Elapsed);
+</code></pre><p>这样你就不会受到微小时间，浮点运算和累积错误的影响。</p>
+<p>已经做了这个改变，看看“非catch”版本是否仍然比“catch”版本慢。</p>
+<p>编辑：好吧，我自己试过了 - 我看到了相同的结果。很奇怪。我想知道是否try / catch是禁用一些不良内联，但使用<code>[MethodImpl（MethodImplOptions.NoInlining）]</code>，而不是帮助…</p>
+<p>基本上，您需要查看cordbg下优化的JIT代码，我怀疑…</p>
+<p>编辑：多一点的信息：</p>
+<ul>
+<li>将try / catch放在<code>n ++;</code>行中仍然会提高性能，但不会像在整个块中放置</li>
+<li>如果您在我的测试中发现特定的异常（<code>ArgumentException</code>），它仍然很快</li>
+<li>如果您在catch块中打印异常，它仍然很快</li>
+<li>如果您在catch块中重新抛出异常，则会再次缓慢</li>
+<li>如果您使用finally块而不是catch块，则会再次变慢</li>
+<li>如果您使用finally块 <em>以及</em> catch块，则很快</li>
+</ul>
+<p>…怪异</p>
+<p>编辑：好的，我们有反汇编…</p>
+<p>这是使用C＃2编译器和.NET<br>2（32位）CLR，用mdbg反汇编（因为我的机器上没有cordbg）。即使在调试器下，我仍然可以看到相同的性能效果。快速版本在变量声明和返回语句之间使用<code>try</code>块，只用<code>catch {}</code>处理程序。显然慢版本是相同的，除非没有try /<br>catch。调用代码（即Main）在两种情况下都是相同的，并且具有相同的程序集表示（所以它不是内联问题）。</p>
+<p>反汇编快速版本的代码：</p>
+<pre><code> [0000] push        ebp
+ [0001] mov         ebp,esp
+ [0003] push        edi
+ [0004] push        esi
+ [0005] push        ebx
+ [0006] sub         esp,1Ch
+ [0009] xor         eax,eax
+ [000b] mov         dword ptr [ebp-20h],eax
+ [000e] mov         dword ptr [ebp-1Ch],eax
+ [0011] mov         dword ptr [ebp-18h],eax
+ [0014] mov         dword ptr [ebp-14h],eax
+ [0017] xor         eax,eax
+ [0019] mov         dword ptr [ebp-18h],eax
+*[001c] mov         esi,1
+ [0021] xor         edi,edi
+ [0023] mov         dword ptr [ebp-28h],1
+ [002a] mov         dword ptr [ebp-24h],0
+ [0031] inc         ecx
+ [0032] mov         ebx,2
+ [0037] cmp         ecx,2
+ [003a] jle         00000024
+ [003c] mov         eax,esi
+ [003e] mov         edx,edi
+ [0040] mov         esi,dword ptr [ebp-28h]
+ [0043] mov         edi,dword ptr [ebp-24h]
+ [0046] add         eax,dword ptr [ebp-28h]
+ [0049] adc         edx,dword ptr [ebp-24h]
+ [004c] mov         dword ptr [ebp-28h],eax
+ [004f] mov         dword ptr [ebp-24h],edx
+ [0052] inc         ebx
+ [0053] cmp         ebx,ecx
+ [0055] jl          FFFFFFE7
+ [0057] jmp         00000007
+ [0059] call        64571ACB
+ [005e] mov         eax,dword ptr [ebp-28h]
+ [0061] mov         edx,dword ptr [ebp-24h]
+ [0064] lea         esp,[ebp-0Ch]
+ [0067] pop         ebx
+ [0068] pop         esi
+ [0069] pop         edi
+ [006a] pop         ebp
+ [006b] ret
+</code></pre><p>反汇编缓慢版本的代码：</p>
+<pre><code> [0000] push        ebp
+ [0001] mov         ebp,esp
+ [0003] push        esi
+ [0004] sub         esp,18h
+*[0007] mov         dword ptr [ebp-14h],1
+ [000e] mov         dword ptr [ebp-10h],0
+ [0015] mov         dword ptr [ebp-1Ch],1
+ [001c] mov         dword ptr [ebp-18h],0
+ [0023] inc         ecx
+ [0024] mov         esi,2
+ [0029] cmp         ecx,2
+ [002c] jle         00000031
+ [002e] mov         eax,dword ptr [ebp-14h]
+ [0031] mov         edx,dword ptr [ebp-10h]
+ [0034] mov         dword ptr [ebp-0Ch],eax
+ [0037] mov         dword ptr [ebp-8],edx
+ [003a] mov         eax,dword ptr [ebp-1Ch]
+ [003d] mov         edx,dword ptr [ebp-18h]
+ [0040] mov         dword ptr [ebp-14h],eax
+ [0043] mov         dword ptr [ebp-10h],edx
+ [0046] mov         eax,dword ptr [ebp-0Ch]
+ [0049] mov         edx,dword ptr [ebp-8]
+ [004c] add         eax,dword ptr [ebp-1Ch]
+ [004f] adc         edx,dword ptr [ebp-18h]
+ [0052] mov         dword ptr [ebp-1Ch],eax
+ [0055] mov         dword ptr [ebp-18h],edx
+ [0058] inc         esi
+ [0059] cmp         esi,ecx
+ [005b] jl          FFFFFFD3
+ [005d] mov         eax,dword ptr [ebp-1Ch]
+ [0060] mov         edx,dword ptr [ebp-18h]
+ [0063] lea         esp,[ebp-4]
+ [0066] pop         esi
+ [0067] pop         ebp
+ [0068] ret
+</code></pre><p>在每种情况下，<code>*</code>显示调试器在简单的“步入”中输入的位置。</p>
+<p>编辑：好吧，我现在已经查看了代码，我想我可以看到每个版本是如何工作的…我相信较慢的版本是慢的，因为它使用更少的寄存器和更多的堆栈空间。对于<code>n</code>的小值可能更快 - 但是当循环占用大部分时间时，速度会变慢。</p>
+<p>可能try /<br>catch块会强制更多的寄存器被保存和恢复，所以JIT也将这些用于循环…以此来改善总体性能。目前还不清楚JIT的合理决定是不是在“普通”代码中使用多少寄存器。</p>
+<p>编辑：刚在我的x64机器上试过这个。在这个代码上，x64 CLR的速度比x86 CLR快了许多（大约3-4倍），而在x64下，try /<br>catch块并没有明显的区别。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/02/try-catch-speeding-up-my-code/" data-title="试试赶上加快我的代码？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/02/how-to-output-mysql-query-results-in-csv-format/" title="如何以CSV格式输出MySQL查询结果？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何以CSV格式输出MySQL查询结果？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/02/define-vs-const/"  title="define（）与const">
+ <strong>下一篇：</strong><br/> 
+ <span>define（）与const
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

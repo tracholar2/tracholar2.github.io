@@ -1,0 +1,841 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>简单的英语中的Ukkonen后缀树算法 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在这一点上我感觉有点厚。我已经花了好几天的时间想把自己的头完全包裹在后缀树的构造中，但是因为我没有数学背景，所以很多的解释都是在我开始过度使用数学符号的时候解决的。最接近我找到的一个很好的解释是带后缀的快速字符串搜索树 ，但他掩盖了各种各样的点，算法的某些方面仍然不清楚。 这个关于Stack Overflow的这个算法的一步一步的解释对于除了我以外的其他许多人来说是非常宝贵的，我相信。 作为参考，">
+<meta name="keywords" content="javascript,c-sharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单的英语中的Ukkonen后缀树算法">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在这一点上我感觉有点厚。我已经花了好几天的时间想把自己的头完全包裹在后缀树的构造中，但是因为我没有数学背景，所以很多的解释都是在我开始过度使用数学符号的时候解决的。最接近我找到的一个很好的解释是带后缀的快速字符串搜索树 ，但他掩盖了各种各样的点，算法的某些方面仍然不清楚。 这个关于Stack Overflow的这个算法的一步一步的解释对于除了我以外的其他许多人来说是非常宝贵的，我相信。 作为参考，">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/aOwIL.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/SZH4k.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/onmqt.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/tchAx.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/wCEdI.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/UpUFw.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/AclCh.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/xhVMY.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/XL6bg.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/bLLT9.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/6HYtR.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/YVvbJ.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/zL9yl.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/992gV.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/Rkdzd.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/0IS5C.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/DNVQO.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/wZ7Bj.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/urgol.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/TPxLe.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/7t0dg.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/zPiF1.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/lZrAF.png”alt">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单的英语中的Ukkonen后缀树算法">
+<meta name="twitter:description" content="在这一点上我感觉有点厚。我已经花了好几天的时间想把自己的头完全包裹在后缀树的构造中，但是因为我没有数学背景，所以很多的解释都是在我开始过度使用数学符号的时候解决的。最接近我找到的一个很好的解释是带后缀的快速字符串搜索树 ，但他掩盖了各种各样的点，算法的某些方面仍然不清楚。 这个关于Stack Overflow的这个算法的一步一步的解释对于除了我以外的其他许多人来说是非常宝贵的，我相信。 作为参考，">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/“https://i.stack.imgur.com/aOwIL.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/" title="简单的英语中的Ukkonen后缀树算法" itemprop="url">简单的英语中的Ukkonen后缀树算法</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-22T01:30:38.000Z" itemprop="datePublished"> Published 2018-02-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Basic principle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">First extension: Simple repetitions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Second extension: Using suffix links</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在这一点上我感觉有点厚。我已经花了好几天的时间想把自己的头完全包裹在后缀树的构造中，但是因为我没有数学背景，所以很多的解释都是在我开始过度使用数学符号的时候解决的。最接近我找到的一个很好的解释是<br><em><a href="http://marknelson.us/1996/08/01/suffix-trees/" target="_blank" rel="noopener">带后缀的快速字符串搜索树</a> </em><br>，但他掩盖了各种各样的点，算法的某些方面仍然不清楚。</p>
+<p>这个关于Stack Overflow的这个算法的一步一步的解释对于除了我以外的其他许多人来说是非常宝贵的，我相信。</p>
+<p>作为参考，这里是关于算法的Ukkonen的论文：<a href="http://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf" target="_blank" rel="noopener"> http：// www。<br>cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf</a></p>
+<p>到目前为止，我的基本了解：</p>
+<ul>
+<li>我需要迭代给定字符串T的每个前缀P </li>
+<li>我需要遍历前缀P中的每个后缀S并将其添加到树中</li>
+<li>要为树添加后缀S，我需要遍历S中的每个字符，迭代包括沿着以S中相同的一组字符C开头的现有分支进行迭代，并且可能将边分割为后代当我在后缀中达到不同的字符时，或者如果没有匹配的边缘向下走，则返回节点。如果找不到匹配的边缘C，则会为C创建一个新的边缘。</li>
+</ul>
+<p>基本算法似乎是O（n  2 ），正如在大多数解释中指出的那样，因为我们需要遍历所有的前缀，那么我们需要遍历每一个每个前缀的后缀。<br>Ukkonen的算法显然是独一无二的，因为他使用了后缀指针技术，但我认为_是我无法理解的。</p>
+<p>我也很难理解：</p>
+<ul>
+<li>恰好在何时以及如何分配，使用和更改“活动点”</li>
+<li>算法的标准化方面正在发生什么</li>
+<li>为什么我看到的实现需要“修复”正在使用的变量</li>
+</ul>
+<hr>
+<p>这是完整的 <strong>C＃</strong> 源代码。它不仅能够正常工作，而且支持自动封装，并呈现更好看的输出文本图形。源代码和示例输出在：</p>
+<blockquote>
+<p><strong><a href="https://gist.github.com/2373868" target="_blank" rel="noopener">https://gist.github.com/2373868</a></strong></p>
+</blockquote>
+<hr>
+<p><strong>更新2017-11-04</strong></p>
+<p>多年以后，我发现了一个新的后缀树，并在 <strong>JavaScript</strong> 中实现了这个算法。 Gist在下面。它应该是无bug的。将它转储到一个js文件中，<code>npm install chalk</code>从相同的位置运行，然后运行node.js以查看一些丰富多彩的输出。在同一个Gist中有一个精简版，没有任何调试代码。</p>
+<blockquote>
+<p><strong><a href="https://gist.github.com/axefrog/c347bf0f5e0723cbd09b1aaed6ec6fc6" target="_blank" rel="noopener">https://gist.github.com/axefrog/c347bf0f5e0723cbd09b1aaed6ec6fc6</a></strong></p>
+</blockquote>
+<p><a id="more"></a> 以下是试图描述Ukkonen算法，首先显示字符串简单（即不包含任何重复字符），然后将其扩展到完整算法的情况下它所做的工作。</p>
+<p>首先，几个初步的陈述。**</p>
+<ul>
+<li><p>我们正在建造的东西基本上就像一个搜索引擎。那么在那里 是一个根节点，走出它的边缘导致新的节点，和 进一步的边缘，等等</p>
+</li>
+<li><p><strong>但</strong> ：与搜索特里不同，边缘标签不是单一的 字符。相反，每条边都用一对整数标记 &lt;代码&gt; [从，到。这些是指向文本的指针。从这个意义上说，每一个 边缘携带任意长度的字符串标签，但只需要O（1） 空间（两个指针）。</p>
+</li>
+</ul>
+<h2><span id="basic-principle">Basic principle</span></h2><p>我想先演示一下如何创建一个后缀树 特别简单的字符串，一个没有重复字符的字符串：</p>
+<pre><code>abc
+</code></pre><p><strong>算法 </strong>从左到右<strong> 按步骤工作。对于字符串的每个字符 </strong>都有一个步骤**<br>。每个步骤可能涉及多个单独的操作，但是我们将看到（在最后的最终观察中）操作的总数是O（n）。</p>
+<p>所以，我们从左边的 <em>开始，首先插入单个字符<code>a</code>通过从根节点（在左边）创建一个边到叶， 并将其标记为<code>[0，＃]</code>，这意味着边表示<br>子字符串从位置0开始，结束于 </em>当前结束<em> 。一世 使用符号<code>＃</code>来表示位于位置1的 </em>当前的结尾_ （在<code>a</code>之后）。</p>
+<p>所以我们有一个初始树，看起来像这样：</p>
+<p><img src="“https://i.stack.imgur.com/aOwIL.png”alt" alt=""></p>
+<p>这意味着什么：</p>
+<p><img src="“https://i.stack.imgur.com/SZH4k.png”alt" alt=""></p>
+<p>现在我们进入位置2（在<code>b</code>之后）。 <strong>我们每一步的目标</strong> 是将 <strong>所有后缀插入到当前位置</strong> 。我们这样做 由</p>
+<ul>
+<li>将现有的<code>a</code> -edge扩展为<code>ab</code>  * 为<code>b</code>插入一个新边</li>
+</ul>
+<p>在我们的表示中，这看起来像</p>
+<p><img src="“https://i.stack.imgur.com/onmqt.png”alt" alt=""></p>
+<p>它的含义是：</p>
+<p><img src="“https://i.stack.imgur.com/tchAx.png”alt" alt=""></p>
+<p>我们观察**两件事：</p>
+<ul>
+<li><code>的边缘表示与 **相同** 在最初的树中：</code> [0，＃] <code>。它的含义已经自动改变了 因为我们将当前位置</code>＃`从1更新为2。</li>
+<li>每条边都消耗O（1）空间，因为它只包含两个空间 指向文本的指针，不管有多少个字符呢 表示。</li>
+</ul>
+<p>接下来我们再次增加位置并通过追加更新树 一个<code>c</code>到每个现有的边，并为新的插入一个新的边 后缀<code>c</code>。</p>
+<p>在我们的表示中，这看起来像</p>
+<p><img src="“https://i.stack.imgur.com/wCEdI.png”alt" alt=""></p>
+<p>它的含义是：</p>
+<p><img src="“https://i.stack.imgur.com/UpUFw.png”alt" alt=""></p>
+<p>我们观察到：**</p>
+<ul>
+<li>树是正确的后缀树 <em>直到当前位置</em> 每一步之后</li>
+<li>文本中有字符的步骤数多于</li>
+<li>每个步骤中的工作量是O（1），因为所有现有的边 通过递增<code>＃</code>自动更新，然后插入 在O（1）中可以完成对最后字符的一个新的边缘， 时间。因此，对于长度为n的字符串，只需要O（n）时间。</li>
+</ul>
+<h2><span id="first-extension-simple-repetitions">First extension: Simple repetitions</span></h2><p>当然，这个效果很好，只是因为我们的字符串没有 包含任何重复。我们现在看一个更真实的字符串：</p>
+<pre><code>abcabxabcd
+</code></pre><p>它以前面的例子中的<code>abc</code>开始，然后重复<code>ab</code> 然后是<code>x</code>，然后重复<code>abc</code>，接着是<code>d</code>。</p>
+<p>第1步到第3步**：在前3个步骤之后，我们有前面例子中的树：</p>
+<p><img src="“https://i.stack.imgur.com/AclCh.png”alt" alt=""></p>
+<p>第4步：**我们将<code>＃</code>移到第4位。这隐式地更新了所有的 边缘到这个：</p>
+<p><img src="“https://i.stack.imgur.com/xhVMY.png”alt" alt=""></p>
+<p>我们需要插入当前步骤<code>a</code>的最后一个后缀 根。</p>
+<p>在我们这样做之前，我们引入 <strong>两个变量</strong> （除了 <code>＃</code>），当然这一直在那里，但是我们还没有使用过 他们到目前为止：</p>
+<ul>
+<li><strong>活动点</strong> ，这是一个三元组 &lt;代码&gt;（active_node，active_edge，active_length）</li>
+<li>余数`，它是一个整数，指示有多少个新的后缀 我们需要插入</li>
+</ul>
+<p>这两者的确切含义很快就会变得清晰起来，但现在呢 让我们只是说：</p>
+<ul>
+<li>在简单的<code>abc</code>示例中，活动点始终是 <code>（root，&#39;0x&#39;，0）</code>，即<code>active_node</code>是根节点，<code>active_edge</code>被指定为空字符<code>\ 0x&#39;</code>和<code>active_length</code>为零。这个效果就是那个新的优势 我们插入的每一步都是插在根节点上的 新鲜创造的边缘。我们会很快看到为什么三重是必要的 代表这个信息。</li>
+<li>余数`在每个的开头始终设置为1 步。这意味着我们所需要的后缀数目 积极插入每一步的结尾是1（总是只是 最终字符）。</li>
+</ul>
+<p>现在这个将会改变。当我们插入当前的决赛 字符<code>a</code>在根，我们注意到已经有一个传出 以<code>a</code>开头，特别是：<code>abca</code>。这是我们在做什么<br>这样的情况：</p>
+<ul>
+<li>我们 <strong>不要</strong> 在根节点处插入一个新的边<code>[4，＃]</code>。相反，我们 只需注意后缀<code>a</code>已经在我们的 树。它在一个更长的边缘中结束，但我们不是 困扰这一点。我们只是把事情放在一边。</li>
+<li>我们 <strong>将活动点</strong> 设置为<code>（root，&#39;a&#39;，1）</code>。这意味着积极的 点现在位于以<code>a</code>开头的根节点的输出边缘的中间，具体地说，在该边缘上的位置1之后。我们 请注意，边缘仅由其第一个指定 字符<code>a</code>。这足够了，因为只能有一个_边缘 从任何特定字符开始（通过阅读整个描述后确认这是真实的）。</li>
+<li>我们还增加<code>remaining</code>，所以在下一步的开始 它会是2。</li>
+</ul>
+<p>观察：<strong>当我们需要插入的最后的 </strong>后缀被找到时 已经存在于树中<strong> ，树本身是 </strong>没有改变<strong> （我们只更新活动点和<code>remaining</code>）。那个树 然后不是后缀树的精确表示 当前位置_，但它 </strong>包含<strong> 所有后缀（因为最后一个 后缀<code>a</code>隐含地包含 __ ）。因此，除了更新<br>变量（都是固定的长度，所以这是O（1）），就有了 </strong>没有工作** 在这一步完成。</p>
+<p>第5步：**我们更新当前位置<code>＃</code>为5.这个 自动更新树：</p>
+<p><img src="“https://i.stack.imgur.com/XL6bg.png”alt" alt=""></p>
+<p><strong>因为<code>remaining</code>是2 </strong> ，所以我们需要插入两个final 当前位置的后缀：<code>ab</code>和<code>b</code>。这基本上是因为：</p>
+<ul>
+<li>上一步的<code>a</code>后缀从来没有正确过 插入。所以它一直保持_，而且我们已经取得了进展 现在它已经从<code>a</code>发展到<code>ab</code>。</li>
+<li>我们需要插入新的最终边<code>b</code>。</li>
+</ul>
+<p>实际上这意味着我们去活跃点（指向 在<code>a</code>后面的<code>abcab</code>边上），然后插入 当前最终字符<code>b</code>。 <strong>但是：</strong> 再次证明<code>b</code>是<br>也已经出现在相同的边缘。</p>
+<p>所以，我们再一次不改变这棵树。我们只是：</p>
+<ul>
+<li><p>将活动点更新为<code>（root，&#39;a&#39;，2）</code>（同一节点和边 像以前一样，但现在我们指向<code>b</code>）<br>后面</p>
+</li>
+<li><p>将<code>remaining</code>增加到3，因为我们仍然没有正确的 插入上一步的最后一个边，我们不插入 当前的最终边缘。</p>
+</li>
+</ul>
+<p>清楚：我们必须在当前步骤中插入<code>ab</code>和<code>b</code>，但是 因为已经找到了<code>ab</code>，所以我们更新了活动点并做了 甚至不尝试插入<code>b</code>。为什么？因为如果<code>ab</code>在树中， 它的每个后缀**（包括<code>b</code>）必须在树中， 太。也许只是 <em>隐含</em> ，但它必须在那里，因为<br>目前为止，我们已经建立了这棵树。</p>
+<p>我们通过增加<code>＃</code>继续 <strong>第6步</strong> 。树是 自动更新为：</p>
+<p><img src="“https://i.stack.imgur.com/bLLT9.png”alt" alt=""></p>
+<p>因为 <strong><code>remaining</code>是3 </strong> ，所以我们必须插入<code>abx</code>，<code>bx</code>和 &lt;代码&gt; X 。活动点告诉我们<code>ab</code>结束于哪里，所以我们只需要 跳到那里并插入<code>x</code>。的确，<code>x</code>还没有，所以我们 拆分<code>abcabx</code>边缘并插入一个内部节点：</p>
+<p><img src="“https://i.stack.imgur.com/6HYtR.png”alt" alt=""></p>
+<p>边缘表示仍然是指向文本的指针，所以 分割和插入一个内部节点可以在O（1）时间完成。</p>
+<p>所以我们已经处理了<code>abx</code>并将<code>remaining</code>递减为2。 需要插入下一个剩下的后缀，<code>bx</code>。但是在我们这样做之前<br>我们需要更新活动点。这个规则，分裂后 并插入一个边，在下面将被称为 <strong>Rule 1</strong> ，并且每当它被应用 <code>active_node</code>是root（我们将进一步学习其他案例的规则3 下面）。这是规则1：</p>
+<blockquote>
+<p>After an insertion from root,</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p><code>active_node</code> remains root</p>
+</li>
+<li><p><code>active_edge</code> is set to the first character of the new suffix we need to<br>insert, i.e. <code>b</code></p>
+</li>
+<li><code>active_length</code> is reduced by 1</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>因此，新的活动三元组<code>（root，&#39;b&#39;，1）</code>指示 下一个插入必须在<code>bcabx</code>边缘进行，后面是1个字符， 即在<code>b</code>之后。我们可以在O（1）时间和时间中识别插入点 检查<code>x</code>是否已经存在。如果它在场，我们 将结束目前的一步，并把事情的方式放在一边。但<code>x</code>不存在，所以我们通过分割边缘来插入它：</p>
+<p><img src="“https://i.stack.imgur.com/YVvbJ.png”alt" alt=""></p>
+<p>再次，这花了O（1）时间，我们更新<code>remaining</code>为1和 作为规则1的活动点指向<code>（root，&#39;x&#39;，0）</code>。</p>
+<p>但是还有一件事我们需要做。我们会将此称为 <strong>规则2：</strong></p>
+<blockquote>
+<p>If we split an edge and insert a new node, and if that is <em>not the first<br>node</em> created during the current step, we connect the previously inserted node<br>and the new node through a special pointer, a <strong>suffix link</strong>. We will later<br>see why that is useful. Here is what we get, the suffix link is represented as<br>a dotted edge:</p>
+</blockquote>
+<p><img src="“https://i.stack.imgur.com/zL9yl.png”alt" alt=""></p>
+<p>我们仍然需要插入当前步骤的最后一个后缀，  &lt;代码&gt; X 。由于主动节点的<code>active_length</code>组件已经下降<br>到0，最后的插入是直接在根上。由于没有 在以<code>x</code>开头的根节点处传出边，我们插入一个新的 边缘：</p>
+<p><img src="“https://i.stack.imgur.com/992gV.png”alt" alt=""></p>
+<p>正如我们所看到的，在当前步骤中，所有剩余的插入都已经完成。</p>
+<p>我们通过设置<code>＃</code> = 7继续 <strong>第7步</strong> ，它会自动附加下一个字符， <code>a</code>，一直到所有叶边。然后我们试图插入新的决赛<br>字符到活动点（根），并发现它在那里 已经。所以我们结束当前的一步而不插入任何东西 将活动点更新为<code>（root，&#39;a&#39;，1）</code>。</p>
+<p><strong>第8步</strong> ，<code>＃</code> = 8，我们追加<code>b</code> 意味着我们将活动点更新为<code>（root，&#39;a&#39;，2）</code>并增加<code>remainder</code>而不做<br>别的，因为<code>b</code>已经存在。然而，**我们注意到（在O（1）时间）活动点 现在处于边缘的末端。我们通过重新设定来反映这一点 &lt;代码&gt;（节点1， ‘\<br>0X’，0）。在这里，我使用<code>node1</code>来引用 内部节点的<code>ab</code>边缘结束于</p>
+<p>然后，在 <strong>步骤<code>＃</code> = 9 </strong> 中，我们需要插入’c’，这将帮助我们 了解最后一招：</p>
+<h2><span id="second-extension-using-suffix-links">Second extension: Using suffix links</span></h2><p>与往常一样，<code>＃</code> update自动将<code>c</code>附加到叶边 我们去看看是否可以插入’c’。事实证明 out’c’已经存在于这个边缘，所以我们设置活动点<br><code>（node1，&#39;c&#39;，1）</code>，增加<code>remaining</code>，别的什么都别做。</p>
+<p>现在在 <strong>步骤<code>＃</code> = 10 </strong> 中，余数是4 <code>，所以我们首先需要插入</code> abcd <code>（从3步前开始）通过将</code> d `插入到active 点。</p>
+<p>尝试在活动点处插入<code>d</code>导致边缘分裂 O（1）时间：</p>
+<p><img src="“https://i.stack.imgur.com/Rkdzd.png”alt" alt=""></p>
+<p>从中开始分割的<code>active_node</code>被标记 上面红色。这是最后的规则， <strong>规则3：</strong></p>
+<blockquote>
+<p>After splitting an edge from an <code>active_node</code> that is not the root node, we<br>follow the suffix link going out of that node, if there is any, and reset the<br><code>active_node</code> to the node it points to. If there is no suffix link, we set the<br><code>active_node</code> to the root. <code>active_edge</code> and <code>active_length</code> remain unchanged.</p>
+</blockquote>
+<p>因此，活动点现在是<code>（node2，&#39;c&#39;，1）</code>，<code>node2</code>标记在 红色下面：</p>
+<p><img src="“https://i.stack.imgur.com/0IS5C.png”alt" alt=""></p>
+<p>由于<code>abcd</code>的插入完成，我们将<code>remaining</code>递减为 3并考虑当前步骤的下一个剩余后缀， &lt;代码&gt; BCD<br>。规则3已经将活动点设置为正确的节点和边缘 所以插入<code>bcd</code>可以通过插入最后一个字符来完成 <code>d</code>在活动点。</p>
+<p>这样做会导致另一个边缘分裂，而由于规则2 **，我们 必须创建一个从先前插入的节点到新的后缀链接 之一：</p>
+<p><img src="“https://i.stack.imgur.com/DNVQO.png”alt" alt=""></p>
+<p>我们观察到：** 后缀链接使我们能够重置活动点，所以我们   可以在O（1）努力下进行下一个 <em>剩余的插入</em> 。看着那（这   上面的图形来确认标签<code>ab</code>处的节点确实链接到了   <code>b</code>（其后缀）处的节点以及<code>abc</code>处的节点链接到   &lt;代码&gt; BC</p>
+<p>目前的步骤尚未完成。现在剩余的<code>是2，而我们 需要按照规则3重新设置激活点。自从 当前</code> active_node <code>（上面红色）没有后缀链接，我们重置为
+根。现在的活动点是</code>（root，’c’，1）`。</p>
+<p>因此下一个插入发生在根节点的一个输出边缘 其标签以第一个字符后面的<code>c</code>：<code>cabxabcd</code>开头， 即在<code>c</code>之后。这会导致另一个分割：</p>
+<p><img src="“https://i.stack.imgur.com/wZ7Bj.png”alt" alt=""></p>
+<p>因为这涉及到创建一个新的内部节点，我们遵循 规则2并从先前创建的内部设置新的后缀链接 节点：</p>
+<p><img src="“https://i.stack.imgur.com/urgol.png”alt" alt=""></p>
+<p>（我正在使用<a href="http://www.graphviz.org/" target="_blank" rel="noopener"> Graphviz Dot </a>这些小东西 图表。新的后缀链接导致点重新排列现有的<br>边缘，所以仔细检查，以确认唯一的事情是 上面插入的是一个新的后缀链接。）</p>
+<p>有了这个，<code>remaining</code>可以设置为1，因为<code>active_node</code>是 根，我们使用规则1将活动点更新为<code>（root，&#39;d&#39;，0）</code>。这个<br>意味着当前步骤的最后一个插入是插入一个<code>d</code> 在根目录下：</p>
+<p><img src="“https://i.stack.imgur.com/TPxLe.png”alt" alt=""></p>
+<p>这是最后一步，我们完成了。有一些&lt;强&gt;决赛 观察**，但：</p>
+<ul>
+<li>在每个步骤中，我们将<code>＃</code>向前移动1个位置。这自动 更新O（1）时间内的所有叶节点。</li>
+</ul>
+<p>但是它并没有处理a）以前的任何后缀 <em>剩下的</em> 步骤和b）当前步骤的最后一个字符。</p>
+<ul>
+<li><p><code>remaining</code>告诉我们需要多少额外的插入 使。这些插入对应于一对一的最后一个后缀 结束于当前位置<code>＃</code>的字符串。我们考虑一个 在另一个之后并且做插入。 <strong>重要：</strong> 每个插入是 在O（1）时间内完成，因为活动点告诉我们在哪里 去，我们只需要在活动中添加一个单独的字符 点。为什么？因为其他字符隐含地包含_ （否则活动点不会在那里）。</p>
+</li>
+<li><p>在每个这样的插入之后，我们递减<code>remainder</code>，并按照 后缀链接，如果有的话。如果不是，我们就去根部（规则3）。要是我们 已经在根部，我们使用规则1修改活动点 无论如何，只需要O（1）次。</p>
+</li>
+<li><p>如果在其中一个插入过程中发现我们想要的字符 插入已经存在了，我们什么也不做，结束了 当前步骤，即使<code>remainder</code>＆gt; 0。原因是任何 插入的剩余将是我们刚刚尝试的后缀 使。因此，它们在当前树中都是 <em>隐式</em> 。事实 那<code>remaining</code>＆gt; 0确保我们处理其余的后缀 后面。</p>
+</li>
+<li><p>如果在算法的末尾<code>remaining</code>＆gt; 0，这将是 情况下，每当文本的结尾是发生的子字符串 某处之前。在这种情况下，我们必须追加一个额外的字符 在以前没有发生过的字符串末尾。在里面 文献中通常使用美元符号<code>$</code>作为符号 那。 <strong>为什么这么重要？</strong> - ＆gt;如果以后我们使用完整的后缀树搜索后缀，那么只有在 <em>结束于叶</em> 时，我们才能接受匹配。否则，我们会得到很多伪造的匹配，因为树中包含了很多 <em>字符串 __，它们并不是主字符串的实际后缀。强制<code>remaining</code>最后为0，实质上是确保所有后缀都在叶节点结束的一种方法。但是，如果我们想要使用树来搜索主要字符串的 </em>后缀_ ，那么最后一步确实不是正如OP下面的评论所建议的那样。</p>
+</li>
+</ul>
+<p>那么整个算法的复杂度是多少呢？如果文本是n 字符的长度，显然有n个步骤（或n + 1，如果我们添加 美元符号）。在每一步我们要么什么都不做（除了<br>更新变量），或者我们使用<code>remaining</code>插入，每个插入O（1） 时间。由于<code>remaining</code>指示我们没有做任何事情<br>在前面的步骤中，对于我们所做的每个插入都是递减的 现在，我们做某事的总次数正好是n（或 N + 1）。因此，总的复杂性是O（n）。</p>
+<p>然而，有一件事我没有正确解释： 可能会发生我们遵循后缀链接，更新活动 点，然后发现它的<code>active_length</code>组件没有 使用新的<code>active_node</code>。例如，考虑一个情况 像这样：</p>
+<p><img src="“https://i.stack.imgur.com/7t0dg.png”alt" alt=""></p>
+<p>（虚线表示树的其余部分，虚线是a 后缀链接。）</p>
+<p>现在让活动点为<code>（红色，&#39;d&#39;，3）</code>，所以它指向的地方 在<code>defg</code>边缘的<code>f</code>后面。现在假设我们做了必要的 更新，现在按照后缀链接更新活动点<br>根据规则3.新的活动点是<code>（green，&#39;d&#39;，3）</code>。然而， 从绿色节点出来的<code>d</code> -edge是<code>de</code>，所以它只有2<br>字符。为了找到正确的积极点，我们很明显 需要沿着这个边缘到蓝色节点，并重置为<code>（blue，&#39;f&#39;，1）</code>。</p>
+<p>在特别糟糕的情况下，<code>active_length</code>可能会大到 <code>remaining</code>，它可以和n一样大。这可能会发生<br>为了找到正确的积极点，我们不仅需要跳过一个 内部节点，但也许很多，最坏的情况下可达n个。那是 意味着该算法具有隐藏的O（n  2 ）复杂度，因为<br>在每个步骤中<code>remaining</code>通常是O（n）和后期调整 后跟一个后缀链接到活动节点可能是O（n）呢？</p>
+<p>没有。原因是如果确实需要调整活动点 （例如从上面的绿色到蓝色），这将我们带到了一个新的节点 有自己的后缀链接，并且<code>active_length</code>将会减少。如 我们按照下面的链接来创建其余的插入，<code>active_length</code>只能是 减少，我们可以进行的积极调整的数量<br>在任何给定的时间，方式不能大于<code>active_length</code>。以来 <code>active_length</code>不能大于<code>remaining</code>和<code>remaining</code> 不仅是每一步都是O（n），而是增量的总和 在整个过程的过程中，我们已经做了<code>remaining</code>O（n）也是，主动点调整的数量也是有界的 为O（n）。</p>
+<p>我试图用jogojapan的答案给出的方法来实现后缀树，但是由于规则的用词，在某些情况下它不起作用。此外，我已经提到没有人设法使用这种方法来实现绝对正确的后缀树。下面我会对jogojapan的答案写一个“概述”，并对规则做一些修改。当我们忘记创建<br><strong><em>重要的</em> </strong> 后缀链接时，我也会描述这种情况。</p>
+<p>使用其他变量**</p>
+<ul>
+<li><strong>活动点</strong> - 一个三元组（active_node; active_edge; active_length），显示我们必须从哪里开始插入新的后缀。</li>
+<li><strong>余数</strong> - 显示我们必须明确添加 <em>的后缀数目</em> 。例如，如果我们的单词是’abcaabca’，余数= 3，这意味着我们必须处理3个最后的后缀： <strong>bca</strong> ， <strong>ca</strong> 和 <strong>a</strong></li>
+</ul>
+<p>让我们使用 <strong>内部节点的概念</strong> - 除 <em>根</em> 和 <em>叶节点</em> 以外的所有节点都是 **内部节点 &lt; /强&gt;</p>
+<p>观察1 **</p>
+<p>当我们需要插入的最后一个后缀被发现存在于树中时，树本身并没有改变（我们只更新<code>活动点</code>和<code>remaining</code>）。</p>
+<p>观察2 **</p>
+<p>如果<code>active_length</code>大于或等于当前边的长度（ length <code>），我们将</code> active point <code>向下移动</code> edge_length<br><code>严格大于</code> active_length `。</p>
+<p>现在，我们重新定义规则：</p>
+<p>规则1 **</p>
+<blockquote>
+<p>If after an insertion from the <em>active node</em> = <em>root</em> , the <em>active length</em><br>is greater than 0, then:</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p><em>active node</em> is not changed</p>
+</li>
+<li><p><em>active length</em> is decremented</p>
+</li>
+<li><p><em>active edge</em> is shifted right (to the first character of the next<br>suffix we must insert)</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>规则2 **</p>
+<blockquote>
+<p>If we create a new <em>internal node</em> <strong>OR</strong> make an inserter from an <em>internal<br>node</em> , and this is not the first <strong>SUCH</strong> <em>internal node</em> at current step,<br>then we link the previous <strong>SUCH</strong> node with <strong>THIS</strong> one through a <em>suffix<br>link</em>.</p>
+</blockquote>
+<p><code></code> Rule 2 `的这个定义与jogojapan不同，因为这里我们不仅考虑新创建的内部节点，还考虑内部节点我们进行插入。</p>
+<p>规则3 **</p>
+<blockquote>
+<p>After an insert from the <em>active node</em> which is not the <em>root</em> node, we must<br>follow the suffix link and set the <em>active node</em> to the node it points to. If<br>there is no a suffix link, set the <em>active node</em> to the <em>root</em> node. Either<br>way, <em>active edge</em> and <em>active length</em> stay unchanged.</p>
+</blockquote>
+<p>在<code>Rule 3</code>的这个定义中，我们也考虑了叶节点的插入（不仅是分割节点）。</p>
+<p>最后，观察3：**</p>
+<p>当我们要添加到树中的符号已经在边上时，我们根据<code>Observation 1</code>，只更新<code>active point</code>和<code>remaining &lt; /
+code&gt;，保持树不变。 **但** 如果有 _内部节点_ 标记为 _需要后缀链接_ ，则必须将该节点与我们当前的</code>活动节点`通过后缀链接。</p>
+<p>让我们看看 <strong>cdddcdc</strong> 后缀树的例子，如果我们在这种情况下添加一个后缀链接，并且我们不这样做：</p>
+<ul>
+<li><p>如果我们 <strong>不要</strong> 通过后缀链接连接节点：</p>
+<ul>
+<li>在添加最后一个字母 <strong>c</strong> 之前：</li>
+</ul>
+</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/zPiF1.png”alt" alt=""></p>
+<p>添加最后一个字母 <strong>c</strong> ：</p>
+<p>后的</p>
+<pre><code>* ![](“https://i.stack.imgur.com/5fsmd.png”alt)
+</code></pre><ul>
+<li><p>如果我们 <strong>DO</strong> 通过后缀链接连接节点</p>
+<ul>
+<li>在添加最后一个字母 <strong>c</strong> 之前：</li>
+</ul>
+</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/lZrAF.png”alt" alt=""></p>
+<p>添加最后一个字母 <strong>c</strong> ：</p>
+<p>后的</p>
+<pre><code>* ![](“https://i.stack.imgur.com/XUFjk.png”alt)
+</code></pre><p>似乎没有显着的区别：在第二种情况下，有两个以上的后缀链接。但是这些后缀链接是正确的，其中的一个从蓝色节点到红色链接对于 <strong>活动点</strong><br>我们的方法非常重要** &gt;。问题是，如果我们在这里没有后缀链接，那么当我们向树中添加一些新的字母时，由于<code>Rule 3</code>，可能会省略添加一些节点到树中，因为根据它，如果没有后缀链接，那么我们必须把<code>active_node</code>放到根目录下。</p>
+<p>当我们向树中添加最后一个字母时，红色节点 <strong>已经存在</strong> ，然后我们从蓝色节点（边缘标记 <strong>‘c’</strong><br>）。由于有蓝色节点的插入，我们将其标记为需要后缀链接_ 。然后，依靠 <strong>活动点</strong><br>方法，将<code>活动节点</code>设置为红色节点。但是我们不会从红色节点插入，因为字母 <strong>‘c’</strong><br>已经在边缘。这是否意味着蓝色节点必须没有后缀链接？不，我们必须通过后缀链接连接蓝色节点和红色节点。为什么它是正确的？因为 <strong>活动点</strong><br>方法可以保证我们到达正确的位置，即到下一个必须处理 <strong>更短</strong> 后缀的地方。</p>
+<p>最后，这里是我的后缀树的实现：</p>
+<ul>
+<li><a href="https://gist.github.com/makagonov/22ab3675e3fc0031314e8535ffcbee2c" target="_blank" rel="noopener"> Java </a></li>
+<li><a href="https://gist.github.com/makagonov/f7ed8ce729da72621b321f0ab547debb" target="_blank" rel="noopener"> C ++ </a></li>
+</ul>
+<p>希望这个“概述”结合jogojapan的详细答案将有助于有人实施他自己的后缀树。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/" data-title="简单的英语中的Ukkonen后缀树算法 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/22/listing-only-directories-using-ls-in-bash-an-examination/" title="在bash中仅列出使用ls的目录：检查">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在bash中仅列出使用ls的目录：检查</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/22/formatting-a-number-with-leading-zeros-in-php/"  title="在PHP中用前导零来格式化一个数字">
+ <strong>下一篇：</strong><br/> 
+ <span>在PHP中用前导零来格式化一个数字
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Basic principle</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">First extension: Simple repetitions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Second extension: Using suffix links</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

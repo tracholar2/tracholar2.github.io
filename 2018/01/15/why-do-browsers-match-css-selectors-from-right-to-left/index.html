@@ -1,0 +1,583 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为什么浏览器从右到左匹配CSS选择器？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="CSS选择器由右到左的浏览器引擎进行匹配。所以他们首先找到孩子，然后检查他们的父母，看他们是否符合规则的其余部分。  这是为什么？ 仅仅是因为规范说明了吗？ 如果从左到右进行评估，是否会影响最终版式？  对我来说，最简单的方法是使用元素数最少的选择器。所以ID首先（因为他们应该只返回1元素）。然后可能是类或节点数最少的元素 -例如在页面上可能只有一个跨度，因此可以使用任何引用跨度的规则直接进入该节">
+<meta name="keywords" content="html,css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么浏览器从右到左匹配CSS选择器？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/why-do-browsers-match-css-selectors-from-right-to-left/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="CSS选择器由右到左的浏览器引擎进行匹配。所以他们首先找到孩子，然后检查他们的父母，看他们是否符合规则的其余部分。  这是为什么？ 仅仅是因为规范说明了吗？ 如果从左到右进行评估，是否会影响最终版式？  对我来说，最简单的方法是使用元素数最少的选择器。所以ID首先（因为他们应该只返回1元素）。然后可能是类或节点数最少的元素 -例如在页面上可能只有一个跨度，因此可以使用任何引用跨度的规则直接进入该节">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么浏览器从右到左匹配CSS选择器？">
+<meta name="twitter:description" content="CSS选择器由右到左的浏览器引擎进行匹配。所以他们首先找到孩子，然后检查他们的父母，看他们是否符合规则的其余部分。  这是为什么？ 仅仅是因为规范说明了吗？ 如果从左到右进行评估，是否会影响最终版式？  对我来说，最简单的方法是使用元素数最少的选择器。所以ID首先（因为他们应该只返回1元素）。然后可能是类或节点数最少的元素 -例如在页面上可能只有一个跨度，因此可以使用任何引用跨度的规则直接进入该节">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/why-do-browsers-match-css-selectors-from-right-to-left/" title="为什么浏览器从右到左匹配CSS选择器？" itemprop="url">为什么浏览器从右到左匹配CSS选择器？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>CSS选择器由右到左的浏览器引擎进行匹配。所以他们首先找到孩子，然后检查他们的父母，看他们是否符合规则的其余部分。</p>
+<ul>
+<li>这是为什么？</li>
+<li>仅仅是因为规范说明了吗？</li>
+<li>如果从左到右进行评估，是否会影响最终版式？</li>
+</ul>
+<p>对我来说，最简单的方法是使用元素数最少的选择器。所以ID首先（因为他们应该只返回1元素）。然后可能是类或节点数最少的元素 -<br>例如在页面上可能只有一个跨度，因此可以使用任何引用跨度的规则直接进入该节点。</p>
+<p>以下是一些支持我的声明的链接</p>
+<ul>
+<li><a href="http://code.google.com/speed/page-speed/docs/rendering.html" target="_blank" rel="noopener"> http://code.google.com/speed/page-速度/文档/ rendering.html </a></li>
+<li><a href="https://developer.mozilla.org/en/Writing_Efficient_CSS" target="_blank" rel="noopener"> https://developer.mozilla.org/zh/Writing_Efficient_CSS </a></li>
+</ul>
+<hr>
+<p>听起来好像是这样做的，以避免必须查看所有的父母的孩子（可能是很多），而不是所有的孩子的父母必须是一个。即使DOM很深，它也只能在RTL匹配中查看每个级别的一个节点，而不是多个节点。<br><a href="https://stackoverflow.com/questions/4130045/is-it-
+easier-faster-to-parse-css-selectors-ltr-or-rtl" target="_blank" rel="noopener">评估CSS选择器LTR更容易/更快或RTL？</a></p>
+<a id="more"></a>
+<p>请记住，当浏览器做选择器匹配时，它有一个元素（它试图确定样式的元素）以及所有的规则和选择器，它需要找到哪些规则匹配元素。这与通常的jQuery有所不同，例如，只有一个选择器，并且您需要找到与该选择器匹配的所有元素。</p>
+<p>如果你只有一个选择器，并且只有一个元素与该选择器进行比较，那么在某些情况下从左到右更有意义。但这绝对不是浏览器的情况。浏览器正在尝试呈现Gmail或其他任何东西，并且有一个<code>＆lt;
+span＆gt;</code>它正在尝试设置样式和Gmail在其样式表中放置的超过10,000个规则（我没有创建该数字） / p&gt;<br>特别是，在浏览器正在查看大多数选择器的情况下，它正在考虑 <em>不要</em><br>匹配有问题的元素。所以问题就变成了一个决定选择器不能尽快匹配的问题。如果在相匹配的情况下需要额外的工作，则由于所有保存在不匹配的情况下的工作，您仍然会赢。</p>
+<p>如果您只是将选择器的最右侧部分与您的元素进行匹配，那么机会就不会匹配，您就完成了。如果它匹配，你必须做更多的工作，但只是与你的树深度成正比，在大多数情况下这并不是那么大。</p>
+<p>另一方面，如果你通过匹配选择器的最左边部分开始，那么你与之匹配的是什么？你必须开始走DOM，寻找可能匹配它的节点。只是发现没有任何匹配，最左边的部分可能需要一段时间。</p>
+<p>因此，浏览器匹配从右边;它给出了一个明显的起点，并且可以让你很快地摆脱大部分候选选择器。您可以通过<a href="http://groups.google.com/group/mozilla.dev.tech.layout/browse_thread/thread/b185e455a0b3562a/7db34de545c17665" target="_blank" rel="noopener">http://groups.google.com/查看一些数据group / mozilla.dev.tech.layout / browse_thread<br>/ thread / b185e455a0b3562a / 7db34de545c17665</a>（虽然符号很混乱），但结果是两年前特别针对Gmail，对于70％的（规则，元素）对，您可以在检查规则的最右边的选择器的标记/类/<br>ID部分之后，决定该规则不匹配。<br>Mozilla的页面载入性能测试套件的相应数字是72％。因此，尽可能快地摆脱所有规则的三分之二，然后只考虑匹配其余的三分之一是非常值得的。</p>
+<p>另外请注意，浏览器已经做了其他优化，以避免尝试匹配绝对不匹配的规则。例如，如果最右边的选择器有一个id，并且该id与该元素的id不匹配，那么将不会尝试将该选择器与Gecko中的该元素进行匹配：尝试的“具有ID的选择器”集合来自元素ID的哈希表查找。所以这是70％的规则，匹配的机会很大，在考虑到最右边选择符的标签/类/<br>id后， <em>still</em> 不匹配。</p>
+<p>它允许从更具体到不太具体的级联。它也允许在应用中短路。如果更具体的规则适用于父规则适用的所有方面，则将忽略所有父规则。如果父代中有其他位，则应用它们。</p>
+<p>如果你反过来，你会根据父母的格式，然后覆盖每次孩子有不同的东西。从长远来看，这是比忽略已被照顾的规则中的项目更多的工作。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/why-do-browsers-match-css-selectors-from-right-to-left/" data-title="为什么浏览器从右到左匹配CSS选择器？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/use-jquery-to-hide-a-div-when-the-user-clicks-outside-of-it/" title="当用户点击它时，使用jQuery来隐藏DIV">
+  <strong>上一篇：</strong><br/>
+  <span>
+  当用户点击它时，使用jQuery来隐藏DIV</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/set-cellpadding-and-cellspacing-in-css/"  title="在CSS中设置cellpadding和cellspacing？">
+ <strong>下一篇：</strong><br/> 
+ <span>在CSS中设置cellpadding和cellspacing？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

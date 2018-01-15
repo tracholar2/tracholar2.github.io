@@ -1,0 +1,1122 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>用数据库发送应用程序 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如果您的应用程序需要一个数据库并附带内置数据，那么运送该应用程序的最佳方式是什么？我应该： 预先创建SQLite数据库并将其包含在.apk中？  在应用程序中包含SQL命令并让它创建数据库并在第一次使用时插入数据？  我看到的缺点是：  可能的SQLite版本不匹配可能会导致问题，我目前不知道数据库应该在哪里以及如何访问它。  在设备上创建和填充数据库可能需要很长时间。   有什么建议？指向任何问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用数据库发送应用程序">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/17/ship-an-application-with-a-database/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如果您的应用程序需要一个数据库并附带内置数据，那么运送该应用程序的最佳方式是什么？我应该： 预先创建SQLite数据库并将其包含在.apk中？  在应用程序中包含SQL命令并让它创建数据库并在第一次使用时插入数据？  我看到的缺点是：  可能的SQLite版本不匹配可能会导致问题，我目前不知道数据库应该在哪里以及如何访问它。  在设备上创建和填充数据库可能需要很长时间。   有什么建议？指向任何问">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用数据库发送应用程序">
+<meta name="twitter:description" content="如果您的应用程序需要一个数据库并附带内置数据，那么运送该应用程序的最佳方式是什么？我应该： 预先创建SQLite数据库并将其包含在.apk中？  在应用程序中包含SQL命令并让它创建数据库并在第一次使用时插入数据？  我看到的缺点是：  可能的SQLite版本不匹配可能会导致问题，我目前不知道数据库应该在哪里以及如何访问它。  在设备上创建和填充数据库可能需要很长时间。   有什么建议？指向任何问">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/17/ship-an-application-with-a-database/" title="用数据库发送应用程序" itemprop="url">用数据库发送应用程序</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-17T02:25:53.000Z" itemprop="datePublished"> Published 2018-02-17</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如果您的应用程序需要一个数据库并附带内置数据，那么运送该应用程序的最佳方式是什么？我应该：</p>
+<p>预先创建SQLite数据库并将其包含在<code>.apk</code>中？</p>
+<ul>
+<li>在应用程序中包含SQL命令并让它创建数据库并在第一次使用时插入数据？</li>
+</ul>
+<p>我看到的缺点是：</p>
+<ul>
+<li><p>可能的SQLite版本不匹配可能会导致问题，我目前不知道数据库应该在哪里以及如何访问它。</p>
+</li>
+<li><p>在设备上创建和填充数据库可能需要很长时间。</p>
+</li>
+</ul>
+<p>有什么建议？指向任何问题的文档将不胜感激。</p>
+<a id="more"></a>
+<p>我刚刚在ReignDesign博客中找到了一个方法，在一篇名为<a href="“http://www.reigndesign.com/blog
+/using-your-own-sqlite-database-in-android-
+applications">在Android应用程序中使用您自己的SQLite数据库</a>。基本上你预先创建你的数据库，把它放在你的apk的资产目录中，然后首先复制到“/ data / data /<br>YOUR_PACKAGE / databases /”目录。</p>
+<p><strong>创建和更新数据库有两种选择。</strong></p>
+<p>一个是从外部创建一个数据库，然后将其放置在项目的assets文件夹中，然后从那里复制整个数据库。如果数据库有很多表和其他组件，这会更快。通过更改res /<br>values / strings.xml文件中的数据库版本号来触发升级_ <strong><br>升级将通过外部创建新数据库来完成，替换旧数据库在具有新数据库的资产文件夹中，将旧数据库以其他名称保存在内部存储中，将新数据库从资产文件夹复制到内部存储中，将旧数据库（之前已重命名）的所有数据转移到新数据库数据库，最后删除旧的数据库。您可以使用
+</strong>SQLite管理器FireFox插件** 来创建数据库来执行创建的sql语句。</p>
+<p>另一个选择是从一个sql文件内部创建一个数据库。这不是那么快，但是如果数据库只有几张表，那么延迟对于用户可能是不明显的。 <strong><em>通过更改res /<br>values / strings.xml文件中的数据库版本号来触发升级。</em> </strong><br>然后通过处理升级sql文件来完成升级。数据库中的数据将保持不变，除非其容器被删除，例如删除一个表。</p>
+<p>下面的例子演示了如何使用这两种方法。**</p>
+<p>这是一个示例create<em>database.sql文件。它将被放置在项目的assets文件夹中，或者被复制到SQLite Manager的“Execute<br>SQL”中，为外部方法创建数据库。 **</em>（注意：注意关于Android所需的表格。）_ **</p>
+<pre><code>--Android requires a table named &apos;android_metadata&apos; with a &apos;locale&apos; column
+CREATE TABLE &quot;android_metadata&quot; (&quot;locale&quot; TEXT DEFAULT &apos;en_US&apos;);
+INSERT INTO &quot;android_metadata&quot; VALUES (&apos;en_US&apos;);
+
+CREATE TABLE &quot;kitchen_table&quot;;
+CREATE TABLE &quot;coffee_table&quot;;
+CREATE TABLE &quot;pool_table&quot;;
+CREATE TABLE &quot;dining_room_table&quot;;
+CREATE TABLE &quot;card_table&quot;; 
+</code></pre><p>这是一个示例update<em>database.sql文件。它被放置在内部方法的项目的assets文件夹中，或者被复制到SQLite<br>Manager的“Execute SQL”中，为外部方法创建数据库。 **</em>（注意：所有这三种类型的SQL注释将被本例中包含的SQL解析器忽略。）_ **</p>
+<pre><code>--CREATE TABLE &quot;kitchen_table&quot;;  This is one type of comment in sql.  It is ignored by parseSql.
+/*
+ * CREATE TABLE &quot;coffee_table&quot;; This is a second type of comment in sql.  It is ignored by parseSql.
+ */
+{
+CREATE TABLE &quot;pool_table&quot;;  This is a third type of comment in sql.  It is ignored by parseSql.
+}
+/* CREATE TABLE &quot;dining_room_table&quot;; This is a second type of comment in sql.  It is ignored by parseSql. */
+{ CREATE TABLE &quot;card_table&quot;; This is a third type of comment in sql.  It is ignored by parseSql. }
+
+--DROP TABLE &quot;picnic_table&quot;; Uncomment this if picnic table was previously created and now is being replaced.
+CREATE TABLE &quot;picnic_table&quot; (&quot;plates&quot; TEXT);
+INSERT INTO &quot;picnic_table&quot; VALUES (&apos;paper&apos;);
+</code></pre><p>这是添加到数据库版本号的/res/values/strings.xml文件的条目。</p>
+<pre><code>&lt;item type=&quot;string&quot; name=&quot;databaseVersion&quot; format=&quot;integer&quot;&gt;1&lt;/item&gt;
+</code></pre><p>这是一个访问数据库然后使用它的活动。 （ <strong>_注意：如果数据库代码使用大量资源，则可能需要在单独的线程中运行数据库代码。</strong> ）</p>
+<pre><code>package android.example;
+
+import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+
+/**
+ * @author Danny Remington - MacroSolve
+ * 
+ *         Activity for demonstrating how to use a sqlite database.
+ */
+public class Database extends Activity {
+     /** Called when the activity is first created. */
+     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        DatabaseHelper myDbHelper;
+        SQLiteDatabase myDb = null;
+
+        myDbHelper = new DatabaseHelper(this);
+        /*
+         * Database must be initialized before it can be used. This will ensure
+         * that the database exists and is the current version.
+         */
+         myDbHelper.initializeDataBase();
+
+         try {
+            // A reference to the database can be obtained after initialization.
+            myDb = myDbHelper.getWritableDatabase();
+            /*
+             * Place code to use database here.
+             */
+         } catch (Exception ex) {
+            ex.printStackTrace();
+         } finally {
+            try {
+                myDbHelper.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                myDb.close();
+            }
+        }
+
+    }
+}
+</code></pre><p>这里是数据库辅助类，在那里数据库被创建或更新（如果需要的话）。<br>（注意：Android需要创建一个扩展SQLiteOpenHelper的类来处理Sqlite数据库。）_ **</p>
+<pre><code>package android.example;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+/**
+ * @author Danny Remington - MacroSolve
+ * 
+ *         Helper class for sqlite database.
+ */
+public class DatabaseHelper extends SQLiteOpenHelper {
+
+    /*
+     * The Android&apos;s default system path of the application database in internal
+     * storage. The package of the application is part of the path of the
+     * directory.
+     */
+    private static String DB_DIR = &quot;/data/data/android.example/databases/&quot;;
+    private static String DB_NAME = &quot;database.sqlite&quot;;
+    private static String DB_PATH = DB_DIR + DB_NAME;
+    private static String OLD_DB_PATH = DB_DIR + &quot;old_&quot; + DB_NAME;
+
+    private final Context myContext;
+
+    private boolean createDatabase = false;
+    private boolean upgradeDatabase = false;
+
+    /**
+     * Constructor Takes and keeps a reference of the passed context in order to
+     * access to the application assets and resources.
+     * 
+     * @param context
+     */
+    public DatabaseHelper(Context context) {
+        super(context, DB_NAME, null, context.getResources().getInteger(
+                R.string.databaseVersion));
+        myContext = context;
+        // Get the path of the database that is based on the context.
+        DB_PATH = myContext.getDatabasePath(DB_NAME).getAbsolutePath();
+    }
+
+    /**
+     * Upgrade the database in internal storage if it exists but is not current. 
+     * Create a new empty database in internal storage if it does not exist.
+     */
+    public void initializeDataBase() {
+        /*
+         * Creates or updates the database in internal storage if it is needed
+         * before opening the database. In all cases opening the database copies
+         * the database in internal storage to the cache.
+         */
+        getWritableDatabase();
+
+        if (createDatabase) {
+            /*
+             * If the database is created by the copy method, then the creation
+             * code needs to go here. This method consists of copying the new
+             * database from assets into internal storage and then caching it.
+             */
+            try {
+                /*
+                 * Write over the empty data that was created in internal
+                 * storage with the one in assets and then cache it.
+                 */
+                copyDataBase();
+            } catch (IOException e) {
+                throw new Error(&quot;Error copying database&quot;);
+            }
+        } else if (upgradeDatabase) {
+            /*
+             * If the database is upgraded by the copy and reload method, then
+             * the upgrade code needs to go here. This method consists of
+             * renaming the old database in internal storage, create an empty
+             * new database in internal storage, copying the database from
+             * assets to the new database in internal storage, caching the new
+             * database from internal storage, loading the data from the old
+             * database into the new database in the cache and then deleting the
+             * old database from internal storage.
+             */
+            try {
+                FileHelper.copyFile(DB_PATH, OLD_DB_PATH);
+                copyDataBase();
+                SQLiteDatabase old_db = SQLiteDatabase.openDatabase(OLD_DB_PATH, null, SQLiteDatabase.OPEN_READWRITE);
+                SQLiteDatabase new_db = SQLiteDatabase.openDatabase(DB_PATH,null, SQLiteDatabase.OPEN_READWRITE);
+                /*
+                 * Add code to load data into the new database from the old
+                 * database and then delete the old database from internal
+                 * storage after all data has been transferred.
+                 */
+            } catch (IOException e) {
+                throw new Error(&quot;Error copying database&quot;);
+            }
+        }
+
+    }
+
+    /**
+     * Copies your database from your local assets-folder to the just created
+     * empty database in the system folder, from where it can be accessed and
+     * handled. This is done by transfering bytestream.
+     * */
+    private void copyDataBase() throws IOException {
+        /*
+         * Close SQLiteOpenHelper so it will commit the created empty database
+         * to internal storage.
+         */
+        close();
+
+        /*
+         * Open the database in the assets folder as the input stream.
+         */
+        InputStream myInput = myContext.getAssets().open(DB_NAME);
+
+        /*
+         * Open the empty db in interal storage as the output stream.
+         */
+        OutputStream myOutput = new FileOutputStream(DB_PATH);
+
+        /*
+         * Copy over the empty db in internal storage with the database in the
+         * assets folder.
+         */
+        FileHelper.copyFile(myInput, myOutput);
+
+        /*
+         * Access the copied database so SQLiteHelper will cache it and mark it
+         * as created.
+         */
+        getWritableDatabase().close();
+    }
+
+    /*
+     * This is where the creation of tables and the initial population of the
+     * tables should happen, if a database is being created from scratch instead
+     * of being copied from the application package assets. Copying a database
+     * from the application package assets to internal storage inside this
+     * method will result in a corrupted database.
+     * &lt;P&gt;
+     * NOTE: This method is normally only called when a database has not already
+     * been created. When the database has been copied, then this method is
+     * called the first time a reference to the database is retrieved after the
+     * database is copied since the database last cached by SQLiteOpenHelper is
+     * different than the database in internal storage.
+     */
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        /*
+         * Signal that a new database needs to be copied. The copy process must
+         * be performed after the database in the cache has been closed causing
+         * it to be committed to internal storage. Otherwise the database in
+         * internal storage will not have the same creation timestamp as the one
+         * in the cache causing the database in internal storage to be marked as
+         * corrupted.
+         */
+        createDatabase = true;
+
+        /*
+         * This will create by reading a sql file and executing the commands in
+         * it.
+         */
+            // try {
+            // InputStream is = myContext.getResources().getAssets().open(
+            // &quot;create_database.sql&quot;);
+            //
+            // String[] statements = FileHelper.parseSqlFile(is);
+            //
+            // for (String statement : statements) {
+            // db.execSQL(statement);
+            // }
+            // } catch (Exception ex) {
+            // ex.printStackTrace();
+            // }
+    }
+
+    /**
+     * Called only if version number was changed and the database has already
+     * been created. Copying a database from the application package assets to
+     * the internal data system inside this method will result in a corrupted
+     * database in the internal data system.
+     */
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        /*
+         * Signal that the database needs to be upgraded for the copy method of
+         * creation. The copy process must be performed after the database has
+         * been opened or the database will be corrupted.
+         */
+        upgradeDatabase = true;
+
+        /*
+         * Code to update the database via execution of sql statements goes
+         * here.
+         */
+
+        /*
+         * This will upgrade by reading a sql file and executing the commands in
+         * it.
+         */
+        // try {
+        // InputStream is = myContext.getResources().getAssets().open(
+        // &quot;upgrade_database.sql&quot;);
+        //
+        // String[] statements = FileHelper.parseSqlFile(is);
+        //
+        // for (String statement : statements) {
+        // db.execSQL(statement);
+        // }
+        // } catch (Exception ex) {
+        // ex.printStackTrace();
+        // }
+    }
+
+    /**
+     * Called everytime the database is opened by getReadableDatabase or
+     * getWritableDatabase. This is called after onCreate or onUpgrade is
+     * called.
+     */
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+    }
+
+    /*
+     * Add your public helper methods to access and get content from the
+     * database. You could return cursors by doing
+     * &quot;return myDataBase.query(....)&quot; so it&apos;d be easy to you to create adapters
+     * for your views.
+     */
+
+}
+</code></pre><p>这里是FileHelper类，它包含字节流复制文件和解析sql文件的方法。</p>
+<pre><code>package android.example;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.nio.channels.FileChannel;
+
+/**
+ * @author Danny Remington - MacroSolve
+ * 
+ *         Helper class for common tasks using files.
+ * 
+ */
+public class FileHelper {
+    /**
+     * Creates the specified &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; that is a byte for byte a copy
+     * of &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt;. If &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; already existed, then
+     * it will be replaced with a copy of &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt;. The name and
+     * path of &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; will be that of &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt;. Both
+     * &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt; and &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; will be closed by this
+     * operation.
+     * 
+     * @param fromFile
+     *            - InputStream for the file to copy from.
+     * @param toFile
+     *            - InputStream for the file to copy to.
+     */
+    public static void copyFile(InputStream fromFile, OutputStream toFile) throws IOException {
+        // transfer bytes from the inputfile to the outputfile
+        byte[] buffer = new byte[1024];
+        int length;
+
+        try {
+            while ((length = fromFile.read(buffer)) &gt; 0) {
+                toFile.write(buffer, 0, length);
+            }
+        }
+        // Close the streams
+        finally {
+            try {
+                if (toFile != null) {
+                    try {
+                        toFile.flush();
+                    } finally {
+                        toFile.close();
+                    }
+            }
+            } finally {
+                if (fromFile != null) {
+                    fromFile.close();
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates the specified &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; that is a byte for byte a copy
+     * of &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt;. If &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; already existed, then
+     * it will be replaced with a copy of &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt;. The name and
+     * path of &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; will be that of &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt;. Both
+     * &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt; and &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; will be closed by this
+     * operation.
+     * 
+     * @param fromFile
+     *            - String specifying the path of the file to copy from.
+     * @param toFile
+     *            - String specifying the path of the file to copy to.
+     */
+    public static void copyFile(String fromFile, String toFile) throws IOException {
+        copyFile(new FileInputStream(fromFile), new FileOutputStream(toFile));
+    }
+
+    /**
+     * Creates the specified &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; that is a byte for byte a copy
+     * of &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt;. If &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; already existed, then
+     * it will be replaced with a copy of &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt;. The name and
+     * path of &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; will be that of &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt;. Both
+     * &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt; and &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; will be closed by this
+     * operation.
+     * 
+     * @param fromFile
+     *            - File for the file to copy from.
+     * @param toFile
+     *            - File for the file to copy to.
+     */
+    public static void copyFile(File fromFile, File toFile) throws IOException {
+        copyFile(new FileInputStream(fromFile), new FileOutputStream(toFile));
+    }
+
+    /**
+     * Creates the specified &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; that is a byte for byte a copy
+     * of &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt;. If &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; already existed, then
+     * it will be replaced with a copy of &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt;. The name and
+     * path of &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; will be that of &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt;. Both
+     * &lt;i&gt;&lt;b&gt;fromFile&lt;/b&gt;&lt;/i&gt; and &lt;i&gt;&lt;b&gt;toFile&lt;/b&gt;&lt;/i&gt; will be closed by this
+     * operation.
+     * 
+     * @param fromFile
+     *            - FileInputStream for the file to copy from.
+     * @param toFile
+     *            - FileInputStream for the file to copy to.
+     */
+    public static void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
+        FileChannel fromChannel = fromFile.getChannel();
+        FileChannel toChannel = toFile.getChannel();
+
+        try {
+            fromChannel.transferTo(0, fromChannel.size(), toChannel);
+        } finally {
+            try {
+                if (fromChannel != null) {
+                    fromChannel.close();
+                }
+            } finally {
+                if (toChannel != null) {
+                    toChannel.close();
+                }
+            }
+        }
+    }
+
+    /**
+     * Parses a file containing sql statements into a String array that contains
+     * only the sql statements. Comments and white spaces in the file are not
+     * parsed into the String array. Note the file must not contained malformed
+     * comments and all sql statements must end with a semi-colon &quot;;&quot; in order
+     * for the file to be parsed correctly. The sql statements in the String
+     * array will not end with a semi-colon &quot;;&quot;.
+     * 
+     * @param sqlFile
+     *            - String containing the path for the file that contains sql
+     *            statements.
+     * 
+     * @return String array containing the sql statements.
+     */
+    public static String[] parseSqlFile(String sqlFile) throws IOException {
+        return parseSqlFile(new BufferedReader(new FileReader(sqlFile)));
+    }
+
+    /**
+     * Parses a file containing sql statements into a String array that contains
+     * only the sql statements. Comments and white spaces in the file are not
+     * parsed into the String array. Note the file must not contained malformed
+     * comments and all sql statements must end with a semi-colon &quot;;&quot; in order
+     * for the file to be parsed correctly. The sql statements in the String
+     * array will not end with a semi-colon &quot;;&quot;.
+     * 
+     * @param sqlFile
+     *            - InputStream for the file that contains sql statements.
+     * 
+     * @return String array containing the sql statements.
+     */
+    public static String[] parseSqlFile(InputStream sqlFile) throws IOException {
+        return parseSqlFile(new BufferedReader(new InputStreamReader(sqlFile)));
+    }
+
+    /**
+     * Parses a file containing sql statements into a String array that contains
+     * only the sql statements. Comments and white spaces in the file are not
+     * parsed into the String array. Note the file must not contained malformed
+     * comments and all sql statements must end with a semi-colon &quot;;&quot; in order
+     * for the file to be parsed correctly. The sql statements in the String
+     * array will not end with a semi-colon &quot;;&quot;.
+     * 
+     * @param sqlFile
+     *            - Reader for the file that contains sql statements.
+     * 
+     * @return String array containing the sql statements.
+     */
+    public static String[] parseSqlFile(Reader sqlFile) throws IOException {
+        return parseSqlFile(new BufferedReader(sqlFile));
+    }
+
+    /**
+     * Parses a file containing sql statements into a String array that contains
+     * only the sql statements. Comments and white spaces in the file are not
+     * parsed into the String array. Note the file must not contained malformed
+     * comments and all sql statements must end with a semi-colon &quot;;&quot; in order
+     * for the file to be parsed correctly. The sql statements in the String
+     * array will not end with a semi-colon &quot;;&quot;.
+     * 
+     * @param sqlFile
+     *            - BufferedReader for the file that contains sql statements.
+     * 
+     * @return String array containing the sql statements.
+     */
+    public static String[] parseSqlFile(BufferedReader sqlFile) throws IOException {
+        String line;
+        StringBuilder sql = new StringBuilder();
+        String multiLineComment = null;
+
+        while ((line = sqlFile.readLine()) != null) {
+            line = line.trim();
+
+            // Check for start of multi-line comment
+            if (multiLineComment == null) {
+                // Check for first multi-line comment type
+                if (line.startsWith(&quot;/*&quot;)) {
+                    if (!line.endsWith(&quot;}&quot;)) {
+                        multiLineComment = &quot;/*&quot;;
+                    }
+                // Check for second multi-line comment type
+                } else if (line.startsWith(&quot;{&quot;)) {
+                    if (!line.endsWith(&quot;}&quot;)) {
+                        multiLineComment = &quot;{&quot;;
+                }
+                // Append line if line is not empty or a single line comment
+                } else if (!line.startsWith(&quot;--&quot;) &amp;&amp; !line.equals(&quot;&quot;)) {
+                    sql.append(line);
+                } // Check for matching end comment
+            } else if (multiLineComment.equals(&quot;/*&quot;)) {
+                if (line.endsWith(&quot;*/&quot;)) {
+                    multiLineComment = null;
+                }
+            // Check for matching end comment
+            } else if (multiLineComment.equals(&quot;{&quot;)) {
+                if (line.endsWith(&quot;}&quot;)) {
+                    multiLineComment = null;
+                }
+            }
+
+        }
+
+        sqlFile.close();
+
+        return sql.toString().split(&quot;;&quot;);
+    }
+
+}
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/17/ship-an-application-with-a-database/" data-title="用数据库发送应用程序 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/18/tostring-equivalent-in-php/" title="在PHP中相当于ToString（）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在PHP中相当于ToString（）</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/17/defining-a-variable-with-or-without-export/"  title="用或不用导出来定义一个变量">
+ <strong>下一篇：</strong><br/> 
+ <span>用或不用导出来定义一个变量
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

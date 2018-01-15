@@ -1,0 +1,744 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>jQuery的  ready（）的纯JavaScript等价物 - 如何在页面/ DOM准备好时调用一个函数[复制] | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="This question already has an answer here:  $(document).ready equivalent without jQuery 31 answers   好吧，这可能只是一个愚蠢的问题，虽然我确信还有很多其他人不时地提出同样的问题。我，我只是想100％确定这一点。有了jQuery，我们都知道这个奇妙的 $(&amp;apos;document&amp;apos;).r">
+<meta name="keywords" content="javascript,html,jquery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jQuery的  ready（）的纯JavaScript等价物 - 如何在页面&#x2F; DOM准备好时调用一个函数[复制]">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/pure-javascript-equivalent-of-jquerys-ready-how-to-call-a-function-when-t/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="This question already has an answer here:  $(document).ready equivalent without jQuery 31 answers   好吧，这可能只是一个愚蠢的问题，虽然我确信还有很多其他人不时地提出同样的问题。我，我只是想100％确定这一点。有了jQuery，我们都知道这个奇妙的 $(&amp;apos;document&amp;apos;).r">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jQuery的  ready（）的纯JavaScript等价物 - 如何在页面&#x2F; DOM准备好时调用一个函数[复制]">
+<meta name="twitter:description" content="This question already has an answer here:  $(document).ready equivalent without jQuery 31 answers   好吧，这可能只是一个愚蠢的问题，虽然我确信还有很多其他人不时地提出同样的问题。我，我只是想100％确定这一点。有了jQuery，我们都知道这个奇妙的 $(&amp;apos;document&amp;apos;).r">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/pure-javascript-equivalent-of-jquerys-ready-how-to-call-a-function-when-t/" title="jQuery的  ready（）的纯JavaScript等价物 - 如何在页面/ DOM准备好时调用一个函数[复制]" itemprop="url">jQuery的  ready（）的纯JavaScript等价物 - 如何在页面/ DOM准备好时调用一个函数[复制]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/799981/document-ready-equivalent-without-jquery">$(document).ready equivalent without jQuery</a> 31 answers </li>
+</ul>
+<p>好吧，这可能只是一个愚蠢的问题，虽然我确信还有很多其他人不时地提出同样的问题。我，我只是想100％确定这一点。有了jQuery，我们都知道这个奇妙的</p>
+<pre><code>$(&apos;document&apos;).ready(function(){});
+</code></pre><p>然而，假设我想运行一个用标准JavaScript编写的函数，而没有库支持它，而且我希望在页面准备好处理它时立即启动一个函数。什么是正确的方法来处理这个？</p>
+<p>我知道我可以这样做：</p>
+<pre><code>window.onload=&quot;myFunction()&quot;;
+</code></pre><p>…或者我可以使用<code>body</code>标记：</p>
+<pre><code>&lt;body onload=&quot;myFunction()&quot;&gt;
+</code></pre><p>…或者我甚至可以在页面底部尝试所有内容，但最终<code>body</code>或<code>html</code>标记就像：</p>
+<pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
+   myFunction();
+&lt;/script&gt;
+</code></pre><p>什么是以jQuery的<code>$。ready（）</code>？方式发布一个或多个函数的跨浏览器（旧/新）兼容的方法？</p>
+<p><a id="more"></a> 在没有为您提供所有跨浏览器兼容性的框架的情况下，最简单的事情就是在本体末尾调用您的代码。这比<code>onload</code>处理程序的执行速度快，因为它只等待DOM准备就绪，而不是等待所有的图像加载。而且，这适用于每个浏览器。</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;/head&gt;
+&lt;body&gt;
+Your HTML here
+
+&lt;script&gt;
+// self executing function here
+(function() {
+   // your page initialization code here
+   // the DOM will be available here
+
+})();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>如果你真的不想这样做，你需要跨浏览器兼容性，你不想等待<code>window.onload</code>，那么你可能应该看看如何像jQuery框架实现它是<code>$（document）.ready（）</code>方法。这取决于浏览器的功能是相当重要的。</p>
+<p>给你一个小小的想法，jQuery的功能（无论脚本标签放在哪里都可以工作）。</p>
+<p>如果支持，它会尝试标准：</p>
+<pre><code>document.addEventListener(&apos;DOMContentLoaded&apos;, fn, false);
+</code></pre><p>后退到：</p>
+<pre><code>window.addEventListener(&apos;load&apos;, fn, false )
+</code></pre><p>或者对于旧版本的IE，它使用：</p>
+<pre><code>document.attachEvent(&quot;onreadystatechange&quot;, fn);
+</code></pre><p>后退到：</p>
+<pre><code>window.attachEvent(&quot;onload&quot;, fn);
+</code></pre><p>而且，IE代码路径中有一些我不太熟悉的方法，但看起来它和框架有关。</p>
+<hr>
+<p>下面是以纯javascript编写的jQuery的<code>.ready（）</code>的完整替代：</p>
+<pre><code>(function(funcName, baseObj) {
+    // The public function name defaults to window.docReady
+    // but you can pass in your own object and own function name and those will be used
+    // if you want to put them in a different namespace
+    funcName = funcName || &quot;docReady&quot;;
+    baseObj = baseObj || window;
+    var readyList = [];
+    var readyFired = false;
+    var readyEventHandlersInstalled = false;
+
+    // call this when the document is ready
+    // this function protects itself against being called more than once
+    function ready() {
+        if (!readyFired) {
+            // this must be set to true before we start calling callbacks
+            readyFired = true;
+            for (var i = 0; i &lt; readyList.length; i++) {
+                // if a callback here happens to add new ready handlers,
+                // the docReady() function will see that it already fired
+                // and will schedule the callback to run right after
+                // this event loop finishes so all handlers will still execute
+                // in order and no new ones will be added to the readyList
+                // while we are processing the list
+                readyList[i].fn.call(window, readyList[i].ctx);
+            }
+            // allow any closures held by these functions to free
+            readyList = [];
+        }
+    }
+
+    function readyStateChange() {
+        if ( document.readyState === &quot;complete&quot; ) {
+            ready();
+        }
+    }
+
+    // This is the one public interface
+    // docReady(fn, context);
+    // the context argument is optional - if present, it will be passed
+    // as an argument to the callback
+    baseObj[funcName] = function(callback, context) {
+        if (typeof callback !== &quot;function&quot;) {
+            throw new TypeError(&quot;callback for docReady(fn) must be a function&quot;);
+        }
+        // if ready has already fired, then just schedule the callback
+        // to fire asynchronously, but right away
+        if (readyFired) {
+            setTimeout(function() {callback(context);}, 1);
+            return;
+        } else {
+            // add the function and context to the list
+            readyList.push({fn: callback, ctx: context});
+        }
+        // if document already ready to go, schedule the ready function to run
+        if (document.readyState === &quot;complete&quot;) {
+            setTimeout(ready, 1);
+        } else if (!readyEventHandlersInstalled) {
+            // otherwise if we don&apos;t have event handlers installed, install them
+            if (document.addEventListener) {
+                // first choice is DOMContentLoaded event
+                document.addEventListener(&quot;DOMContentLoaded&quot;, ready, false);
+                // backup is window load event
+                window.addEventListener(&quot;load&quot;, ready, false);
+            } else {
+                // must be IE
+                document.attachEvent(&quot;onreadystatechange&quot;, readyStateChange);
+                window.attachEvent(&quot;onload&quot;, ready);
+            }
+            readyEventHandlersInstalled = true;
+        }
+    }
+})(&quot;docReady&quot;, window);
+</code></pre><p>代码的最新版本是在GitHub上<a href="https://github.com/jfriend00/docReady" target="_blank" rel="noopener"> https://github.com/jfriend00/docReady</a>上公开分享的</p>
+<p>p&gt;</p>
+<p>用法：</p>
+<pre><code>// pass a function reference
+docReady(fn);
+
+// use an anonymous function
+docReady(function() {
+    // code here
+});
+
+// pass a function reference and a context
+// the context will be passed to the function as the first argument
+docReady(fn, context);
+
+// use an anonymous function with a context
+docReady(function(context) {
+    // code here that can use the context argument that was passed to docReady
+}, ctx);
+</code></pre><hr>
+<p>这已经过测试：</p>
+<pre><code>IE6 and up
+Firefox 3.6 and up
+Chrome 14 and up
+Safari 5.1 and up
+Opera 11.6 and up
+Multiple iOS devices
+Multiple Android devices
+</code></pre><p>工作实施和测试平台：<a href="http://jsfiddle.net/jfriend00/YfD3C/" target="_blank" rel="noopener"> http://jsfiddle.net/jfriend00/YfD3C/</a></p>
+<hr>
+<p>这是一个如何工作的总结：</p>
+<ul>
+<li>创建一个IIFE（立即调用的函数表达式），这样我们就可以拥有非公共的状态变量。</li>
+<li>声明一个公共函数<code>docReady（fn，context）</code>  * 调用<code>docReady（fn，context）</code>时，检查ready处理程序是否已经被触发。如果是这样，只需在JS的这个线程完成<code>setTimeout（fn，1）</code>之后安排新添加的回调即可。 </li>
+<li>如果ready处理程序尚未触发，则将此新回调添加到稍后调用的回调列表中。</li>
+<li>检查文档是否已经准备好。如果是，请执行所有准备好的处理程序。</li>
+<li>如果我们尚未安装事件侦听器，但尚未知道文档何时准备就绪，请立即安装。</li>
+<li><p>如果<code>document.addEventListener</code>存在，那么为<code>“DOMContentLoaded”</code>和<code>“load两个方法安装使用</code> .addEventListener（）<code>的事件处理程序“</code>事件。 “负载”是一个安全的备份事件，不应该被需要。<br>如果<code>document.addEventListener</code>不存在，那么使用<code>.attachEvent（）</code>为<code>“onreadystatechange”</code>和<code>“onload”</code>事件。</p>
+</li>
+<li><p>在<code>onreadystatechange</code>事件中，检查<code>document.readyState ===“complete”</code>，如果是的话，调用一个函数来触发所有就绪处理程序。 </p>
+</li>
+<li>在所有其他事件处理程序中，调用一个函数来触发所有已准备就绪的处理程序。</li>
+<li>在调用所有就绪处理函数的函数中，检查一个状态变量，看看我们是否已经被触发。如果我们有，什么都不要做。如果我们还没有被调用，然后遍历已经准备就绪的函数，并按照它们添加的顺序调用每个函数。设置一个标志来表明这些全部被调用，所以它们永远不会被执行多次。</li>
+<li>清除函数数组，以便释放它们可能使用的所有闭包。</li>
+</ul>
+<p>使用<code>docReady（）</code>注册的处理程序将保证按照它们注册的顺序被解雇。</p>
+<p>如果在文档已经准备好之后调用<code>docReady（fn）</code>，那么一旦当前的执行线程使用 setTimeout（fn，1）<br>。这允许调用代码总是假定它们是稍后调用的异步回调函数，即使稍后一旦JS的当前线程结束并保留调用顺序。</p>
+<p>我想在这里提到一些可能的方法，以及适用于所有浏览器的 <strong>纯JavaScript技巧</strong> ：</p>
+<pre><code>// with jQuery 
+$(document).ready(function(){ /* ... */ });
+
+// shorter jQuery version 
+$(function(){ /* ... */ });
+
+// without jQuery (doesn&apos;t work in older IEs)
+document.addEventListener(&apos;DOMContentLoaded&apos;, function(){ 
+    // your code goes here
+}, false);
+
+// and here&apos;s the trick (works everywhere)
+function r(f){/in/.test(document.readyState)?setTimeout(&apos;r(&apos;+f+&apos;)&apos;,9):f()}
+// use like
+r(function(){
+    alert(&apos;DOM Ready!&apos;);
+});
+</code></pre><p>正如<a href="http://www.dustindiaz.com/smallest-domready-ever" target="_blank" rel="noopener">原作者</a>所解释的，这里的诀窍是我们正在检查<br><strong>document.readyState</strong> 属性。如果它包含<code>中的字符串</code>（如<code>uninitialized</code>和<code>loading</code>，则前两个<a href="“http：//www.w3schools。">DOM准备状态</a>超出5）我们设置一个超时时间并再次检查。否则，我们执行传递的函数。</p>
+<p>以下是<a href="http://jsfiddle.net/ramswaroop/br21uzk7/" target="_blank" rel="noopener"> jsFiddle </a>的小技巧， <strong>适用于所有浏览器。</strong></p>
+<p>感谢<a href="http://tutorialzine.com/" target="_blank" rel="noopener"> Tutorialzine </a>将其包含在书中。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/jquery/">jquery</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/pure-javascript-equivalent-of-jquerys-ready-how-to-call-a-function-when-t/" data-title="jQuery的  ready（）的纯JavaScript等价物 - 如何在页面/ DOM准备好时调用一个函数[复制] | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/are-non-void-self-closing-tags-valid-in-html5/" title="（非无效）自闭标签在HTML5中有效吗？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  （非无效）自闭标签在HTML5中有效吗？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/stretch-and-scale-css-background/"  title="拉伸和缩放CSS背景">
+ <strong>下一篇：</strong><br/> 
+ <span>拉伸和缩放CSS背景
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

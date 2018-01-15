@@ -1,0 +1,868 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何使用初始文本“选择一个”来制作Android微调器 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在Android中，我想使用最初（当用户还没有做出选择时）显示文本“选择一个”的微调器。当用户点击微调器时，显示项目列表并且用户选择其中一个选项。用户做出选择后，所选项目将显示在微调框中而不是“选择一个”。 我有下面的代码来创建一个Spinner： String[] items = new String[] {&amp;quot;One&amp;quot;, &amp;quot;Two&amp;quot;, &amp;quot;Thre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使用初始文本“选择一个”来制作Android微调器">
+<meta property="og:url" content="https://www.tracholar.top/2018/05/22/how-to-make-an-android-spinner-with-initial-text-select-one/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在Android中，我想使用最初（当用户还没有做出选择时）显示文本“选择一个”的微调器。当用户点击微调器时，显示项目列表并且用户选择其中一个选项。用户做出选择后，所选项目将显示在微调框中而不是“选择一个”。 我有下面的代码来创建一个Spinner： String[] items = new String[] {&amp;quot;One&amp;quot;, &amp;quot;Two&amp;quot;, &amp;quot;Thre">
+<meta property="og:image" content="https://www.tracholar.top/2018/05/22/how-to-make-an-android-spinner-with-initial-text-select-one/“https://i.stack.imgur.com/aEL12.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/05/22/how-to-make-an-android-spinner-with-initial-text-select-one/“https://i.stack.imgur.com/zFvtw.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/05/22/how-to-make-an-android-spinner-with-initial-text-select-one/“https://i.stack.imgur.com/TRDiy.png”alt">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何使用初始文本“选择一个”来制作Android微调器">
+<meta name="twitter:description" content="在Android中，我想使用最初（当用户还没有做出选择时）显示文本“选择一个”的微调器。当用户点击微调器时，显示项目列表并且用户选择其中一个选项。用户做出选择后，所选项目将显示在微调框中而不是“选择一个”。 我有下面的代码来创建一个Spinner： String[] items = new String[] {&amp;quot;One&amp;quot;, &amp;quot;Two&amp;quot;, &amp;quot;Thre">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/05/22/how-to-make-an-android-spinner-with-initial-text-select-one/“https://i.stack.imgur.com/aEL12.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/22/how-to-make-an-android-spinner-with-initial-text-select-one/" title="如何使用初始文本“选择一个”来制作Android微调器" itemprop="url">如何使用初始文本“选择一个”来制作Android微调器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-22T02:39:06.000Z" itemprop="datePublished"> Published 2018-05-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在Android中，我想使用最初（当用户还没有做出选择时）显示文本“选择一个”的微调器。当用户点击微调器时，显示项目列表并且用户选择其中一个选项。用户做出选择后，所选项目将显示在微调框中而不是“选择一个”。</p>
+<p>我有下面的代码来创建一个Spinner：</p>
+<pre><code>String[] items = new String[] {&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;};
+Spinner spinner = (Spinner) findViewById(R.id.mySpinner);
+ArrayAdapter&lt;String&gt; adapter = new ArrayAdapter&lt;String&gt;(this,
+            android.R.layout.simple_spinner_item, items);
+adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+spinner.setAdapter(adapter);
+</code></pre><p>用这个代码，最初显示项目“One”。我可以添加一个新的项目“选择一个”的项目，但“选择一个”也将显示在下拉列表中作为第一项，这是不是我想要的。</p>
+<p>我该如何解决这个问题？</p>
+<a id="more"></a>
+<p>这是一个覆盖<code>Spinner</code>视图的通用解决方案。它覆盖<code>setAdapter（）</code>以将初始位置设置为-1，并代理提供的<code>SpinnerAdapter</code>以显示位置小于0的提示字符串。</p>
+<p>这已经在Android 1.5到4.2上测试过了，但是买家要小心！因为这个解决方案依靠反射来调用私有的<code>AdapterView.setNextSelectedPositionInt（）</code>和<code>AdapterView.setSelectedPositionInt（）</code>，所以在将来的操作系统更新中不能保证。这似乎是可能的，但这绝不是保证。</p>
+<p>通常我不会宽容这样的事情，但这个问题已经被问了足够多的时间，似乎是一个足够合理的要求，我想我会发布我的解决方案。</p>
+<pre><code>/**
+ * A modified Spinner that doesn&apos;t automatically select the first entry in the list.
+ *
+ * Shows the prompt if nothing is selected.
+ *
+ * Limitations: does not display prompt if the entry list is empty.
+ */
+public class NoDefaultSpinner extends Spinner {
+
+    public NoDefaultSpinner(Context context) {
+        super(context);
+    }
+
+    public NoDefaultSpinner(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public NoDefaultSpinner(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+    }
+
+    @Override
+    public void setAdapter(SpinnerAdapter orig ) {
+        final SpinnerAdapter adapter = newProxy(orig);
+
+        super.setAdapter(adapter);
+
+        try {
+            final Method m = AdapterView.class.getDeclaredMethod(
+                               &quot;setNextSelectedPositionInt&quot;,int.class);
+            m.setAccessible(true);
+            m.invoke(this,-1);
+
+            final Method n = AdapterView.class.getDeclaredMethod(
+                               &quot;setSelectedPositionInt&quot;,int.class);
+            n.setAccessible(true);
+            n.invoke(this,-1);
+        } 
+        catch( Exception e ) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected SpinnerAdapter newProxy(SpinnerAdapter obj) {
+        return (SpinnerAdapter) java.lang.reflect.Proxy.newProxyInstance(
+                obj.getClass().getClassLoader(),
+                new Class[]{SpinnerAdapter.class},
+                new SpinnerAdapterProxy(obj));
+    }
+
+
+
+    /**
+     * Intercepts getView() to display the prompt if position &lt; 0
+     */
+    protected class SpinnerAdapterProxy implements InvocationHandler {
+
+        protected SpinnerAdapter obj;
+        protected Method getView;
+
+
+        protected SpinnerAdapterProxy(SpinnerAdapter obj) {
+            this.obj = obj;
+            try {
+                this.getView = SpinnerAdapter.class.getMethod(
+                                 &quot;getView&quot;,int.class,View.class,ViewGroup.class);
+            } 
+            catch( Exception e ) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        public Object invoke(Object proxy, Method m, Object[] args) throws Throwable {
+            try {
+                return m.equals(getView) &amp;&amp; 
+                       (Integer)(args[0])&lt;0 ? 
+                         getView((Integer)args[0],(View)args[1],(ViewGroup)args[2]) : 
+                         m.invoke(obj, args);
+            } 
+            catch (InvocationTargetException e) {
+                throw e.getTargetException();
+            } 
+            catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        protected View getView(int position, View convertView, ViewGroup parent) 
+          throws IllegalAccessException {
+
+            if( position&lt;0 ) {
+                final TextView v = 
+                  (TextView) ((LayoutInflater)getContext().getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE)).inflate(
+                      android.R.layout.simple_spinner_item,parent,false);
+                v.setText(getPrompt());
+                return v;
+            }
+            return obj.getView(position,convertView,parent);
+        }
+    }
+}
+</code></pre><p>你可以做的是装饰你的<code>SpinnerAdapter</code>，其中一个展示一个“Select Option<br>…”视图，让Spinner最初显示没有被选中的内容。</p>
+<p>下面是一个针对Android<br>2.3和4.0测试的工作示例（它在兼容性库中没有使用任何东西，所以它应该很好）因为它是一个装饰器，所以应该很容易翻新现有的代码，也可以使用<code>CursorLoader</code>。 （当然，在包装的<code>cursorAdapter</code>上交换游标…）</p>
+<p>有一个Android的错误，使这个有点难以重新使用的意见。 （所以你必须使用<code>setTag</code>或其他的东西来确保你的<code>convertView</code>是正确的。）<a href="“https://issuetracker.google.com/issues/">微调不支持多种视图类型</a></p>
+<p>代码注释：2个构造函数</p>
+<p>这允许你使用一个标准的提示或者把你自己的’没有选择’作为第一行，或者两者都定义，或者没有。<br>（注意：有些主题显示的是一个Spinner的DropDown，而不是对话框，Dropdown通常不会显示提示）</p>
+<p>您将布局定义为“看起来”像提示，例如灰显…</p>
+<p><img src="“https://i.stack.imgur.com/aEL12.png”alt" alt=""></p>
+<p>使用标准提示（注意没有选择任何东西）：</p>
+<p><img src="“https://i.stack.imgur.com/zFvtw.png”alt" alt=""></p>
+<p>或者用提示和动态的东西（可能没有提示）：</p>
+<p><img src="“https://i.stack.imgur.com/TRDiy.png”alt" alt=""></p>
+<p><strong>以上例子中的用法</strong></p>
+<pre><code>Spinner spinner = (Spinner) findViewById(R.id.spinner);
+ArrayAdapter&lt;CharSequence&gt; adapter = ArrayAdapter.createFromResource(this, R.array.planets_array, android.R.layout.simple_spinner_item);
+adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+spinner.setPrompt(&quot;Select your favorite Planet!&quot;);
+
+spinner.setAdapter(
+      new NothingSelectedSpinnerAdapter(
+            adapter,
+            R.layout.contact_spinner_row_nothing_selected,
+            // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+            this));
+</code></pre><p>&lt;强&gt; contact_spinner_row_nothing_selected.xml</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;TextView xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:id=&quot;@android:id/text1&quot;
+    style=&quot;?android:attr/spinnerItemStyle&quot;
+    android:singleLine=&quot;true&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:ellipsize=&quot;marquee&quot;
+    android:textSize=&quot;18sp&quot;
+    android:textColor=&quot;#808080&quot;
+    android:text=&quot;[Select a Planet...]&quot; /&gt;
+</code></pre><p>&lt;强&gt; NothingSelectedSpinnerAdapter.java</p>
+<pre><code>import android.content.Context;
+import android.database.DataSetObserver;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.SpinnerAdapter;
+
+/**
+ * Decorator Adapter to allow a Spinner to show a &apos;Nothing Selected...&apos; initially
+ * displayed instead of the first choice in the Adapter.
+ */
+public class NothingSelectedSpinnerAdapter implements SpinnerAdapter, ListAdapter {
+
+    protected static final int EXTRA = 1;
+    protected SpinnerAdapter adapter;
+    protected Context context;
+    protected int nothingSelectedLayout;
+    protected int nothingSelectedDropdownLayout;
+    protected LayoutInflater layoutInflater;
+
+    /**
+     * Use this constructor to have NO &apos;Select One...&apos; item, instead use
+     * the standard prompt or nothing at all.
+     * @param spinnerAdapter wrapped Adapter.
+     * @param nothingSelectedLayout layout for nothing selected, perhaps
+     * you want text grayed out like a prompt...
+     * @param context
+     */
+    public NothingSelectedSpinnerAdapter(
+      SpinnerAdapter spinnerAdapter,
+      int nothingSelectedLayout, Context context) {
+
+        this(spinnerAdapter, nothingSelectedLayout, -1, context);
+    }
+
+    /**
+     * Use this constructor to Define your &apos;Select One...&apos; layout as the first
+     * row in the returned choices.
+     * If you do this, you probably don&apos;t want a prompt on your spinner or it&apos;ll
+     * have two &apos;Select&apos; rows.
+     * @param spinnerAdapter wrapped Adapter. Should probably return false for isEnabled(0)
+     * @param nothingSelectedLayout layout for nothing selected, perhaps you want
+     * text grayed out like a prompt...
+     * @param nothingSelectedDropdownLayout layout for your &apos;Select an Item...&apos; in
+     * the dropdown.
+     * @param context
+     */
+    public NothingSelectedSpinnerAdapter(SpinnerAdapter spinnerAdapter,
+            int nothingSelectedLayout, int nothingSelectedDropdownLayout, Context context) {
+        this.adapter = spinnerAdapter;
+        this.context = context;
+        this.nothingSelectedLayout = nothingSelectedLayout;
+        this.nothingSelectedDropdownLayout = nothingSelectedDropdownLayout;
+        layoutInflater = LayoutInflater.from(context);
+    }
+
+    @Override
+    public final View getView(int position, View convertView, ViewGroup parent) {
+        // This provides the View for the Selected Item in the Spinner, not
+        // the dropdown (unless dropdownView is not set).
+        if (position == 0) {
+            return getNothingSelectedView(parent);
+        }
+        return adapter.getView(position - EXTRA, null, parent); // Could re-use
+                                                 // the convertView if possible.
+    }
+
+    /**
+     * View to show in Spinner with Nothing Selected
+     * Override this to do something dynamic... e.g. &quot;37 Options Found&quot;
+     * @param parent
+     * @return
+     */
+    protected View getNothingSelectedView(ViewGroup parent) {
+        return layoutInflater.inflate(nothingSelectedLayout, parent, false);
+    }
+
+    @Override
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+        // Android BUG! http://code.google.com/p/android/issues/detail?id=17128 -
+        // Spinner does not support multiple view types
+        if (position == 0) {
+            return nothingSelectedDropdownLayout == -1 ?
+              new View(context) :
+              getNothingSelectedDropdownView(parent);
+        }
+
+        // Could re-use the convertView if possible, use setTag...
+        return adapter.getDropDownView(position - EXTRA, null, parent);
+    }
+
+    /**
+     * Override this to do something dynamic... For example, &quot;Pick your favorite
+     * of these 37&quot;.
+     * @param parent
+     * @return
+     */
+    protected View getNothingSelectedDropdownView(ViewGroup parent) {
+        return layoutInflater.inflate(nothingSelectedDropdownLayout, parent, false);
+    }
+
+    @Override
+    public int getCount() {
+        int count = adapter.getCount();
+        return count == 0 ? 0 : count + EXTRA;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return position == 0 ? null : adapter.getItem(position - EXTRA);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 1;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position &gt;= EXTRA ? adapter.getItemId(position - EXTRA) : position - EXTRA;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return adapter.hasStableIds();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return adapter.isEmpty();
+    }
+
+    @Override
+    public void registerDataSetObserver(DataSetObserver observer) {
+        adapter.registerDataSetObserver(observer);
+    }
+
+    @Override
+    public void unregisterDataSetObserver(DataSetObserver observer) {
+        adapter.unregisterDataSetObserver(observer);
+    }
+
+    @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return position != 0; // Don&apos;t allow the &apos;nothing selected&apos;
+                                             // item to be picked.
+    }
+
+}
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/05/22/how-to-make-an-android-spinner-with-initial-text-select-one/" data-title="如何使用初始文本“选择一个”来制作Android微调器 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/23/call-to-undefined-function-curl-init/" title="调用未定义的函数curl_init（）。">
+  <strong>上一篇：</strong><br/>
+  <span>
+  调用未定义的函数curl_init（）。</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/05/22/pass-all-arguments-from-bash-script-to-another-command/"  title="在bash shell脚本中传播所有参数">
+ <strong>下一篇：</strong><br/> 
+ <span>在bash shell脚本中传播所有参数
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

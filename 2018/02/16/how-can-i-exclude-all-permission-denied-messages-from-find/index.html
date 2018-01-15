@@ -1,0 +1,629 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>我怎样才能从“查找”中排除所有的“权限被拒绝”信息？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我需要隐藏所有 权限被拒绝 消息： find . &amp;gt; files_and_folders 我正在试验这种信息何时出现。我需要收集所有不会出现的文件夹和文件。 是否可以将权限级别指向files_and_folders文件？ 我怎样才能同时隐藏错误？">
+<meta name="keywords" content="bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我怎样才能从“查找”中排除所有的“权限被拒绝”信息？">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/16/how-can-i-exclude-all-permission-denied-messages-from-find/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我需要隐藏所有 权限被拒绝 消息： find . &amp;gt; files_and_folders 我正在试验这种信息何时出现。我需要收集所有不会出现的文件夹和文件。 是否可以将权限级别指向files_and_folders文件？ 我怎样才能同时隐藏错误？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我怎样才能从“查找”中排除所有的“权限被拒绝”信息？">
+<meta name="twitter:description" content="我需要隐藏所有 权限被拒绝 消息： find . &amp;gt; files_and_folders 我正在试验这种信息何时出现。我需要收集所有不会出现的文件夹和文件。 是否可以将权限级别指向files_and_folders文件？ 我怎样才能同时隐藏错误？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/16/how-can-i-exclude-all-permission-denied-messages-from-find/" title="我怎样才能从“查找”中排除所有的“权限被拒绝”信息？" itemprop="url">我怎样才能从“查找”中排除所有的“权限被拒绝”信息？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-16T01:58:57.000Z" itemprop="datePublished"> Published 2018-02-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">POSIX-compliant solutions:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Notes on the existing answers:</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我需要隐藏所有 <em>权限被拒绝</em> 消息：</p>
+<pre><code>find . &gt; files_and_folders
+</code></pre><p>我正在试验这种信息何时出现。我需要收集所有不会出现的文件夹和文件。</p>
+<p>是否可以将权限级别指向<code>files_and_folders</code>文件？</p>
+<p>我怎样才能同时隐藏错误？</p>
+<a id="more"></a>
+<p>注意：结果 *这个答案可能比用例许可证更深，在许多情况下，<code>find 2＆gt; / dev / null</code>可能已经足够了。对于跨平台的角度来看，可能仍然有兴趣，为了找到一个尽可能健壮的解决方案，讨论一些先进的shell技术，尽管防范的案例可能在很大程度上是假想的。</p>
+<ul>
+<li><strong>如果您的系统配置为显示 <em>本地化</em> 错误消息</strong>，请在<code>LC_ALL = C</code>前加上<code>find</code>调用。 <code>LC_ALL = C find
+...</code>）确保报告了 <em>英文</em> 消息，以便<code>grep -v&#39;Permission denied&#39;</code>按预期工作。然而，总是显示的 <em>do</em><br>出现的任何错误信息都将以英文显示。功能</li>
+</ul>
+<p>如果您的 <strong>shell是<code>bash</code>或<code>zsh</code> </strong> ，那么 <strong>解决方案非常健壮，而且相当简单</strong> ，仅使用 <strong>符合POSIX的<code>find</code>功能</strong> ;而<code>bash</code>本身不是POSIX的一部分，所以大多数现代的Unix平台都带有这个平台，</p>
+<pre><code>find . &gt; files_and_folders 2&gt; &gt;(grep -v &apos;Permission denied&apos; &gt;&amp;2)
+</code></pre><p>注意：<code>grep</code>的一些输出可能在<em> <code>find</code>完成之后到达 </em>，因为整个命令不会等待<code>＆gt;（...）</code>中的命令完成。在<code>bash</code>中，可以通过追加<code>|来防止这种情况cat</code>。</p>
+<p>&lt;…&gt; &lt;…&gt; <code>是一个（很少使用的） _输出_ [输出（</code> 2＆gt; <code>）输出到命令的stdin里面</code> <code>代码&gt;＆GT;（...）结果。 除了</code>bash <code>和</code> zsh <code>之外，</code> ksh <code>原则上也支持它们，但试图将它们与 _stderr &lt; （</code>2＆gt;＆gt;（…）<code>），似乎被默默地忽略（在</code> ksh 93u + `中）。</p>
+<p>（<code>-v</code>）所有行（来自<code>find</code>）<code></code>命令的stderr流），其中包含短语<code>Permission denied</code>，并将剩余的行输出到stderr（<code>＆gt;＆amp; 2</code>）。</p>
+<p>这种方法是：</p>
+<p><strong>**健壮</strong> ：<code>grep</code>仅适用于 <em>错误消息</em> （而不是文件路径和错误消息的组合导致误报），并且将除权限被拒绝之外的错误消息传递给stderr。</p>
+<p>find <code>的退出代码被保留：无法访问至少一个遇到的文件系统项目导致退出代码**代码&gt; 1</code>（尽管这不会告诉你是否发生了其他的错误）。</p>
+<hr>
+<h3><span id="posix-compliant-solutions">POSIX-compliant solutions:</span></h3><p>完全符合POSIX标准的解决方案要么有局限性，要么需要额外的工作。</p>
+<p>如果<code>find</code>的输出将被捕获在 <em>文件</em> 中（或者被完全抑制），那么基于流水线的解决方案<a href="https://stackoverflow.com/a/762360/45375" target="_blank" rel="noopener">乔纳森·莱弗勒（Jonathan<br>Leffler）的回答</a>简单，强大且符合POSIX标准：</p>
+<pre><code>find . 2&gt;&amp;1 &gt;files_and_folders | grep -v &apos;Permission denied&apos; &gt;&amp;2
+</code></pre><p>请注意，重定向的顺序很重要：<code>2＆amp; 1</code>必须先到_。</p>
+<p>在一个文件中捕获stdout输出允许<code>2＆amp; 1</code>通过管道发送 <em>only</em> 错误消息，这个<code>grep</code>可以然后毫不含糊地操作。</p>
+<p><strong>唯一的缺点是 <em>整体退出代码</em> 是<code>grep</code>命令的</strong>，而不是<code>find</code>的，在这种情况下意味着：如果完全没有 <em>错误或 </em>只有<em><br>权限被拒绝的错误，退出代码将是<code>1</code> </em>失败<em> ），否则（许可被拒绝的错误）<code>0</code> - 与意图相反。 <strong>也就是说，<code>find</code>的退出代码很少用到</strong> ，因为它常常传达的信息超越了 </em>基本<em> 失败，比如传递一个不存在的路径。结果<br>然而，由于缺少权限，甚至只有一些</em>输入路径不可访问的情况在<code>find</code>的退出码（ <em>在GNU和BSD<code>find</code>中）：如果处理文件中的 </em>任何_<br>发生权限被拒绝错误，则退出代码设置为<code>1</code><br>以下变体解决了这个问题：</p>
+<pre><code>find . 2&gt;&amp;1 &gt;files_and_folders | { grep -v &apos;Permission denied&apos; &gt;&amp;2; [ $? -eq 1 ]; }
+</code></pre><p>现在，退出代码指示是否发生了<em> ` Permission denied </em>以外的任何错误：<code>1</code>如果是这样，<code>0</code>否则<br>换句话说，退出代码现在反映了命令的真实意图：如果没有发生错误或者仅发生权限被拒绝的错误，则报告成功（<code>0</code>）。点击 这可以说比通过传递<code>find</code>的退出代码更好，就像顶部的解决方案一样。</p>
+<hr>
+<p>评论中的<a href="https://stackoverflow.com/users/1815797/gniourf-
+gniourf" target="_blank" rel="noopener"> gniourf_gniourf </a>提出了一种（仍然符合POSIX标准的） <strong>泛解重定向</strong> ， <strong>即使将文件路径打印到 <em>stdout</em> </strong> 的默认行为也能正常工作：</p>
+<pre><code>{ find . 3&gt;&amp;2 2&gt;&amp;1 1&gt;&amp;3 | grep -v &apos;Permission denied&apos; &gt;&amp;3; } 3&gt;&amp;2 2&gt;&amp;1
+</code></pre><p>简而言之：自定义文件描述符<code>3</code>用于临时交换stdout（<code>1</code>）和stderr（<code>2</code>）， ___ 可以通过stdout传递给<code>grep</code>。</p>
+<p>没有这些重定向，数据（文件路径） <em>和</em> 错误消息将通过标准输出传递给<code>grep</code>，而<code>grep</code>则不会能够区分 <em>错误信息</em> <code>Permission denied</code>和一个（名词） <em>文件，其名称正好包含` Permission denied </em> 代码&gt;</p>
+<p>然而，正如在第一种解决方案中那样，所报告的退出代码将是<code>grep</code>，而不是<code>find</code>，但是可以应用与上面相同的修复</p>
+<hr>
+<h3><span id="notes-on-the-existing-answers">Notes on the existing answers:</span></h3><ul>
+<li><p>有关<a href="https://stackoverflow.com/a/25234419/45375" target="_blank" rel="noopener"> Michael Brux的回答</a>，<code>find的几点注意事项。 ！ -readable -prune -o -print</code>：</p>
+<ul>
+<li><p>它需要GNU _ <code>find</code>;值得注意的是，它不能在macOS上工作。当然，如果你只需要命令来使用GNU <code>find</code>，这对你来说不会是个问题。</p>
+</li>
+<li><p>某些<code>权限被拒绝</code>错误可能仍然<em>表面：<code>find！ -readable -prune</code>为当前用户具有<code>r</code>权限但缺少<code>x</code>的 </em>子<em> 项目报告此类错误&gt;（可执行）权限。原因是因为目录本身是可读的，所以<code>-prune</code>不被执行，并且试图将 </em>下降到<em> 那个目录，然后触发错误消息。也就是说，典型的</em>情况是为了使<code>r</code>权限丢失。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>注意：以下几点是关于哲学和/或具体用例的问题，您可能会认为它与您无关，而且该命令可以很好地满足您的需求，特别是在 __ 打印&lt; / em&gt;路径就是你所做的：</p>
+<p><em>__</em> <em> </em> <em> </em> <em> </em> <em> code&gt; find <code>命令，那么主动防止权限被拒绝的错误的相反方法需要在</code> find<br>`命令中引入“noise”，这也引入了复杂性和逻辑性 </em>陷阱_</p>
+<p>例如，对Michael的回答（就撰写本文而言）的最新评论意见是试图通过包含<code>-name</code>过滤器来展示如何扩展 _<em> 如下所示：<br><code>find。 ！ -readable -prune -o -name&#39;* .txt&#39;</code><br>然而，这并不是按照预期工作的，因为后面的<code>-print</code>操作是 </em>需要的_<br>（解释可以在<a href="“https://stackoverflow.com/questions/1489277/how-to-use-prune-
+option-of-find-in-sh&quot;">这个答案</a>）。这种微妙的东西可能会引入错误。</p>
+<ul>
+<li><a href="https://stackoverflow.com/a/762360/45375" target="_blank" rel="noopener"> Jonathan Leffler的回答</a>中的第一个解决方案<code>find。 2＆gt; / dev / null＆gt;正如他自己所说的，“ **所有_ 错误消息**（和解决方法是繁琐的，不完全健壮，正如他也解释），files_and_folders</code>。然而，从实际的角度来说，这是 <strong>最简单的解决方案</strong> ，因为您可能满意地认为任何和所有的错误都是与权限相关的。</li>
+</ul>
+<p>&gt;</p>
+<ul>
+<li><p><a href="https://stackoverflow.com/a/27503763/45375" target="_blank" rel="noopener">雾的答案</a>，<code>sudo查找。 ＆GT; files_and_folders</code>，出于安全原因， <strong>简洁而实用，但对于 <em>打印</em> 文件名</strong>以外的任何其他内容都不适用。因为您正在以 _root用户“，那么你可能会冒险让你的整个系统被查找或恶意版本中的错误，或意外写入错误的调用所迷惑，如果你以普通的权限运行，这是不可能发生的。从<a href="https://stackoverflow.com/users/874188/tripleee" target="_blank" rel="noopener"> tripleee </a>对mist的回答的评论）。 </p>
+</li>
+<li><p><a href="https://stackoverflow.com/a/762377/45375" target="_blank" rel="noopener"> viraptor的回答</a>，<code>find的第二个解决方案。 2＆amp; 1 | grep -v&#39;权限被拒绝&#39;＆gt; some_file</code>存在误报的风险（由于stdout和stderr通过管道发送），而不是通过stderr报告 <em>non</em> -permission-denied错误，捕获他们在输出文件的输出路径旁边。</p>
+</li>
+</ul>
+<p>使用：</p>
+<pre><code>find . 2&gt;/dev/null &gt; files_and_folders
+</code></pre><p>这当然不仅隐藏了<code>Permission denied</code>错误，而且还隐藏了所有的错误信息。</p>
+<p>如果你真的想要保留其他可能的错误，比如在符号链接上跳过太多，但是不允许被拒绝的错误，那么你可能不得不猜测你没有多少文件叫做’权限被拒绝“并尝试：</p>
+<pre><code>find . 2&gt;&amp;1 | grep -v &apos;Permission denied&apos; &gt; files_and_folders
+</code></pre><hr>
+<p>如果您只是严格筛选标准错误，则可以使用更复杂的构造：</p>
+<pre><code>find . 2&gt;&amp;1 &gt; files_and_folders | grep -v &apos;Permission denied&apos; &gt;&amp;2
+</code></pre><p><code>find</code>命令上的I / O重定向是：<code>2＆gt;＆amp; 1＆gt; files_and_folders |</code>。 管道将标准输出重定向到<code>grep</code>命令并首先应用。 <code>2＆amp; 1</code>将标准错误发送到与标准输出（管道）相同的位置。 <code>＆gt; files_and_folders</code>将标准输出（但不是标准错误）发送到文件。最终的结果是，写入标准错误的消息将在管道中发送，并且将<code>find</code>的常规输出写入该文件。 <code>grep</code>可以过滤标准输出（你可以决定你想要的选择是多么的有选择性，而且可能需要根据locale和O / S来改变拼写），最后的<code>＆gt;＆amp; 2</code>意味着存活的错误信息（写入标准输出）再一次变为标准错误。最终的重定向在终端上可以被认为是可选的，但是在脚本中使用它是一个非常好的主意，这样错误消息就会出现在标准错误中。</p>
+<p>这个主题有很多变化，取决于你想做什么。这将适用于任何Bourne<br>shell派生（Bash，Korn，…）以及任何符合POSIX标准的版本的任何Unix版本<a href="“http://pubs.opengroup.org/onlinepubs/9699919799/utilities/"> <code>find</code></a>。</p>
+<p>如果您希望适应您的系统中<code>find</code>的特定版本，可能会有其他选项可用。 GNU <code>find</code>特别有其他版本无法使用的多种选项 -<br>请参阅当前接受的一个这样的选项集合的答案。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/16/how-can-i-exclude-all-permission-denied-messages-from-find/" data-title="我怎样才能从“查找”中排除所有的“权限被拒绝”信息？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/16/activity-has-leaked-window-that-was-originally-added/" title="活动泄漏了最初添加的窗口">
+  <strong>上一篇：</strong><br/>
+  <span>
+  活动泄漏了最初添加的窗口</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/16/can-you-loop-through-all-enum-values/"  title="你可以遍历所有的枚举值？">
+ <strong>下一篇：</strong><br/> 
+ <span>你可以遍历所有的枚举值？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">POSIX-compliant solutions:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Notes on the existing answers:</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

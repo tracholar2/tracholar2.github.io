@@ -1,0 +1,945 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>我应该如何为CodeIgniter选择一个认证库？ [关闭] | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我看到有一些。哪些维护和易于使用？他们有什么优点和缺点？">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我应该如何为CodeIgniter选择一个认证库？ [关闭]">
+<meta property="og:url" content="https://www.tracholar.top/2018/03/06/how-should-i-choose-an-authentication-library-for-codeigniter/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我看到有一些。哪些维护和易于使用？他们有什么优点和缺点？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我应该如何为CodeIgniter选择一个认证库？ [关闭]">
+<meta name="twitter:description" content="我看到有一些。哪些维护和易于使用？他们有什么优点和缺点？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/06/how-should-i-choose-an-authentication-library-for-codeigniter/" title="我应该如何为CodeIgniter选择一个认证库？ [关闭]" itemprop="url">我应该如何为CodeIgniter选择一个认证库？ [关闭]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-03-06T01:06:44.000Z" itemprop="datePublished"> Published 2018-03-06</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Update (May 14, 2010):</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Tank Auth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">DX Auth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">FreakAuth Light</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">pc_user</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Fresh Powered</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Redux / Ion Auth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">SimpleLoginSecure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">Authentication for CodeIgniter done right</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我看到有<a href="http://codeigniter.com/wiki/Category:Libraries::Authentication/" target="_blank" rel="noopener">一些</a>。哪些维护和易于使用？他们有什么优点和缺点？</p>
+<a id="more"></a>
+<h2><span id="update-may-14-2010">Update (May 14, 2010):</span></h2><p>事实证明，俄罗斯开发人员Ilya Konyukhov在阅读本文后拿起了这本书，并根据下面的建议和要求为基于DX Auth的CI创建了一个新的auth库。**</p>
+<p>**由此产生的<a href="http://konyukhov.com/soft/tank_auth/" target="_blank" rel="noopener">坦克认证</a>看起来像是OP问题的答案。我将在这里出去，并将Tank<br>Auth称为CodeIgniter当前可用的最佳认证库。这是一个坚如磐石的图书馆，它拥有你所需要的所有功能，而且你没有那么多的臃肿：</p>
+<h2><span id="tank-auth">Tank Auth</span></h2><blockquote>
+<p>Pros</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Full featured</p>
+</li>
+<li><p>Lean footprint (20 files) considering the feature set</p>
+</li>
+<li><p>Very good documentation</p>
+</li>
+<li><p>Simple and elegant database design (just 4 DB tables)</p>
+</li>
+<li><p>Most features are optional and easily configured</p>
+</li>
+<li><p>Language file support</p>
+</li>
+<li><p>reCAPTCHA supported</p>
+</li>
+<li><p>Hooks into CI’s validation system</p>
+</li>
+<li><p>Activation emails</p>
+</li>
+<li><p>Login with email, username or both (configurable)</p>
+</li>
+<li><p>Unactivated accounts auto-expire</p>
+</li>
+<li><p>Simple yet effective error handling</p>
+</li>
+<li><p>Uses phpass for hashing (and also hashes autologin codes in the DB)</p>
+</li>
+<li><p>Does not use security questions</p>
+</li>
+<li><p>Separation of user and profile data is very nice</p>
+</li>
+<li><p>Very reasonable security model around failed login attempts (good<br>protection against bots and DoS attacks)</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p>(Minor) Cons</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Lost password codes are not hashed in DB</p>
+</li>
+<li><p>Includes a native (poor) CAPTCHA, which is nice for those who don’t want<br>to depend on the (Google-owned) reCAPTCHA service, but it really isn’t secure<br>enough</p>
+</li>
+<li><p>Very sparse online documentation (minor issue here, since the code is<br>nicely documented and intuitive)</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p><a href="http://konyukhov.com/soft/tank_auth/" target="_blank" rel="noopener">此处下载Tank Auth </a></p>
+<hr>
+<p>原始答案：</p>
+<p>我已经实施了自己的工作（目前大约80％的工作完成了几个星期的工作）。我先尝试了所有其他人FreakAuth Light，DX<br>Auth，Redux，SimpleLogin，SimpleLoginSecure，pc_user，Fresh<br>Powered等等。他们都没有达到标准，国际海事组织，要么他们缺乏基本的功能，本质上不安全，或为我的口味太臃肿。</p>
+<p>实际上，我在测试CodeIgniter时（在新年之后）对所有的认证库做了详细的综述。 FWIW，我会分享给你的：</p>
+<h2><span id="dx-auth">DX Auth</span></h2><blockquote>
+<p>Pros</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Very full featured</p>
+</li>
+<li><p>Medium footprint (25+ files), but manages to feel quite slim</p>
+</li>
+<li><p>Excellent documentation, although some is in slightly broken English</p>
+</li>
+<li><p>Language file support</p>
+</li>
+<li><p>reCAPTCHA supported</p>
+</li>
+<li><p>Hooks into CI’s validation system</p>
+</li>
+<li><p>Activation emails</p>
+</li>
+<li><p>Unactivated accounts auto-expire</p>
+</li>
+<li><p>Suggests grc.com for salts (not bad for a PRNG)</p>
+</li>
+<li><p>Banning with stored ‘reason’ strings</p>
+</li>
+<li><p>Simple yet effective error handling</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p>Cons</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Only lets users ‘reset’ a lost password (rather than letting them pick a<br>new one upon reactivation)</p>
+</li>
+<li><p>Homebrew pseudo-event model - good intention, but misses the mark</p>
+</li>
+<li><p>Two password fields in the user table, bad style</p>
+</li>
+<li><p>Uses two separate user tables (one for ‘temp’ users - ambiguous and<br>redundant)</p>
+</li>
+<li><p>Uses potentially unsafe md5 hashing</p>
+</li>
+<li><p>Failed login attempts only stored by IP, not by username - unsafe!</p>
+</li>
+<li><p>Autologin key not hashed in the database - practically as unsafe as<br>storing passwords in cleartext!</p>
+</li>
+<li><p>Role system is a complete mess: is_admin function with hard-coded role<br>names, is_role a complete mess, check_uri_permissions is a mess, the whole<br>permissions table is a bad idea (a URI can change and render pages<br>unprotected; permissions should always be stored exactly where the sensitive<br>logic is). Dealbreaker!</p>
+</li>
+<li><p>Includes a native (poor) CAPTCHA</p>
+</li>
+<li><p>reCAPTCHA function interface is messy</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<h2><span id="freakauth-light">FreakAuth Light</span></h2><blockquote>
+<p>Pros</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Very full featured</p>
+</li>
+<li><p>Mostly quite well documented code</p>
+</li>
+<li><p>Separation of user and profile data is a nice touch</p>
+</li>
+<li><p>Hooks into CI’s validation system</p>
+</li>
+<li><p>Activation emails</p>
+</li>
+<li><p>Language file support</p>
+</li>
+<li><p>Actively developed</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p>Cons</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Feels a bit bloated (50+ files)</p>
+</li>
+<li><p>And yet it lacks automatic cookie login (!)</p>
+</li>
+<li><p>Doesn’t support logins with both username and email</p>
+</li>
+<li><p>Seems to have issues with UTF-8 characters</p>
+</li>
+<li><p>Requires a lot of autoloading (impeding performance)</p>
+</li>
+<li><p>Badly micromanaged config file</p>
+</li>
+<li><p>Terrible View-Controller separation, with lots of program logic in views<br>and output hard-coded into controllers. Dealbreaker!</p>
+</li>
+<li><p>Poor HTML code in the included views</p>
+</li>
+<li><p>Includes substandard CAPTCHA</p>
+</li>
+<li><p>Commented debug echoes everywhere</p>
+</li>
+<li><p>Forces a specific folder structure</p>
+</li>
+<li><p>Forces a specific Ajax library (can be switched, but shouldn’t be there<br>in the first place)</p>
+</li>
+<li><p>No max limit on login attempts - VERY unsafe! Dealbreaker!</p>
+</li>
+<li><p>Hijacks form validation</p>
+</li>
+<li><p>Uses potentially unsafe md5 hashing</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<h2><span id="pc_user">pc_user</span></h2><blockquote>
+<p>Pros</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Good feature set for its tiny footprint</p>
+</li>
+<li><p>Lightweight, no bloat (3 files)</p>
+</li>
+<li><p>Elegant automatic cookie login</p>
+</li>
+<li><p>Comes with optional test implementation (nice touch)</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p>Cons</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Uses the old CI database syntax (less safe)</p>
+</li>
+<li><p>Doesn’t hook into CI’s validation system</p>
+</li>
+<li><p>Kinda unintuitive status (role) system (indexes upside down -<br>impractical)</p>
+</li>
+<li><p>Uses potentially unsafe sha1 hashing</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<h2><span id="fresh-powered">Fresh Powered</span></h2><blockquote>
+<p>Pros</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li>Small footprint (6 files)</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p>Cons</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Lacks a lot of essential features. Dealbreaker!</p>
+</li>
+<li><p>Everything is hard-coded. Dealbreaker!</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<h2><span id="redux-ion-auth">Redux / Ion Auth</span></h2><p>根据<a href="http://codeigniter.com/wiki/Redux_Auth" target="_blank" rel="noopener"> CodeIgniter wiki</a>，Redux已经停止使用，但是Ion Auth分支正在变得强大： <a href="https://github.com/benedmunds/CodeIgniter-Ion-Auth" target="_blank" rel="noopener">https://github.com/benedmunds/CodeIgniter-Ion-Auth</a></p>
+<p>Ion Auth是一个功能完善的图书馆，没有过度沉重或欠缺。在大多数情况下，它的功能将不仅仅满足项目的要求。</p>
+<blockquote>
+<p>Pros</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Lightweight and simple to integrate with CodeIgniter</p>
+</li>
+<li><p>Supports sending emails directly from the library</p>
+</li>
+<li><p>Well documented online and good active dev/user community</p>
+</li>
+<li><p>Simple to implement into a project</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p>Cons</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>More complex DB schema than some others</p>
+</li>
+<li><p>Documentation lacks detail in some areas</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<h2><span id="simpleloginsecure">SimpleLoginSecure</span></h2><blockquote>
+<p>Pros</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Tiny footprint (4 files)</p>
+</li>
+<li><p>Minimalistic, absolutely no bloat</p>
+</li>
+<li><p>Uses phpass for hashing (excellent)</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>&gt;</p>
+<blockquote>
+<p>Cons</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>Only login, logout, create and delete</p>
+</li>
+<li><p>Lacks a lot of essential features. Dealbreaker!</p>
+</li>
+<li><p>More of a starting point than a library</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<hr>
+<p>不要误解我的意思：**我不是不尊重任何上述的库，我对他们的开发人员所取得的成就感到非常满意，他们每个人的成就都很高，而且我还没有重复使用他们的一些代码来构建自己的代码。我所说的是，有时在这些项目中，焦点从“需要拥有”（如硬性安全实践）转移到软性“好的”，这就是我希望能够解决的问题</p>
+<p>因此：回到基础。</p>
+<h2><span id="authentication-for-codeigniter-done-right">Authentication for CodeIgniter done <em>right</em></span></h2><p>这是我的MINIMAL必需的来自认证库的功能列表。它也恰好是我自己的库的功能列表的一个子集;）</p>
+<blockquote>
+<ul>
+<li><p>Tiny footprint with optional test implementation</p>
+</li>
+<li><p>Full documentation</p>
+</li>
+<li><p>No autoloading required. Just-in-time loading of libraries for<br>performance</p>
+</li>
+<li><p>Language file support; no hard-coded strings</p>
+</li>
+<li><p>reCAPTCHA supported but optional</p>
+</li>
+<li><p>Recommended TRUE random salt generation (e.g. using random.org or<br>random.irb.hr)</p>
+</li>
+<li><p>Optional add-ons to support 3rd party login (OpenID, Facebook Connect,<br>Google Account, etc.)</p>
+</li>
+<li><p>Login using either username or email</p>
+</li>
+<li><p>Separation of user and profile data</p>
+</li>
+<li><p>Emails for activation and lost passwords</p>
+</li>
+<li><p>Automatic cookie login feature</p>
+</li>
+<li><p>Configurable phpass for hashing (properly salted of course!)</p>
+</li>
+<li><p>Hashing of passwords</p>
+</li>
+<li><p>Hashing of autologin codes</p>
+</li>
+<li><p>Hashing of lost password codes</p>
+</li>
+<li><p>Hooks into CI’s validation system</p>
+</li>
+<li><p>NO security questions!</p>
+</li>
+<li><p>Enforced strong password policy server-side, with optional client-side<br>(Javascript) validator</p>
+</li>
+<li><p>Enforced maximum number of failed login attempts with <strong>BEST PRACTICES<br>countermeasures</strong> against both dictionary and DoS attacks!</p>
+</li>
+<li><p>All database access done through prepared (bound) statements!</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>注意：最后几点不是您的Web应用程序所不需要的超高安全性的过度杀毒。 <strong>如果认证库不符合这些安全标准100％，请不要使用它！</strong></p>
+<p>最近引人注目的不负责任的编程人员将他们从他们的软件中排除出去：＃17是萨拉·佩林的AOL电子邮件在总统竞选期间遭到黑客攻击;最近，当Britney<br>Spears，Barack Obama，Fox<br>News等人的Twitter账号被黑客攻击时，＃18和＃19的恶意组合是罪魁祸首。仅仅是＃20就是中国黑客在2008年以一个自动化的黑客手段窃取了来自七万多个韩国网站的900万条个人信息。</p>
+<p>这些攻击不是脑部手术。如果你把后门敞开的话，你不应该用螺栓把前面的部分弄虚作假。而且，如果你对编码选择CodeIgniter这样的最佳实践框架感到非常认真，那么你应该至少得到最基本的<br>__ 安全措施。</p>
+<hr>
+<p>＆LT;咆哮＆GT;</p>
+<p>基本上，这是如何实现的：我不关心如果一个auth库提供了一堆功能，高级角色管理，PHP4兼容性，漂亮的CAPTCHA字体，国家表，完整的管理面板，花里胡哨的</p>
+<ul>
+<li>如果图书馆实际上使我的网站 <strong>不安全</strong> 不遵循最佳做法。这是一个 <em>认证</em> 包;它需要做一件事：身份验证。如果它不能做 <em>那</em><br>，那实际上会造成更多的伤害。</li>
+</ul>
+<p>＆LT; /咆哮＆GT;</p>
+<p>/ Jens Roland</p>
+<p>请注意，Jens Roland的“综合列表”不包括用户角色。如果您有兴趣分配不同的用户角色（如admin / user或admin / editor /<br>user），则可以使用这些库：</p>
+<ul>
+<li>Ion_Auth（重写Redux）</li>
+<li>终极版</li>
+<li>后端专业版</li>
+</ul>
+<p>Tank_Auth（Jens列表中的＃1）没有用户角色。我意识到这不完全是身份验证的一部分，但自从</p>
+<ul>
+<li>身份验证和角色管理均在页面加载时处理</li>
+<li>两者都涉及安全性</li>
+<li>两个表格都可以使用同一个表格/模型。</li>
+<li>两者都可以设置为在控制器构造函数中载入（甚至是自动载入）</li>
+</ul>
+<p>如果你需要的话，使用一个库来处理这两个库是很有意义的。因为这个，我从Tank_Auth切换到Ion_Auth。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/03/06/how-should-i-choose-an-authentication-library-for-codeigniter/" data-title="我应该如何为CodeIgniter选择一个认证库？ [关闭] | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/06/best-way-to-parse-command-line-arguments-in-c/" title="在C＃中解析命令行参数的最佳方法？ [关闭]">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在C＃中解析命令行参数的最佳方法？ [关闭]</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/03/06/what-does-php-keyword-var-do/"  title="PHP关键字“var”做什么？">
+ <strong>下一篇：</strong><br/> 
+ <span>PHP关键字“var”做什么？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Update (May 14, 2010):</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Tank Auth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">DX Auth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">FreakAuth Light</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">pc_user</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Fresh Powered</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Redux / Ion Auth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">SimpleLoginSecure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">Authentication for CodeIgniter done right</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

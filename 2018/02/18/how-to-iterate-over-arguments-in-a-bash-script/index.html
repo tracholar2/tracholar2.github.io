@@ -1,0 +1,746 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何迭代Bash脚本中的参数 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个复杂的命令，我想创建一个shell / bash脚本。我可以很容易地用$ 1来编写它： foo $1 args -o $1.ext 我希望能够将多个输入名称传递给脚本。什么是正确的方法来做到这一点？ 当然，我想处理其中有空格的文件名。">
+<meta name="keywords" content="bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何迭代Bash脚本中的参数">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/18/how-to-iterate-over-arguments-in-a-bash-script/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个复杂的命令，我想创建一个shell / bash脚本。我可以很容易地用$ 1来编写它： foo $1 args -o $1.ext 我希望能够将多个输入名称传递给脚本。什么是正确的方法来做到这一点？ 当然，我想处理其中有空格的文件名。">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何迭代Bash脚本中的参数">
+<meta name="twitter:description" content="我有一个复杂的命令，我想创建一个shell / bash脚本。我可以很容易地用$ 1来编写它： foo $1 args -o $1.ext 我希望能够将多个输入名称传递给脚本。什么是正确的方法来做到这一点？ 当然，我想处理其中有空格的文件名。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/18/how-to-iterate-over-arguments-in-a-bash-script/" title="如何迭代Bash脚本中的参数" itemprop="url">如何迭代Bash脚本中的参数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-18T01:59:27.000Z" itemprop="datePublished"> Published 2018-02-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个复杂的命令，我想创建一个shell / bash脚本。我可以很容易地用<code>$ 1</code>来编写它：</p>
+<pre><code>foo $1 args -o $1.ext
+</code></pre><p>我希望能够将多个输入名称传递给脚本。什么是正确的方法来做到这一点？</p>
+<p>当然，我想处理其中有空格的文件名。</p>
+<a id="more"></a>
+<p>使用<code>“$ @”</code>来表示所有参数：</p>
+<pre><code>for var in &quot;$@&quot;
+do
+    echo &quot;$var&quot;
+done
+</code></pre><p>这将遍历每个参数，并在一个单独的行上打印出来。 $ @的行为与$ *相似，只是当引用的时候，如果参数中有空格，就可以正确地分解参数：</p>
+<pre><code>sh test.sh 1 2 &apos;3 4&apos;
+1
+2
+3 4
+</code></pre><p><em>通过<a href="https://stackoverflow.com/a/255939/" target="_blank" rel="noopener">答案</a>的.com /用户/ 6309 / vonc“&gt; VonC 。</em></p>
+<p>罗伯特·甘宝（Robert Gamble）简洁的回答直接解决了这个问题。 这个放大了包含空格的文件名的一些问题。</p>
+<p>另请参阅：/ bin / sh中的<a href="https://stackoverflow.com/questions/154625/1
+-in-binsh" target="_blank" rel="noopener"> $ {1：+“$ @”} </a> &lt; / p&gt; 基本论点：“$ @”<code>是正确的，</code> $ <em> <code>（无引号）几乎总是错的。 这是因为当参数包含空格时，</code>“$<br>@”<code>可以正常工作 与</code> $ </em> <code>的作用相同。 在某些情况下，</code>“$ <em>”<code>也可以，但通常</code>“$ @”<code>总是）在相同的地方工作。 不加引号，</code> $ @<br><code>和</code> $ </em> `是等价的（并且几乎总是错的）。</p>
+<p>那么，<code>$ *</code>，<code>$ @</code>，<code>“$ *”</code>和<code>“$ @”之间有什么区别？ ？他们都与“壳的所有论据”有关，但他们做了不同的事情。如果没有加引号，</code>$ <em> <code>和</code> $ @ <code>可以做同样的事情。他们将每个“单词”（非空白序列）视为一个单独的参数。引用的形式是非常不同的：</code>“$
+</em>”<code>将参数列表视为单个空格分隔的字符串，而</code>“$ @”<code>将参数几乎与它们是在命令行上指定的。</code>“$ @”<code>在没有位置参数的情况下展开为空;</code>“$<br>*”<code>展开为一个空字符串 - 是的，有一个区别，虽然很难察觉它。 在引入（非标准）命令</code> al `之后，请参阅下面的更多信息。</p>
+<p>第二篇论文：**如果你需要用空格处理参数然后 把它们传递给其他命令，那么你有时需要非标准的 工具来协助。 （或者你应该小心地使用数组：<code>“$ {array
+[@]}”</code>类似于<code>“$ @”</code>。）</p>
+<p><em>示例：</em> 的</p>
+<pre><code>$ mkdir &quot;my dir&quot; anotherdir
+$ ls
+anotherdir      my dir
+$ cp /dev/null &quot;my dir/my file&quot;
+$ cp /dev/null &quot;anotherdir/myfile&quot;
+$ ls -Fltr
+total 0
+drwxr-xr-x   3 jleffler  staff  102 Nov  1 14:55 my dir/
+drwxr-xr-x   3 jleffler  staff  102 Nov  1 14:55 anotherdir/
+$ ls -Fltr *
+my dir:
+total 0
+-rw-r--r--   1 jleffler  staff  0 Nov  1 14:55 my file
+
+anotherdir:
+total 0
+-rw-r--r--   1 jleffler  staff  0 Nov  1 14:55 myfile
+$ ls -Fltr &quot;./my dir&quot; &quot;./anotherdir&quot;
+./my dir:
+total 0
+-rw-r--r--   1 jleffler  staff  0 Nov  1 14:55 my file
+
+./anotherdir:
+total 0
+-rw-r--r--   1 jleffler  staff  0 Nov  1 14:55 myfile
+$ var=&apos;&quot;./my dir&quot; &quot;./anotherdir&quot;&apos; &amp;&amp; echo $var
+&quot;./my dir&quot; &quot;./anotherdir&quot;
+$ ls -Fltr $var
+ls: &quot;./anotherdir&quot;: No such file or directory
+ls: &quot;./my: No such file or directory
+ls: dir&quot;: No such file or directory
+$
+</code></pre><p>为什么这不工作？ 它不起作用，因为shell在扩展之前会处理引号 变量。 所以，为了让shell注意嵌入在<code>$ var</code>中的引用， 你必须使用<code>eval</code>：</p>
+<pre><code>$ eval ls -Fltr $var
+./my dir:
+total 0
+-rw-r--r--   1 jleffler  staff  0 Nov  1 14:55 my file
+
+./anotherdir:
+total 0
+-rw-r--r--   1 jleffler  staff  0 Nov  1 14:55 myfile
+$ 
+</code></pre><p>当你有文件名如“`”时， “不要这样做！”（带引号和双引号和空格）。</p>
+<pre><code>$ cp /dev/null &quot;He said, \&quot;Don&apos;t do this!\&quot;&quot;
+$ ls
+He said, &quot;Don&apos;t do this!&quot;       anotherdir                      my dir
+$ ls -l
+total 0
+-rw-r--r--   1 jleffler  staff    0 Nov  1 15:54 He said, &quot;Don&apos;t do this!&quot;
+drwxr-xr-x   3 jleffler  staff  102 Nov  1 14:55 anotherdir
+drwxr-xr-x   3 jleffler  staff  102 Nov  1 14:55 my dir
+$ 
+</code></pre><p>炮弹（所有这些炮弹）并不是特别容易处理的 东西，所以（有趣的是）许多Unix程序都做不好 处理他们。<br>在Unix上，一个文件名（单个组件）可以包含除了以外的任何字符 斜杠和NUL <code>&#39;\ 0&#39;</code>。 但是，shell强烈鼓励没有空格或换行符或制表符<br>任何地方的路径名称。 这也是为什么标准的Unix文件名不包含空格等。</p>
+<p>处理可能包含空格和其他文件的文件名时 麻烦的人物，你必须非常小心，我发现 很久以前，我需要一个在Unix上不是标准的程序。 我称之为<code>escape</code>（版本1.1的日期是1989-08-23T16：01：45Z）。</p>
+<p>下面是一个使用SCCS控制系统的<code>escape</code>的例子。 它是一个封面脚本，可以执行<code>delta</code>（think <em>check-in</em> ）和 <code>get</code>（认为 <em>check-out</em> ）。 各种各样的参数，尤其是<code>-y</code>（你做这个改变的原因） 将包含空白和换行符。<br>请注意，脚本的日期从1992年开始，所以它使用back-tick而不是 <code>$（cmd ...）</code>表示法，并且不在第一行使用<code>＃！/ bin / sh</code>。</p>
+<pre><code>:   &quot;@(#)$Id: delget.sh,v 1.8 1992/12/29 10:46:21 jl Exp $&quot;
+#
+#   Delta and get files
+#   Uses escape to allow for all weird combinations of quotes in arguments
+
+case `basename $0 .sh` in
+deledit)    eflag=&quot;-e&quot;;;
+esac
+
+sflag=&quot;-s&quot;
+for arg in &quot;$@&quot;
+do
+    case &quot;$arg&quot; in
+    -r*)    gargs=&quot;$gargs `escape \&quot;$arg\&quot;`&quot;
+            dargs=&quot;$dargs `escape \&quot;$arg\&quot;`&quot;
+            ;;
+    -e)     gargs=&quot;$gargs `escape \&quot;$arg\&quot;`&quot;
+            sflag=&quot;&quot;
+            eflag=&quot;&quot;
+            ;;
+    -*)     dargs=&quot;$dargs `escape \&quot;$arg\&quot;`&quot;
+            ;;
+    *)      gargs=&quot;$gargs `escape \&quot;$arg\&quot;`&quot;
+            dargs=&quot;$dargs `escape \&quot;$arg\&quot;`&quot;
+            ;;
+    esac
+done
+
+eval delta &quot;$dargs&quot; &amp;&amp; eval get $eflag $sflag &quot;$gargs&quot;
+</code></pre><p>（我现在可能不会那么彻底地使用转义 - 这是 例如，不需要<code>-e</code>参数，但总的来说，这是 我的一个简单的脚本使用<code>escape</code>。）</p>
+<p><code>escape</code>程序只是输出它的参数，就像<code>echo</code> 确实，但它确保参数被保护以供使用 <code>eval</code>（<code>eval</code>的一个级别;我有一个远程shell 执行，并且需要转义<code>escape</code>的输出）。</p>
+<pre><code>$ escape $var
+&apos;&quot;./my&apos; &apos;dir&quot;&apos; &apos;&quot;./anotherdir&quot;&apos;
+$ escape &quot;$var&quot;
+&apos;&quot;./my dir&quot; &quot;./anotherdir&quot;&apos;
+$ escape x y z
+x y z
+$ 
+</code></pre><p>我有另外一个叫做<code>al</code>的程序，每行一个列出它的参数 （而且更古老：版本1.1日期1987-01-27T14：35：49）。<br>它在调试脚本时非常有用，因为它可以插入到一个 命令行来查看实际传递给命令的参数。</p>
+<pre><code>$ echo &quot;$var&quot;
+&quot;./my dir&quot; &quot;./anotherdir&quot;
+$ al $var
+&quot;./my
+dir&quot;
+&quot;./anotherdir&quot;
+$ al &quot;$var&quot;
+&quot;./my dir&quot; &quot;./anotherdir&quot;
+$
+</code></pre><p>[ <em>加了：</em> 现在为了显示各种<code>“$ @”</code>符号之间的区别，下面是一个例子：</p>
+<pre><code>$ cat xx.sh
+set -x
+al $@
+al $*
+al &quot;$*&quot;
+al &quot;$@&quot;
+$ sh xx.sh     *      */*
++ al He said, &apos;&quot;Don&apos;\&apos;&apos;t&apos; do &apos;this!&quot;&apos; anotherdir my dir xx.sh anotherdir/myfile my dir/my file
+He
+said,
+&quot;Don&apos;t
+do
+this!&quot;
+anotherdir
+my
+dir
+xx.sh
+anotherdir/myfile
+my
+dir/my
+file
++ al He said, &apos;&quot;Don&apos;\&apos;&apos;t&apos; do &apos;this!&quot;&apos; anotherdir my dir xx.sh anotherdir/myfile my dir/my file
+He
+said,
+&quot;Don&apos;t
+do
+this!&quot;
+anotherdir
+my
+dir
+xx.sh
+anotherdir/myfile
+my
+dir/my
+file
++ al &apos;He said, &quot;Don&apos;\&apos;&apos;t do this!&quot; anotherdir my dir xx.sh anotherdir/myfile my dir/my file&apos;
+He said, &quot;Don&apos;t do this!&quot; anotherdir my dir xx.sh anotherdir/myfile my dir/my file
++ al &apos;He said, &quot;Don&apos;\&apos;&apos;t do this!&quot;&apos; anotherdir &apos;my dir&apos; xx.sh anotherdir/myfile &apos;my dir/my file&apos;
+He said, &quot;Don&apos;t do this!&quot;
+anotherdir
+my dir
+xx.sh
+anotherdir/myfile
+my dir/my file
+$
+</code></pre><p>请注意，命令行上的<code>*</code>和<code>* / *</code>之间没有保留原始空格。此外，请注意，您可以使用以下命令更改shell中的“命令行参数”：</p>
+<pre><code>set -- -new -opt and &quot;arg with space&quot;
+</code></pre><p>这设置了4个选项，’<code>-new</code>‘，’<code>-opt</code>‘，’<code>和</code>‘，’` arg with空间”。 点击 ]</p>
+<p>嗯，这是相当长的回答 _ - 或许是一个更好的术语。 <code>escape</code>的源代码可以根据请求提供（email to firstname dot<br>姓氏在Gmail点COM）。 <code>al</code>的源代码非常简单：</p>
+<pre><code>#include &lt;stdio.h&gt;
+int main(int argc, char **argv)
+{
+    while (*++argv != 0)
+        puts(*argv);
+    return(0);
+}
+</code></pre><p>就是这样。它相当于Robert Gamble展示的<code>test.sh</code>脚本，可以写成一个shell函数（但是当我第一次写代码的时候shell函数在本地版本的Bourne shell中不存在） &gt;人）。</p>
+<p>另外请注意，您可以将<code>al</code>编写为一个简单的shell脚本：</p>
+<pre><code>[ $# != 0 ] &amp;&amp; printf &quot;%s\n&quot; &quot;$@&quot;
+</code></pre><p>条件是需要的，以便它不传递任何参数时不产生输出。 <code>printf</code>命令只会产生一个只有格式字符串参数的空行，但C程序不会产生任何结果。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/18/how-to-iterate-over-arguments-in-a-bash-script/" data-title="如何迭代Bash脚本中的参数 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/18/how-to-get-the-build-version-number-of-your-android-application/" title="如何获得您的Android应用程序的构建/版本号？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何获得您的Android应用程序的构建/版本号？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/18/how-do-you-convert-a-byte-array-to-a-hexadecimal-string-and-vice-versa/"  title="如何将字节数组转换为十六进制字符串，反之亦然？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何将字节数组转换为十六进制字符串，反之亦然？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

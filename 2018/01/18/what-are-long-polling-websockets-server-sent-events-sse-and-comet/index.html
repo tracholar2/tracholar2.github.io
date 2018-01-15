@@ -1,0 +1,636 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>什么是长轮询，Websockets，服务器发送事件（SSE）和Comet？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我试过阅读一些文章，但是我对这些概念还不是很清楚。 有人愿意向我解释这些技术是什么：  长轮询 伺服器发送的事件 的WebSockets  彗星  每次我碰到的一件事是，服务器保持连接打开并将数据推送到客户端。连接如何保持开放，客户如何获得推送的数据？ （客户如何使用数据，也许有些代码可能有帮助？） 现在，我们应该使用哪一个用于实时应用。我一直听到很多关于websockets（与socket.io">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是长轮询，Websockets，服务器发送事件（SSE）和Comet？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/18/what-are-long-polling-websockets-server-sent-events-sse-and-comet/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我试过阅读一些文章，但是我对这些概念还不是很清楚。 有人愿意向我解释这些技术是什么：  长轮询 伺服器发送的事件 的WebSockets  彗星  每次我碰到的一件事是，服务器保持连接打开并将数据推送到客户端。连接如何保持开放，客户如何获得推送的数据？ （客户如何使用数据，也许有些代码可能有帮助？） 现在，我们应该使用哪一个用于实时应用。我一直听到很多关于websockets（与socket.io">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/18/what-are-long-polling-websockets-server-sent-events-sse-and-comet/“https://i.stack.imgur.com/TK1ZG.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/18/what-are-long-polling-websockets-server-sent-events-sse-and-comet/“https://i.stack.imgur.com/qlMEU.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/18/what-are-long-polling-websockets-server-sent-events-sse-and-comet/“https://i.stack.imgur.com/zLnOU.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/18/what-are-long-polling-websockets-server-sent-events-sse-and-comet/“https://i.stack.imgur.com/ziR5h.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/01/18/what-are-long-polling-websockets-server-sent-events-sse-and-comet/“https://i.stack.imgur.com/CgDlc.png”alt">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是长轮询，Websockets，服务器发送事件（SSE）和Comet？">
+<meta name="twitter:description" content="我试过阅读一些文章，但是我对这些概念还不是很清楚。 有人愿意向我解释这些技术是什么：  长轮询 伺服器发送的事件 的WebSockets  彗星  每次我碰到的一件事是，服务器保持连接打开并将数据推送到客户端。连接如何保持开放，客户如何获得推送的数据？ （客户如何使用数据，也许有些代码可能有帮助？） 现在，我们应该使用哪一个用于实时应用。我一直听到很多关于websockets（与socket.io">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/01/18/what-are-long-polling-websockets-server-sent-events-sse-and-comet/“https://i.stack.imgur.com/TK1ZG.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/18/what-are-long-polling-websockets-server-sent-events-sse-and-comet/" title="什么是长轮询，Websockets，服务器发送事件（SSE）和Comet？" itemprop="url">什么是长轮询，Websockets，服务器发送事件（SSE）和Comet？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-18T00:58:21.000Z" itemprop="datePublished"> Published 2018-01-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Regular HTTP:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Ajax Polling:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Ajax Long-Polling:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">HTML5 Server Sent Events (SSE) / EventSource:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">HTML5 Websockets:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Comet:</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我试过阅读一些文章，但是我对这些概念还不是很清楚。</p>
+<p>有人愿意向我解释这些技术是什么：</p>
+<ul>
+<li>长轮询</li>
+<li>伺服器发送的事件</li>
+<li>的WebSockets </li>
+<li>彗星</li>
+</ul>
+<p>每次我碰到的一件事是，服务器保持连接打开并将数据推送到客户端。连接如何保持开放，客户如何获得推送的数据？ （客户如何使用数据，也许有些代码可能有帮助？）</p>
+<p>现在，我们应该使用哪一个用于实时应用。我一直听到很多关于websockets（与socket.io [一个node.js库]），但为什么不是PHP？</p>
+<a id="more"></a>
+<p><em>在下面的例子中，客户端是浏览器，服务器是托管网站的网络服务器。</em></p>
+<p>在您理解这些技术之前，您必须首先了解 <em>经典</em> HTTP网络流量。</p>
+<h2><span id="regular-http">Regular HTTP:</span></h2><ul>
+<li>客户端从服务器请求网页。</li>
+<li>服务器计算回应</li>
+<li>服务器将响应发送给客户端。 </li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/TK1ZG.png”alt" alt=""></p>
+<h2><span id="ajax-polling">Ajax Polling:</span></h2><ul>
+<li>客户端使用常规HTTP从服务器请求网页（请参阅上面的HTTP）。</li>
+<li>客户端接收请求的网页，并在定期（例如0.5秒）从服务器请求文件的页面上执行JavaScript。</li>
+<li>服务器计算每个响应并将其发回，就像正常的HTTP通信一样。</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/qlMEU.png”alt" alt=""></p>
+<h2><span id="ajax-long-polling">Ajax Long-Polling:</span></h2><ul>
+<li>客户端使用常规HTTP从服务器请求网页（请参阅上面的HTTP）。</li>
+<li>客户端收到请求的网页，并在从服务器请求文件的页面上执行JavaScript。</li>
+<li>服务器不会立即回应所要求的资讯，而会一直等到有 <strong>新的</strong> 资讯可用。</li>
+<li>当有新的信息可用时，服务器会回应新的信息。</li>
+<li>客户端接收到新的信息，并立即向服务器发送另一个请求，重新启动进程。 </li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/zLnOU.png”alt" alt=""></p>
+<h2><span id="html5-server-sent-events-sse-eventsource">HTML5 Server Sent Events (SSE) / EventSource:</span></h2><ul>
+<li>客户端使用常规HTTP从服务器请求网页（请参阅上面的HTTP）。</li>
+<li>客户端收到请求的网页，并在打开到服务器的连接的页面上执行JavaScript。</li>
+<li><p>当有新的信息可用时，服务器向客户端发送一个事件。 </p>
+<ul>
+<li>从服务器到客户端的实时流量，大部分是您需要的</li>
+<li>您需要使用具有事件循环的服务器</li>
+<li>无法与另一个域的服务器连接</li>
+<li>如果你想阅读更多，我发现这些非常有用：<a href="“https://developer.mozilla.org/en-US/docs/Server-sent_events/Using_server-sent_events”rel">（article）</a>，<a href="http://html5doctor.com/server-sent-events/#api" target="_blank" rel="noopener">（article）</a>，<a href="“">（article）</a>，<a href="”http://jaxenter.com/tutorial-jsf-">（教程）</a>。</li>
+</ul>
+</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/ziR5h.png”alt" alt=""></p>
+<h2><span id="html5-websockets">HTML5 Websockets:</span></h2><ul>
+<li>客户端使用普通的http请求服务器的网页（见上面的HTTP）。</li>
+<li>客户端收到请求的网页，并在打开与服务器连接的页面上执行JavaScript。</li>
+<li><p>服务器和客户端现在可以在新数据（两侧）可用时发送消息。</p>
+<ul>
+<li>从服务器到客户端的实时流量 <strong>和</strong> 从客户端到服务器</li>
+<li>您需要使用具有事件循环的服务器</li>
+<li>借助WebSockets，可以与另一个域的服务器连接。</li>
+<li>也可以使用第三方托管的websocket服务器，例如<a href="http://pusher.com/" target="_blank" rel="noopener"> Pusher </a>或<a href="“http"> others </a>。这样您就只需要实现客户端，这非常简单！</li>
+<li>如果你想阅读更多，我发现这些非常有用：（<a href="“http://www.developerfusion.com/article/143158/an-introduction-to-websockets/”rel">文章</a>），<a href="https://developer.mozilla.org/en-US/docs/WebSockets/Writing_WebSocket_client_applications" target="_blank" rel="noopener">（article）</a>（<a href="“http://net.tutsplus.com/tutorials/javascript-ajax/start-using-html5-websockets-today/”rel"> tutorial </a>）。</li>
+</ul>
+</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/CgDlc.png”alt" alt=""></p>
+<h2><span id="comet">Comet:</span></h2><p>Comet是HTML5之前的一个技术集合，它使用流和长轮询来实现实时应用程序。请阅读<a href="http://en.wikipedia.org/wiki/Comet_%28programming%29" target="_blank" rel="noopener">维基百科</a>或<a href="“http://www.ibm">这篇</a>文章。</p>
+<hr>
+<blockquote>
+<p>Now, which one of them should I use for a realtime app (that I need to<br>code). I have been hearing a lot about websockets (with socket.io [a node.js<br>library]) but why not PHP ?</p>
+</blockquote>
+<p>您可以使用PHP与WebSockets，检查<a href="http://socketo.me/" target="_blank" rel="noopener">棘轮</a>。</p>
+<p>Tieme在他的优秀答案中付出了很多努力，但我认为OPs的核心问题是这些技术如何与PHP相关，而不是每种技术如何工作。</p>
+<p>除了明显的客户端html，css和javascript以外，PHP是web开发中使用最多的语言。然而，当谈到实时应用程序时，PHP有两个主要问题：</p>
+<p>1）PHP开始作为一个非常基本的CGI。从早期阶段开始，PHP已经进步很远，但是它发生在很小的一步。当PHP成为今天嵌入式和灵活的C库的时候，PHP已经拥有了数以百万计的用户，其中大部分用户都依赖于早期的执行模式，所以还没有做出可靠的尝试来逃避内部的CGI模型。即使命令行界面调用PHP库（Linux上的libphp5.so，Windows上的php5ts.dll等），就好像它仍然是一个处理GET<br>/<br>POST请求的CGI。它仍然执行代码，就好像它只是建立一个“页面”，然后结束它的生命周期。因此，对于多线程或事件驱动的编程（在PHP用户空间中）几乎没有支持，使得它对于实时的多用户应用程序而言是不切实际的。</p>
+<p>请注意，PHP的确有扩展，可以在PHP用户空间中提供事件循环（比如libevent）和线程（比如pthread），但是很少有应用程序使用这些扩展。</p>
+<p>2）PHP仍然有垃圾收集的重大问题。虽然这些问题一直在改进（可能是如上所述结束生命周期的最大步骤），但即使是创建长时间运行的PHP应用程序的最佳尝试也需要定期重新启动。这也使得它不适合实时应用程序。</p>
+<p>PHP 7将是解决这些问题的一个很好的步骤，而且作为一个实时应用程序的平台，它似乎是非常有前景的。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/18/what-are-long-polling-websockets-server-sent-events-sse-and-comet/" data-title="什么是长轮询，Websockets，服务器发送事件（SSE）和Comet？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/18/how-to-insert-if-not-exists-in-mysql/" title="如何在MySQL中插入“如果不存在”？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何在MySQL中插入“如果不存在”？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/17/proper-use-cases-for-android-usermanager-isuseragoat/"  title="适用于Android UserManager isUserAGoat（）的正确用例？">
+ <strong>下一篇：</strong><br/> 
+ <span>适用于Android UserManager isUserAGoat（）的正确用例？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Regular HTTP:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Ajax Polling:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Ajax Long-Polling:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">HTML5 Server Sent Events (SSE) / EventSource:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">HTML5 Websockets:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Comet:</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -112,25 +112,61 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/easiest-way-to-convert-a-list-to-a-set-in-java/" title="在Java中将列表转换为集合最简单的方法" itemprop="url">在Java中将列表转换为集合最简单的方法</a>
+      <a href="/2018/07/02/retrieving-property-name-from-lambda-expression/" title="从lambda表达式中检索属性名称" itemprop="url">从lambda表达式中检索属性名称</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-07-02T01:49:56.000Z" itemprop="datePublished"> Published 2018-07-02</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在Java中将<code>List</code>转换为<code>Set</code>最简单的方法是什么？</p>
+        <p>有没有更好的方式来获得通过lambda表达式传递的属性名称？ 这是我目前所拥有的。</p>
+<p>例如。</p>
+<pre><code>GetSortingInfo&lt;User&gt;(u =&gt; u.UserId);
+</code></pre><p>只有当属性是一个字符串的时候，它才会将它作为一个元素来表达。因为不是所有的属性都是字符串，我不得不使用对象，但它会返回一个一元表达式。</p>
+<pre><code>public static RouteValueDictionary GetInfo&lt;T&gt;(this HtmlHelper html, 
+    Expression&lt;Func&lt;T, object&gt;&gt; action) where T : class
+{
+    var expression = GetMemberInfo(action);
+    string name = expression.Member.Name;
+
+    return GetInfo(html, name);
+}
+
+private static MemberExpression GetMemberInfo(Expression method)
+{
+    LambdaExpression lambda = method as LambdaExpression;
+    if (lambda == null)
+        throw new ArgumentNullException(&quot;method&quot;);
+
+    MemberExpression memberExpr = null;
+
+    if (lambda.Body.NodeType == ExpressionType.Convert)
+    {
+        memberExpr = 
+            ((UnaryExpression)lambda.Body).Operand as MemberExpression;
+    }
+    else if (lambda.Body.NodeType == ExpressionType.MemberAccess)
+    {
+        memberExpr = lambda.Body as MemberExpression;
+    }
+
+    if (memberExpr == null)
+        throw new ArgumentException(&quot;method&quot;);
+
+    return memberExpr;
+}
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/easiest-way-to-convert-a-list-to-a-set-in-java/#more">Read More</a>
+            <a href="/2018/07/02/retrieving-property-name-from-lambda-expression/#more">Read More</a>
           
        </p>
     </div>
@@ -140,7 +176,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/collections/">collections</a>
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
   </div>
 
 </div>
@@ -180,148 +216,29 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/eclipse-java-code-completion-not-working/" title="Eclipse / Java代码完成不起作用" itemprop="url">Eclipse / Java代码完成不起作用</a>
+      <a href="/2018/07/01/web-colors-in-an-android-color-xml-resource-file/" title="Android颜色xml资源文件中的Web颜色" itemprop="url">Android颜色xml资源文件中的Web颜色</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-07-01T02:45:31.000Z" itemprop="datePublished"> Published 2018-07-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我已经下载，解压缩并安装了Eclipse 3.4.2的一些插件（注意，EPIC，Clearcase，QuantumDB，MisterQ）。</p>
-<p>现在我发现，在编辑Java项目时，代码完成不起作用。如果输入<code>String。</code>并按<code>ctrl</code> + <code>空格</code>，弹出窗口显示“No Default<br>Proposals”，状态栏底部显示“No completion可用”。</p>
-<p>有什么想法？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/eclipse-java-code-completion-not-working/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/eclipse/">eclipse</a><a href="/tags/ide/">ide</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/eclipse-set-maximum-line-length-for-auto-formatting/" title="Eclipse：设置自动格式化的最大行长度？" itemprop="url">Eclipse：设置自动格式化的最大行长度？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我正在使用Java。如果我在Eclipse Helios中打开<code>Ctrl</code> + <code>Shift</code> + <code>F</code>，它会自动格式化我的代码。在某一点上，它包装线。我想增加最大线路长度。我该怎么做？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/eclipse-set-maximum-line-length-for-auto-formatting/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/eclipse/">eclipse</a><a href="/tags/ide/">ide</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-use-pip-over-easy-install/" title="为什么使用易于安装的点子？ [关闭]" itemprop="url">为什么使用易于安装的点子？ [关闭]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p><a href="http://twitter.com/jperras/statuses/18160589493" target="_blank" rel="noopener">鸣叫</a>：</p>
+        <p>所有的X11 / W3C颜色代码看起来像一个Android XML资源文件的格式？</p>
 <blockquote>
-<p>Don’t use easy_install, unless you like stabbing yourself in the face. Use<br>pip.</p>
+<p>I know this looks a tad ridiculous as a question, but given the votes<br>apparently it’s useful and since it clearly <em>does not</em> require an off-site<br>resource I’m reformatting it to keep it around. –Editor.</p>
 </blockquote>
-<p>为什么使用pip over easy_install？ PyPI和软件包作者大部分都不是<a href="http://mail.python.org/pipermail/catalog-
-sig/2010-June/002985.html" target="_blank" rel="noopener"></a>？如果作者上传垃圾源tarball（例如：缺少文件，没有setup.py）到PyPI，那么pip和easy_install都将失败。除了表面上的差异之外，为什么Python人（比如上面的tweet）似乎强烈地赞成通过easy_install进行点击？</p>
-<p>（假设我们正在讨论由社区维护的Distribute包中的easy_install）</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-use-pip-over-easy-install/#more">Read More</a>
+            <a href="/2018/07/01/web-colors-in-an-android-color-xml-resource-file/#more">Read More</a>
           
        </p>
     </div>
@@ -331,7 +248,7 @@ sig/2010-June/002985.html" target="_blank" rel="noopener"></a>？如果作者上
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/setuptools/">setuptools</a><a href="/tags/pip/">pip</a><a href="/tags/easy-install/">easy-install</a><a href="/tags/pypi/">pypi</a>
+  <span></span> <a href="/tags/xml/">xml</a>
   </div>
 
 </div>
@@ -360,45 +277,32 @@ sig/2010-June/002985.html" target="_blank" rel="noopener"></a>？如果作者上
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/efficiency-of-java-double-brace-initialization/" title="Java“双Brace初始化”的效率？" itemprop="url">Java“双Brace初始化”的效率？</a>
+      <a href="/2018/07/01/setting-an-environment-variable-before-a-command-in-bash-not-working-for-second/" title="在bash中的命令之前设置一个环境变量不适用于管道中的第二个命令" itemprop="url">在bash中的命令之前设置一个环境变量不适用于管道中的第二个命令</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-07-01T02:16:20.000Z" itemprop="datePublished"> Published 2018-07-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在<a href="https://stackoverflow.com/questions/15496/hidden-features-of-
-java" target="_blank" rel="noopener">隐藏的Java特性</a>中，回答最多的是<a href="“http：/">双括号初始化</a>，带 __ 非常诱人的语法：</p>
-<pre><code>Set&lt;String&gt; flavors = new HashSet&lt;String&gt;() {{
-        add("vanilla");
-        add("strawberry");
-        add("chocolate");
-        add("butter pecan");
-    }};
-</code></pre><p>这个习语创建了一个匿名的内部类，只有一个实例初始化器，它可以使用包含范围中的任何方法。</p>
-<p>主要问题：这听起来像 <strong>低效</strong> 吗？它的使用应该限于一次性的初始化吗？ （当然，炫耀！）</p>
-<p>第二个问题：新的HashSet必须是在实例初始化器中使用的“this”…任何人都可以阐明这个机制吗？</p>
-<p>第三个问题：这个成语在生产代码中是不是很“模糊”**？</p>
-<p>总结：**非常非常好的答案，谢谢大家。在问题（3）中，人们认为语法应该是清楚的（尽管我会建议偶然的评论，特别是如果你的代码会传递给可能不熟悉的开发人员）。</p>
-<p>问题（1）中，生成的代码应该快速运行。额外的.class文件确实会导致jar文件混乱，并且程序启动缓慢（感谢@coobird的测量）。<br>@Thilo指出，垃圾收集可能会受到影响，并且额外加载的类的内存成本在某些情况下可能是一个因素。</p>
-<p>问题（2）是我最感兴趣的。如果我理解了答案，DBI中发生的事情就是匿名内部类扩展了由new运算符构造的对象的类，因此具有引用正在构造的实例的“this”值。非常整洁。</p>
-<p>总的来说，DBI让我觉得这是一种很有趣的事情。 Coobird和其他人指出，你可以使用Arrays.asList，可变参数方法，Google<br>Collections和建议的Java<br>7集合文字实现相同的效果。像Scala，JRuby和Groovy等更新的JVM语言也为列表构建提供简洁的符号，并与Java良好的互操作性。鉴于DBI混乱了类路径，减慢了类的加载速度，并使代码更加隐晦，我可能会避开它。不过，我打算在一位刚刚获得SCJP的朋友面前谈论这个问题，并且热爱Java语义学。<br>;-)谢谢大家！</p>
-<p>7/2017：Baeldung <a href="http://www.baeldung.com/java-double-brace-
-initialization" target="_blank" rel="noopener">有一个很好的总结</a>双括号初始化和认为它是反模式。</p>
-<p>12/2017：@Basil Bourque指出，在新的Java 9中，你可以说：</p>
-<pre><code>Set&lt;String&gt; flavors = Set.of(&quot;vanilla&quot;, &quot;strawberry&quot;, &quot;chocolate&quot;, &quot;butter pecan&quot;);
-</code></pre><p>那肯定是要走的路。如果您遇到较早的版本，请查看<a href="“https://google.github.io/guava/releases/19.0/api/docs/com/google/common/collect/ImmutableSet.html"> Google Collections的ImmutableSet</a>。</p>
+        <p>在给定的shell中，通常我会设置一个或多个变量，然后运行一个命令。最近，我学习了将一个变量定义添加到命令中的概念：</p>
+<pre><code>FOO=bar somecommand someargs
+</code></pre><p>这工作…种。当你改变一个LC_ *变量（似乎影响命令而不是它的参数，例如’[a-z]’字符范围），或者当输出到另一个命令时，它不起作用：</p>
+<pre><code>FOO=bar somecommand someargs | somecommand2  # somecommand2 is unaware of FOO
+</code></pre><p>我也可以用“FOO = bar”来预先指定一些命令2，但是这会增加不必要的重复，而且这对于根据变量解释的参数（例如’[az]’）没有帮助。 &gt;<br>那么，在一条线上做这件事的好方法是什么呢？我正在考虑：</p>
+<p>的顺序</p>
+<pre><code>FOO=bar (somecommand someargs | somecommand2)  # Doesn&apos;t actually work
+</code></pre><p>编辑：我有很多很好的答案！目标是保持这一点，最好不用“出口”。使用调用bash的方法是最好的总体，虽然括号中的“导出”在其中是一个更紧凑一点。使用重定向而不是管道的方法也很有趣。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/efficiency-of-java-double-brace-initialization/#more">Read More</a>
+            <a href="/2018/07/01/setting-an-environment-variable-before-a-command-in-bash-not-working-for-second/#more">Read More</a>
           
        </p>
     </div>
@@ -408,7 +312,7 @@ initialization" target="_blank" rel="noopener">有一个很好的总结</a>双�
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/collections/">collections</a><a href="/tags/performance/">performance</a><a href="/tags/initialization/">initialization</a>
+  <span></span> <a href="/tags/bash/">bash</a>
   </div>
 
 </div>
@@ -437,28 +341,86 @@ initialization" target="_blank" rel="noopener">有一个很好的总结</a>双�
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/encode-url-in-javascript/" title="在JavaScript中编码的URL？" itemprop="url">在JavaScript中编码的URL？</a>
+      <a href="/2018/07/01/there-is-already-an-open-datareader-associated-with-this-command-which-must-be-c/" title="已经有一个打开的DataReader与这个Command关联，必须先关闭它" itemprop="url">已经有一个打开的DataReader与这个Command关联，必须先关闭它</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-07-01T01:49:52.000Z" itemprop="datePublished"> Published 2018-07-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何使用JavaScript安全地编码URL，以便将其放入GET字符串？</p>
-<pre><code>var myUrl = &quot;http://example.com/index.html?param=1&amp;anotherParam=2&quot;;
-var myOtherUrl = &quot;http://example.com/index.html?url=&quot; + myUrl;
-</code></pre><p>我假设你需要在第二行上编码<code>myUrl</code>变量？</p>
+        <p>我有这个查询，我得到这个函数的错误：</p>
+<pre><code>var accounts = from account in context.Accounts
+               from guranteer in account.Gurantors
+               select new AccountsReport
+               {
+                   CreditRegistryId = account.CreditRegistryId,
+                   AccountNumber = account.AccountNo,
+                   DateOpened = account.DateOpened,
+               };
+
+ return accounts.AsEnumerable()
+                .Select((account, index) =&gt; new AccountsReport()
+                    {
+                        RecordNumber = FormattedRowNumber(account, index + 1),
+                        CreditRegistryId = account.CreditRegistryId,
+                        DateLastUpdated = DateLastUpdated(account.CreditRegistryId, account.AccountNumber),
+                        AccountNumber = FormattedAccountNumber(account.AccountType, account.AccountNumber)
+                    })
+                .OrderBy(c=&gt;c.FormattedRecordNumber)
+                .ThenByDescending(c =&gt; c.StateChangeDate);
+
+
+public DateTime DateLastUpdated(long creditorRegistryId, string accountNo)
+{
+    return (from h in context.AccountHistory
+            where h.CreditorRegistryId == creditorRegistryId &amp;&amp; h.AccountNo == accountNo
+            select h.LastUpdated).Max();
+}
+</code></pre><p>错误是：</p>
+<blockquote>
+<p>There is already an open DataReader associated with this Command which must<br>be closed first.</p>
+</blockquote>
+<p>&lt;强&gt;更新</p>
+<p>添加堆栈跟踪：</p>
+<pre><code>InvalidOperationException: There is already an open DataReader associated with this Command which must be closed first.]
+   System.Data.SqlClient.SqlInternalConnectionTds.ValidateConnectionForExecute(SqlCommand command) +5008639
+   System.Data.SqlClient.SqlConnection.ValidateConnectionForExecute(String method, SqlCommand command) +23
+   System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async) +144
+   System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result) +87
+   System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method) +32
+   System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method) +141
+   System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior) +12
+   System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior) +10
+   System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior) +443
+
+[EntityCommandExecutionException: An error occurred while executing the command definition. See the inner exception for details.]
+   System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior) +479
+   System.Data.Objects.Internal.ObjectQueryExecutionPlan.Execute(ObjectContext context, ObjectParameterCollection parameterValues) +683
+   System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption) +119
+   System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable&lt;T&gt;.GetEnumerator() +38
+   System.Linq.Enumerable.Single(IEnumerable`1 source) +114
+   System.Data.Objects.ELinq.ObjectQueryProvider.&lt;GetElementFunction&gt;b__3(IEnumerable`1 sequence) +4
+   System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle(IEnumerable`1 query, Expression queryRoot) +29
+   System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute(Expression expression) +91
+   System.Data.Entity.Internal.Linq.DbQueryProvider.Execute(Expression expression) +69
+   System.Linq.Queryable.Max(IQueryable`1 source) +216
+   CreditRegistry.Repositories.CreditRegistryRepository.DateLastUpdated(Int64 creditorRegistryId, String accountNo) in D:\Freelance Work\SuperExpert\CreditRegistry\CreditRegistry\Repositories\CreditRegistryRepository.cs:1497
+   CreditRegistry.Repositories.CreditRegistryRepository.&lt;AccountDetails&gt;b__88(AccountsReport account, Int32 index) in D:\Freelance Work\SuperExpert\CreditRegistry\CreditRegistry\Repositories\CreditRegistryRepository.cs:1250
+   System.Linq.&lt;SelectIterator&gt;d__7`2.MoveNext() +198
+   System.Linq.Buffer`1..ctor(IEnumerable`1 source) +217
+   System.Linq.&lt;GetEnumerator&gt;d__0.MoveNext() +96
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/encode-url-in-javascript/#more">Read More</a>
+            <a href="/2018/07/01/there-is-already-an-open-datareader-associated-with-this-command-which-must-be-c/#more">Read More</a>
           
        </p>
     </div>
@@ -468,7 +430,7 @@ var myOtherUrl = &quot;http://example.com/index.html?url=&quot; + myUrl;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/url/">url</a><a href="/tags/encoding/">encoding</a>
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
   </div>
 
 </div>
@@ -497,34 +459,276 @@ var myOtherUrl = &quot;http://example.com/index.html?url=&quot; + myUrl;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/endswith-in-javascript/" title="endsWith在JavaScript中" itemprop="url">endsWith在JavaScript中</a>
+      <a href="/2018/06/30/navigation-drawer-google-vs-youtube/" title="导航抽屉（Google+与YouTube）" itemprop="url">导航抽屉（Google+与YouTube）</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-06-30T02:45:10.000Z" itemprop="datePublished"> Published 2018-06-30</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何检查字符串是否以JavaScript中的特定字符结尾？</p>
-<p>例如：我有一个字符串</p>
-<pre><code>var str = &quot;mystring#&quot;;
-</code></pre><p>我想知道这个字符串是以<code>＃</code>结尾的。我该如何检查？</p>
+        <p>有谁知道如何实现像今天的一些顶级应用程序滑动菜单？</p>
+<p>其他堆栈溢出<a href="https://stackoverflow.com/questions/11328895/facebook-lide-
+slideout-menu-not-using-that-
+library" target="_blank" rel="noopener">问题</a>还没有如何做到这一点的答案，所以我试图收集尽可能多的信息来帮助别人。我在下面提到的所有应用程序在实现幻灯片菜单方面做得非常好。</p>
+<h2 id="1-Google-Plus-as-of-7-7-12"><a href="#1-Google-Plus-as-of-7-7-12" class="headerlink" title="1. Google Plus (as of 7/7/12)"></a>1. Google Plus (as of 7/7/12)</h2><p><img src="“https://i.stack.imgur.com/Ue0LS.png”alt" alt=""></p>
+<p>只能点击左上角的G<br>+徽标，才能从第一个屏幕转到第二个屏幕。注意，整个屏幕从它的位置移动并被轻推到屏幕的右侧（包括操作栏）。要返回到第一个屏幕，您可以将右侧滑回焦点，也可以再次单击G<br>+图标。</p>
+<h2 id="2-YouTube-as-of-7-7-12"><a href="#2-YouTube-as-of-7-7-12" class="headerlink" title="2. YouTube (as of 7/7/12)"></a>2. YouTube (as of 7/7/12)</h2><p><img src="“https://i.stack.imgur.com/rkGFB.png”alt" alt=""></p>
+<p>您可以使用两种方法从第一个屏幕转到第二个屏幕。您可以点击左上角的YouTube徽标，也可以使用滑动手势将其移至右侧。这已经不同于G<br>+应用程序。其次，你可以看到操作栏保持不变（与G +不同）。最后，要恢复原始屏幕，就像G +一样。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/06/30/navigation-drawer-google-vs-youtube/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/30/repeat-command-automatically-in-linux/" title="在Linux中自动重复命令" itemprop="url">在Linux中自动重复命令</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-30T02:16:16.000Z" itemprop="datePublished"> Published 2018-06-30</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>是否可以在linux命令行中每n秒重复一次命令。</p>
+<p>例如，说我有一个导入运行，我正在做</p>
+<pre><code>ls -l
+</code></pre><p>检查文件大小正在增加。我想要一个命令来自动重复。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/06/30/repeat-command-automatically-in-linux/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/30/order-of-items-in-classes-fields-properties-constructors-methods/" title="类中项目的顺序：字段，属性，构造函数，方法" itemprop="url">类中项目的顺序：字段，属性，构造函数，方法</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-30T01:49:40.000Z" itemprop="datePublished"> Published 2018-06-30</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有没有一个C＃官方的指导方针的阶级结构项目的顺序？</p>
+<p>它会发生：</p>
 <ul>
-<li>JavaScript中有<code>endsWith（）</code>方法吗？</li>
+<li>公共字段</li>
+<li>私人字段</li>
+<li>属性</li>
+<li>构造</li>
+<li>方法，点击 ？</li>
 </ul>
-<p>我有一个解决方案是取出字符串的长度，并得到最后一个字符，并检查它。</p>
-<p>这是最好的方式，还是有其他方法？</p>
+<p>我很好奇，如果有一个关于物品顺序的硬性规定？我有点太过分了我想坚持一个特定的标准，所以我可以在任何地方。</p>
+<p>真正的问题是我的更复杂的属性最终看起来很像方法，他们觉得在构造函数之前的顶部不合适。</p>
+<p>任何提示/建议？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/06/30/order-of-items-in-classes-fields-properties-constructors-methods/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/29/how-to-get-the-android-devices-primary-e-mail-address/" title="如何获取Android设备的主要电子邮件地址" itemprop="url">如何获取Android设备的主要电子邮件地址</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-29T02:44:59.000Z" itemprop="datePublished"> Published 2018-06-29</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>你如何获得Android的主要电子邮件地址（或电子邮件地址列表）？</p>
+<p>我的理解是，在OS 2.0+上有多个电子邮件地址的支持，但是在2.0以下，每个设备只能有一个电子邮件地址。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/endswith-in-javascript/#more">Read More</a>
+            <a href="/2018/06/29/how-to-get-the-android-devices-primary-e-mail-address/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/29/how-to-redirect-both-stdout-and-stderr-to-a-file/" title="如何将stdout和stderr重定向到一个文件[复制]" itemprop="url">如何将stdout和stderr重定向到一个文件[复制]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-29T02:16:10.000Z" itemprop="datePublished"> Published 2018-06-29</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/876239/how-can-i-redirect-and-append-both-stdout-and-stderr-to-a-file-with-bash">How can I redirect and append both stdout and stderr to a file with Bash?</a> 6 answers </li>
+</ul>
+<p>我正在运行一个bash脚本，为命令的执行创建一个日志文件</p>
+<p>我使用下面的</p>
+<pre><code>Command1 &gt;&gt; log_file
+Command2 &gt;&gt; log_file
+</code></pre><p>这只发送标准输出，而不是终端上出现的标准错误。</p>
+<p>我可以记录记录到文件的stderr和stdout吗？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/06/29/how-to-redirect-both-stdout-and-stderr-to-a-file/#more">Read More</a>
           
        </p>
     </div>
@@ -534,7 +738,7 @@ var myOtherUrl = &quot;http://example.com/index.html?url=&quot; + myUrl;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/string/">string</a><a href="/tags/ends-with/">ends-with</a>
+  <span></span> <a href="/tags/bash/">bash</a>
   </div>
 
 </div>
@@ -563,27 +767,37 @@ var myOtherUrl = &quot;http://example.com/index.html?url=&quot; + myUrl;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/error-java-lang-outofmemoryerror-gc-overhead-limit-exceeded/" title="错误java.lang.OutOfMemoryError：超出GC开销限制" itemprop="url">错误java.lang.OutOfMemoryError：超出GC开销限制</a>
+      <a href="/2018/06/29/can-i-add-extension-methods-to-an-existing-static-class/" title="我可以将扩展方法添加到现有的静态类吗？" itemprop="url">我可以将扩展方法添加到现有的静态类吗？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-06-29T01:49:32.000Z" itemprop="datePublished"> Published 2018-06-29</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>当我执行我的JUnit测试时，得到这个错误消息：</p>
-<pre><code>java.lang.OutOfMemoryError: GC overhead limit exceeded
-</code></pre><p>我知道<code>OutOfMemoryError</code>是什么，但GC开销限制是什么意思？我该如何解决这个问题？</p>
+        <p>我是C＃中扩展方法的粉丝，但是还没有成功将扩展方法添加到静态类（如Console）。</p>
+<p>例如，如果我想为控制台添加一个名为’WriteBlueLine’的扩展，那么我可以去：</p>
+<pre><code>Console.WriteBlueLine(&quot;This text is blue&quot;);
+</code></pre><p>我试图通过添加一个本地的公共静态方法，作为一个“这个”参数的控制台…但没有骰子！</p>
+<pre><code>public static class Helpers {
+    public static void WriteBlueLine(this Console c, string text)
+    {
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.WriteLine(text);
+        Console.ResetColor();
+    }
+}
+</code></pre><p>这没有添加一个’WriteBlueLine’方法到控制台…我做错了吗？或者要求不可能？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/error-java-lang-outofmemoryerror-gc-overhead-limit-exceeded/#more">Read More</a>
+            <a href="/2018/06/29/can-i-add-extension-methods-to-an-existing-static-class/#more">Read More</a>
           
        </p>
     </div>
@@ -593,137 +807,7 @@ var myOtherUrl = &quot;http://example.com/index.html?url=&quot; + myUrl;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/out-of-memory/">out-of-memory</a><a href="/tags/garbage-collection/">garbage-collection</a><a href="/tags/heap-memory/">heap-memory</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/error-unable-to-find-vcvarsall-bat/" title="错误：无法找到vcvarsall.bat" itemprop="url">错误：无法找到vcvarsall.bat</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我尝试安装Python软件包<a href="https://pypi.python.org/pypi/dulwich" target="_blank" rel="noopener"> dulwich </a>：</p>
-<pre><code>pip install dulwich
-</code></pre><p>但是我得到一个神秘的错误信息：</p>
-<pre><code>error: Unable to find vcvarsall.bat
-</code></pre><p>如果我尝试手动安装软件包，则会发生同样的情况：</p>
-<pre><code>&gt; python setup.py install
-running build_ext
-building &apos;dulwich._objects&apos; extension
-error: Unable to find vcvarsall.bat
-</code></pre><p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/error-unable-to-find-vcvarsall-bat/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/windows/">windows</a><a href="/tags/pip/">pip</a><a href="/tags/setup-py/">setup.py</a><a href="/tags/failed-installation/">failed-installation</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/errorjava-javactask-source-release-8-requires-target-release-1-8/" title="错误：java：javacTask：源版本8需要目标版本1.8" itemprop="url">错误：java：javacTask：源版本8需要目标版本1.8</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>使用IntelliJ IDE不能编译任何项目。下面的设置屏幕截图：</p>
-<p>使用的JDK：</p>
-<p><a href="https://i.stack.imgur.com/cpggk.png" target="_blank" rel="noopener"> <img src="“https://i.stack.imgur.com/cpggk.png”alt" alt=""></a></p>
-<p>项目SDK和语言级别：</p>
-<p><a href="https://i.stack.imgur.com/0gEQl.png" target="_blank" rel="noopener"> <img src="“https://i.stack.imgur.com/0gEQl.png”alt" alt=""></a></p>
-<p>语言级别：</p>
-<p><a href="https://i.stack.imgur.com/8z6A4.png" target="_blank" rel="noopener"> <img src="“https://i.stack.imgur.com/8z6A4.png”alt" alt=""></a></p>
-<p>有人有什么想法吗？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/errorjava-javactask-source-release-8-requires-target-release-1-8/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
   </div>
 
 </div>
@@ -748,7 +832,7 @@ error: Unable to find vcvarsall.bat
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/9/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><a class="extend next" rel="next" href="/page/11/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/11/">Next<span></span></a>
   </nav>
 
 </div>
@@ -774,109 +858,84 @@ error: Unable to find vcvarsall.bat
 
 
   
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
-
-
-  
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
-			
 		
-			
-				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
 			
 		
 		</ul>

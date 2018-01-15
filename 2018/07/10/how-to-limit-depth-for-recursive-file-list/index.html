@@ -1,0 +1,603 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何限制递归文件列表的深度？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="有没有办法限制在linux中递归文件列表的深度？ 我现在使用的命令是： ls -laR &amp;gt; dirlist.txt 但是我有大约200个目录，每个目录都有10个目录。所以这只会花费太长时间，并占用太多系统资源。 我真正感兴趣的是一级子目录的所有权和权限信息： drwxr-xr-x 14 root   root  1234 Dec 22 13:19 /var/www/vhosts/domain">
+<meta name="keywords" content="linux,bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何限制递归文件列表的深度？">
+<meta property="og:url" content="https://www.tracholar.top/2018/07/10/how-to-limit-depth-for-recursive-file-list/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="有没有办法限制在linux中递归文件列表的深度？ 我现在使用的命令是： ls -laR &amp;gt; dirlist.txt 但是我有大约200个目录，每个目录都有10个目录。所以这只会花费太长时间，并占用太多系统资源。 我真正感兴趣的是一级子目录的所有权和权限信息： drwxr-xr-x 14 root   root  1234 Dec 22 13:19 /var/www/vhosts/domain">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何限制递归文件列表的深度？">
+<meta name="twitter:description" content="有没有办法限制在linux中递归文件列表的深度？ 我现在使用的命令是： ls -laR &amp;gt; dirlist.txt 但是我有大约200个目录，每个目录都有10个目录。所以这只会花费太长时间，并占用太多系统资源。 我真正感兴趣的是一级子目录的所有权和权限信息： drwxr-xr-x 14 root   root  1234 Dec 22 13:19 /var/www/vhosts/domain">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/10/how-to-limit-depth-for-recursive-file-list/" title="如何限制递归文件列表的深度？" itemprop="url">如何限制递归文件列表的深度？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-10T02:17:28.000Z" itemprop="datePublished"> Published 2018-07-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Make use of find‘s options</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Use output formatting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Notes on performance</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>有没有办法限制在linux中递归文件列表的深度？</p>
+<p>我现在使用的命令是：</p>
+<pre><code>ls -laR &gt; dirlist.txt
+</code></pre><p>但是我有大约200个目录，每个目录都有10个目录。所以这只会花费太长时间，并占用太多系统资源。</p>
+<p>我真正感兴趣的是一级子目录的所有权和权限信息：</p>
+<pre><code>drwxr-xr-x 14 root   root  1234 Dec 22 13:19 /var/www/vhosts/domain1.co.uk  
+drwxr--r-- 14 jon    root  1234 Dec 22 13:19 /var/www/vhosts/domain1.co.uk/htdocs  
+drwxr--r-- 14 jon    root  1234 Dec 22 13:19 /var/www/vhosts/domain1.co.uk/cgi-bin  
+drwxr-xr-x 14 root   root  1234 Dec 22 13:19 /var/www/vhosts/domain2.co.uk  
+drwxr-xrwx 14 proftp root  1234 Dec 22 13:19 /var/www/vhosts/domain2.co.uk/htdocs  
+drwxr-xrwx 14 proftp root  1234 Dec 22 13:19 /var/www/vhosts/domain2.co.uk/cgi-bin  
+drwxr-xr-x 14 root   root  1234 Dec 22 13:19 /var/www/vhosts/domain3.co.uk  
+drwxr-xr-- 14 jon    root  1234 Dec 22 13:19 /var/www/vhosts/domain3.co.uk/htdocs  
+drwxr-xr-- 14 jon    root  1234 Dec 22 13:19 /var/www/vhosts/domain3.co.uk/cgi-bin  
+drwxr-xr-x 14 root   root  1234 Dec 22 13:19 /var/www/vhosts/domain4.co.uk  
+drwxr-xr-- 14 jon    root  1234 Dec 22 13:19 /var/www/vhosts/domain4.co.uk/htdocs
+drwxr-xr-- 14 jon    root  1234 Dec 22 13:19 /var/www/vhosts/domain4.co.uk/cgi-bin
+</code></pre><p><strong>修改</strong></p>
+<p>命令的最终选择：</p>
+<pre><code>find -maxdepth 2 -type d -ls &gt;dirlist
+</code></pre><a id="more"></a>
+<p>检查<code>-maxdepth</code>标志find `</p>
+<pre><code>find . -maxdepth 1 -type d -exec ls -ld &quot;{}&quot; \;
+</code></pre><p>这里我使用1作为最大级别的深度，<code>-type d</code>表示仅查找目录，然后<code>ls -ld</code>以长格式列出内容。</p>
+<h2><span id="make-use-of-finds-options">Make use of <code>find</code>‘s options</span></h2><p>实际上没有<code>/ bin / ls</code>所需的执行器;</p>
+<p>找到一个可以做到这一点的选项：</p>
+<pre><code>find . -maxdepth 2 -type d -ls
+</code></pre><p>要仅查看您感兴趣的一级子目录，请将<code>-mindepth</code>添加到与<code>-maxdepth</code>相同的级别：</p>
+<pre><code>find . -mindepth 2 -maxdepth 2 -type d -ls
+</code></pre><p>结果</p>
+<h2><span id="use-output-formatting">Use output formatting</span></h2><p>当显示的细节应该不同时，<code>-printf</code>可以以自定义格式显示关于文件的任何细节; 要显示文件的符号权限和所有者名称，请使用带有<code>％M</code>和<code>％u</code>格式的<code>-printf</code> /代码&gt;</p>
+<p>后来我注意到你想要完整的所有权信息，其中包括 群组。在符号名称的格式中使用<code>％g</code>，或为组id使用<code>％G</code>（对于数字用户id，也可以使用<code>％U</code>）&lt;<br>/ p&gt;</p>
+<pre><code>find . -mindepth 2 -maxdepth 2 -type d -printf &apos;%M %u %g %p\n&apos;
+</code></pre><p>这应该只给你所需要的细节，只是正确的文件。</p>
+<p>我将举一个例子，显示用户和组的实际不同的值：</p>
+<pre><code>$ sudo find /tmp -mindepth 2 -maxdepth 2 -type d -printf &apos;%M %u %g %p\n&apos;
+drwx------ www-data  www-data /tmp/user/33
+drwx------ octopussy root     /tmp/user/126
+drwx------ root      root     /tmp/user/0
+drwx------ siegel    root     /tmp/user/1000
+drwxrwxrwt root      root     /tmp/systemd-[...].service-HRUQmm/tmp
+</code></pre><p>（为可读性编辑：缩进，缩短的最后一行）</p>
+<p>结果</p>
+<h2><span id="notes-on-performance">Notes on performance</span></h2><p>虽然执行时间对于这种命令来说几乎是无关紧要的，但是性能却有所提高 在这里足够大，值得指出：</p>
+<p>我们不仅可以为每个名称保存一个新的进程 - 一个 <strong>巨大的</strong> 任务 - 这些信息甚至不需要被读取，因为<code>find</code>已经知道了。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/07/10/how-to-limit-depth-for-recursive-file-list/" data-title="如何限制递归文件列表的深度？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/10/how-can-i-check-the-system-version-of-android/" title="我如何检查Android的系统版本？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  我如何检查Android的系统版本？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/10/run-command-prompt-commands/"  title="运行命令提示符命令">
+ <strong>下一篇：</strong><br/> 
+ <span>运行命令提示符命令
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Make use of find‘s options</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Use output formatting</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Notes on performance</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

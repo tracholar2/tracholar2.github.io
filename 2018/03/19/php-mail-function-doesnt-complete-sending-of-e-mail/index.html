@@ -1,0 +1,688 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>PHP邮件功能没有完成电子邮件的发送 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="&amp;lt;?php        $name = $_POST[‘name’];        $email = $_POST[‘email’];        $message = $_POST[‘message’];        $from = ‘From: yoursite.com’;        $to = ‘contact@yoursite.com’;        $subject">
+<meta name="keywords" content="html,php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP邮件功能没有完成电子邮件的发送">
+<meta property="og:url" content="https://www.tracholar.top/2018/03/19/php-mail-function-doesnt-complete-sending-of-e-mail/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="&amp;lt;?php        $name = $_POST[‘name’];        $email = $_POST[‘email’];        $message = $_POST[‘message’];        $from = ‘From: yoursite.com’;        $to = ‘contact@yoursite.com’;        $subject">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP邮件功能没有完成电子邮件的发送">
+<meta name="twitter:description" content="&amp;lt;?php        $name = $_POST[‘name’];        $email = $_POST[‘email’];        $message = $_POST[‘message’];        $from = ‘From: yoursite.com’;        $to = ‘contact@yoursite.com’;        $subject">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/19/php-mail-function-doesnt-complete-sending-of-e-mail/" title="PHP邮件功能没有完成电子邮件的发送" itemprop="url">PHP邮件功能没有完成电子邮件的发送</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-03-19T01:08:03.000Z" itemprop="datePublished"> Published 2018-03-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Make sure error reporting is enabled and set to report all errors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Make sure the mail() function is called</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Make sure the mail() function is called correctly</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Check the server’s mail logs</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Check for Port connection failure</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Don’t use the error suppression operator</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Check the mail() return value</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">Make sure your hosting provider allows you to send emails and does not limit</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">Check spam folders; prevent emails from being flagged as spam</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">10.</span> <span class="toc-text">Make sure all mail headers are supplied</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">11.</span> <span class="toc-text">Make sure mail headers have no syntax errors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">12.</span> <span class="toc-text">Make sure the recipient value is correct</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">13.</span> <span class="toc-text">Send to multiple accounts</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">14.</span> <span class="toc-text">Make sure the code matches the form method</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">15.</span> <span class="toc-text">Make sure the Web host supports sending email</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">16.</span> <span class="toc-text">Make sure the localhost mail server is configured</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">17.</span> <span class="toc-text">Enable PHP’s custom mail.log</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">18.</span> <span class="toc-text">Check with a mail testing service</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">19.</span> <span class="toc-text">Use a different mailer</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>&lt;?php<br>        $name = $_POST[‘name’];<br>        $email = $_POST[‘email’];<br>        $message = $_POST[‘message’];<br>        $from = ‘From: yoursite.com’;<br>        $to = ‘contact@yoursite.com’;<br>        $subject = ‘Customer Inquiry’;<br>        $body = “From: $name\n E-Mail: $email\n Message:\n $message”;</p>
+<pre><code>    if ($_POST[&apos;submit&apos;]) {
+        if (mail ($to, $subject, $body, $from)) { 
+            echo &apos;&lt;p&gt;Your message has been sent!&lt;/p&gt;&apos;;
+        } else { 
+            echo &apos;&lt;p&gt;Something went wrong, go back and try again!&lt;/p&gt;&apos;; 
+        }
+    }
+?&gt;
+</code></pre><p>我尝试创建一个简单的邮件表单。表单本身位于我的<code>index.html</code>页面上，但提交给单独的“thank you for your<br>submission”页面，<code>thankyou.php</code>，上面的php代码是嵌入的。 代码提交完美，但从来没有发送电子邮件。请帮忙。</p>
+<a id="more"></a>
+<p>_虽然这个答案的一部分仅适用于<code>mail（）</code>函数的使用，但是这些疑难解答步骤中的很多都可以应用于任何PHP邮件系统。 / em&gt;的</p>
+<p>您的脚本似乎有多种原因不会发送电子邮件。除非存在明显的语法错误，否则很难诊断这些东西。没有人，你需要通过下面的清单来找出你可能遇到的任何潜在的陷阱。</p>
+<h1><span id="make-sure-error-reporting-is-enabled-and-set-to-report-all-errors">Make sure error reporting is enabled and set to report all errors</span></h1><p>错误报告对于消除代码中的错误以及PHP遇到的一般错误至关重要。需要启用错误报告来接收这些错误。将以下代码放在PHP文件（或主配置文件）的顶部将启用错误报告。</p>
+<pre><code>error_reporting(-1);
+ini_set(&apos;display_errors&apos;, &apos;On&apos;);
+set_error_handler(&quot;var_dump&quot;);
+</code></pre><p>有关这方面的更多详细信息，请参阅<a href="https://stackoverflow.com/a/845025/250259" target="_blank" rel="noopener">此堆栈溢出答案</a>。</p>
+<h1><span id="make-sure-the-mail-function-is-called">Make sure the <code>mail()</code> function is called</span></h1><p>这看起来可能很愚蠢，但是一个常见的错误是忘记在代码中实际放置<code>mail（）</code>函数。确保它在那里，没有被注释掉。</p>
+<h1><span id="make-sure-the-mail-function-is-called-correctly">Make sure the <code>mail()</code> function is called correctly</span></h1><blockquote>
+<p>bool mail ( string $to , string $subject , string $message [, string<br>$additional_headers [, string $additional_parameters ]] )</p>
+</blockquote>
+<p>邮件功能需要三个必要的参数，可选择第四和第五个参数。如果你对<code>mail（）</code>的调用没有至少三个参数，它将会失败。</p>
+<p>如果您对<code>mail（）</code>的调用没有正确的顺序，那么它也会失败。</p>
+<h1><span id="check-the-servers-mail-logs">Check the server’s mail logs</span></h1><p>您的网络服务器应该记录所有尝试通过它发送电子邮件。这些日志的位置会有所不同（您可能需要询问服务器管理员所在的位置），但通常可以在<code>logs</code>下的用户根目录中找到它们。里面将是服务器报告的错误消息，如果有的话，与您尝试发送电子邮件有关。</p>
+<h1><span id="check-for-port-connection-failure">Check for Port connection failure</span></h1><p>端口块是大多数开发人员在将代码集成到使用SMTP传送电子邮件时所面临的一个非常普遍的问题。而且，这可以很容易地在服务器maillogs上进行追踪（邮件日志服务器的位置可以因服务器而异，如上所述）。如果您在共享托管服务器上，默认情况下端口25和587保持阻塞状态。这个块是由你的托管服务提供商特意完成的。即使对于一些专用服务器也是如此。当这些端口被阻塞时，尝试使用端口2525进行连接。如果您发现端口也被阻塞，那么唯一的解决办法是联系您的托管服务提供商以解除对这些端口的阻止。</p>
+<p>大多数主机提供商阻止这些电子邮件端口，以保护他们的网络不发送任何垃圾邮件。</p>
+<p>使用端口25或587进行普通/ TLS连接，将端口465用于SSL连接。对于大多数用户，建议使用端口587来避免某些托管服务提供商设置的速率限制。</p>
+<h1><span id="dont-use-the-error-suppression-operator">Don’t use the error suppression operator</span></h1><p>当<a href="http://www.php.net//manual/en/language.operators.errorcontrol.php" target="_blank" rel="noopener">错误抑制运算符</a><br><code>@</code>是PHP中的一个表达式的前缀，可能由该表达式生成的任何错误消息都将被忽略。在某些情况下，使用这个操作符是必要的，但发送邮件不是它们中的一个。</p>
+<p>如果您的代码包含<code>@mail（...）</code>，那么您可能会隐藏重要的错误消息，这将有助于您进行调试。删除<code>@</code>，查看是否有错误报告。</p>
+<p>只有当你<a href="https://stackoverflow.com/questions/4913817
+/catching-php-mail-errors-and-showing-reasonable-user-error-
+message" target="_blank" rel="noopener">检查<code>error_get_last（）</code> </a>，然后进行具体的失败。</p>
+<h1><span id="check-the-mail-return-value">Check the <code>mail()</code> return value</span></h1><p><a href="http://www.php.net/manual/en/function.mail.php" target="_blank" rel="noopener"> <code>mail（）</code> </a>功能：</p>
+<blockquote>
+<p>Returns <code>TRUE</code> if the mail was successfully accepted for delivery, <code>FALSE</code>otherwise. It is important to note that just because the mail was accepted for<br>delivery, it does NOT mean the mail will actually reach the intended<br>destination.</p>
+</blockquote>
+<p>这点很重要，因为：</p>
+<ul>
+<li>如果您收到<code>FALSE</code>返回值，您知道错误在于您的服务器接受您的邮件。这可能不是一个编码问题，而是一个服务器配置问题。您需要与系统管理员联系，以了解发生这种情况的原因。</li>
+<li>如果您收到<code>TRUE</code>返回值，这并不意味着您的电子邮件肯定会被发送。这只是意味着电子邮件被PHP成功发送到服务器上相应的处理程序。在PHP的控制之外还有更多的失败点可能导致邮件不能被发送。</li>
+</ul>
+<p>所以<code>FALSE</code>会帮助你指向正确的方向，而<code>TRUE</code>不是 __必然意味着你的电子邮件发送成功了。这一点很重要！</p>
+<h1><span id="make-sure-your-hosting-provider-allows-you-to-send-emails-and-does-not-limit">Make sure your hosting provider allows you to send emails and does not limit</span></h1><p>mail sending</p>
+<p>许多共享的虚拟主机，特别是免费的虚拟主机提供商，要么不允许从服务器发送邮件，要么限制在任何给定的时间段内可以发送的数量。这是由于他们努力限制垃圾邮件发送者利用便宜的服务。</p>
+<p>如果您认为您的主机已经通过电子邮件发送限制或阻止发送电子邮件，请查看他们的常见问题解答，看看是否列出了这些限制。否则，您可能需要联系他们的支持人员，以确认在发送电子邮件时是否有任何限制。</p>
+<h1><span id="check-spam-folders-prevent-emails-from-being-flagged-as-spam">Check spam folders; prevent emails from being flagged as spam</span></h1><p>通常，由于各种原因，通过PHP（以及其他服务器端编程语言）发送的电子邮件最终会收到收件人的垃圾邮件文件夹中。在对代码进行故障诊断之前，请经常检查。</p>
+<p>为了避免通过PHP发送的邮件被发送到收件人的垃圾邮件文件夹中，您可以在PHP代码中执行各种操作，否则会将您的电子邮件标记为垃圾邮件的可能性降至最低。来自<a href="https://stackoverflow.com/users/136/michiel-de-mare" target="_blank" rel="noopener">Michiel de Mare </a>的好的提示包括：</p>
+<blockquote>
+<ul>
+<li><p>Use email authentication methods, such as<br><a href="http://en.wikipedia.org/wiki/Sender_Policy_Framework" target="_blank" rel="noopener">SPF</a>, and<br><a href="https://help.ubuntu.com/community/Postfix/DKIM" target="_blank" rel="noopener">DKIM</a> to prove that your<br>emails and your domain name belong together, and to prevent spoofing of your<br>domain name. The SPF website includes a wizard to generate the DNS information<br>for your site.</p>
+</li>
+<li><p><a href="http://remote.12dt.com/" target="_blank" rel="noopener">Check</a> your <a href="http://en.wikipedia.org/wiki/Reverse_DNS_lookup" target="_blank" rel="noopener">reverse<br>DNS</a> to make sure the IP<br>address of your mail server points to the domain name that you use for sending<br>mail.</p>
+</li>
+<li><p>Make sure that the IP-address that you’re using is <a href="http://www.spamhaus.org/lookup.lasso" target="_blank" rel="noopener">not on a<br>blacklist</a></p>
+</li>
+<li><p>Make sure that the reply-to address is a valid, existing address.</p>
+</li>
+<li><p>Use the full, real name of the addressee in the To field, not just the<br>email-address (e.g. <code>&quot;John Smith&quot; &lt;john@blacksmiths-international.com&gt;</code> ).</p>
+</li>
+<li><p>Monitor your abuse accounts, such as abuse@yourdomain.com and<br>postmaster@yourdomain.com. That means - make sure that these accounts exist,<br>read what’s sent to them, and act on complaints.</p>
+</li>
+<li><p>Finally, make it <strong>really</strong> easy to unsubscribe. Otherwise, your users<br>will unsubscribe by pressing the <strong>spam</strong> button, and that will affect your<br>reputation.</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>请参阅<a href="https://stackoverflow.com/q/371/250259" target="_blank" rel="noopener">如何确保以编程方式发送的电子邮件不会自动标记为垃圾邮件？</a>以获取有关此主题的更多信息。</p>
+<h1><span id="make-sure-all-mail-headers-are-supplied">Make sure all mail headers are supplied</span></h1><p>一些垃圾邮件软件会拒绝邮件，如果它缺少常见的标题，如“From”和“Reply-to”：</p>
+<pre><code>$headers = array(&quot;From: from@example.com&quot;,
+    &quot;Reply-To: replyto@example.com&quot;,
+    &quot;X-Mailer: PHP/&quot; . PHP_VERSION
+);
+$headers = implode(&quot;\r\n&quot;, $headers);
+mail($to, $subject, $message, $headers);
+</code></pre><h1><span id="make-sure-mail-headers-have-no-syntax-errors">Make sure mail headers have no syntax errors</span></h1><p>无效的标题与没有标题一样糟糕。一个不正确的字符可能会导致您的电子邮件脱轨。仔细检查，确保你的语法是正确的，因为PHP不会为你捕获这些错误。</p>
+<pre><code>$headers = array(&quot;From from@example.com&quot;, // missing colon
+    &quot;Reply To: replyto@example.com&quot;,      // missing hyphen
+    &quot;X-Mailer: &quot;PHP&quot;/&quot; . PHP_VERSION      // bad quotes
+);
+</code></pre><h1><span id="make-sure-the-recipient-value-is-correct">Make sure the recipient value is correct</span></h1><p>有时问题就像电子邮件收件人的值不正确一样简单。这可能是由于使用了一个不正确的变量。</p>
+<pre><code>$to = &apos;user@example.com&apos;;
+// other variables ....
+mail($recipient, $subject, $message, $headers); // $recipient should be $to
+</code></pre><p>另一种测试方法是将收件人的值硬编码到<code>mail（）</code>函数调用中：</p>
+<pre><code>mail(&apos;user@example.com&apos;, $subject, $message, $headers); 
+</code></pre><p>这可以应用于所有的<code>mail（）</code>参数。</p>
+<h1><span id="send-to-multiple-accounts">Send to multiple accounts</span></h1><p>为帮助排除电子邮件帐户问题，请将您的电子邮件发送到不同电子邮件供应商的多个电子邮件帐户 __<br>。如果您的电子邮件未到达用户的Gmail帐户，请将相同的电子邮件发送到Yahoo帐户，Hotmail帐户和常规POP3帐户（如您的ISP提供的电子邮件帐户）。</p>
+<p>如果电子邮件到达全部或部分其他电子邮件帐户，您知道您的代码正在发送电子邮件，但电子邮件帐户提供商很可能因为某种原因而阻止了它们。如果电子邮件没有到达任何电子邮件帐户，则问题更可能与您的代码有关。</p>
+<h1><span id="make-sure-the-code-matches-the-form-method">Make sure the code matches the form method</span></h1><p>如果您将表单方法设置为<code>POST</code>，请确保使用<code>$ _ POST</code>查找表单值。如果您已将其设置为<code>GET</code>或根本没有设置，请确保使用<code>$ _
+GET</code>查找表单值。</p>
+<h1><span id="make-sure-the-web-host-supports-sending-email">Make sure the Web host supports sending email</span></h1><p>一些虚拟主机提供商不允许或启用通过他们的服务器发送电子邮件。原因可能会有所不同，但是如果他们已经禁止发送邮件，则需要使用另一种方法，使用第三方为您发送这些电子邮件。</p>
+<p>发送给他们技术支持的电子邮件（在他们的在线支持或常见问题解答之后）应该澄清在您的服务器上是否有电子邮件功能。</p>
+<h1><span id="make-sure-the-localhost-mail-server-is-configured">Make sure the <code>localhost</code> mail server is configured</span></h1><p>如果您正在使用WAMP，MAMP或XAMPP在您的本地工作站上开发，则可能未在工作站上安装电子邮件服务器。没有一个，PHP默认情况下不能发送邮件。</p>
+<p>你可以通过安装一个基本的邮件服务器来解决这个问题。对于Windows，您可以使用免费的<a href="http://www.pmail.com/overviews/ovw_mercury.htm" target="_blank" rel="noopener"> Mercury Mail</a>。</p>
+<p>您也可以使用SMTP发送您的电子邮件。从<a href="https://stackoverflow.com/a/18185233/250259" target="_blank" rel="noopener">这个很好的答案</a> &gt;<br>Vikas Dwivedi 来学习如何做到这一点。</p>
+<h1><span id="enable-phps-custom-maillog">Enable PHP’s custom <code>mail.log</code></span></h1><p>除了您的MTA和PHP的日志文件，您还可以启用[（）`功能记录。它不记录完整的SMTP交互，但至少包含函数调用参数和调用脚本。</p>
+<pre><code>ini_set(&quot;mail.log&quot;, &quot;/tmp/mail.log&quot;);
+ini_set(&quot;mail.add_x_header&quot;, TRUE);
+</code></pre><p>请参阅<a href="http://php.net/manual/en/mail.configuration.php" target="_blank" rel="noopener"> http://php.net/manual/en/mail.configuration.php</a>了解详情。 （最好在<code>php.ini</code>或<code>.user.ini</code>或<code>.htaccess</code>中启用这些选项。）</p>
+<h1><span id="check-with-a-mail-testing-service">Check with a mail testing service</span></h1><p>您可以利用各种传送和垃圾邮件检查服务来测试您的MTA /<br>Web服务器设置。通常情况下，您将邮件发送至：他们的地址，然后获得递送报告以及更多具体的失败或分析结果：</p>
+<ul>
+<li><a href="http://mail-tester.com/" target="_blank" rel="noopener"> mail-tester.com </a>（免费/简单）</li>
+<li><a href="https://glockapps.com/" target="_blank" rel="noopener"> glockapps.com </a>（免费/ $$$）</li>
+<li><a href="https://www.sendforensics.com/email-deliverability-test/" target="_blank" rel="noopener"> senforensics.com </a>（注册/ $$$）</li>
+<li><a href="https://mailtrap.io/" target="_blank" rel="noopener"> mailtrap.io </a>（pro / $$$）</li>
+<li><a href="https://www.ultratools.com/tools/emailTest" target="_blank" rel="noopener"> ultratools / … / emailTest </a>（仅限免费/ MX检查）</li>
+<li>各种：<a href="http://www.verticalresponse.com/blog/7-email-testing-delivery-tools/" target="_blank" rel="noopener"> http://www.verticalresponse.com/blog / 7-电子邮件测试递送工具/ </a></li>
+</ul>
+<h1><span id="use-a-different-mailer">Use a different mailer</span></h1><p>内置的<code>mail（）</code>函数的PHP是非常方便的，通常可以完成这个工作，但是它是一个非常简单的方法。 use-phps-mail-function /<br>4565160＃4565160“&gt;有其缺点](“<a href="https://stackoverflow.com/questions/21871254/php-mail-" target="_blank" rel="noopener">https://stackoverflow.com/questions/21871254/php-mail-</a><br>how-to-override-or-bypass-mail-<br>log特别为&lt;mail)。幸运的是，还有其他方法可以提供更多的功能和灵活性，包括处理上面列出的许多问题：</p>
+<ul>
+<li>最受欢迎的是：<a href="http://phpmailer.worxware.com/" target="_blank" rel="noopener"> PHPMailer </a></li>
+<li>同样有特色：<a href="http://swiftmailer.org/" target="_blank" rel="noopener"> SwiftMailer </a></li>
+<li>甚至是旧的<a href="https://pear.php.net/package/Mail" target="_blank" rel="noopener"> PEAR :: Mail </a>。</li>
+</ul>
+<p>所有这些都可以与专业的SMTP服务器/服务提供商结合使用。 （因为在电子邮件设置/配置方面，典型的08/15共享虚拟主机计划受到重创或失败。）</p>
+<p>在邮件功能中添加邮件标题</p>
+<pre><code>$header = &quot;From: noreply@example.com\r\n&quot;; 
+$header.= &quot;MIME-Version: 1.0\r\n&quot;; 
+$header.= &quot;Content-Type: text/html; charset=ISO-8859-1\r\n&quot;; 
+$header.= &quot;X-Priority: 1\r\n&quot;; 
+
+$status = mail($to, $subject, $message, $header);
+
+if($status)
+{ 
+    echo &apos;&lt;p&gt;Your mail has been sent!&lt;/p&gt;&apos;;
+} else { 
+    echo &apos;&lt;p&gt;Something went wrong, Please try again!&lt;/p&gt;&apos;; 
+}
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/03/19/php-mail-function-doesnt-complete-sending-of-e-mail/" data-title="PHP邮件功能没有完成电子邮件的发送 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/19/error-unable-to-access-the-iis-metabase/" title="错误 - 无法访问IIS元数据库">
+  <strong>上一篇：</strong><br/>
+  <span>
+  错误 - 无法访问IIS元数据库</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/03/18/error-retrieving-parent-for-item-no-resource-found-that-matches-the-given-name/"  title="检索项目的父项时出错：升级到AppCompat v23后，找不到与给定名称匹配的资源">
+ <strong>下一篇：</strong><br/> 
+ <span>检索项目的父项时出错：升级到AppCompat v23后，找不到与给定名称匹配的资源
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Make sure error reporting is enabled and set to report all errors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Make sure the mail() function is called</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Make sure the mail() function is called correctly</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Check the server’s mail logs</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Check for Port connection failure</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Don’t use the error suppression operator</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Check the mail() return value</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">Make sure your hosting provider allows you to send emails and does not limit</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">Check spam folders; prevent emails from being flagged as spam</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">10.</span> <span class="toc-text">Make sure all mail headers are supplied</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">11.</span> <span class="toc-text">Make sure mail headers have no syntax errors</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">12.</span> <span class="toc-text">Make sure the recipient value is correct</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">13.</span> <span class="toc-text">Send to multiple accounts</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">14.</span> <span class="toc-text">Make sure the code matches the form method</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">15.</span> <span class="toc-text">Make sure the Web host supports sending email</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">16.</span> <span class="toc-text">Make sure the localhost mail server is configured</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">17.</span> <span class="toc-text">Enable PHP’s custom mail.log</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">18.</span> <span class="toc-text">Check with a mail testing service</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">19.</span> <span class="toc-text">Use a different mailer</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

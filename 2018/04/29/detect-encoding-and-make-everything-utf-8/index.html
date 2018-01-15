@@ -1,0 +1,664 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>检测编码，并使所有的UTF-8 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我正在从各种RSS源中读取大量文本，并将它们插入到我的数据库中。 当然，在提要中有几种不同的字符编码，例如， UTF-8和ISO-8859-1。 不幸的是，有时文本的编码有问题。例如： 1）“Fußball”中的“Ã”在我的数据库中应该是这样的：“Ã¸Å¸”。如果是“Ã¸Å¸”，则显示正确。 2）有时，“Fußball”中的“Ã”在我的数据库中看起来像这样：“ÃƒÆ’Ã,Å¸”。那当然是显示错误了">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="检测编码，并使所有的UTF-8">
+<meta property="og:url" content="https://www.tracholar.top/2018/04/29/detect-encoding-and-make-everything-utf-8/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我正在从各种RSS源中读取大量文本，并将它们插入到我的数据库中。 当然，在提要中有几种不同的字符编码，例如， UTF-8和ISO-8859-1。 不幸的是，有时文本的编码有问题。例如： 1）“Fußball”中的“Ã”在我的数据库中应该是这样的：“Ã¸Å¸”。如果是“Ã¸Å¸”，则显示正确。 2）有时，“Fußball”中的“Ã”在我的数据库中看起来像这样：“ÃƒÆ’Ã,Å¸”。那当然是显示错误了">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="检测编码，并使所有的UTF-8">
+<meta name="twitter:description" content="我正在从各种RSS源中读取大量文本，并将它们插入到我的数据库中。 当然，在提要中有几种不同的字符编码，例如， UTF-8和ISO-8859-1。 不幸的是，有时文本的编码有问题。例如： 1）“Fußball”中的“Ã”在我的数据库中应该是这样的：“Ã¸Å¸”。如果是“Ã¸Å¸”，则显示正确。 2）有时，“Fußball”中的“Ã”在我的数据库中看起来像这样：“ÃƒÆ’Ã,Å¸”。那当然是显示错误了">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/29/detect-encoding-and-make-everything-utf-8/" title="检测编码，并使所有的UTF-8" itemprop="url">检测编码，并使所有的UTF-8</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-29T01:14:39.000Z" itemprop="datePublished"> Published 2018-04-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我正在从各种RSS源中读取大量文本，并将它们插入到我的数据库中。</p>
+<p>当然，在提要中有几种不同的字符编码，例如， UTF-8和ISO-8859-1。</p>
+<p>不幸的是，有时文本的编码有问题。例如：</p>
+<p>1）“Fußball”中的“Ã”在我的数据库中应该是这样的：“Ã¸Å¸”。如果是“Ã¸Å¸”，则显示正确。</p>
+<p>2）有时，“Fußball”中的“Ã”在我的数据库中看起来像这样：“ÃƒÆ’Ã,Å¸”。那当然是显示错误了。</p>
+<p>3）在其他情况下，“Ÿ”被保存为“Ÿ” - 所以没有任何改变。那么它也显示错误。</p>
+<p>我能做些什么来避免个案2和3？</p>
+<p>我怎样才能使一切相同的编码，最好是UTF-8？何时必须使用utf8_encode（），何时必须使用utf8_decode（）（很明显是什么效果，但什么时候必须使用这些函数？），什么时候必须对输入不做任何处理？</p>
+<p>你能帮我，告诉我如何使所有的编码相同吗？也许与函数mb-detect-encoding（）？我可以为此写一个函数吗？所以我的问题是：<br>1）如何找出文本使用什么编码 2）如何将其转换为UTF-8 - 无论旧编码是什么</p>
+<p>**修改 会这样的功能吗？</p>
+<pre><code>function correct_encoding($text) {
+    $current_encoding = mb_detect_encoding($text, &apos;auto&apos;);
+    $text = iconv($current_encoding, &apos;UTF-8&apos;, $text);
+    return $text;
+}
+</code></pre><p>我已经测试过了，但不起作用。怎么了？</p>
+<a id="more"></a>
+<p>如果将utf8_encode（）应用于已经是UTF8的字符串，它将返回一个乱码的UTF8输出。</p>
+<p>我做了一个解决所有这些问题的函数。它被称为Encoding :: toUTF8（）。</p>
+<p>你不需要知道你的字符串的编码是什么。它可以是Latin1（ISO 8859-1），Windows-1252或UTF8，或者字符串可以混合使用。<br>Encoding :: toUTF8（）会将所有内容转换为UTF8。</p>
+<p>我这样做是因为一个服务给我提供了所有乱七八糟的数据，在同一个字符串中混合使用UTF8和Latin1。</p>
+<p>用法：</p>
+<pre><code>require_once(&apos;Encoding.php&apos;); 
+use \ForceUTF8\Encoding;  // It&apos;s namespaced now.
+
+$utf8_string = Encoding::toUTF8($utf8_or_latin1_or_mixed_string);
+
+$latin1_string = Encoding::toLatin1($utf8_or_latin1_or_mixed_string);
+</code></pre><p>下载：</p>
+<p><a href="https://github.com/neitanod/forceutf8" target="_blank" rel="noopener"> https://github.com/neitanod/forceutf8</a></p>
+<p>更新</p>
+<p>我已经包含了另一个函数，Encoding :: fixUFT8（），它将修复看起来乱码的每个UTF8字符串。</p>
+<p>用法：</p>
+<pre><code>require_once(&apos;Encoding.php&apos;); 
+use \ForceUTF8\Encoding;  // It&apos;s namespaced now.
+
+$utf8_string = Encoding::fixUTF8($garbled_utf8_string);
+</code></pre><p>示例：</p>
+<pre><code>echo Encoding::fixUTF8(&quot;FÃÂ(C)dÃÂ(C)ration Camerounaise de Football&quot;);
+echo Encoding::fixUTF8(&quot;FÃÃÂ(C)dÃÃÂ(C)ration Camerounaise de Football&quot;);
+echo Encoding::fixUTF8(&quot;FÃÃÃÃÂ(C)dÃÃÃÃÂ(C)ration Camerounaise de Football&quot;);
+echo Encoding::fixUTF8(&quot;FÃÃÂ(C)dÃ(C)ration Camerounaise de Football&quot;);
+</code></pre><p>会输出：</p>
+<pre><code>FÃ(C)dÃ(C)ration Camerounaise de Football
+FÃ(C)dÃ(C)ration Camerounaise de Football
+FÃ(C)dÃ(C)ration Camerounaise de Football
+FÃ(C)dÃ(C)ration Camerounaise de Football
+</code></pre><p>更新：我已经将这个函数（forceUTF8）转换成了一个名为Encoding的类的静态函数族。新功能是Encoding :: toUTF8（）。</p>
+<p>您首先必须检测使用了什么编码。在解析RSS提要（可能是通过HTTP）时，应该从<a href="“http://www.w3.org/Protocols/rfc2616的&lt;code"> charset<br><code>参数中读取编码/rfc2616-sec14.html#sec14.17“rel =”noreferrer“&gt;</code> Content-Type `HTTP标题字段</a>。如果不存在，请阅读<a href="“http://www.w3.org/TR/REC-xml/#dt-
+xmldecl”的&lt;code"> encoding<br>`属性的编码rel = “noreferrer”&gt; XML处理指令</a>。如果缺少，<a href="http://www.w3.org/TR/REC-
+xml/#charencoding" target="_blank" rel="noopener">使用规范中定义的UTF-8 </a></p>
+<hr>
+<p><strong>编辑</strong> 这是我可能会做的：</p>
+<p>我使用<a href="http://docs.php.net/curl" target="_blank" rel="noopener"> cURL</a>发送和获取响应。这使您可以设置特定的头字段并获取响应头。获取响应之后，您必须解析HTTP响应并将其分解为标题和正文。然后，头文件应该包含包含MIME类型的<code>Content-Type</code>标头字段，并且（希望）也包含编码/字符集的<code>charset</code>参数。如果没有，我们将分析XML PI的<code>encoding</code>属性，并从那里获取编码。如果还缺少这些信息，则XML规范将定义使用UTF-8作为编码。</p>
+<pre><code>$url = &apos;http://www.lr-online.de/storage/rss/rss/sport.xml&apos;;
+
+$accept = array(
+    &apos;type&apos; =&gt; array(&apos;application/rss+xml&apos;, &apos;application/xml&apos;, &apos;application/rdf+xml&apos;, &apos;text/xml&apos;),
+    &apos;charset&apos; =&gt; array_diff(mb_list_encodings(), array(&apos;pass&apos;, &apos;auto&apos;, &apos;wchar&apos;, &apos;byte2be&apos;, &apos;byte2le&apos;, &apos;byte4be&apos;, &apos;byte4le&apos;, &apos;BASE64&apos;, &apos;UUENCODE&apos;, &apos;HTML-ENTITIES&apos;, &apos;Quoted-Printable&apos;, &apos;7bit&apos;, &apos;8bit&apos;))
+);
+$header = array(
+    &apos;Accept: &apos;.implode(&apos;, &apos;, $accept[&apos;type&apos;]),
+    &apos;Accept-Charset: &apos;.implode(&apos;, &apos;, $accept[&apos;charset&apos;]),
+);
+$encoding = null;
+$curl = curl_init($url);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_HEADER, true);
+curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+$response = curl_exec($curl);
+if (!$response) {
+    // error fetching the response
+} else {
+    $offset = strpos($response, &quot;\r\n\r\n&quot;);
+    $header = substr($response, 0, $offset);
+    if (!$header || !preg_match(&apos;/^Content-Type:\s+([^;]+)(?:;\s*charset=(.*))?/im&apos;, $header, $match)) {
+        // error parsing the response
+    } else {
+        if (!in_array(strtolower($match[1]), array_map(&apos;strtolower&apos;, $accept[&apos;type&apos;]))) {
+            // type not accepted
+        }
+        $encoding = trim($match[2], &apos;&quot;\&apos;&apos;);
+    }
+    if (!$encoding) {
+        $body = substr($response, $offset + 4);
+        if (preg_match(&apos;/^&lt;\?xml\s+version=(?:&quot;[^&quot;]*&quot;|\&apos;[^\&apos;]*\&apos;)\s+encoding=(&quot;[^&quot;]*&quot;|\&apos;[^\&apos;]*\&apos;)/s&apos;, $body, $match)) {
+            $encoding = trim($match[1], &apos;&quot;\&apos;&apos;);
+        }
+    }
+    if (!$encoding) {
+        $encoding = &apos;utf-8&apos;;
+    } else {
+        if (!in_array($encoding, array_map(&apos;strtolower&apos;, $accept[&apos;charset&apos;]))) {
+            // encoding not accepted
+        }
+        if ($encoding != &apos;utf-8&apos;) {
+            $body = mb_convert_encoding($body, &apos;utf-8&apos;, $encoding);
+        }
+    }
+    $simpleXML = simplexml_load_string($body, null, LIBXML_NOERROR);
+    if (!$simpleXML) {
+        // parse error
+    } else {
+        echo $simpleXML-&gt;asXML();
+    }
+}
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/04/29/detect-encoding-and-make-everything-utf-8/" data-title="检测编码，并使所有的UTF-8 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/29/volatile-vs-interlocked-vs-lock/" title="易变与联锁与锁定">
+  <strong>上一篇：</strong><br/>
+  <span>
+  易变与联锁与锁定</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/28/how-to-check-internet-access-on-android-inetaddress-never-times-out/"  title="如何检查Android的互联网访问？ InetAddress永远不会超时">
+ <strong>下一篇：</strong><br/> 
+ <span>如何检查Android的互联网访问？ InetAddress永远不会超时
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,714 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>在将图像加载到Bitmap对象时出现内存不足的问题 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个列表视图，每行有几个图像按钮。当您单击列表行时，它将启动一个新的活动。由于相机布局的问题，我不得不建立自己的选项卡。为结果启动的活动是一张地图。如果我点击我的按钮启动图像预览（从SD卡加载图像），应用程序从活动返回到listview活动到结果处理程序重新启动我的新活动，这是什么不止一个图像小部件。 列表视图上的图像预览正在使用游标和ListAdapter完成。这使得它非常简单，但我不知道如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在将图像加载到Bitmap对象时出现内存不足的问题">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/04/strange-out-of-memory-issue-while-loading-an-image-to-a-bitmap-object/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个列表视图，每行有几个图像按钮。当您单击列表行时，它将启动一个新的活动。由于相机布局的问题，我不得不建立自己的选项卡。为结果启动的活动是一张地图。如果我点击我的按钮启动图像预览（从SD卡加载图像），应用程序从活动返回到listview活动到结果处理程序重新启动我的新活动，这是什么不止一个图像小部件。 列表视图上的图像预览正在使用游标和ListAdapter完成。这使得它非常简单，但我不知道如">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在将图像加载到Bitmap对象时出现内存不足的问题">
+<meta name="twitter:description" content="我有一个列表视图，每行有几个图像按钮。当您单击列表行时，它将启动一个新的活动。由于相机布局的问题，我不得不建立自己的选项卡。为结果启动的活动是一张地图。如果我点击我的按钮启动图像预览（从SD卡加载图像），应用程序从活动返回到listview活动到结果处理程序重新启动我的新活动，这是什么不止一个图像小部件。 列表视图上的图像预览正在使用游标和ListAdapter完成。这使得它非常简单，但我不知道如">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/04/strange-out-of-memory-issue-while-loading-an-image-to-a-bitmap-object/" title="在将图像加载到Bitmap对象时出现内存不足的问题" itemprop="url">在将图像加载到Bitmap对象时出现内存不足的问题</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-04T02:23:27.000Z" itemprop="datePublished"> Published 2018-02-04</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Read Bitmap Dimensions and Type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Load a scaled down version into Memory</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个列表视图，每行有几个图像按钮。当您单击列表行时，它将启动一个新的活动。由于相机布局的问题，我不得不建立自己的选项卡。为结果启动的活动是一张地图。如果我点击我的按钮启动图像预览（从SD卡加载图像），应用程序从活动返回到<code>listview</code>活动到结果处理程序重新启动我的新活动，这是什么不止一个图像小部件。</p>
+<p>列表视图上的图像预览正在使用游标和<code>ListAdapter</code>完成。这使得它非常简单，但我不知道如何可以放置一个调整大小的图像（即更小的位大小不像像<code>src</code>的图像按钮的动态。摘下手机相机。</p>
+<p>问题在于，当它试图返回并重新启动第二个活动时，出现内存不足错误。</p>
+<ul>
+<li>有没有一种方法可以轻松地逐行建立列表适配器，我可以随时调整大小（ <em>bit</em> ）？ </li>
+</ul>
+<p>这将是更可取的，因为我也需要对每行中的小部件/元素的属性进行一些更改，因为焦点问题，我无法选择带触摸屏的行。 （我可以使用滚球。_）</p>
+<ul>
+<li>我知道我可以做一个带外调整大小和保存图像，但这不是我想要做的，但是一些示例代码很好。</li>
+</ul>
+<p>只要我禁用列表视图的图像，它再次正常工作。</p>
+<pre><code>String[] from = new String[] { DBHelper.KEY_BUSINESSNAME,DBHelper.KEY_ADDRESS,DBHelper.KEY_CITY,DBHelper.KEY_GPSLONG,DBHelper.KEY_GPSLAT,DBHelper.KEY_IMAGEFILENAME  + &quot;&quot;};
+int[] to = new int[] {R.id.businessname,R.id.address,R.id.city,R.id.gpslong,R.id.gpslat,R.id.imagefilename };
+notes = new SimpleCursorAdapter(this, R.layout.notes_row, c, from, to);
+setListAdapter(notes);
+</code></pre><p><code>R.id.imagefilename</code>是一个<code>ButtonImage</code>。</p>
+<p>这是我的LogCat：</p>
+<pre><code>01-25 05:05:49.877: ERROR/dalvikvm-heap(3896): 6291456-byte external allocation too large for this process.
+01-25 05:05:49.877: ERROR/(3896): VM wont let us allocate 6291456 bytes
+01-25 05:05:49.877: ERROR/AndroidRuntime(3896): Uncaught handler: thread main exiting due to uncaught exception
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896): java.lang.OutOfMemoryError: bitmap size exceeds VM budget
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.graphics.BitmapFactory.nativeDecodeStream(Native Method)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.graphics.BitmapFactory.decodeStream(BitmapFactory.java:304)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.graphics.BitmapFactory.decodeFile(BitmapFactory.java:149)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.graphics.BitmapFactory.decodeFile(BitmapFactory.java:174)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.graphics.drawable.Drawable.createFromPath(Drawable.java:729)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.ImageView.resolveUri(ImageView.java:484)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.ImageView.setImageURI(ImageView.java:281)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.SimpleCursorAdapter.setViewImage(SimpleCursorAdapter.java:183)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.SimpleCursorAdapter.bindView(SimpleCursorAdapter.java:129)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.CursorAdapter.getView(CursorAdapter.java:150)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.AbsListView.obtainView(AbsListView.java:1057)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.ListView.makeAndAddView(ListView.java:1616)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.ListView.fillSpecific(ListView.java:1177)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.ListView.layoutChildren(ListView.java:1454)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.AbsListView.onLayout(AbsListView.java:937)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.view.View.layout(View.java:5611)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.LinearLayout.setChildFrame(LinearLayout.java:1119)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.LinearLayout.layoutHorizontal(LinearLayout.java:1108)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.LinearLayout.onLayout(LinearLayout.java:922)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.view.View.layout(View.java:5611)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.FrameLayout.onLayout(FrameLayout.java:294)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.view.View.layout(View.java:5611)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.LinearLayout.setChildFrame(LinearLayout.java:1119)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.LinearLayout.layoutVertical(LinearLayout.java:999)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.LinearLayout.onLayout(LinearLayout.java:920)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.view.View.layout(View.java:5611)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.widget.FrameLayout.onLayout(FrameLayout.java:294)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.view.View.layout(View.java:5611)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.view.ViewRoot.performTraversals(ViewRoot.java:771)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.view.ViewRoot.handleMessage(ViewRoot.java:1103)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.os.Handler.dispatchMessage(Handler.java:88)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.os.Looper.loop(Looper.java:123)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at android.app.ActivityThread.main(ActivityThread.java:3742)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at java.lang.reflect.Method.invokeNative(Native Method)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at java.lang.reflect.Method.invoke(Method.java:515)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:497)
+01-25 05:05:49.917: ERROR/AndroidRuntime(3896):     at dalvik.system.NativeStart.main(Native Method)
+01-25 05:10:01.127: ERROR/AndroidRuntime(3943): ERROR: thread attach failed 
+</code></pre><p>显示图像时，我也有一个新的错误：</p>
+<pre><code>01-25 22:13:18.594: DEBUG/skia(4204): xxxxxxxxxxx jpeg error 20 Improper call to JPEG library in state %d
+01-25 22:13:18.604: INFO/System.out(4204): resolveUri failed on bad bitmap uri: 
+01-25 22:13:18.694: ERROR/dalvikvm-heap(4204): 6291456-byte external allocation too large for this process.
+01-25 22:13:18.694: ERROR/(4204): VM won&apos;t let us allocate 6291456 bytes
+01-25 22:13:18.694: DEBUG/skia(4204): xxxxxxxxxxxxxxxxxxxx allocPixelRef failed
+</code></pre><p><a id="more"></a> <a href="http://developer.android.com/training/index.html" target="_blank" rel="noopener">Android培训</a>课程“<a href="”http://developer.android.com/训练/显示位图/">高效地显示位图</a>”，为了解和处理异常<code>java.lang.OutOfMemoryError：位图大小超过VM预算</code>提供了一些很好的信息加载位图。</p>
+<hr>
+<h2><span id="read-bitmap-dimensions-and-type">Read Bitmap Dimensions and Type</span></h2><p><code>BitmapFactory</code>类提供了几种解码方法（decodeByteArray（），decodeFile（），decodeResource（）等等），用于从各种来源创建一个<code>Bitmap</code>。根据您的图像数据源选择最合适的解码方法。这些方法试图为构造的位图分配内存，因此很容易导致<code>OutOfMemory</code>异常。每种类型的解码方法都有额外的签名，可以通过<code>BitmapFactory.Options</code>类指定解码选项。解码时将<code>inJustDecodeBounds</code>属性设置为<code>true</code>可避免内存分配，为位图对象返回<code>null</code>，但设置<code>outWidth</code> <code>outHeight</code>和<code>outMimeType</code>。这种技术允许您在构建位图之前（和内存分配）读取图像数据的尺寸和类型。</p>
+<pre><code>BitmapFactory.Options options = new BitmapFactory.Options();
+options.inJustDecodeBounds = true;
+BitmapFactory.decodeResource(getResources(), R.id.myimage, options);
+int imageHeight = options.outHeight;
+int imageWidth = options.outWidth;
+String imageType = options.outMimeType;
+</code></pre><p>为了避免<code>java.lang.OutOfMemory</code>异常，请在解码之前检查位图的尺寸，除非您绝对相信源为您提供可预测大小的图像数据</p>
+<hr>
+<h2><span id="load-a-scaled-down-version-into-memory">Load a scaled down version into Memory</span></h2><p>现在图像尺寸是已知的，它们可以用来决定是否应该将完整图像加载到内存中，或者是否应该加载二次采样版本。这是一些需要考虑的因素：</p>
+<ul>
+<li>预计在内存中加载完整映像的内存使用情况。</li>
+<li>考虑到您的应用程序的其他内存要求，您愿意承诺加载此映像的内存量。</li>
+<li>图像将被加载到的目标ImageView或UI组件的尺寸。</li>
+<li>当前设备的屏幕大小和密度。</li>
+</ul>
+<p>例如，如果一个1024x768像素的图像最终会以<code>ImageView</code>的形式显示在一个128x96像素的缩略图中，则不值得将其加载到内存中。</p>
+<p>为了告诉解码器对图像进行二次抽样，在您的<code>BitmapFactory.Options</code>对象中加载一个较小的版本到内存中，将<code>inSampleSize</code>设置为<code>true</code> 。例如，分辨率为2048x1536且用<code>inSampleSize</code>4解码的图像会生成大约512x384的位图。加载到内存使用0.75MB，而不是整个图像12MB（假设一个位图配置<code>ARGB_8888</code>）。这里是一个基于目标宽度和高度来计算两个幂的样本大小值的方法：</p>
+<pre><code>public static int calculateInSampleSize(
+        BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    // Raw height and width of image
+    final int height = options.outHeight;
+    final int width = options.outWidth;
+    int inSampleSize = 1;
+
+    if (height &gt; reqHeight || width &gt; reqWidth) {
+
+        final int halfHeight = height / 2;
+        final int halfWidth = width / 2;
+
+        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+        // height and width larger than the requested height and width.
+        while ((halfHeight / inSampleSize) &gt; reqHeight
+                &amp;&amp; (halfWidth / inSampleSize) &gt; reqWidth) {
+            inSampleSize *= 2;
+        }
+    }
+
+    return inSampleSize;
+}
+</code></pre><blockquote>
+<p><strong>Note</strong> : A power of two value is calculated because the decoder uses a<br>final value by rounding down to the nearest power of two, as per the<br><code>inSampleSize</code> documentation.</p>
+</blockquote>
+<p>要使用这种方法，首先使用设置为<code>true</code>的<code>inJustDecodeBounds</code>进行解码，然后使用新的<code>inSampleSize</code>值和<code>inJustDecodeBounds</code>设置为<code>false</code>：</p>
+<pre><code>public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+    int reqWidth, int reqHeight) {
+
+    // First decode with inJustDecodeBounds=true to check dimensions
+    final BitmapFactory.Options options = new BitmapFactory.Options();
+    options.inJustDecodeBounds = true;
+    BitmapFactory.decodeResource(res, resId, options);
+
+    // Calculate inSampleSize
+    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+    // Decode bitmap with inSampleSize set
+    options.inJustDecodeBounds = false;
+    return BitmapFactory.decodeResource(res, resId, options);
+}
+</code></pre><p>这个方法可以很容易地将一个任意大小的位图加载到显示100x100像素缩略图的<code>ImageView</code>中，如下面的示例代码所示：</p>
+<pre><code>mImageView.setImageBitmap(
+    decodeSampledBitmapFromResource(getResources(), R.id.myimage, 100, 100));
+</code></pre><p>您可以按照类似的流程来解码来自其他来源的位图，根据需要替换适当的<code>BitmapFactory.decode *</code>方法。</p>
+<p>要修复OutOfMemory错误，你应该这样做：</p>
+<pre><code>BitmapFactory.Options options = new BitmapFactory.Options();
+options.inSampleSize = 8;
+Bitmap preview_bitmap = BitmapFactory.decodeStream(is, null, options);
+</code></pre><p>这个<code>inSampleSize</code>选项可以减少内存消耗。</p>
+<p>这是一个完整的方法。首先它读取图像大小而不解码内容本身。然后找到最好的<code>inSampleSize</code>值，它应该是2的幂，最后对图像进行解码。</p>
+<pre><code>// Decodes image and scales it to reduce memory consumption
+private Bitmap decodeFile(File f) {
+    try {
+        // Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(new FileInputStream(f), null, o);
+
+        // The new size we want to scale to
+        final int REQUIRED_SIZE=70;
+
+        // Find the correct scale value. It should be the power of 2.
+        int scale = 1;
+        while(o.outWidth / scale / 2 &gt;= REQUIRED_SIZE &amp;&amp; 
+              o.outHeight / scale / 2 &gt;= REQUIRED_SIZE) {
+            scale *= 2;
+        }
+
+        // Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+    } catch (FileNotFoundException e) {}
+    return null;
+}
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/04/strange-out-of-memory-issue-while-loading-an-image-to-a-bitmap-object/" data-title="在将图像加载到Bitmap对象时出现内存不足的问题 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/05/convert-php-object-to-associative-array/" title="将PHP对象转换为关联数组">
+  <strong>上一篇：</strong><br/>
+  <span>
+  将PHP对象转换为关联数组</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/04/looping-through-the-content-of-a-file-in-bash/"  title="循环浏览Bash中的文件内容">
+ <strong>下一篇：</strong><br/> 
+ <span>循环浏览Bash中的文件内容
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Read Bitmap Dimensions and Type</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Load a scaled down version into Memory</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

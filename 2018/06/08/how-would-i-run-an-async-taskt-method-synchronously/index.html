@@ -1,0 +1,798 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>我将如何同步运行异步任务T方法？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我正在学习异步/等待，并遇到了需要同步调用异步方法的情况。我该怎么做？ 异步方法： public async Task&amp;lt;Customers&amp;gt; GetCustomers() {     return await Service.GetCustomersAsync(); } 正常使用： public async void GetCustomers() {     customerList">
+<meta name="keywords" content="c-sharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我将如何同步运行异步任务T方法？">
+<meta property="og:url" content="https://www.tracholar.top/2018/06/08/how-would-i-run-an-async-taskt-method-synchronously/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我正在学习异步/等待，并遇到了需要同步调用异步方法的情况。我该怎么做？ 异步方法： public async Task&amp;lt;Customers&amp;gt; GetCustomers() {     return await Service.GetCustomersAsync(); } 正常使用： public async void GetCustomers() {     customerList">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我将如何同步运行异步任务T方法？">
+<meta name="twitter:description" content="我正在学习异步/等待，并遇到了需要同步调用异步方法的情况。我该怎么做？ 异步方法： public async Task&amp;lt;Customers&amp;gt; GetCustomers() {     return await Service.GetCustomersAsync(); } 正常使用： public async void GetCustomers() {     customerList">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/08/how-would-i-run-an-async-taskt-method-synchronously/" title="我将如何同步运行异步任务T方法？" itemprop="url">我将如何同步运行异步任务T方法？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-08T01:47:01.000Z" itemprop="datePublished"> Published 2018-06-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">.Net 4.5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">.Net 4.0</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我正在学习异步/等待，并遇到了需要同步调用异步方法的情况。我该怎么做？</p>
+<p>异步方法：</p>
+<pre><code>public async Task&lt;Customers&gt; GetCustomers()
+{
+    return await Service.GetCustomersAsync();
+}
+</code></pre><p>正常使用：</p>
+<pre><code>public async void GetCustomers()
+{
+    customerList = await GetCustomers();
+}
+</code></pre><p>我试过使用以下内容：</p>
+<pre><code>Task&lt;Customer&gt; task = GetCustomers();
+task.Wait()
+
+Task&lt;Customer&gt; task = GetCustomers();
+task.RunSynchronously();
+
+Task&lt;Customer&gt; task = GetCustomers();
+while(task.Status != TaskStatus.RanToCompletion)
+</code></pre><p>我也尝试了<a href="http://social.msdn.microsoft.com/Forums/en/async/thread/163ef755
+-ff7b-4ea5-b226-bbe8ef5f4796" target="_blank" rel="noopener">这里</a>，但是当调度员处于挂起状态时它不起作用。</p>
+<pre><code>public static void WaitWithPumping(this Task task) 
+{
+        if (task == null) throw new ArgumentNullException(ataska);
+        var nestedFrame = new DispatcherFrame();
+        task.ContinueWith(_ =&gt; nestedFrame.Continue = false);
+        Dispatcher.PushFrame(nestedFrame);
+        task.Wait();
+}
+</code></pre><p>这是调用<code>RunSynchronously</code>：</p>
+<p>的异常和堆栈跟踪</p>
+<blockquote>
+<p>System.InvalidOperationException</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><strong>Message</strong> : RunSynchronously may not be called on a task unbound to a<br>delegate.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><strong>InnerException</strong> : null</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><strong>Source</strong> : mscorlib</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><strong>StackTrace</strong> :</p>
+</blockquote>
+<pre><code>       at System.Threading.Tasks.Task.InternalRunSynchronously(TaskScheduler scheduler)
+at System.Threading.Tasks.Task.RunSynchronously()
+at MyApplication.CustomControls.Controls.MyCustomControl.CreateAvailablePanelList() in C:\Documents and Settings\...\MyApplication.CustomControls\Controls\MyCustomControl.xaml.cs:line 638
+at MyApplication.CustomControls.Controls.MyCustomControl.get_AvailablePanels() in C:\Documents and Settings\...\MyApplication.CustomControls\Controls\MyCustomControl.xaml.cs:line 233
+at MyApplication.CustomControls.Controls.MyCustomControl.&lt;CreateOpenPanelList&gt;b__36(DesktopPanel panel) in C:\Documents and Settings\...\MyApplication.CustomControls\Controls\MyCustomControl.xaml.cs:line 597
+at System.Collections.Generic.List`1.ForEach(Action`1 action)
+at MyApplication.CustomControls.Controls.MyCustomControl.&lt;CreateOpenPanelList&gt;d__3b.MoveNext() in C:\Documents and Settings\...\MyApplication.CustomControls\Controls\MyCustomControl.xaml.cs:line 625
+at System.Runtime.CompilerServices.TaskAwaiter.&lt;&gt;c__DisplayClass7.&lt;TrySetContinuationForAwait&gt;b__1(Object state)
+at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+at MS.Internal.Threading.ExceptionFilterHelper.TryCatchWhen(Object source, Delegate method, Object args, Int32 numArgs, Delegate catchHandler)
+at System.Windows.Threading.DispatcherOperation.InvokeImpl()
+at System.Windows.Threading.DispatcherOperation.InvokeInSecurityContext(Object state)
+at System.Threading.ExecutionContext.runTryCode(Object userData)
+at System.Runtime.CompilerServices.RuntimeHelpers.ExecuteCodeWithGuaranteedCleanup(TryCode code, CleanupCode backoutCode, Object userData)
+at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+at System.Windows.Threading.DispatcherOperation.Invoke()
+at System.Windows.Threading.Dispatcher.ProcessQueue()
+at System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean&amp; handled)
+at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean&amp; handled)
+at MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+at MS.Internal.Threading.ExceptionFilterHelper.TryCatchWhen(Object source, Delegate method, Object args, Int32 numArgs, Delegate catchHandler)
+at System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+at MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG&amp; msg)
+at System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+at System.Windows.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+at System.Windows.Threading.Dispatcher.Run()
+at System.Windows.Application.RunDispatcher(Object ignore)
+at System.Windows.Application.RunInternal(Window window)
+at System.Windows.Application.Run(Window window)
+at System.Windows.Application.Run()
+at MyApplication.App.Main() in C:\Documents and Settings\...\MyApplication\obj\Debug\App.g.cs:line 50
+at System.AppDomain._nExecuteAssembly(RuntimeAssembly assembly, String[] args)
+at System.AppDomain.ExecuteAssembly(String assemblyFile, Evidence assemblySecurity, String[] args)
+at Microsoft.VisualStudio.HostingProcess.HostProc.RunUsersAssembly()
+at System.Threading.ThreadHelper.ThreadStart_Context(Object state)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+at System.Threading.ThreadHelper.ThreadStart()
+</code></pre><p><a id="more"></a> 这是一个解决方法，我发现它适用于所有情况（包括暂停调度程序）。这不是我的代码，我仍然在努力完全理解它，但它确实有效。</p>
+<p>可以使用</p>
+<p>来调用 customerList = AsyncHelpers.RunSync＆lt; List＆lt; Customer＆gt;＆gt;（（）=＆gt;<br>GetCustomers（））; `<br>代码来自[这里</p>
+<p>一&gt;</p>
+<pre><code>public static class AsyncHelpers
+{
+    /// &lt;summary&gt;
+    /// Execute&apos;s an async Task&lt;T&gt; method which has a void return value synchronously
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;task&quot;&gt;Task&lt;T&gt; method to execute&lt;/param&gt;
+    public static void RunSync(Func&lt;Task&gt; task)
+    {
+        var oldContext = SynchronizationContext.Current;
+        var synch = new ExclusiveSynchronizationContext();
+        SynchronizationContext.SetSynchronizationContext(synch);
+        synch.Post(async _ =&gt;
+        {
+            try
+            {
+                await task();
+            }
+            catch (Exception e)
+            {
+                synch.InnerException = e;
+                throw;
+            }
+            finally
+            {
+                synch.EndMessageLoop();
+            }
+        }, null);
+        synch.BeginMessageLoop();
+
+        SynchronizationContext.SetSynchronizationContext(oldContext);
+    }
+
+    /// &lt;summary&gt;
+    /// Execute&apos;s an async Task&lt;T&gt; method which has a T return type synchronously
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name=&quot;T&quot;&gt;Return Type&lt;/typeparam&gt;
+    /// &lt;param name=&quot;task&quot;&gt;Task&lt;T&gt; method to execute&lt;/param&gt;
+    /// &lt;returns&gt;&lt;/returns&gt;
+    public static T RunSync&lt;T&gt;(Func&lt;Task&lt;T&gt;&gt; task)
+    {
+        var oldContext = SynchronizationContext.Current;
+        var synch = new ExclusiveSynchronizationContext();
+        SynchronizationContext.SetSynchronizationContext(synch);
+        T ret = default(T);
+        synch.Post(async _ =&gt;
+        {
+            try
+            {
+                ret = await task();
+            }
+            catch (Exception e)
+            {
+                synch.InnerException = e;
+                throw;
+            }
+            finally
+            {
+                synch.EndMessageLoop();
+            }
+        }, null);
+        synch.BeginMessageLoop();
+        SynchronizationContext.SetSynchronizationContext(oldContext);
+        return ret;
+    }
+
+    private class ExclusiveSynchronizationContext : SynchronizationContext
+    {
+        private bool done;
+        public Exception InnerException { get; set; }
+        readonly AutoResetEvent workItemsWaiting = new AutoResetEvent(false);
+        readonly Queue&lt;Tuple&lt;SendOrPostCallback, object&gt;&gt; items =
+            new Queue&lt;Tuple&lt;SendOrPostCallback, object&gt;&gt;();
+
+        public override void Send(SendOrPostCallback d, object state)
+        {
+            throw new NotSupportedException(&quot;We cannot send to our same thread&quot;);
+        }
+
+        public override void Post(SendOrPostCallback d, object state)
+        {
+            lock (items)
+            {
+                items.Enqueue(Tuple.Create(d, state));
+            }
+            workItemsWaiting.Set();
+        }
+
+        public void EndMessageLoop()
+        {
+            Post(_ =&gt; done = true, null);
+        }
+
+        public void BeginMessageLoop()
+        {
+            while (!done)
+            {
+                Tuple&lt;SendOrPostCallback, object&gt; task = null;
+                lock (items)
+                {
+                    if (items.Count &gt; 0)
+                    {
+                        task = items.Dequeue();
+                    }
+                }
+                if (task != null)
+                {
+                    task.Item1(task.Item2);
+                    if (InnerException != null) // the method threw an exeption
+                    {
+                        throw new AggregateException(&quot;AsyncHelpers.Run method threw an exception.&quot;, InnerException);
+                    }
+                }
+                else
+                {
+                    workItemsWaiting.WaitOne();
+                }
+            }
+        }
+
+        public override SynchronizationContext CreateCopy()
+        {
+            return this;
+        }
+    }
+}
+</code></pre><p><strong>建议</strong> 这个答案是三岁。我主要是基于.Net 4.0的经验编写的，而使用4.5的时候很少，特别是<code>async-await</code>。<br>一般来说，这是一个很好的简单的解决方案，但它有时会打破一切。请阅读评论中的讨论。</p>
+<h3><span id="net-45">.Net 4.5</span></h3><p>只要使用这个：</p>
+<pre><code>// For Task&lt;T&gt;: will block until the task is completed...
+var result = task.Result; 
+
+// For Task (not Task&lt;T&gt;): will block until the task is completed...
+task2.RunSynchronously();
+</code></pre><p>请参阅： <a href="http://msdn.microsoft.com/zh-
+CN/library/hh138523\(v=vs.110\" target="_blank" rel="noopener"> TaskAwaiter </a>.aspx)， <a href="http://msdn.microsoft.com/en-us/library/dd321468.aspx" target="_blank" rel="noopener"> Task.Result</a>， <a href="http://msdn.microsoft.com/en-us/library/dd321435.aspx" target="_blank" rel="noopener">Task.RunSynchronously </a></p>
+<hr>
+<h3><span id="net-40">.Net 4.0</span></h3><p>使用这个：</p>
+<pre><code>var x = (IAsyncResult)task;
+task.Start();
+
+x.AsyncWaitHandle.WaitOne();
+</code></pre><p>…或者这个：</p>
+<pre><code>task.Start();
+task.Wait();
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/06/08/how-would-i-run-an-async-taskt-method-synchronously/" data-title="我将如何同步运行异步任务T方法？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/06/08/can-i-use-python-as-a-bash-replacement/" title="我可以使用Python作为Bash替换吗？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  我可以使用Python作为Bash替换吗？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/06/07/search-all-the-occurrences-of-a-string-in-the-entire-project-in-android-studio/"  title="在Android Studio中搜索整个项目中所有出现的字符串">
+ <strong>下一篇：</strong><br/> 
+ <span>在Android Studio中搜索整个项目中所有出现的字符串
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">.Net 4.5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">.Net 4.0</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,683 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>PHP等式（== double等于）和identity（=== triple等于）比较运算符有什么不同？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="==和===是什么区别？  `比较工作的松散程度如何？ 严格的===比较是如何工作的？   什么是一些有用的例子？">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP等式（== double等于）和identity（=== triple等于）比较运算符有什么不同？">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/27/how-do-the-php-equality-double-equals-and-identity-triple-equals-comp/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="==和===是什么区别？  `比较工作的松散程度如何？ 严格的===比较是如何工作的？   什么是一些有用的例子？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP等式（== double等于）和identity（=== triple等于）比较运算符有什么不同？">
+<meta name="twitter:description" content="==和===是什么区别？  `比较工作的松散程度如何？ 严格的===比较是如何工作的？   什么是一些有用的例子？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/27/how-do-the-php-equality-double-equals-and-identity-triple-equals-comp/" title="PHP等式（== double等于）和identity（=== triple等于）比较运算符有什么不同？" itemprop="url">PHP等式（== double等于）和identity（=== triple等于）比较运算符有什么不同？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-27T01:05:40.000Z" itemprop="datePublished"> Published 2018-02-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Difference between == and ===</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Loosely == equal comparison</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.1.</span> <span class="toc-text">Converting rules</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.2.</span> <span class="toc-text">Type comparison table</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Strict === identical comparison</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.0.1.</span> <span class="toc-text">Type comparison table</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p><code>==</code>和<code>===</code>是什么区别？</p>
+<ul>
+<li>`比较工作的松散程度如何？</li>
+<li>严格的<code>===</code>比较是如何工作的？ </li>
+</ul>
+<p>什么是一些有用的例子？</p>
+<a id="more"></a>
+<h1><span id="difference-between-and">Difference between <code>==</code> and <code>===</code></span></h1><p>松散的<code>==</code> equal运算符和严格的<code>===</code>相同运算符之间的区别在<a href="“http：//">手册</a>：</p>
+<blockquote>
+<p>Comparison Operators</p>
+<p>aaaaaaaaaaaa¬aaaaaaaaaaaa¬aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+<pre><code>a Example  a Name      a Result
+</code></pre><p>a</p>
+</blockquote>
+<p>&gt;<br>aaaaaaaaaaaa¼aaaaaaaaaaaa¼aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa¤</p>
+<blockquote>
+<pre><code>a$a ==  $b a Equal     a TRUE if $a is equal to $b after type
+</code></pre><p>juggling.            a</p>
+<pre><code>a$a === $b a Identical a TRUE if $a is equal to $b, and they are
+</code></pre><p>of the same type. a</p>
+</blockquote>
+<p>&gt;<br>aaaaaaaaaaaa´aaaaaaaaaaaa´aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+<blockquote>
+</blockquote>
+<hr>
+<h1><span id="loosely-equal-comparison">Loosely <code>==</code> equal comparison</span></h1><p>如果您正在使用<code>==</code>运算符，或者使用松散比较的其他比较运算符（如<code>！=</code>，<code>＆lt;＆gt;</code>或<code>==</code>，您总是必须查看 <strong>上下文</strong><br>以查看转换的内容和原因，以了解正在进行的操作。</p>
+<h3><span id="converting-rules">Converting rules</span></h3><ul>
+<li><a href="http://php.net/manual/en/language.types.boolean.php#language.types.boolean.casting" target="_blank" rel="noopener">转换为布尔值</a> &lt; / LI&gt; </li>
+<li><a href="http://php.net/manual/en/language.types.integer.php#language.types.integer.casting" target="_blank" rel="noopener">转换为整数</a> &lt; / LI&gt; </li>
+<li><a href="http://php.net/manual/en/language.types.float.php#language.types.float.casting" target="_blank" rel="noopener">转换为浮动</a> &lt; / LI&gt; </li>
+<li><a href="http://php.net/manual/en/language.types.string.php#language.types.string.casting" target="_blank" rel="noopener">转换为字符串</a> &lt; / LI&gt; </li>
+<li><a href="http://php.net/manual/en/language.types.array.php#language.types.array.casting" target="_blank" rel="noopener">转换为数组</a> &lt; / LI&gt; </li>
+<li><a href="http://php.net/manual/en/language.types.object.php#language.types.object.casting" target="_blank" rel="noopener">转换为对象</a> &lt; / LI&gt; </li>
+<li><a href="http://php.net/manual/en/language.types.resource.php#language.types.resource.casting" target="_blank" rel="noopener">转换为资源</a> &lt; / LI&gt; </li>
+<li><a href="http://php.net/manual/en/language.types.null.php#language.types.null.casting" target="_blank" rel="noopener">转换为NULL </a> &lt; / LI&gt; </li>
+</ul>
+<h3><span id="type-comparison-table">Type comparison table</span></h3><p>作为参考和例子，您可以在<a href="http://php.net/manual/en/types.comparisons.php#types
+.comparisions-loose" target="_blank" rel="noopener">手动</a>：</p>
+<blockquote>
+<p>Loose comparisons with <code>==</code></p>
+<p>aaaaaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaaaa¬aaaaaaaa¬aaaaaaaa</p>
+<pre><code>a         a TRUE  a FALSE a   1   a   0   a  -1   a  &quot;1&quot;
+</code></pre><p>a  “0”  a “-1”  a NULL  a array() a “php” a  “”   a</p>
+</blockquote>
+<p>&gt;<br>aaaaaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaaaa¼aaaaaaaa¼aaaaaaaa¤</p>
+<blockquote>
+<pre><code>a TRUE    a TRUE  a FALSE a TRUE  a FALSE a TRUE  a TRUE
+</code></pre><p>a FALSE a TRUE  a FALSE a FALSE   a TRUE  a FALSE a</p>
+<pre><code>a FALSE   a FALSE a TRUE  a FALSE a TRUE  a FALSE a FALSE
+</code></pre><p>a TRUE  a FALSE a TRUE  a TRUE    a FALSE a TRUE  a</p>
+<pre><code>a 1       a TRUE  a FALSE a TRUE  a FALSE a FALSE a TRUE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a 0       a FALSE a TRUE  a FALSE a TRUE  a FALSE a FALSE
+</code></pre><p>a TRUE  a FALSE a TRUE  a FALSE   a TRUE  a TRUE  a</p>
+<pre><code>a -1      a TRUE  a FALSE a FALSE a FALSE a TRUE  a FALSE
+</code></pre><p>a FALSE a TRUE  a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a &quot;1&quot;     a TRUE  a FALSE a TRUE  a FALSE a FALSE a TRUE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a &quot;0&quot;     a FALSE a TRUE  a FALSE a TRUE  a FALSE a FALSE
+</code></pre><p>a TRUE  a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a &quot;-1&quot;    a TRUE  a FALSE a FALSE a FALSE a TRUE  a FALSE
+</code></pre><p>a FALSE a TRUE  a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a NULL    a FALSE a TRUE  a FALSE a TRUE  a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a TRUE  a TRUE    a FALSE a TRUE  a</p>
+<pre><code>a array() a FALSE a TRUE  a FALSE a FALSE a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a TRUE  a TRUE    a FALSE a FALSE a</p>
+<pre><code>a &quot;php&quot;   a TRUE  a FALSE a FALSE a TRUE  a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a TRUE  a FALSE a</p>
+<pre><code>a &quot;&quot;      a FALSE a TRUE  a FALSE a TRUE  a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a TRUE  a FALSE   a FALSE a TRUE  a</p>
+</blockquote>
+<p>&gt;<br>aaaaaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaaaa´aaaaaaaa´aaaaaaaa</p>
+<blockquote>
+</blockquote>
+<h1><span id="strict-identical-comparison">Strict <code>===</code> identical comparison</span></h1><p>如果您正在使用<code>===</code>运算符或使用严格比较的任何其他比较运算符（如<code>！==</code>或<code>===</code>代码&gt;，那么你总是可以确定的类型不会奇迹般地改变，因为不会有转换正在进行。因此，严格比较，类型和价值必须相同，而不仅仅是价值。</p>
+<h3><span id="type-comparison-table">Type comparison table</span></h3><p>作为参考和例子，您可以在<a href="http://php.net/manual/en/types.comparisons.php#type
+.comparisons-strict" target="_blank" rel="noopener">手动</a>：</p>
+<blockquote>
+<p>Strict comparisons with <code>===</code></p>
+<p>aaaaaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaa¬aaaaaaaaaa¬aaaaaaaa¬aaaaaaaa</p>
+<pre><code>a         a TRUE  a FALSE a   1   a   0   a  -1   a  &quot;1&quot;
+</code></pre><p>a  “0”  a “-1”  a NULL  a array() a “php” a  “”   a</p>
+</blockquote>
+<p>&gt;<br>aaaaaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaa¼aaaaaaaaaa¼aaaaaaaa¼aaaaaaaa¤</p>
+<blockquote>
+<pre><code>a TRUE    a TRUE  a FALSE a FALSE a FALSE a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a FALSE   a FALSE a TRUE  a FALSE a FALSE a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a 1       a FALSE a FALSE a TRUE  a FALSE a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a 0       a FALSE a FALSE a FALSE a TRUE  a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a -1      a FALSE a FALSE a FALSE a FALSE a TRUE  a FALSE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a &quot;1&quot;     a FALSE a FALSE a FALSE a FALSE a FALSE a TRUE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a &quot;0&quot;     a FALSE a FALSE a FALSE a FALSE a FALSE a FALSE
+</code></pre><p>a TRUE  a FALSE a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a &quot;-1&quot;    a FALSE a FALSE a FALSE a FALSE a FALSE a FALSE
+</code></pre><p>a FALSE a TRUE  a FALSE a FALSE   a FALSE a FALSE a</p>
+<pre><code>a NULL    a FALSE a FALSE a FALSE a FALSE a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a TRUE  a FALSE   a FALSE a FALSE a</p>
+<pre><code>a array() a FALSE a FALSE a FALSE a FALSE a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a FALSE a TRUE    a FALSE a FALSE a</p>
+<pre><code>a &quot;php&quot;   a FALSE a FALSE a FALSE a FALSE a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a TRUE  a FALSE a</p>
+<pre><code>a &quot;&quot;      a FALSE a FALSE a FALSE a FALSE a FALSE a FALSE
+</code></pre><p>a FALSE a FALSE a FALSE a FALSE   a FALSE a TRUE  a</p>
+</blockquote>
+<p>&gt;<br>aaaaaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaa´aaaaaaaaaa´aaaaaaaa´aaaaaaaa</p>
+<blockquote>
+</blockquote>
+<p>运算符==在两种不同类型之间转换，而===运算符执行“类型安全比较”。这意味着只有当两个操作数具有相同的类型和相同的值时才会返回true。</p>
+<p>示例：</p>
+<pre><code>1 === 1: true
+1 == 1: true
+1 === &quot;1&quot;: false // 1 is an integer, &quot;1&quot; is a string
+1 == &quot;1&quot;: true // &quot;1&quot; gets casted to an integer, which is 1
+&quot;foo&quot; === &quot;foo&quot;: true // both operands are strings and have the same value
+</code></pre><p><strong>警告</strong> ：具有等同成员的同一类的两个实例不匹配<code>===</code>运算符。例如：</p>
+<pre><code>$a = new stdClass();
+$a-&gt;foo = &quot;bar&quot;;
+$b = clone $a;
+var_dump($a === $b); // bool(false)
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/27/how-do-the-php-equality-double-equals-and-identity-triple-equals-comp/" data-title="PHP等式（== double等于）和identity（=== triple等于）比较运算符有什么不同？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/27/pretty-printing-json-with-php/" title="漂亮的打印与PHP的JSON">
+  <strong>上一篇：</strong><br/>
+  <span>
+  漂亮的打印与PHP的JSON</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/26/how-do-i-make-links-in-a-textview-clickable/"  title="如何使TextView中的链接可点击？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何使TextView中的链接可点击？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Difference between == and ===</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Loosely == equal comparison</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.1.</span> <span class="toc-text">Converting rules</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.2.</span> <span class="toc-text">Type comparison table</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Strict === identical comparison</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.0.1.</span> <span class="toc-text">Type comparison table</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

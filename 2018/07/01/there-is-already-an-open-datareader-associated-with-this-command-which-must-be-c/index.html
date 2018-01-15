@@ -1,0 +1,651 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>已经有一个打开的DataReader与这个Command关联，必须先关闭它 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有这个查询，我得到这个函数的错误： var accounts = from account in context.Accounts                from guranteer in account.Gurantors                select new AccountsReport                {                    Credi">
+<meta name="keywords" content="c-sharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="已经有一个打开的DataReader与这个Command关联，必须先关闭它">
+<meta property="og:url" content="https://www.tracholar.top/2018/07/01/there-is-already-an-open-datareader-associated-with-this-command-which-must-be-c/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有这个查询，我得到这个函数的错误： var accounts = from account in context.Accounts                from guranteer in account.Gurantors                select new AccountsReport                {                    Credi">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="已经有一个打开的DataReader与这个Command关联，必须先关闭它">
+<meta name="twitter:description" content="我有这个查询，我得到这个函数的错误： var accounts = from account in context.Accounts                from guranteer in account.Gurantors                select new AccountsReport                {                    Credi">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/01/there-is-already-an-open-datareader-associated-with-this-command-which-must-be-c/" title="已经有一个打开的DataReader与这个Command关联，必须先关闭它" itemprop="url">已经有一个打开的DataReader与这个Command关联，必须先关闭它</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-01T01:49:52.000Z" itemprop="datePublished"> Published 2018-07-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有这个查询，我得到这个函数的错误：</p>
+<pre><code>var accounts = from account in context.Accounts
+               from guranteer in account.Gurantors
+               select new AccountsReport
+               {
+                   CreditRegistryId = account.CreditRegistryId,
+                   AccountNumber = account.AccountNo,
+                   DateOpened = account.DateOpened,
+               };
+
+ return accounts.AsEnumerable()
+                .Select((account, index) =&gt; new AccountsReport()
+                    {
+                        RecordNumber = FormattedRowNumber(account, index + 1),
+                        CreditRegistryId = account.CreditRegistryId,
+                        DateLastUpdated = DateLastUpdated(account.CreditRegistryId, account.AccountNumber),
+                        AccountNumber = FormattedAccountNumber(account.AccountType, account.AccountNumber)
+                    })
+                .OrderBy(c=&gt;c.FormattedRecordNumber)
+                .ThenByDescending(c =&gt; c.StateChangeDate);
+
+
+public DateTime DateLastUpdated(long creditorRegistryId, string accountNo)
+{
+    return (from h in context.AccountHistory
+            where h.CreditorRegistryId == creditorRegistryId &amp;&amp; h.AccountNo == accountNo
+            select h.LastUpdated).Max();
+}
+</code></pre><p>错误是：</p>
+<blockquote>
+<p>There is already an open DataReader associated with this Command which must<br>be closed first.</p>
+</blockquote>
+<p>&lt;强&gt;更新</p>
+<p>添加堆栈跟踪：</p>
+<pre><code>InvalidOperationException: There is already an open DataReader associated with this Command which must be closed first.]
+   System.Data.SqlClient.SqlInternalConnectionTds.ValidateConnectionForExecute(SqlCommand command) +5008639
+   System.Data.SqlClient.SqlConnection.ValidateConnectionForExecute(String method, SqlCommand command) +23
+   System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async) +144
+   System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result) +87
+   System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method) +32
+   System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method) +141
+   System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior) +12
+   System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior) +10
+   System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior) +443
+
+[EntityCommandExecutionException: An error occurred while executing the command definition. See the inner exception for details.]
+   System.Data.EntityClient.EntityCommandDefinition.ExecuteStoreCommands(EntityCommand entityCommand, CommandBehavior behavior) +479
+   System.Data.Objects.Internal.ObjectQueryExecutionPlan.Execute(ObjectContext context, ObjectParameterCollection parameterValues) +683
+   System.Data.Objects.ObjectQuery`1.GetResults(Nullable`1 forMergeOption) +119
+   System.Data.Objects.ObjectQuery`1.System.Collections.Generic.IEnumerable&lt;T&gt;.GetEnumerator() +38
+   System.Linq.Enumerable.Single(IEnumerable`1 source) +114
+   System.Data.Objects.ELinq.ObjectQueryProvider.&lt;GetElementFunction&gt;b__3(IEnumerable`1 sequence) +4
+   System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle(IEnumerable`1 query, Expression queryRoot) +29
+   System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute(Expression expression) +91
+   System.Data.Entity.Internal.Linq.DbQueryProvider.Execute(Expression expression) +69
+   System.Linq.Queryable.Max(IQueryable`1 source) +216
+   CreditRegistry.Repositories.CreditRegistryRepository.DateLastUpdated(Int64 creditorRegistryId, String accountNo) in D:\Freelance Work\SuperExpert\CreditRegistry\CreditRegistry\Repositories\CreditRegistryRepository.cs:1497
+   CreditRegistry.Repositories.CreditRegistryRepository.&lt;AccountDetails&gt;b__88(AccountsReport account, Int32 index) in D:\Freelance Work\SuperExpert\CreditRegistry\CreditRegistry\Repositories\CreditRegistryRepository.cs:1250
+   System.Linq.&lt;SelectIterator&gt;d__7`2.MoveNext() +198
+   System.Linq.Buffer`1..ctor(IEnumerable`1 source) +217
+   System.Linq.&lt;GetEnumerator&gt;d__0.MoveNext() +96
+</code></pre><a id="more"></a>
+<p>如果在迭代另一个查询的结果时执行查询，则可能发生这种情况。从你的例子中不清楚发生这种情况的原因是这个例子不完整。</p>
+<p>有一件事可以导致这个问题，那就是当迭代某个查询的结果时触发延迟加载。</p>
+<p>通过在连接字符串中允许MARS可以很容易地解决这个问题。将<code>MultipleActiveResultSets = true</code>添加到连接字符串的提供者部分（其中指定了数据源，初始目录等）。</p>
+<p>您可以在<code>return</code>语句之前使用<code>ToList（）</code>方法。</p>
+<pre><code>var accounts =
+from account in context.Accounts
+from guranteer in account.Gurantors
+
+ select new AccountsReport
+{
+    CreditRegistryId = account.CreditRegistryId,
+    AccountNumber = account.AccountNo,
+    DateOpened = account.DateOpened,
+};
+
+ return accounts.AsEnumerable()
+               .Select((account, index) =&gt; new AccountsReport()
+                       {
+                           RecordNumber = FormattedRowNumber(account, index + 1),
+                           CreditRegistryId = account.CreditRegistryId,
+                              DateLastUpdated = DateLastUpdated(account.CreditRegistryId, account.AccountNumber),
+                           AccountNumber = FormattedAccountNumber(account.AccountType, account.AccountNumber)}).OrderBy(c=&gt;c.FormattedRecordNumber).ThenByDescending(c =&gt; c.StateChangeDate).ToList();
+
+
+ public DateTime DateLastUpdated(long creditorRegistryId, string accountNo)
+    {
+        var dateReported = (from h in context.AccountHistory
+                            where h.CreditorRegistryId == creditorRegistryId &amp;&amp; h.AccountNo == accountNo
+                            select h.LastUpdated).Max();
+        return dateReported;
+    }
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/07/01/there-is-already-an-open-datareader-associated-with-this-command-which-must-be-c/" data-title="已经有一个打开的DataReader与这个Command关联，必须先关闭它 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/01/setting-an-environment-variable-before-a-command-in-bash-not-working-for-second/" title="在bash中的命令之前设置一个环境变量不适用于管道中的第二个命令">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在bash中的命令之前设置一个环境变量不适用于管道中的第二个命令</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/06/30/navigation-drawer-google-vs-youtube/"  title="导航抽屉（Google+与YouTube）">
+ <strong>下一篇：</strong><br/> 
+ <span>导航抽屉（Google+与YouTube）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

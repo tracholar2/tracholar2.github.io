@@ -1,0 +1,732 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>好奇的空合并运算符自定义隐式转换行为 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="注意：这似乎已在 Roslyn 中解决 这个问题出现在我写这个的答案时，它讲述了 null-coalescing运算符。 提醒一下，空合并运算符的思想是形式表达式 x ?? y 首先评估x，然后：  如果x的值为null，则评估y，这是表达式的最终结果 如果x的值是非null，则y是 not ，并且x是表达式的最终结果，必要时转换为y的编译时类型  现在 通常 不需要转换，或者它只是从一个可以为空">
+<meta name="keywords" content="c-sharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="好奇的空合并运算符自定义隐式转换行为">
+<meta property="og:url" content="https://www.tracholar.top/2018/05/27/curious-null-coalescing-operator-custom-implicit-conversion-behaviour/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="注意：这似乎已在 Roslyn 中解决 这个问题出现在我写这个的答案时，它讲述了 null-coalescing运算符。 提醒一下，空合并运算符的思想是形式表达式 x ?? y 首先评估x，然后：  如果x的值为null，则评估y，这是表达式的最终结果 如果x的值是非null，则y是 not ，并且x是表达式的最终结果，必要时转换为y的编译时类型  现在 通常 不需要转换，或者它只是从一个可以为空">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="好奇的空合并运算符自定义隐式转换行为">
+<meta name="twitter:description" content="注意：这似乎已在 Roslyn 中解决 这个问题出现在我写这个的答案时，它讲述了 null-coalescing运算符。 提醒一下，空合并运算符的思想是形式表达式 x ?? y 首先评估x，然后：  如果x的值为null，则评估y，这是表达式的最终结果 如果x的值是非null，则y是 not ，并且x是表达式的最终结果，必要时转换为y的编译时类型  现在 通常 不需要转换，或者它只是从一个可以为空">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/27/curious-null-coalescing-operator-custom-implicit-conversion-behaviour/" title="好奇的空合并运算符自定义隐式转换行为" itemprop="url">好奇的空合并运算符自定义隐式转换行为</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-27T01:44:41.000Z" itemprop="datePublished"> Published 2018-05-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p><strong>注意：这似乎已在<a href="https://github.com/dotnet/roslyn" target="_blank" rel="noopener"> Roslyn </a>中解决</strong></p>
+<p>这个问题出现在我写<a href="https://stackoverflow.com/questions/6238074" target="_blank" rel="noopener">这个</a>的答案时，它讲述了<a href="“http："> null-<br>coalescing运算符</a>。</p>
+<p>提醒一下，空合并运算符的思想是形式表达式</p>
+<pre><code>x ?? y
+</code></pre><p>首先评估<code>x</code>，然后：</p>
+<ul>
+<li>如果<code>x</code>的值为null，则评估<code>y</code>，这是表达式的最终结果</li>
+<li>如果<code>x</code>的值是非null，则<code>y</code>是 <em>not</em> ，并且<code>x</code>是表达式的最终结果，必要时转换为<code>y</code>的编译时类型</li>
+</ul>
+<p>现在 <em>通常</em> 不需要转换，或者它只是从一个可以为空的类型转换为一个不可空的类型 - 通常类型是相同的，或者仅仅来自（说）<code>int ？</code>到<code>int</code>。但是，您可以创建您自己的隐式转换运算符，并在必要时使用它们。</p>
+<p>对于<code>x的简单情况y</code>，我还没有看到任何奇怪的行为。但是，用<code>（x ?? y）?? z</code>我看到一些令人困惑的行为。</p>
+<p>这是一个简短但完整的测试程序 - 结果在评论中：</p>
+<pre><code>using System;
+
+public struct A
+{
+    public static implicit operator B(A input)
+    {
+        Console.WriteLine(&quot;A to B&quot;);
+        return new B();
+    }
+
+    public static implicit operator C(A input)
+    {
+        Console.WriteLine(&quot;A to C&quot;);
+        return new C();
+    }
+}
+
+public struct B
+{
+    public static implicit operator C(B input)
+    {
+        Console.WriteLine(&quot;B to C&quot;);
+        return new C();
+    }
+}
+
+public struct C {}
+
+class Test
+{
+    static void Main()
+    {
+        A? x = new A();
+        B? y = new B();
+        C? z = new C();
+        C zNotNull = new C();
+
+        Console.WriteLine(&quot;First case&quot;);
+        // This prints
+        // A to B
+        // A to B
+        // B to C
+        C? first = (x ?? y) ?? z;
+
+        Console.WriteLine(&quot;Second case&quot;);
+        // This prints
+        // A to B
+        // B to C
+        var tmp = x ?? y;
+        C? second = tmp ?? z;
+
+        Console.WriteLine(&quot;Third case&quot;);
+        // This prints
+        // A to B
+        // B to C
+        C? third = (x ?? y) ?? zNotNull;
+    }
+}
+</code></pre><p>所以我们有三个自定义的值类型：<code>A</code>，<code>B</code>和<code>C</code>，转换从A到B，A到C， B到C。</p>
+<p>我可以理解第二种情况和第三种情况…但是为什么在第一种情况下会有额外的A到B的转换？特别是，我真的很希望第一种情况和第二种情况是相同的 -<br>毕竟只是将一个表达式提取到一个局部变量中。</p>
+<p>有什么事情发生？在C＃编译器中，我非常犹豫要哭“bug”，但是我很难理解发生了什么…</p>
+<p>编辑：好吧，这是一个很糟糕的例子，感谢配置器的答案，这给了我更多的理由认为这是一个错误。编辑：示例甚至不需要两个空合并操作符…</p>
+<pre><code>using System;
+
+public struct A
+{
+    public static implicit operator int(A input)
+    {
+        Console.WriteLine(&quot;A to int&quot;);
+        return 10;
+    }
+}
+
+class Test
+{
+    static A? Foo()
+    {
+        Console.WriteLine(&quot;Foo() called&quot;);
+        return new A();
+    }
+
+    static void Main()
+    {
+        int? y = 10;
+
+        int? result = Foo() ?? y;
+    }
+}
+</code></pre><p>这个输出是：</p>
+<pre><code>Foo() called
+Foo() called
+A to int
+</code></pre><p><code>Foo（）</code>在这里被调用两次的事实对我来说是非常令人惊讶的 - 我看不出有两次表达式的原因。_ p&gt; <a id="more"></a><br>感谢所有分析这个问题的人。这显然是一个编译器错误。这似乎只发生在合并运算符左侧的两个可空类型的提升转换时。</p>
+<p>我还没有确定出错的地方，但是在编译的“可空的降低”阶段的某个时刻 - 在初始分析之后，代码生成之前 - 我们减少了表达式</p>
+<pre><code>result = Foo() ?? y;
+</code></pre><p>从上面的例子到道德等价物：</p>
+<pre><code>A? temp = Foo();
+result = temp.HasValue ? 
+    new int?(A.op_implicit(Foo().Value)) : 
+    y;
+</code></pre><p>显然这是不正确的;正确的降低是</p>
+<pre><code>result = temp.HasValue ? 
+    new int?(A.op_implicit(temp.Value)) : 
+    y;
+</code></pre><p>根据我迄今为止的分析，我最好的猜测是可优化的优化器在这里脱轨。我们有一个可以为null的优化器，它查找那些我们知道可以为null的类型的特定表达式不可能为null的情况。考虑下面的天真分析：我们可以先说这个</p>
+<pre><code>result = Foo() ?? y;
+</code></pre><p>与</p>
+<p>相同</p>
+<pre><code>A? temp = Foo();
+result = temp.HasValue ? 
+    (int?) temp : 
+    y;
+</code></pre><p>然后我们可以说</p>
+<pre><code>conversionResult = (int?) temp 
+</code></pre><p>与</p>
+<p>相同</p>
+<pre><code>A? temp2 = temp;
+conversionResult = temp2.HasValue ? 
+    new int?(op_Implicit(temp2.Value)) : 
+    (int?) null
+</code></pre><p>但是优化器可以介入并说“哇，等一下，我们已经检查过temp不是空的，因为我们正在调用一个提升的转换运算符，所以不需要再次检查它是否为null”。我们让他们优化它只是</p>
+<pre><code>new int?(op_Implicit(temp2.Value)) 
+</code></pre><p>我的猜测是我们正在缓存这样的事实：优化的<code>（int？）Foo（）</code>形式是` new int？（op_implicit（Foo（）。Value））&lt; /<br>code&gt;，但实际上并不是我们想要的优化形式;我们需要Foo（）的优化形式 - 用临时和随后转换替换。</p>
+<p>C＃编译器中的许多错误是缓存决定不当的结果。对智者说一句话：每当你缓存一个事实供以后使用时，如果相关的变化**，你可能会造成不一致。在这种情况下，相关的事情已经改变了初始分析后，对Foo（）的调用应该总是作为临时获取来实现。</p>
+<p>我们在C＃3.0中做了很多可重写的重写过程的重组。该错误在C＃3.0和4.0中重现，但不在C＃2.0中，这意味着该错误可能是我的错误。遗憾！</p>
+<p>我会得到一个输入到数据库中的错误，我们将看看我们是否能够为未来的语言版本修正这个问题。再次感谢大家的分析。这非常有帮助！</p>
+<p>更新：我重写了可为空的优化器从头开始Roslyn;它现在做得更好，避免了这些奇怪的错误。有关Roslyn中优化器如何工作的一些想法，请参阅我的系列文章，这些文章从这里开始：<a href="“https://ericlippert.com/2012/12/20/nullable-micro-optimizations-part-
+one/”的rel">https://ericlippert.com/2012/12/20/nullable-micro-optimizations-part-one/</a></p>
+<p>这绝对是一个错误。</p>
+<pre><code>public class Program {
+    static A? X() {
+        Console.WriteLine(&quot;X()&quot;);
+        return new A();
+    }
+    static B? Y() {
+        Console.WriteLine(&quot;Y()&quot;);
+        return new B();
+    }
+    static C? Z() {
+        Console.WriteLine(&quot;Z()&quot;);
+        return new C();
+    }
+
+    public static void Main() {
+        C? test = (X() ?? Y()) ?? Z();
+    }
+}
+</code></pre><p>这段代码将输出：</p>
+<pre><code>X()
+X()
+A to B (0)
+X()
+X()
+A to B (0)
+B to C (0)
+</code></pre><p>这使我认为每个<code>??</code>合并表达式的第一部分被计算两次。 这段代码证明了这一点：</p>
+<pre><code>B? test= (X() ?? Y());
+</code></pre><p>输出：</p>
+<pre><code>X()
+X()
+A to B (0)
+</code></pre><p>这似乎只发生在表达式需要在两个可空类型之间进行转换的时候;我尝试了各种排列方式，其中一个方面是一个字符串，并没有导致这种行为。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/05/27/curious-null-coalescing-operator-custom-implicit-conversion-behaviour/" data-title="好奇的空合并运算符自定义隐式转换行为 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/27/bash-how-best-to-include-other-scripts/" title="Bash：如何包含其他脚本？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Bash：如何包含其他脚本？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/05/27/how-can-i-sort-arrays-and-data-in-php/"  title="我怎样才能排序在PHP中的数组和数据？">
+ <strong>下一篇：</strong><br/> 
+ <span>我怎样才能排序在PHP中的数组和数据？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,612 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>从输入字段读取属性时，HTML编码丢失 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我使用JavaScript从隐藏字段中提取值并将其显示在文本框中。隐藏字段中的值被编码。 例如， &amp;lt;input id=&amp;apos;hiddenId&amp;apos; type=&amp;apos;hidden&amp;apos; value=&amp;apos;chalk &amp;amp;amp; cheese&amp;apos; /&amp;gt; 被拉进 &amp;lt;input type=&amp;apos;text&amp;apos; value=&amp;apo">
+<meta name="keywords" content="javascript,html,jquery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从输入字段读取属性时，HTML编码丢失">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/html-encoding-lost-when-attribute-read-from-input-field/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我使用JavaScript从隐藏字段中提取值并将其显示在文本框中。隐藏字段中的值被编码。 例如， &amp;lt;input id=&amp;apos;hiddenId&amp;apos; type=&amp;apos;hidden&amp;apos; value=&amp;apos;chalk &amp;amp;amp; cheese&amp;apos; /&amp;gt; 被拉进 &amp;lt;input type=&amp;apos;text&amp;apos; value=&amp;apo">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从输入字段读取属性时，HTML编码丢失">
+<meta name="twitter:description" content="我使用JavaScript从隐藏字段中提取值并将其显示在文本框中。隐藏字段中的值被编码。 例如， &amp;lt;input id=&amp;apos;hiddenId&amp;apos; type=&amp;apos;hidden&amp;apos; value=&amp;apos;chalk &amp;amp;amp; cheese&amp;apos; /&amp;gt; 被拉进 &amp;lt;input type=&amp;apos;text&amp;apos; value=&amp;apo">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/html-encoding-lost-when-attribute-read-from-input-field/" title="从输入字段读取属性时，HTML编码丢失" itemprop="url">从输入字段读取属性时，HTML编码丢失</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我使用JavaScript从隐藏字段中提取值并将其显示在文本框中。隐藏字段中的值被编码。</p>
+<p>例如，</p>
+<pre><code>&lt;input id=&apos;hiddenId&apos; type=&apos;hidden&apos; value=&apos;chalk &amp;amp; cheese&apos; /&gt;
+</code></pre><p>被拉进</p>
+<pre><code>&lt;input type=&apos;text&apos; value=&apos;chalk &amp;amp; cheese&apos; /&gt;
+</code></pre><p>通过一些jQuery从隐藏字段获取值（在这一点上，我失去了编码）：</p>
+<pre><code>$(&apos;#hiddenId&apos;).attr(&apos;value&apos;)
+</code></pre><p>问题是，当我阅读<code>chalk＆amp; amp; amp; amp; amp; amp; amp; amp; amp;
+amp;奶酪</code>从隐藏的领域，JavaScript似乎失去了编码。要转义<code>“</code>和<code>&#39;</code>，我希望编码保持不变。</p>
+<p>有没有一个JavaScript库或一个jQuery方法将HTML编码的字符串？</p>
+<p><a id="more"></a> 我使用这些功能：</p>
+<pre><code>function htmlEncode(value){
+  // Create a in-memory div, set its inner text (which jQuery automatically encodes)
+  // Then grab the encoded contents back out. The div never exists on the page.
+  return $(&apos;&lt;div/&gt;&apos;).text(value).html();
+}
+
+function htmlDecode(value){
+  return $(&apos;&lt;div/&gt;&apos;).html(value).text();
+}
+</code></pre><p>基本上div元素是在内存中创建的，但是它永远不会附加到文档中。</p>
+<p>在<code>htmlEncode</code>函数中，我设置了元素的<code>innerText</code>，并检索了编码后的<code>innerHTML</code>。在<code>htmlDecode</code>函数中，我设置元素的<code>innerHTML</code>值，并检索<code>innerText</code>。</p>
+<p>检查一个正在运行的示例<a href="http://jsbin.com/ejuru" target="_blank" rel="noopener">此处</a>。</p>
+<p>jQuery技巧不会对引号进行编码，在IE中，它会将您的空格删除。</p>
+<p>基于Django中的 <strong>escape</strong> 模板标签，我猜测这个标签已被大量使用/测试过了，所以我开发了这个功能来完成需要的功能。</p>
+<p>与whitespace-stripping问题的任何解决方法相比，它可以说是更简单（也可能更快），并且它会对引号进行编码，例如，如果要使用属性值内的结果，<br>p&gt;</p>
+<pre><code>function htmlEscape(str) {
+    return str
+        .replace(/&amp;/g, &apos;&amp;amp;&apos;)
+        .replace(/&quot;/g, &apos;&amp;quot;&apos;)
+        .replace(/&apos;/g, &apos;&amp;#39;&apos;)
+        .replace(/&lt;/g, &apos;&amp;lt;&apos;)
+        .replace(/&gt;/g, &apos;&amp;gt;&apos;);
+}
+
+// I needed the opposite function today, so adding here too:
+function htmlUnescape(str){
+    return str
+        .replace(/&amp;quot;/g, &apos;&quot;&apos;)
+        .replace(/&amp;#39;/g, &quot;&apos;&quot;)
+        .replace(/&amp;lt;/g, &apos;&lt;&apos;)
+        .replace(/&amp;gt;/g, &apos;&gt;&apos;)
+        .replace(/&amp;amp;/g, &apos;&amp;&apos;);
+}
+</code></pre><p><strong>更新2013年6月17日：</strong><br>在搜索最快的转义时，我发现了一个<code>replaceAll</code>方法的实现：<br><a href="http://dumpsite.com/forum/index.php?topic=4.msg29#msg29" target="_blank" rel="noopener"> http://dumpsite.com/forum/index.php?topic=4 .msg29＃msg29</a>结果<br>（也在这里引用：<a href="“https://stackoverflow.com/questions/2116558
+/fastest-method-to-replace-all-instances-of-a-character-
+in-a-string/6714233#6714233”">用最快的方法替换字符串中的所有字符的实例</a>）<br>一些性能结果在这里：<br><a href="http://jsperf.com/htmlencoderegex/25" target="_blank" rel="noopener"> http://jsperf.com/htmlencoderegex/25 </a></p>
+<p>它给上面内置的<code>replace</code>链提供了相同的结果字符串。如果有人能解释为什么它更快，我会非常高兴！？</p>
+<p><strong>更新2015-03-04：</strong><br>我只注意到AngularJS正在使用上面的方法：<br><a href="https://github.com/angular/angular.js/blob/v1.3.14/src/ngSanitize/sanitize.js#L435" target="_blank" rel="noopener"> https://github.com/angular<br>/angular.js/blob/v1.3.14/src/ngSanitize/sanitize.js#L435</a></p>
+<p>他们添加了一些改进 - 他们似乎正在处理一个[模糊的Unicode问题</p>
+<p>a&gt;以及将所有非字母数字字符转换为实体。我觉得后者不是必要的，只要你有一个为你的文档指定的UTF8字符集。</p>
+<p>我会注意到（4年后）Django仍然没有做这两件事情，所以我不确定它们有多重要。<br><a href="https://github.com/django/django/blob/1.8b1/django/utils/html.py#L44" target="_blank" rel="noopener"> https://github.com/django/django/斑点/ 1.8b1 / django的/ utils的/ html.py＃L44</a></p>
+<p><strong>更新2016-04-06：</strong><br>您也可能希望转义正斜杠<code>/</code>。对于正确的HTML编码，这不是必需的，但它是<a href="https://www.owasp.org/index.php/XSS_\(Cross_Site_Scripting\" target="_blank" rel="noopener">建议由OWASP</a>.p_prevention_cheat<em>Sheet#RULE</em><br>.231_-<br>_HTML_Escape_Before_Inserting_Untrusted_Data_into_HTML_Element_Content)作为反XSS安全措施。<br>（感谢@JNF在评论中提出这个建议）</p>
+<pre><code>.replace(/\//g, &apos;&amp;#x2F;&apos;);
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/jquery/">jquery</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/html-encoding-lost-when-attribute-read-from-input-field/" data-title="从输入字段读取属性时，HTML编码丢失 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/html-form-readonly-select-tag-input/" title="HTML表单只读选择标记/输入">
+  <strong>上一篇：</strong><br/>
+  <span>
+  HTML表单只读选择标记/输入</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/html-text-input-allows-only-numeric-input/"  title="HTML文本输入只允许数字输入">
+ <strong>下一篇：</strong><br/> 
+ <span>HTML文本输入只允许数字输入
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

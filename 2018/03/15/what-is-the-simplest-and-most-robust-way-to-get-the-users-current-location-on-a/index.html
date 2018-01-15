@@ -1,0 +1,920 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>什么是在Android上获取用户当前位置的最简单，最健壮的方法？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="Android上的LocationManager API对于只需要偶尔和粗略近似用户位置的应用程序来说似乎有些痛苦。 我正在使用的应用程序本身并不是一个位置应用程序，但它确实需要获取用户的位置才能显示附近的商家列表。不需要担心用户是否正在移动或类似的东西。 这是我想要做的：  向用户显示附近地点的列表。 预先载入用户的位置，以便在Activity X中需要它时，它将可用。 我不特别关心更新的准确性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是在Android上获取用户当前位置的最简单，最健壮的方法？">
+<meta property="og:url" content="https://www.tracholar.top/2018/03/15/what-is-the-simplest-and-most-robust-way-to-get-the-users-current-location-on-a/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="Android上的LocationManager API对于只需要偶尔和粗略近似用户位置的应用程序来说似乎有些痛苦。 我正在使用的应用程序本身并不是一个位置应用程序，但它确实需要获取用户的位置才能显示附近的商家列表。不需要担心用户是否正在移动或类似的东西。 这是我想要做的：  向用户显示附近地点的列表。 预先载入用户的位置，以便在Activity X中需要它时，它将可用。 我不特别关心更新的准确性">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是在Android上获取用户当前位置的最简单，最健壮的方法？">
+<meta name="twitter:description" content="Android上的LocationManager API对于只需要偶尔和粗略近似用户位置的应用程序来说似乎有些痛苦。 我正在使用的应用程序本身并不是一个位置应用程序，但它确实需要获取用户的位置才能显示附近的商家列表。不需要担心用户是否正在移动或类似的东西。 这是我想要做的：  向用户显示附近地点的列表。 预先载入用户的位置，以便在Activity X中需要它时，它将可用。 我不特别关心更新的准确性">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/15/what-is-the-simplest-and-most-robust-way-to-get-the-users-current-location-on-a/" title="什么是在Android上获取用户当前位置的最简单，最健壮的方法？" itemprop="url">什么是在Android上获取用户当前位置的最简单，最健壮的方法？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-03-15T02:29:23.000Z" itemprop="datePublished"> Published 2018-03-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>Android上的<code>LocationManager</code> API对于只需要偶尔和粗略近似用户位置的应用程序来说似乎有些痛苦。</p>
+<p>我正在使用的应用程序本身并不是一个位置应用程序，但它确实需要获取用户的位置才能显示附近的商家列表。不需要担心用户是否正在移动或类似的东西。</p>
+<p>这是我想要做的：</p>
+<ul>
+<li>向用户显示附近地点的列表。</li>
+<li>预先载入用户的位置，以便在<code>Activity</code> X中需要它时，它将可用。</li>
+<li>我不特别关心更新的准确性或频率。只要抓住一个位置就足够了。也许如果我想要看到我会每隔几分钟更新一次位置，但这不是一个重要的优先事项。</li>
+<li>只要具有GPS或网络位置提供商，即可使用任何设备。</li>
+</ul>
+<p>似乎不应该那么辛苦，但在我看来，我必须启动两个不同的位置提供商（GPS和NETWORK）并管理每个生命周期。不仅如此，我还必须在多个活动中复制相同的代码来满足＃2。过去，我尝试过使用<code>getBestProvider（）</code>来将解决方案简化为只使用一个位置提供者，但是这似乎只给你最好的“理论”提供者，而不是实际提供的提供者给你最好的结果。</p>
+<p>有一个更简单的方法来完成这个吗？</p>
+<a id="more"></a>
+<p>这就是我所做的：</p>
+<p>首先，我检查启用了哪些提供程序。有些可能在设备上被禁用，有些可能在应用程序清单中被禁用。</p>
+<ul>
+<li>如果任何提供者可用，我启动位置侦听器和超时定时器。在我的例子中是20秒，对于GPS来说可能不够，所以你可以放大它。</li>
+<li>如果我从位置侦听器获取更新，则使用提供的值。我停止听众和计时器。</li>
+<li>如果我没有得到任何更新和计时器，我必须使用上次已知的值。</li>
+<li>我从可用提供者中获取最新的已知值并选择最近的值。</li>
+</ul>
+<p>以下是我如何使用我的课程：</p>
+<pre><code>LocationResult locationResult = new LocationResult(){
+    @Override
+    public void gotLocation(Location location){
+        //Got the location!
+    }
+};
+MyLocation myLocation = new MyLocation();
+myLocation.getLocation(this, locationResult);
+</code></pre><p>这里是MyLocation类：</p>
+<pre><code>import java.util.Timer;
+import java.util.TimerTask;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+
+public class MyLocation {
+    Timer timer1;
+    LocationManager lm;
+    LocationResult locationResult;
+    boolean gps_enabled=false;
+    boolean network_enabled=false;
+
+    public boolean getLocation(Context context, LocationResult result)
+    {
+        //I use LocationResult callback class to pass location value from MyLocation to user code.
+        locationResult=result;
+        if(lm==null)
+            lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        //exceptions will be thrown if provider is not permitted.
+        try{gps_enabled=lm.isProviderEnabled(LocationManager.GPS_PROVIDER);}catch(Exception ex){}
+        try{network_enabled=lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);}catch(Exception ex){}
+
+        //don&apos;t start listeners if no provider is enabled
+        if(!gps_enabled &amp;&amp; !network_enabled)
+            return false;
+
+        if(gps_enabled)
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListenerGps);
+        if(network_enabled)
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListenerNetwork);
+        timer1=new Timer();
+        timer1.schedule(new GetLastLocation(), 20000);
+        return true;
+    }
+
+    LocationListener locationListenerGps = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            timer1.cancel();
+            locationResult.gotLocation(location);
+            lm.removeUpdates(this);
+            lm.removeUpdates(locationListenerNetwork);
+        }
+        public void onProviderDisabled(String provider) {}
+        public void onProviderEnabled(String provider) {}
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    };
+
+    LocationListener locationListenerNetwork = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            timer1.cancel();
+            locationResult.gotLocation(location);
+            lm.removeUpdates(this);
+            lm.removeUpdates(locationListenerGps);
+        }
+        public void onProviderDisabled(String provider) {}
+        public void onProviderEnabled(String provider) {}
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    };
+
+    class GetLastLocation extends TimerTask {
+        @Override
+        public void run() {
+             lm.removeUpdates(locationListenerGps);
+             lm.removeUpdates(locationListenerNetwork);
+
+             Location net_loc=null, gps_loc=null;
+             if(gps_enabled)
+                 gps_loc=lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+             if(network_enabled)
+                 net_loc=lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+             //if there are both values use the latest one
+             if(gps_loc!=null &amp;&amp; net_loc!=null){
+                 if(gps_loc.getTime()&gt;net_loc.getTime())
+                     locationResult.gotLocation(gps_loc);
+                 else
+                     locationResult.gotLocation(net_loc);
+                 return;
+             }
+
+             if(gps_loc!=null){
+                 locationResult.gotLocation(gps_loc);
+                 return;
+             }
+             if(net_loc!=null){
+                 locationResult.gotLocation(net_loc);
+                 return;
+             }
+             locationResult.gotLocation(null);
+        }
+    }
+
+    public static abstract class LocationResult{
+        public abstract void gotLocation(Location location);
+    }
+}
+</code></pre><p>有人可能也想修改我的逻辑。例如，如果您从网络提供商获得更新不停止监听，但继续等待。<br>GPS提供更准确的数据，所以值得等待。如果计时器过去了，你已经从网络更新，但不是从GPS更新，那么你可以使用网络提供的价值。</p>
+<p>另外一种方法是使用LocationClient <a href="http://developer.android.com/training/location
+/retrieve-current.html" target="_blank" rel="noopener"> http://developer.android.com /training/location<br>/retrieve-current.html </a>。但是它需要在用户设备上安装Google Play服务apk。</p>
+<p>在寻找最佳实施方式后，如何获得最佳的用户位置，我设法将所有最好的方法结合起来，并提出以下课程：</p>
+<pre><code>/**
+ * Retrieve accurate location from GPS or network services. 
+ * 
+ *
+ * Class usage example:
+ * 
+ * public void onCreate(Bundle savedInstanceState) {
+ *      ...
+ *      my_location = new MyLocation();
+ *      my_location.init(main.this, locationResult);
+ * }
+ * 
+ * 
+ * public LocationResult locationResult = new LocationResult(){
+ *      @Override
+ *      public void gotLocation(final Location location){
+ *          // do something
+ *          location.getLongitude();
+ *          location.getLatitude();
+ *      }
+ *  };
+ */
+class MyLocation{
+
+    /**
+     * If GPS is enabled. 
+     * Use minimal connected satellites count.
+     */
+    private static final int min_gps_sat_count = 5;
+
+    /**
+     * Iteration step time.
+     */
+    private static final int iteration_timeout_step = 500;
+
+    LocationResult locationResult;
+    private Location bestLocation = null;
+    private Handler handler = new Handler();
+    private LocationManager myLocationManager; 
+    public Context context;
+
+    private boolean gps_enabled = false;
+
+    private int counts    = 0;
+    private int sat_count = 0;
+
+    private Runnable showTime = new Runnable() {
+
+         public void run() {
+            boolean stop = false;
+            counts++;
+            System.println(&quot;counts=&quot; + counts);
+
+            //if timeout (1 min) exceeded, stop tying
+            if(counts &gt; 120){
+                stop = true;
+            }
+
+            //update last best location
+            bestLocation = getLocation(context);
+
+            //if location is not ready or don`t exists, try again
+            if(bestLocation == null &amp;&amp; gps_enabled){
+                System.println(&quot;BestLocation not ready, continue to wait&quot;);
+                handler.postDelayed(this, iteration_timeout_step);
+            }else{
+                //if best location is known, calculate if we need to continue to look for better location
+                //if gps is enabled and min satellites count has not been connected or min check count is smaller then 4 (2 sec)  
+                if(stop == false &amp;&amp; !needToStop()){
+                    System.println(&quot;Connected &quot; + sat_count + &quot; sattelites. continue waiting..&quot;);
+                    handler.postDelayed(this, iteration_timeout_step);
+                }else{
+                    System.println(&quot;#########################################&quot;);
+                    System.println(&quot;BestLocation finded return result to main. sat_count=&quot; + sat_count);
+                    System.println(&quot;#########################################&quot;);
+
+                    // removing all updates and listeners
+                    myLocationManager.removeUpdates(gpsLocationListener);
+                    myLocationManager.removeUpdates(networkLocationListener);    
+                    myLocationManager.removeGpsStatusListener(gpsStatusListener);
+                    sat_count = 0;
+
+                    // send best location to locationResult
+                    locationResult.gotLocation(bestLocation);
+                }
+            }
+         }
+    };
+
+    /**
+     * Determine if continue to try to find best location
+     */
+    private Boolean needToStop(){
+
+        if(!gps_enabled){
+                          return true;
+                     }
+          else if(counts &lt;= 4){
+                return false;
+            }
+            if(sat_count &lt; min_gps_sat_count){
+                //if 20-25 sec and 3 satellites found then stop
+                if(counts &gt;= 40 &amp;&amp; sat_count &gt;= 3){
+                    return true;
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Best location abstract result class
+     */
+    public static abstract class LocationResult{
+         public abstract void gotLocation(Location location);
+     }
+
+    /**
+     * Initialize starting values and starting best location listeners
+     * 
+     * @param Context ctx
+     * @param LocationResult result
+     */
+    public void init(Context ctx, LocationResult result){
+        context = ctx;
+        locationResult = result;
+
+        myLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        gps_enabled = (Boolean) myLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        bestLocation = null;
+        counts = 0;
+
+        // turning on location updates
+        myLocationManager.requestLocationUpdates(&quot;network&quot;, 0, 0, networkLocationListener);
+        myLocationManager.requestLocationUpdates(&quot;gps&quot;, 0, 0, gpsLocationListener);
+        myLocationManager.addGpsStatusListener(gpsStatusListener);
+
+        // starting best location finder loop
+        handler.postDelayed(showTime, iteration_timeout_step);
+    }
+
+    /**
+     * GpsStatus listener. OnChainged counts connected satellites count.
+     */
+    public final GpsStatus.Listener gpsStatusListener = new GpsStatus.Listener() {
+        public void onGpsStatusChanged(int event) {
+
+             if(event == GpsStatus.GPS_EVENT_SATELLITE_STATUS){
+                try {
+                    // Check number of satellites in list to determine fix state
+                     GpsStatus status = myLocationManager.getGpsStatus(null);
+                     Iterable&lt;GpsSatellite&gt;satellites = status.getSatellites();
+
+                     sat_count = 0;
+
+                     Iterator&lt;GpsSatellite&gt;satI = satellites.iterator();
+                     while(satI.hasNext()) {
+                         GpsSatellite satellite = satI.next();
+                         System.println(&quot;Satellite: snr=&quot; + satellite.getSnr() + &quot;, elevation=&quot; + satellite.getElevation());                         
+                         sat_count++;
+                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    sat_count = min_gps_sat_count + 1;
+                }
+
+                 System.println(&quot;#### sat_count = &quot; + sat_count);
+             }
+         }
+    };
+
+    /**
+     * Gps location listener.
+     */
+    public final LocationListener gpsLocationListener = new LocationListener(){
+        @Override
+         public void onLocationChanged(Location location){
+
+        }
+         public void onProviderDisabled(String provider){}
+         public void onProviderEnabled(String provider){}
+         public void onStatusChanged(String provider, int status, Bundle extras){}
+    }; 
+
+    /**
+     * Network location listener.
+     */
+    public final LocationListener networkLocationListener = new LocationListener(){
+        @Override
+         public void onLocationChanged(Location location){
+
+        }
+         public void onProviderDisabled(String provider){}
+         public void onProviderEnabled(String provider){}
+         public void onStatusChanged(String provider, int status, Bundle extras){}
+    }; 
+
+
+    /**
+     * Returns best location using LocationManager.getBestProvider()
+     * 
+     * @param context
+     * @return Location|null
+     */
+    public static Location getLocation(Context context){
+        System.println(&quot;getLocation()&quot;);
+
+        // fetch last known location and update it
+        try {
+            LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+             criteria.setAltitudeRequired(false);
+             criteria.setBearingRequired(false);
+             criteria.setCostAllowed(true);
+             String strLocationProvider = lm.getBestProvider(criteria, true);
+
+             System.println(&quot;strLocationProvider=&quot; + strLocationProvider);
+             Location location = lm.getLastKnownLocation(strLocationProvider);
+             if(location != null){
+                return location;
+             }
+             return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+</code></pre><p>如果启用GPS，此类将尝试连接到<code>min_gps_sat_count</code>卫星。否则返回<code>LocationManager.getBestProvider（）</code>位置。检查代码！</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/03/15/what-is-the-simplest-and-most-robust-way-to-get-the-users-current-location-on-a/" data-title="什么是在Android上获取用户当前位置的最简单，最健壮的方法？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/16/what-is-ytowont9/" title="什么是 YTowOnt9 ？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  什么是 YTowOnt9 ？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/03/15/check-if-pull-needed-in-git/"  title="检查是否需要在Git中拉">
+ <strong>下一篇：</strong><br/> 
+ <span>检查是否需要在Git中拉
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,1052 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+<meta property="og:type" content="website">
+<meta property="og:title" content="智子">
+<meta property="og:url" content="https://www.tracholar.top/page/134/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="智子">
+<meta name="twitter:description" content="IT技术、编程、web开发以及新兴的技术翻译与总结">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main">
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/large-data-work-flows-using-pandas/" title="“大数据”使用大熊猫的工作流程" itemprop="url">“大数据”使用大熊猫的工作流程</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在学习熊猫的过程中，我试图解答这个问题好几个月。我使用SAS进行日常工作，这对我们来说是非常棒的支持。但是，由于其他原因，SAS作为软件是非常糟糕的。</p>
+<p>有一天，我希望用python和pandas取代我使用SAS，但是我目前缺乏大型数据集的核心外工作流程。我不是在谈论需要分布式网络的“大数据”，而是文件太大而不适合内存，但又足够小以适应硬盘驱动器。</p>
+<p>我的第一个想法是使用<code>HDFStore</code>在磁盘上保存大数据集，并只将需要的部分拖放到数据框中进行分析。其他人提到MongoDB是一个更易于使用的替代方案。我的问题是这样的：</p>
+<p>有哪些最佳实践工作流程可以完成以下工作：</p>
+<ul>
+<li>将平面文件加载到永久的磁盘上数据库结构</li>
+<li>查询该数据库以检索要送入熊猫数据结构的数据</li>
+<li>在pandas中处理作品之后更新数据库</li>
+</ul>
+<p>真实世界的例子会受到大家的赞赏，尤其是那些使用“大数据”熊猫的人。</p>
+<p>编辑 - 我想如何工作的例子：</p>
+<ul>
+<li>迭代地导入一个大的平面文件并将其存储在一个永久性的磁盘数据库结构中。这些文件通常太大而不适合内存。</li>
+<li>为了使用“熊猫”，我想读取这些数据的子集（通常只是一些列），可以放在内存中。</li>
+<li>我会通过对所选列进行各种操作来创建新列。</li>
+<li>然后，我必须将这些新列添加到数据库结构中。</li>
+</ul>
+<p>我试图找到一个执行这些步骤的最佳实践方式。阅读关于熊猫和pytables的链接，似乎添加一个新列可能是一个问题。</p>
+<p>编辑 - 特别回应杰夫的问题：</p>
+<ul>
+<li>我正在建立消费者信用风险模型。数据种类包括电话，SSN和地址特征;财产价值;像犯罪记录，破产等贬义的信息……我每天使用的数据集平均有近1000到2000个混合数据类型的字段：数字和字符数据的连续变量，名义变量和有序变量。我很少追加行，但是我执行许多操作来创建新的列。</li>
+<li><p>典型的操作涉及将使用条件逻辑的多个列组合成新的复合列。例如，<code>if var1＆gt; 2 then newvar =&#39;A&#39;elif var2 = 4 then newvar =&#39;B&#39;</code>。这些操作的结果是我数据集中每个记录的新列。<br>最后，我想将这些新列添加到磁盘数据结构中。我会重复第2步，使用交叉表和描述性统计数据来探索数据，试图找到有趣，直观的模型关系。</p>
+</li>
+<li><p>一个典型的项目文件通常大约是1GB。文件被组织成一行，其中包含消费者数据的记录。每行记录的每一行都有相同的列数。这总是如此。</p>
+</li>
+<li>在创建新列时，我将按行逐个分组，这是非常罕见的。但是，创建报告或生成描述性统计信息时，对行进行子集的处理是非常常见的。例如，我可能想为特定的业务线创建一个简单的频率，比如零售信用卡。要做到这一点，我只会选择那些业务线=零售的记录，除了我想报告的任何一列。但是，在创建新列时，我会提取所有数据行，并只提取操作所需的列。<br>建模过程要求我分析每一列，查找与某个结果变量有趣的关系，并创建描述这些关系的新复合列。我探索的专栏通常以小集合完成。例如，我将重点讨论一组刚刚处理财产价值的20列，并观察它们与贷款违约的关系。一旦探索了这些内容，并创建了新的专栏，那么我就转到另一组专栏，说大学教育，重复这个过程。我正在做的是创建候选变量来解释我的数据和一些结果之间的关系。在这个过程的最后，我应用了一些学习技巧，从这些复合列中创建一个等式。</li>
+</ul>
+<p>我很少会将行添加到数据集中。我将几乎总是创建新的列（统计/机器学习说法中的变量或功能）。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/large-data-work-flows-using-pandas/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+      <ins class="adsbygoogle"
+     style="display:block;  overflow:hidden;"
+     data-ad-format="fluid"
+     data-ad-layout-key="-ej+6f-q-c7+ou"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="5206371097"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/jslint-is-suddenly-reporting-use-the-function-form-of-use-strict/" title="JSLint突然报告：使用“严格使用”的函数格式" itemprop="url">JSLint突然报告：使用“严格使用”的函数格式</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>包括声明：</p>
+<pre><code>&quot;use strict&quot;;
+</code></pre><p>在我的大部分Javascript文件的开头。</p>
+<p>JSLint从未对此提出过警告。但现在是这样说：</p>
+<blockquote>
+<p>Use the function form of “use strict”.</p>
+</blockquote>
+<p>有人知道“功能表”是什么吗？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/jslint-is-suddenly-reporting-use-the-function-form-of-use-strict/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/delete-an-item-from-a-dictionary/" title="从字典中删除一个项目" itemprop="url">从字典中删除一个项目</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有没有办法从Python中的字典中删除项目？</p>
+<p>我知道我可以在字典上调用<code>.pop</code>，但会返回被删除的项目。我正在寻找的是返回字典 <em>minus</em> 元素的问题。</p>
+<p>目前我有一个帮助函数，接受有问题的字典作为参数，然后返回一个字典，其中的项目被删除，是否有一个更优雅的解决方案？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/delete-an-item-from-a-dictionary/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/delete-column-from-pandas-dataframe-using-python-del/" title="使用python del从pandas DataFrame中删除列" itemprop="url">使用python del从pandas DataFrame中删除列</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在删除DataFrame中的列时，我使用：</p>
+<pre><code>del df[&apos;column_name&apos;]
+</code></pre><p>这个效果很好。为什么我不能使用：</p>
+<pre><code>del df.column_name
+</code></pre><p><em> </em> <em> </em> <em> </em> <em> </em> _
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/delete-column-from-pandas-dataframe-using-python-del/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/deleting-array-elements-in-javascript-delete-vs-splice/" title="在JavaScript中删除数组元素 - 删除与拼接" itemprop="url">在JavaScript中删除数组元素 - 删除与拼接</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>使用<a href="https://developer.mozilla.org/en-
+US/docs/JavaScript/Reference/Operators/delete" target="_blank" rel="noopener"> ` delete &lt; / code&gt; operator </a>，而不是使用<a href="“https://developer.mozilla.org/en-
+US/docs/JavaScript/Reference/Global_Objects/Array/splice”rel"> <code>Array.splice</code>方法</a>？</p>
+<p>例如：</p>
+<pre><code>myArray = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;];
+
+delete myArray[1];
+//  or
+myArray.splice (1, 1);
+</code></pre><p>为什么即使有拼接方法，如果我可以删除数组元素，我可以用对象？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/deleting-array-elements-in-javascript-delete-vs-splice/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/detecting-an-invalid-date-date-instance-in-javascript/" title="在JavaScript中检测“无效日期”日期实例" itemprop="url">在JavaScript中检测“无效日期”日期实例</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想告诉JS中有效和无效的日期对象之间的区别，但不知道如何：</p>
+<pre><code>var d = new Date(&quot;foo&quot;);
+console.log(d.toString()); // shows &apos;Invalid Date&apos;
+console.log(typeof d); // shows &apos;object&apos;
+console.log(d instanceof Date); // shows &apos;true&apos;
+</code></pre><p>编写<code>isValidDate</code>函数的任何想法？</p>
+<ul>
+<li>Ash推荐用于解析日期字符串的<code>Date.parse</code>，它提供了一种权威的方法来检查日期字符串是否有效。</li>
+<li>如果可能的话，我希望我的API接受一个Date实例，并能够检查/断言它是否有效。 Borgar的解决方案是这样做的，但是我需要在浏览器上测试它。我也怀疑是否有更优雅的方式。</li>
+<li>Ash让我觉得没有我的API接受<code>Date</code>实例，这是最容易验证的。<br>**Borgar建议测试一个<code>Date</code>实例，然后测试<code>Date</code>的时间值。如果日期无效，则时间值为<code>NaN</code>。我检查了[ ECMA-<br>这种行为是在标准的，这正是我正在寻找。</li>
+</ul>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/detecting-an-invalid-date-date-instance-in-javascript/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/determine-the-type-of-an-object/" title="确定一个对象的类型？" itemprop="url">确定一个对象的类型？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有一个简单的方法来确定一个变量是一个列表，字典或其他东西？我得到一个可能是任何类型的对象，我需要能够区分它们。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/determine-the-type-of-an-object/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/determine-whether-an-array-contains-a-value/" title="确定一个数组是否包含一个值" itemprop="url">确定一个数组是否包含一个值</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/237104/how-do-i-check-if-an-array-includes-an-object-in-javascript">How do I check if an array includes an object in JavaScript?</a> 39 answers </li>
+</ul>
+<p>我需要确定数组是否存在。</p>
+<p>我正在使用以下功能：</p>
+<pre><code>Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] == obj) {
+            return true;
+        }
+    }
+    return false;
+}
+</code></pre><p>上面的函数总是返回false。</p>
+<p>数组值和函数调用如下所示：</p>
+<pre><code>arrValues = [&quot;Sam&quot;,&quot;Great&quot;, &quot;Sample&quot;, &quot;High&quot;]
+alert(arrValues.contains(&quot;Sam&quot;));
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/determine-whether-an-array-contains-a-value/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/difference-between-and-in-javascript/" title="在JavaScript和=== ===之间的区别[复制]" itemprop="url">在JavaScript和=== ===之间的区别[复制]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <blockquote>
+<p><strong>Possible Duplicate:</strong><br> <a href="https://stackoverflow.com/questions/359494/javascript-vs-does-it-matter-
+which-equal-operator-i-use" target="_blank" rel="noopener">Javascript === vs == : Does it matter which “equal” operator I<br>use?</a></p>
+</blockquote>
+<p>JavaScript中的<code>==</code>和<code>===</code>有什么区别？我也看到了<code>！=</code>和<code>！==</code>运算符。还有更多这样的运营商吗？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/difference-between-and-in-javascript/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/difference-between-append-vs-extend-list-methods-in-python/" title="Python中append和extend列表方法的区别" itemprop="url">Python中append和extend列表方法的区别</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>列表方法和<code>extend（）</code>之间有什么区别？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/difference-between-append-vs-extend-list-methods-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+
+  <nav id="page-nav" class="clearfix">
+    <a class="extend prev" rel="prev" href="/page/133/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/132/">132</a><a class="page-number" href="/page/133/">133</a><span class="page-number current">134</span><a class="page-number" href="/page/135/">135</a><a class="page-number" href="/page/136/">136</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/135/">Next<span></span></a>
+  </nav>
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+ </html>

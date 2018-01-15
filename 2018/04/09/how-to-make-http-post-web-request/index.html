@@ -1,0 +1,673 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何使HTTP POST Web请求 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何使用POST方法发出HTTP请求并发送一些数据？ 我可以做GET请求，但不知道如何创建POST。">
+<meta name="keywords" content="c-sharp,dot-net">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何使HTTP POST Web请求">
+<meta property="og:url" content="https://www.tracholar.top/2018/04/09/how-to-make-http-post-web-request/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何使用POST方法发出HTTP请求并发送一些数据？ 我可以做GET请求，但不知道如何创建POST。">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何使HTTP POST Web请求">
+<meta name="twitter:description" content="如何使用POST方法发出HTTP请求并发送一些数据？ 我可以做GET请求，但不知道如何创建POST。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/09/how-to-make-http-post-web-request/" title="如何使HTTP POST Web请求" itemprop="url">如何使HTTP POST Web请求</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-09T01:36:56.000Z" itemprop="datePublished"> Published 2018-04-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如何使用<code>POST</code>方法发出HTTP请求并发送一些数据？ 我可以做<code>GET</code>请求，但不知道如何创建<code>POST</code>。</p>
+<p><a id="more"></a> 有几种方法可以执行HTTP <code>GET</code>和<code>POST</code>请求：</p>
+<hr>
+<p>方法A：HttpClient **</p>
+<p>适用于：.NET Framework 4.5+，.NET Standard 1.1+，.NET Core 1.0 +</p>
+<p>目前首选的方法。异步。其他平台的便携版本可通过<a href="https://www.nuget.org/packages/Microsoft.Net.Http" target="_blank" rel="noopener"> NuGet</a>获得。</p>
+<pre><code>using System.Net.Http;
+</code></pre><p><em>设置</em> 的</p>
+<p>这是<a href="https://docs.microsoft.com/en-us/azure/architecture/antipatterns
+/improper-instantiation/" target="_blank" rel="noopener">推荐</a>来实例化一个&lt;代码&gt; HttpClient `来获取应用程序的生命周期并共享它。</p>
+<pre><code>private static readonly HttpClient client = new HttpClient();
+</code></pre><p><em>POST</em></p>
+<pre><code>var values = new Dictionary&lt;string, string&gt;
+{
+   { &quot;thing1&quot;, &quot;hello&quot; },
+   { &quot;thing2&quot;, &quot;world&quot; }
+};
+
+var content = new FormUrlEncodedContent(values);
+
+var response = await client.PostAsync(&quot;http://www.example.com/recepticle.aspx&quot;, content);
+
+var responseString = await response.Content.ReadAsStringAsync();
+</code></pre><p><em>GET</em></p>
+<pre><code>var responseString = await client.GetStringAsync(&quot;http://www.example.com/recepticle.aspx&quot;);
+</code></pre><hr>
+<p>方法B：第三方库**</p>
+<p><strong><em><a href="https://github.com/restsharp/RestSharp" target="_blank" rel="noopener"> RestSharp </a> </em> </strong></p>
+<p>尝试并测试了与REST API交互的库。便携。可通过<a href="https://www.nuget.org/packages/RestSharp" target="_blank" rel="noopener"> NuGet</a>获得。</p>
+<p><strong><em><a href="http://tmenier.github.io/Flurl/" target="_blank" rel="noopener"> Flurl.Http </a> </em> </strong></p>
+<p>较新的图书馆运动流畅的API和测试助手。引擎盖下的HttpClient。便携。可通过<a href="https://www.nuget.org/packages/Flurl.Http" target="_blank" rel="noopener"> NuGet</a>获得。</p>
+<pre><code>using Flurl.Http;
+</code></pre><p><em>POST</em></p>
+<pre><code>var responseString = await &quot;http://www.example.com/recepticle.aspx&quot;
+    .PostUrlEncodedAsync(new { thing1 = &quot;hello&quot;, thing2 = &quot;world&quot; })
+    .ReceiveString();
+</code></pre><p><em>GET</em></p>
+<pre><code>var responseString = await &quot;http://www.example.com/recepticle.aspx&quot;
+    .GetStringAsync();
+</code></pre><hr>
+<p>方法C：传统**</p>
+<p>适用于：.NET Framework 1.1+，.NET Standard 2.0+，.NET Core 1.0 +</p>
+<pre><code>using System.Net;
+using System.Text;  // for class Encoding
+using System.IO;    // for StreamReader
+</code></pre><p><em>POST</em></p>
+<pre><code>var request = (HttpWebRequest)WebRequest.Create(&quot;http://www.example.com/recepticle.aspx&quot;);
+
+var postData = &quot;thing1=hello&quot;;
+    postData += &quot;&amp;thing2=world&quot;;
+var data = Encoding.ASCII.GetBytes(postData);
+
+request.Method = &quot;POST&quot;;
+request.ContentType = &quot;application/x-www-form-urlencoded&quot;;
+request.ContentLength = data.Length;
+
+using (var stream = request.GetRequestStream())
+{
+    stream.Write(data, 0, data.Length);
+}
+
+var response = (HttpWebResponse)request.GetResponse();
+
+var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+</code></pre><p><em>GET</em></p>
+<pre><code>var request = (HttpWebRequest)WebRequest.Create(&quot;http://www.example.com/recepticle.aspx&quot;);
+
+var response = (HttpWebResponse)request.GetResponse();
+
+var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+</code></pre><hr>
+<p>方法D：WebClient（也是现在的传统）**</p>
+<p>适用于：.NET Framework 1.1+，.NET Standard 2.0+，.NET Core 2.0 +</p>
+<pre><code>using System.Net;
+using System.Collections.Specialized;
+</code></pre><p><em>POST</em></p>
+<pre><code>using (var client = new WebClient())
+{
+    var values = new NameValueCollection();
+    values[&quot;thing1&quot;] = &quot;hello&quot;;
+    values[&quot;thing2&quot;] = &quot;world&quot;;
+
+    var response = client.UploadValues(&quot;http://www.example.com/recepticle.aspx&quot;, values);
+
+    var responseString = Encoding.Default.GetString(response);
+}
+</code></pre><p><em>GET</em></p>
+<pre><code>using (var client = new WebClient())
+{
+    var responseString = client.DownloadString(&quot;http://www.example.com/recepticle.aspx&quot;);
+}
+</code></pre><p>简单的GET请求</p>
+<pre><code>using System.Net;
+
+...
+
+using (var wb = new WebClient())
+{
+    var response = wb.DownloadString(url);
+}
+</code></pre><p>简单的POST请求</p>
+<pre><code>using System.Net;
+using System.Collections.Specialized;
+
+...
+
+using (var wb = new WebClient())
+{
+    var data = new NameValueCollection();
+    data[&quot;username&quot;] = &quot;myUser&quot;;
+    data[&quot;password&quot;] = &quot;myPassword&quot;;
+
+    var response = wb.UploadValues(url, &quot;POST&quot;, data);
+    string responseInString = Encoding.UTF8.GetString(response);
+}
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/04/09/how-to-make-http-post-web-request/" data-title="如何使HTTP POST Web请求 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/09/how-to-wait-in-bash-for-several-subprocesses-to-finish-and-return-exit-code-0/" title="如何在bash中等待几个子进程完成并返回退出代码！= 0当任何子进程以代码！= 0结束？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何在bash中等待几个子进程完成并返回退出代码！= 0当任何子进程以代码！= 0结束？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/09/how-to-find-the-php-ini-file-used-by-the-command-line/"  title="如何找到命令行使用的php ini文件？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何找到命令行使用的php ini文件？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

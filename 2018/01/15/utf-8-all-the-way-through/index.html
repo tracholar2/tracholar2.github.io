@@ -1,0 +1,625 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>UTF-8一路通过 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我正在建立一个新的服务器，并希望在我的web应用程序中完全支持UTF-8。过去，我在现有的服务器上尝试过，似乎最终不得不回退到ISO-8859-1。 我到底需要设置编码/字符集？我知道我需要配置Apache，MySQL和PHP来做到这一点 -是否有我可以遵循的标准清单，或者可能排除不匹配发生的地方的疑难解答？ 这是一个新的Linux服务器，运行MySQL 5，PHP 5和Apache 2。">
+<meta name="keywords" content="linux,php,mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UTF-8一路通过">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/utf-8-all-the-way-through/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我正在建立一个新的服务器，并希望在我的web应用程序中完全支持UTF-8。过去，我在现有的服务器上尝试过，似乎最终不得不回退到ISO-8859-1。 我到底需要设置编码/字符集？我知道我需要配置Apache，MySQL和PHP来做到这一点 -是否有我可以遵循的标准清单，或者可能排除不匹配发生的地方的疑难解答？ 这是一个新的Linux服务器，运行MySQL 5，PHP 5和Apache 2。">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UTF-8一路通过">
+<meta name="twitter:description" content="我正在建立一个新的服务器，并希望在我的web应用程序中完全支持UTF-8。过去，我在现有的服务器上尝试过，似乎最终不得不回退到ISO-8859-1。 我到底需要设置编码/字符集？我知道我需要配置Apache，MySQL和PHP来做到这一点 -是否有我可以遵循的标准清单，或者可能排除不匹配发生的地方的疑难解答？ 这是一个新的Linux服务器，运行MySQL 5，PHP 5和Apache 2。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/utf-8-all-the-way-through/" title="UTF-8一路通过" itemprop="url">UTF-8一路通过</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我正在建立一个新的服务器，并希望在我的web应用程序中完全支持UTF-8。过去，我在现有的服务器上尝试过，似乎最终不得不回退到ISO-8859-1。</p>
+<p>我到底需要设置编码/字符集？我知道我需要配置Apache，MySQL和PHP来做到这一点 -<br>是否有我可以遵循的标准清单，或者可能排除不匹配发生的地方的疑难解答？</p>
+<p>这是一个新的Linux服务器，运行MySQL 5，PHP 5和Apache 2。</p>
+<p><a id="more"></a> 数据存储**：</p>
+<ul>
+<li>在数据库的所有表和文本列上指定<code>utf8mb4</code>字符集。这使MySQL实际存储和检索UTF-8本地编码的值。请注意，如果指定了<code>utf8mb4 _ *</code>排序规则（没有任何明确的字符集），MySQL将默认使用<code>utf8mb4</code>编码。</li>
+</ul>
+<p>在旧版本的MySQL（＆lt; 5.5.3）中，不幸的是你不得不使用简单的<code>utf8</code>，它只支持Unicode字符的一个子集。我希望我在开玩笑。</p>
+<p><strong>数据存取</strong> ：</p>
+<ul>
+<li><p>在您的应用程序代码（例如PHP）中，无论您使用哪种数据库访问方法，都需要将连接字符集设置为<code>utf8mb4</code>。通过这种方式，MySQL在将数据传递到应用程序时不会转换为原生UTF-8，反之亦然。<br>一些驱动程序提供了自己的配置连接字符集的机制，它们都会更新自己的内部状态，并通知MySQL将在连接上使用的编码 - 这通常是首选的方法。在PHP中：</p>
+<ul>
+<li><p>如果您使用的是<a href="http://www.php.net/manual/en/book.pdo.php" target="_blank" rel="noopener"> PDO </a>抽象层当PHP≥5.3.6时，您可以在<a href="“http://php.net/manual/en/ref.pdo-mysql.connection.php”rel"> charset ` noreferrer“&gt; DSN </a>：</p>
+<pre><code>$ dbh = new PDO（&apos;mysql：charset = utf8mb4&apos;）;
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<pre><code>* 如果您使用[ mysqli ](http://www.php.net/manual/en/book.mysqli.php)，则可以请致电[ ` set_charset（）` ](http://php.net/manual/en/mysqli.set-charset.php)：
+</code></pre><p>&lt;预&gt; &lt;代码&gt; $ mysqli-＆GT; set_charset（ ‘utf8mb4’）; //面向对象的风格 mysqli_set_charset（$<br>link，’utf8mb4’）; //程序风格</p>
+<pre><code>* 如果您遇到简单的[ mysql ](http://php.net/manual/en/book.mysql.php)，但碰巧运行PHP≥5.2.3时，可以调用[ ` mysql_set_charset &lt;代码&gt; ](http://php.net/manual/en/function.mysql-set-charset.php)。
+</code></pre><ul>
+<li><p>如果驱动程序没有提供自己的连接字符集设置机制，那么您可能需要发出一个查询来告诉MySQL您的应用程序期望连接上的数据是如何被编码的：<a href="“http"> <code>SET NAMES&#39;utf8mb4&#39;</code> </a>。</p>
+</li>
+<li><p>关于<code>utf8mb4</code> / <code>utf8</code>的同样的考虑也适用于上面。</p>
+</li>
+</ul>
+<p>&lt;强&gt;输出：</p>
+<ul>
+<li>如果您的应用程序将文本传输到其他系统，则还需要通知字符编码。使用Web应用程序时，必须通知浏览器发送数据的编码（通过HTTP响应标头或<a href="https://stackoverflow.com/q/4696499" target="_blank" rel="noopener"> HTML元数据</a>）。&lt; / p&gt; </li>
+<li>在PHP中，您可以使用<a href="http://www.php.net/manual/en/ini.core.php#ini.default-charset" target="_blank" rel="noopener"> <code>default_charset</code> </a> php.ini选项，或自己手动发布<code>Content-Type</code> MIME头，这只是更多的工作，但效果相同。</li>
+</ul>
+<p>&lt;强&gt;输入：</p>
+<ul>
+<li><p>不幸的是，在尝试存储或在任何地方使用它之前，您应该验证每个接收的字符串是否为有效的UTF-8。 PHP的<a href="http://php.net/manual/en/function.mb-check-encoding.php" target="_blank" rel="noopener"> <code>mb_check_encoding（）</code> </a>诀窍，但你必须虔诚地使用它。真的没有办法解决这个问题，因为恶意的客户端可以用任何他们想要的编码来提交数据，而且我还没有找到让PHP能够为你做到这一点的技巧。</p>
+</li>
+<li><p>在阅读当前的<a href="http://whatwg.org/html" target="_blank" rel="noopener"> HTML规范</a>之后，下面的子项是不必要的，甚至是不必要的现代的HTML有效。我的理解是，浏览器将使用为文档指定的字符集提交数据。但是，如果您定位的是旧版本的HTML（XHTML，HTML4等），这些点可能仍然有用：</p>
+<ul>
+<li><em>仅适用于HTML5之前的HTML</em> ：您希望浏览器向您发送的所有数据都是UTF-8。不幸的是，如果你唯一可以做到的方法是将<code>accept-charset</code>属性添加到所有的<code>＆lt; form＆gt;</code>标签中：<code>＆lt; form ... accept-charset =“UTF-8”＆gt;</code>。<br>注意，W3C的HTML规范指出，客户端“应该”默认发送表单回到服务器，无论服务器在哪个字符集中，但这显然只是一个建议，因此需要在每一个<code>＆lt;
+form＆gt;</code>标签上进行显式化。</li>
+</ul>
+</li>
+</ul>
+<p><strong>其他代码注意事项</strong> ：</p>
+<p>很明显，所有你要服务的文件（PHP，HTML，JavaScript等）都应该用有效的UTF-8编码。</p>
+<ul>
+<li>您需要确保每次处理UTF-8字符串时都安全。不幸的是，这是困难的部分。您可能需要广泛使用PHP的<a href="http://www.php.net/manual/en/book.mbstring.php" target="_blank" rel="noopener"> <code>mbstring</code> </a>扩展名。</li>
+</ul>
+<p>PHP的内置字符串操作默认情况下不是默认的UTF-8。**在普通的PHP字符串操作中可以安全地执行一些操作（比如串联），但对于大多数情况，您应该使用等效的<code>mbstring</code>函数。</p>
+<p>要知道你在做什么（阅读：不要搞砸了），你真的需要知道UTF-8，以及它如何在尽可能低的水平上工作。查看<a href="http://www.utf8.com/" target="_blank" rel="noopener"> utf8.com</a>中的任何链接，获取一些有用的资源，以了解您需要了解的所有信息。</p>
+<p>我想在[ chazomaticus的优秀答案中添加一项内容</p>
+<p>一个&gt;：</p>
+<p>不要忘记META标签（像这样，或者<a href="“http://www.w3.org/International/questions
+/qa-html-encoding-declarations#quicklookup”rel"> HTML4或XHTML版本</a>）：</p>
+<pre><code>&lt;meta charset=&quot;utf-8&quot;&gt;
+</code></pre><p>这似乎微不足道，但IE7给了我以前的问题。</p>
+<p>我一切正常。数据库，数据库连接和Content-Type HTTP头都设置为UTF-8，并且在所有其他浏览器中都能正常工作，但Internet<br>Explorer仍然坚持使用“西欧”编码。</p>
+<p>事实证明，该页面缺少META标签。添加解决了这个问题。</p>
+<p>**修改</p>
+<p>W3C实际上有一个相当大的<a href="http://www.w3.org/International/" target="_blank" rel="noopener">专用于I18N的部分</a>。他们有许多与这个问题有关的文章 -<br>描述HTTP，（X）HTML和CSS方面：</p>
+<ul>
+<li><a href="http://www.w3.org/International/questions/qa-changing-encoding" target="_blank" rel="noopener"> FAQ：将（X）HTML页面编码更改为UTF-8 </a></li>
+<li><a href="http://www.w3.org/International/questions/qa-html-encoding-declarations" target="_blank" rel="noopener">以HTML格式声明字符编码</a></li>
+<li><a href="http://www.w3.org/International/tutorials/tutorial-char-enc/" target="_blank" rel="noopener">教程：字符集＆amp;使用XHTML，HTML和CSS编码</a></li>
+<li><a href="http://www.w3.org/International/O-HTTP-charset" target="_blank" rel="noopener">设置HTTP charset参数</a></li>
+</ul>
+<p>他们建议同时使用HTTP标头和HTML元标记（或者在XHTML作为XML的情况下使用XML声明）。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/php/">php</a><a href="/tags/mysql/">mysql</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/utf-8-all-the-way-through/" data-title="UTF-8一路通过 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/recommended-way-to-embed-pdf-in-html/" title="推荐将PDF嵌入到HTML中的方法？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  推荐将PDF嵌入到HTML中的方法？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/difference-between-require-include-and-require-once/"  title="require，include和require_once之间的区别？">
+ <strong>下一篇：</strong><br/> 
+ <span>require，include和require_once之间的区别？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

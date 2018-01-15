@@ -1,0 +1,885 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>使用Android下载文件，并在ProgressDialog中显示进度 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我试图写一个简单的应用程序得到更新。为此，我需要一个简单的函数，它可以下载一个文件，并在ProgressDialog中显示当前的进度。我知道怎么做ProgressDialog，但我不确定如何显示当前的进度以及如何下载文件。">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Android下载文件，并在ProgressDialog中显示进度">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/15/download-a-file-with-android-and-showing-the-progress-in-a-progressdialog/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我试图写一个简单的应用程序得到更新。为此，我需要一个简单的函数，它可以下载一个文件，并在ProgressDialog中显示当前的进度。我知道怎么做ProgressDialog，但我不确定如何显示当前的进度以及如何下载文件。">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Android下载文件，并在ProgressDialog中显示进度">
+<meta name="twitter:description" content="我试图写一个简单的应用程序得到更新。为此，我需要一个简单的函数，它可以下载一个文件，并在ProgressDialog中显示当前的进度。我知道怎么做ProgressDialog，但我不确定如何显示当前的进度以及如何下载文件。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/15/download-a-file-with-android-and-showing-the-progress-in-a-progressdialog/" title="使用Android下载文件，并在ProgressDialog中显示进度" itemprop="url">使用Android下载文件，并在ProgressDialog中显示进度</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-15T02:25:43.000Z" itemprop="datePublished"> Published 2018-02-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">1. Use AsyncTask and show the download progress in a dialog</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">2. Download from Service</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 Use Groundy library</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 Use </span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">3. Use DownloadManager class (GingerBread and newer only)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Final thoughts</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我试图写一个简单的应用程序得到更新。为此，我需要一个简单的函数，它可以下载一个文件，并在<code>ProgressDialog</code>中显示当前的进度。我知道怎么做<code>ProgressDialog</code>，但我不确定如何显示当前的进度以及如何下载文件。</p>
+<p><a id="more"></a> 有很多方法可以下载文件。以下我会发布最常用的方法;由您决定哪种方法更适合您的应用程序。</p>
+<h1><span id="1-use-asynctask-and-show-the-download-progress-in-a-dialog">1. Use <code>AsyncTask</code> and show the download progress in a dialog</span></h1><p>此方法将允许您执行一些后台进程并同时更新UI（在这种情况下，我们将更新进度条）。</p>
+<p>这是一个示例代码：</p>
+<pre><code>// declare the dialog as a member field of your activity
+ProgressDialog mProgressDialog;
+
+// instantiate it within the onCreate method
+mProgressDialog = new ProgressDialog(YourActivity.this);
+mProgressDialog.setMessage(&quot;A message&quot;);
+mProgressDialog.setIndeterminate(true);
+mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+mProgressDialog.setCancelable(true);
+
+// execute this when the downloader must be fired
+final DownloadTask downloadTask = new DownloadTask(YourActivity.this);
+downloadTask.execute(&quot;the url to the file you want to download&quot;);
+
+mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        downloadTask.cancel(true);
+    }
+});
+</code></pre><p><code>AsyncTask</code>看起来像这样：</p>
+<pre><code>// usually, subclasses of AsyncTask are declared inside the activity class.
+// that way, you can easily modify the UI thread from here
+private class DownloadTask extends AsyncTask&lt;String, Integer, String&gt; {
+
+    private Context context;
+    private PowerManager.WakeLock mWakeLock;
+
+    public DownloadTask(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    protected String doInBackground(String... sUrl) {
+        InputStream input = null;
+        OutputStream output = null;
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(sUrl[0]);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.connect();
+
+            // expect HTTP 200 OK, so we don&apos;t mistakenly save error report
+            // instead of the file
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                return &quot;Server returned HTTP &quot; + connection.getResponseCode()
+                        + &quot; &quot; + connection.getResponseMessage();
+            }
+
+            // this will be useful to display download percentage
+            // might be -1: server did not report the length
+            int fileLength = connection.getContentLength();
+
+            // download the file
+            input = connection.getInputStream();
+            output = new FileOutputStream(&quot;/sdcard/file_name.extension&quot;);
+
+            byte data[] = new byte[4096];
+            long total = 0;
+            int count;
+            while ((count = input.read(data)) != -1) {
+                // allow canceling with back button
+                if (isCancelled()) {
+                    input.close();
+                    return null;
+                }
+                total += count;
+                // publishing the progress....
+                if (fileLength &gt; 0) // only if total length is known
+                    publishProgress((int) (total * 100 / fileLength));
+                output.write(data, 0, count);
+            }
+        } catch (Exception e) {
+            return e.toString();
+        } finally {
+            try {
+                if (output != null)
+                    output.close();
+                if (input != null)
+                    input.close();
+            } catch (IOException ignored) {
+            }
+
+            if (connection != null)
+                connection.disconnect();
+        }
+        return null;
+    }
+</code></pre><p>上面的方法（<code>doInBackground</code>）总是在后台线程上运行。你不应该在那里做任何的UI任务。另一方面，在UI线程上运行<code>onProgressUpdate</code>和<code>onPreExecute</code>，所以你可以改变进度条：</p>
+<pre><code>@Override
+protected void onPreExecute() {
+    super.onPreExecute();
+    // take CPU lock to prevent CPU from going off if the user 
+    // presses the power button during download
+    PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+    mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+         getClass().getName());
+    mWakeLock.acquire();
+    mProgressDialog.show();
+}
+
+@Override
+protected void onProgressUpdate(Integer... progress) {
+    super.onProgressUpdate(progress);
+    // if we get here, length is known, now set indeterminate to false
+    mProgressDialog.setIndeterminate(false);
+    mProgressDialog.setMax(100);
+    mProgressDialog.setProgress(progress[0]);
+}
+
+@Override
+protected void onPostExecute(String result) {
+    mWakeLock.release();
+    mProgressDialog.dismiss();
+    if (result != null)
+        Toast.makeText(context,&quot;Download error: &quot;+result, Toast.LENGTH_LONG).show();
+    else
+        Toast.makeText(context,&quot;File downloaded&quot;, Toast.LENGTH_SHORT).show();
+}
+</code></pre><p>为了运行，你需要WAKE_LOCK权限。</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.WAKE_LOCK&quot; /&gt;
+</code></pre><h1><span id="2-download-from-service">2. Download from Service</span></h1><p>这里最大的问题是：如何从服务中更新我的活动_。在下一个示例中，我们将使用两个您可能不知道的类：<code>ResultReceiver</code>和<code>IntentService</code>。 <code>ResultReceiver</code>是允许我们从服务更新线程的那个。 <code>IntentService</code>是<code>Service</code>的一个子类，它产生一个线程从那里做后台工作（你应该知道一个<code>Service</code>实际上运行在同一个线程中;当你扩展<code>Service</code>时，你必须手动产生新线程来运行CPU阻塞操作）。</p>
+<p>下载服务可以像这样：</p>
+<pre><code>public class DownloadService extends IntentService {
+    public static final int UPDATE_PROGRESS = 8344;
+    public DownloadService() {
+        super(&quot;DownloadService&quot;);
+    }
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        String urlToDownload = intent.getStringExtra(&quot;url&quot;);
+        ResultReceiver receiver = (ResultReceiver) intent.getParcelableExtra(&quot;receiver&quot;);
+        try {
+            URL url = new URL(urlToDownload);
+            URLConnection connection = url.openConnection();
+            connection.connect();
+            // this will be useful so that you can show a typical 0-100% progress bar
+            int fileLength = connection.getContentLength();
+
+            // download the file
+            InputStream input = new BufferedInputStream(connection.getInputStream());
+            OutputStream output = new FileOutputStream(&quot;/sdcard/BarcodeScanner-debug.apk&quot;);
+
+            byte data[] = new byte[1024];
+            long total = 0;
+            int count;
+            while ((count = input.read(data)) != -1) {
+                total += count;
+                // publishing the progress....
+                Bundle resultData = new Bundle();
+                resultData.putInt(&quot;progress&quot; ,(int) (total * 100 / fileLength));
+                receiver.send(UPDATE_PROGRESS, resultData);
+                output.write(data, 0, count);
+            }
+
+            output.flush();
+            output.close();
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Bundle resultData = new Bundle();
+        resultData.putInt(&quot;progress&quot; ,100);
+        receiver.send(UPDATE_PROGRESS, resultData);
+    }
+}
+</code></pre><p>将该服务添加到您的清单：</p>
+<pre><code>&lt;service android:name=&quot;.DownloadService&quot;/&gt;
+</code></pre><p>活动将如下所示：</p>
+<pre><code>// initialize the progress dialog like in the first example
+
+// this is how you fire the downloader
+mProgressDialog.show();
+Intent intent = new Intent(this, DownloadService.class);
+intent.putExtra(&quot;url&quot;, &quot;url of the file to download&quot;);
+intent.putExtra(&quot;receiver&quot;, new DownloadReceiver(new Handler()));
+startService(intent);
+</code></pre><p><code>这里是</code> ResultReceiver `来玩：</p>
+<pre><code>private class DownloadReceiver extends ResultReceiver{
+    public DownloadReceiver(Handler handler) {
+        super(handler);
+    }
+
+    @Override
+    protected void onReceiveResult(int resultCode, Bundle resultData) {
+        super.onReceiveResult(resultCode, resultData);
+        if (resultCode == DownloadService.UPDATE_PROGRESS) {
+            int progress = resultData.getInt(&quot;progress&quot;);
+            mProgressDialog.setProgress(progress);
+            if (progress == 100) {
+                mProgressDialog.dismiss();
+            }
+        }
+    }
+}
+</code></pre><h2><span id="21-use-groundy-library">2.1 Use Groundy library</span></h2><p><a href="http://github.com/casidiablo/groundy" target="_blank" rel="noopener"> <strong>Groundy</strong></a>是一个基本上可以帮助你运行代码的库一个后台服务，它基于上面显示的<code>ResultReceiver</code>概念。这个库目前是 <strong>不推荐使用的</strong> 。这就是 <strong>整个</strong> 代码的样子：</p>
+<p>您正在展示对话的活动…</p>
+<pre><code>public class MainActivity extends Activity {
+
+    private ProgressDialog mProgressDialog;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+
+        findViewById(R.id.btn_download).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                String url = ((EditText) findViewById(R.id.edit_url)).getText().toString().trim();
+                Bundle extras = new Bundler().add(DownloadTask.PARAM_URL, url).build();
+                Groundy.create(DownloadExample.this, DownloadTask.class)
+                        .receiver(mReceiver)
+                        .params(extras)
+                        .queue();
+
+                mProgressDialog = new ProgressDialog(MainActivity.this);
+                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mProgressDialog.setCancelable(false);
+                mProgressDialog.show();
+            }
+        });
+    }
+
+    private ResultReceiver mReceiver = new ResultReceiver(new Handler()) {
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            super.onReceiveResult(resultCode, resultData);
+            switch (resultCode) {
+                case Groundy.STATUS_PROGRESS:
+                    mProgressDialog.setProgress(resultData.getInt(Groundy.KEY_PROGRESS));
+                    break;
+                case Groundy.STATUS_FINISHED:
+                    Toast.makeText(DownloadExample.this, R.string.file_downloaded, Toast.LENGTH_LONG);
+                    mProgressDialog.dismiss();
+                    break;
+                case Groundy.STATUS_ERROR:
+                    Toast.makeText(DownloadExample.this, resultData.getString(Groundy.KEY_ERROR), Toast.LENGTH_LONG).show();
+                    mProgressDialog.dismiss();
+                    break;
+            }
+        }
+    };
+}
+</code></pre><p><strong>Groundy</strong> 用于下载文件并显示进度的<code>GroundyTask</code>实现</p>
+<pre><code>public class DownloadTask extends GroundyTask {    
+    public static final String PARAM_URL = &quot;com.groundy.sample.param.url&quot;;
+
+    @Override
+    protected boolean doInBackground() {
+        try {
+            String url = getParameters().getString(PARAM_URL);
+            File dest = new File(getContext().getFilesDir(), new File(url).getName());
+            DownloadUtils.downloadFile(getContext(), url, dest, DownloadUtils.getDownloadListenerForTask(this));
+            return true;
+        } catch (Exception pokemon) {
+            return false;
+        }
+    }
+}
+</code></pre><p>只要将其添加到清单：</p>
+<pre><code>&lt;service android:name=&quot;com.codeslap.groundy.GroundyService&quot;/&gt;
+</code></pre><p>我觉得这不是件容易的事。只需从Github抓取最新的jar <a href="https://github.com/casidiablo/groundy/downloads" target="_blank" rel="noopener"></a>，就可以开始了。请记住， <strong>Groundy</strong><br>的主要目的是在后台服务中调用外部REST API，并轻松地将结果发布到UI。如果你在应用程序中做了这样的事情，这可能是非常有用的。</p>
+<h2><span id="22-use-httpsgithubcomkoushion">2.2 Use </span></h2><h1><span id="3-use-downloadmanager-class-gingerbread-and-newer-only">3. Use <code>DownloadManager</code> class (<code>GingerBread</code> and newer only)</span></h1><p>GingerBread带来了一个新的特性：<code>DownloadManager</code>，它允许你轻松地下载文件，并且把处理线程，流等的辛苦工作委托给系统。</p>
+<p>首先，我们来看一个实用的方法：</p>
+<pre><code>/**
+ * @param context used to check the device version and DownloadManager information
+ * @return true if the download manager is available
+ */
+public static boolean isDownloadManagerAvailable(Context context) {
+
+    if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.GINGERBREAD) {
+        return true;
+    }
+    return false;
+}
+</code></pre><p>方法的名字解释了这一切。一旦确定<code>DownloadManager</code>可用，您可以执行如下操作：</p>
+<pre><code>String url = &quot;url you want to download&quot;;
+DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+request.setDescription(&quot;Some descrition&quot;);
+request.setTitle(&quot;Some title&quot;);
+// in order for this if to run, you must use the android 3.2 to compile your app
+if (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.HONEYCOMB) {
+    request.allowScanningByMediaScanner();
+    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+}
+request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, &quot;name-of-the-file.ext&quot;);
+
+// get download service and enqueue file
+DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+manager.enqueue(request);
+</code></pre><p>下载进度将显示在通知栏中。</p>
+<h1><span id="final-thoughts">Final thoughts</span></h1><p>第一种和第二种方法只是冰山一角。如果您希望自己的应用程序具有强大功能，则需要记住很多事项。这里是一个简短的列表：</p>
+<ul>
+<li>您必须检查用户是否有可用的互联网连接</li>
+<li>确保您拥有正确的权限（<code>INTERNET</code>和<code>WRITE_EXTERNAL_STORAGE</code>）;如果你想检查互联网的可用性，还可以<code>ACCESS_NETWORK_STATE</code>。</li>
+<li>确保您要下载的文件存在并具有写入权限。</li>
+<li>如果下载过大，则可能需要实施一种方法，以便在以前的尝试失败时恢复下载。</li>
+<li>如果您允许用户中断下载，用户将不胜感激。</li>
+</ul>
+<p>除非您需要详细控制下载过程，否则请考虑使用<code>DownloadManager</code>（3），因为它已经处理了上面列出的大部分内容。</p>
+<p>但也要考虑到你的需求可能会改变。例如，<code>DownloadManager</code><a href="https://stackoverflow.com/questions/35191718" target="_blank" rel="noopener">没有响应缓存</a>。它会多次盲目地下载同一个大文件。事实之后没有简单的方法来修复它。如果你从一个基本的<code>HttpURLConnection</code>（1,2）开始，那么你只需要添加一个<code>HttpResponseCache</code>。所以学习基本的标准工具的初步工作可以是一个很好的投资。</p>
+<p>如果你要从互联网上下载东西，不要忘记给清单文件添加权限。</p>
+<pre><code>&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    package=&quot;com.example.helloandroid&quot;
+    android:versionCode=&quot;1&quot;
+    android:versionName=&quot;1.0&quot;&gt;
+
+        &lt;uses-sdk android:minSdkVersion=&quot;10&quot; /&gt;
+
+        &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;&gt;&lt;/uses-permission&gt;
+        &lt;uses-permission android:name=&quot;android.permission.INTERNET&quot;&gt;&lt;/uses-permission&gt;
+        &lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot;&gt;&lt;/uses-permission&gt;
+        &lt;uses-permission android:name=&quot;android.permission.READ_PHONE_STATE&quot;&gt;&lt;/uses-permission&gt;
+
+        &lt;application 
+            android:icon=&quot;@drawable/icon&quot; 
+            android:label=&quot;@string/app_name&quot; 
+            android:debuggable=&quot;true&quot;&gt;
+
+        &lt;/application&gt;
+
+&lt;/manifest&gt;
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/15/download-a-file-with-android-and-showing-the-progress-in-a-progressdialog/" data-title="使用Android下载文件，并在ProgressDialog中显示进度 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/16/how-to-get-useful-error-messages-in-php/" title="如何在PHP中获取有用的错误消息？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何在PHP中获取有用的错误消息？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/15/how-to-reload-bash-profile-from-the-command-line/"  title="如何从命令行重新加载 bash_profile？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何从命令行重新加载 bash_profile？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">1. Use AsyncTask and show the download progress in a dialog</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">2. Download from Service</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 Use Groundy library</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 Use </span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">3. Use DownloadManager class (GingerBread and newer only)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Final thoughts</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

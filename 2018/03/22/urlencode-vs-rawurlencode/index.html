@@ -1,0 +1,760 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>urlencode与rawurlencode？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如果我想用变量创建一个URL，我有两个选择来编码字符串。 urlencode（）和rawurlencode（）。 究竟是什么区别，哪一个是首选？">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="urlencode与rawurlencode？">
+<meta property="og:url" content="https://www.tracholar.top/2018/03/22/urlencode-vs-rawurlencode/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如果我想用变量创建一个URL，我有两个选择来编码字符串。 urlencode（）和rawurlencode（）。 究竟是什么区别，哪一个是首选？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="urlencode与rawurlencode？">
+<meta name="twitter:description" content="如果我想用变量创建一个URL，我有两个选择来编码字符串。 urlencode（）和rawurlencode（）。 究竟是什么区别，哪一个是首选？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/22/urlencode-vs-rawurlencode/" title="urlencode与rawurlencode？" itemprop="url">urlencode与rawurlencode？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-03-22T01:08:51.000Z" itemprop="datePublished"> Published 2018-03-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Lets look at php_raw_url_encode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">And of course, php_url_encode:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Differences in ASCII:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Differences in EBCDIC:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Grand Summary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Suggested implementations</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如果我想用变量创建一个URL，我有两个选择来编码字符串。 <code>urlencode（）</code>和<code>rawurlencode（）</code>。</p>
+<p>究竟是什么区别，哪一个是首选？</p>
+<a id="more"></a>
+<p>这取决于你的目的。如果与其他系统的互操作性非常重要，那么看起来rawurlencode就是要走的路。一个例外是传统的系统，它希望查询字符串遵循编码为+而不是％20的空格编码风格（在这种情况下，您需要urlencode）。</p>
+<p>之后，rawurlencode **遵循RFC 1738之前的PHP 5.3.0和RFC 3986（参见<a href="“http://us2.php.net/manual/en/function.rawurlencode.php">http://us2.php.net/manual/en/function.rawurlencode.php</a>）</p>
+<blockquote>
+<p>Returns a string in which all non-alphanumeric characters except -_.~ have<br>been replaced with a percent (%) sign followed by two hex digits. This is the<br>encoding described in Â» RFC 3986 for protecting literal characters from being<br>interpreted as special URL delimiters, and for protecting URLs from being<br>mangled by transmission media with character conversions (like some email<br>systems).</p>
+</blockquote>
+<p>关于RFC 3986和1738的说明。根据RFC 1738，php 5.3之前的rawurlencode编码波浪符（<code>〜</code>）。然而，从PHP<br>5.3开始，rawurlencode遵循RFC 3986，它不需要编码波浪字符。</p>
+<p>urlencode **将空格编码为加号（不是像rawurlencode中的<code>％20</code>）（参见<a href="“http://us2.php.net/">http://us2.php.net/manual/en/function.urlencode.php </a>）</p>
+<blockquote>
+<p>Returns a string in which all non-alphanumeric characters except -_. have<br>been replaced with a percent (%) sign followed by two hex digits and spaces<br>encoded as plus (+) signs. It is encoded the same way that the posted data<br>from a WWW form is encoded, that is the same way as in application/x-www-form-<br>urlencoded media type. This differs from the Â» RFC 3986 encoding (see<br>rawurlencode()) in that for historical reasons, spaces are encoded as plus (+)<br>signs.</p>
+</blockquote>
+<p>这对应于[ RFC 1866中的application / x-www-form-urlencoded的定义。一&gt;</p>
+<p>补充阅读：**</p>
+<p>您也可以在<a href="http://bytes.com/groups/php/5624-urlencode-vs-rawurlencode" target="_blank" rel="noopener"> http://bytes.com /组/ PHP / 5624-进行urlencode-VS-rawurlencode</a>。</p>
+<p>另外，<a href="http://www.ietf.org/rfc/rfc2396.txt" target="_blank" rel="noopener"> RFC 2396 </a>值得一看。 RFC<br>2396定义了有效的URI语法。我们感兴趣的主要部分来自3.4查询组件：</p>
+<blockquote>
+<p>Within a query component, the characters <code>&quot;;&quot;, &quot;/&quot;, &quot;?&quot;, &quot;:&quot;, &quot;@&quot;,  
+ &quot;&amp;&quot;, &quot;=&quot;, &quot;+&quot;, &quot;,&quot;, and &quot;$&quot;</code> are reserved.</p>
+</blockquote>
+<p>正如你所看到的，<code>+</code>是查询字符串中的一个保留字符，因此需要根据RFC 3986进行编码（如在rawurlencode中）。</p>
+<p>证明在PHP的源代码中。</p>
+<p>我会带你通过一个快速的过程，让你在任何时候自己找到这样的事情。忍受我，会有很多C源代码可以浏览（我解释它）。 <a href="https://stackoverflow.com/tags/c/info" target="_blank" rel="noopener">如果你想刷新一些C，一个好的开始是我们的SO<br>wiki </a>。</p>
+<p>下载源代码（或使用<a href="http://lxr.php.net/" target="_blank" rel="noopener"> http://lxr.php.net/ </a>在线浏览）<br>，grep所有的函数名称的文件，你会发现这样的东西：</p>
+<p>PHP 5.3.6（最近在撰写本文时）描述了在它们的本地C代码中的两个函数 <em>url.c</em> 。</p>
+<p>&lt;强&gt; RawUrlEncode（）</p>
+<pre><code>PHP_FUNCTION(rawurlencode)
+{
+    char *in_str, *out_str;
+    int in_str_len, out_str_len;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;s&quot;, &amp;in_str,
+                              &amp;in_str_len) == FAILURE) {
+        return;
+    }
+
+    out_str = php_raw_url_encode(in_str, in_str_len, &amp;out_str_len);
+    RETURN_STRINGL(out_str, out_str_len, 0);
+}
+</code></pre><p>&lt;强&gt; urlencode（）来</p>
+<pre><code>PHP_FUNCTION(urlencode)
+{
+    char *in_str, *out_str;
+    int in_str_len, out_str_len;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;s&quot;, &amp;in_str,
+                              &amp;in_str_len) == FAILURE) {
+        return;
+    }
+
+    out_str = php_url_encode(in_str, in_str_len, &amp;out_str_len);
+    RETURN_STRINGL(out_str, out_str_len, 0);
+}
+</code></pre><p>好的，这里有什么不同？</p>
+<p>它们实际上分别调用两个不同的内部函数： <strong>php_raw_url_encode</strong> 和 <strong>php_url_encode</strong></p>
+<p>所以去找那些功能吧！</p>
+<h2><span id="lets-look-at-php_raw_url_encode">Lets look at php_raw_url_encode</span></h2><pre><code>PHPAPI char *php_raw_url_encode(char const *s, int len, int *new_length)
+{
+    register int x, y;
+    unsigned char *str;
+
+    str = (unsigned char *) safe_emalloc(3, len, 1);
+    for (x = 0, y = 0; len--; x++, y++) {
+        str[y] = (unsigned char) s[x];
+#ifndef CHARSET_EBCDIC
+        if ((str[y] &lt; &apos;0&apos; &amp;&amp; str[y] != &apos;-&apos; &amp;&amp; str[y] != &apos;.&apos;) ||
+            (str[y] &lt; &apos;A&apos; &amp;&amp; str[y] &gt; &apos;9&apos;) ||
+            (str[y] &gt; &apos;Z&apos; &amp;&amp; str[y] &lt; &apos;a&apos; &amp;&amp; str[y] != &apos;_&apos;) ||
+            (str[y] &gt; &apos;z&apos; &amp;&amp; str[y] != &apos;~&apos;)) {
+            str[y++] = &apos;%&apos;;
+            str[y++] = hexchars[(unsigned char) s[x] &gt;&gt; 4];
+            str[y] = hexchars[(unsigned char) s[x] &amp; 15];
+#else /*CHARSET_EBCDIC*/
+        if (!isalnum(str[y]) &amp;&amp; strchr(&quot;_-.~&quot;, str[y]) != NULL) {
+            str[y++] = &apos;%&apos;;
+            str[y++] = hexchars[os_toascii[(unsigned char) s[x]] &gt;&gt; 4];
+            str[y] = hexchars[os_toascii[(unsigned char) s[x]] &amp; 15];
+#endif /*CHARSET_EBCDIC*/
+        }
+    }
+    str[y] = &apos;\0&apos;;
+    if (new_length) {
+        *new_length = y;
+    }
+    return ((char *) str);
+}
+</code></pre><h2><span id="and-of-course-php_url_encode">And of course, php_url_encode:</span></h2><pre><code>PHPAPI char *php_url_encode(char const *s, int len, int *new_length)
+{
+    register unsigned char c;
+    unsigned char *to, *start;
+    unsigned char const *from, *end;
+
+    from = (unsigned char *)s;
+    end = (unsigned char *)s + len;
+    start = to = (unsigned char *) safe_emalloc(3, len, 1);
+
+    while (from &lt; end) {
+        c = *from++;
+
+        if (c == &apos; &apos;) {
+            *to++ = &apos;+&apos;;
+#ifndef CHARSET_EBCDIC
+        } else if ((c &lt; &apos;0&apos; &amp;&amp; c != &apos;-&apos; &amp;&amp; c != &apos;.&apos;) ||
+                   (c &lt; &apos;A&apos; &amp;&amp; c &gt; &apos;9&apos;) ||
+                   (c &gt; &apos;Z&apos; &amp;&amp; c &lt; &apos;a&apos; &amp;&amp; c != &apos;_&apos;) ||
+                   (c &gt; &apos;z&apos;)) {
+            to[0] = &apos;%&apos;;
+            to[1] = hexchars[c &gt;&gt; 4];
+            to[2] = hexchars[c &amp; 15];
+            to += 3;
+#else /*CHARSET_EBCDIC*/
+        } else if (!isalnum(c) &amp;&amp; strchr(&quot;_-.&quot;, c) == NULL) {
+            /* Allow only alphanumeric chars and &apos;_&apos;, &apos;-&apos;, &apos;.&apos;; escape the rest */
+            to[0] = &apos;%&apos;;
+            to[1] = hexchars[os_toascii[c] &gt;&gt; 4];
+            to[2] = hexchars[os_toascii[c] &amp; 15];
+            to += 3;
+#endif /*CHARSET_EBCDIC*/
+        } else {
+            *to++ = c;
+        }
+    }
+    *to = 0;
+    if (new_length) {
+        *new_length = to - start;
+    }
+    return (char *) start;
+}
+</code></pre><p>在我继续前进之前，有一点点的知识，<a href="http://en.wikipedia.org/wiki/Extended_Binary_Coded_Decimal_Interchange_Code" target="_blank" rel="noopener">EBCDIC是另一个字符集</a>，类似于ASCII，但是是一个完全竞争者。<br>PHP试图处理这两个。但基本上，这意味着字节EBCDIC 0x4c字节不是ASCII码中的<code>L</code>，它实际上是一个<code>＆lt;</code>。我相信你看到这里的困惑。</p>
+<p>如果Web服务器已经定义了这两个函数，那么它们将管理EBCDIC。</p>
+<p>另外，它们都使用chars数组（思考字符串类型）<code>hexchars</code>查找来获取一些值，数组被描述为：</p>
+<pre><code>/* rfc1738:
+
+   ...The characters &quot;;&quot;,
+   &quot;/&quot;, &quot;?&quot;, &quot;:&quot;, &quot;@&quot;, &quot;=&quot; and &quot;&amp;&quot; are the characters which may be
+   reserved for special meaning within a scheme...
+
+   ...Thus, only alphanumerics, the special characters &quot;$-_.+!*&apos;(),&quot;, and
+   reserved characters used for their reserved purposes may be used
+   unencoded within a URL...
+
+   For added safety, we only leave -_. unencoded.
+ */
+
+static unsigned char hexchars[] = &quot;0123456789ABCDEF&quot;;
+</code></pre><p>除此之外，功能是非常不同的，我将用ASCII和EBCDIC来解释它们。</p>
+<h2><span id="differences-in-ascii">Differences in ASCII:</span></h2><p>&lt;强&gt;的URLEncode：</p>
+<ul>
+<li>计算输入字符串的开始/结束长度，分配内存</li>
+<li>遍历一个while循环，递增，直到到达字符串的末尾</li>
+<li>抓住现在的人物</li>
+<li>如果字符等于ASCII字符0x20（即“空格”），则向输出字符串添加<code>+</code>符号。</li>
+<li>如果不是空格，也不是字母数字（<code>isalnum（c）</code>），也不是<code>_</code>，<code>-</code>或<code>。</code>字符，那么我们输出一个<code>％</code>的符号到数组位置0，做一个数组查找<code>hexchars</code>数组查找<code>os_toascii</code>数组（来自[将转换为十六进制代码的Apache）作为<code>c</code>（当前字符）的键值，然后按位向右移位4，字符1和位置2我们分配相同的查找，除了我们预先形成一个逻辑和看是否值15（0xF），并在这种情况下返回1，否则返回0。最后，你会得到一些编码的东西。</li>
+<li>如果它结束了，它不是空格，而是字母数字或<code>_-。</code>字符之一，它输出完全一样的东西。</li>
+</ul>
+<p>&lt;强&gt; RAWURLENCODE：</p>
+<ul>
+<li>为字符串分配内存</li>
+<li>根据函数调用中提供的长度对其进行迭代（不像函数中的URLENCODE那样计算）。</li>
+</ul>
+<p>**注意：很多程序员可能从来没有见过这样的循环迭代，它有点不好意思，而且也不是大多数for循环所使用的标准约定，请注意，它将<code>x &lt; / code&gt;和</code>y <code>检查</code> len <code>上的退出是否达到0，并且递增</code> x <code>和</code> y `。我知道，这不是你所期望的，但它是有效的代码。</p>
+<ul>
+<li>将当前字符分配给<code>str</code>中的匹配字符位置。</li>
+<li>它检查当前字符是字母数字还是一个<code>_-。</code>字符，如果不是，我们做的操作几乎与使用URLENCODE执行的查找相同。 ，我们使用<code>y ++</code>而不是<code>来增加[1]</code>，这是因为这些字符串是以不同的方式构建的，但是最后到达相同的目标。 </li>
+<li>当循环完成并且长度消失时，它实际上会终止字符串，分配<code>\ 0</code>字节。 </li>
+<li>它返回编码的字符串。</li>
+</ul>
+<p>&lt;强&gt;差异：</p>
+<ul>
+<li>UrlEncode检查空间，指定一个+号，RawURLEncode不会。</li>
+<li>UrlEncode不会为字符串分配一个<code>\ 0</code>字节，RawUrlEncode会（这可能是一个争议点）</li>
+<li>它们迭代的方式不同，可能容易出现格式错误的字符串溢出，我仅 <strong>仅仅暗示</strong> ，而 **没有实际调查过。</li>
+</ul>
+<p>它们基本上是以不同的方式进行迭代的，在ASCII 20的情况下，分配一个+号。</p>
+<h2><span id="differences-in-ebcdic">Differences in EBCDIC:</span></h2><p>&lt;强&gt;的URLEncode：</p>
+<ul>
+<li>与ASCII相同的迭代设置</li>
+<li>仍然将“空格”字符翻译为+ <em>符号。注意 - 我认为这需要在EBCDIC中进行编译，否则最终会出现一个错误？有人可以编辑和确认吗？</em></li>
+<li>它检查当前char是否是<code>0</code>之前的char，除了<code>。</code>或<code>\-</code>， <strong>或小于<code>A</code>，但大于char <code>9</code>， </strong>OR<strong> 大于<code>Z</code>且小于<code>a</code>，但不是<code>_</code>。 </strong>OR** 大于<code>z</code>（是的，EBCDIC是有点混乱的工作）。如果匹配其中的任何一个，请执行与ASCII版本类似的查找（它只是不需要在os_toascii中查找）。</li>
+</ul>
+<p>&lt;强&gt; RAWURLENCODE：</p>
+<ul>
+<li>与ASCII相同的迭代设置</li>
+<li>与在EBCDIC版本的URL编码中描述的检查相同，只是如果它大于<code>z</code>，它会从URL编码中排除<code>〜</code>。 &gt; </li>
+<li><p>与ASCII RawUrlEncode<br>相同的赋值</p>
+</li>
+<li><p>在返回之前，仍将<code>\ 0</code>字节附加到字符串中。</p>
+</li>
+</ul>
+<h2><span id="grand-summary">Grand Summary</span></h2><ul>
+<li>两者都使用相同的六进制查找表</li>
+<li>URIEncode不会以\ 0结束字符串，原始的。</li>
+<li>如果你在EBCDIC工作，我建议使用RawUrlEncode，因为它管理UrlEncode没有的<code>〜</code>（<a href="“https://bugs.php.net/bug">这是一个报道的问题</a>）。值得注意的是，ASCII和EBCDIC 0x20都是空格。</li>
+<li>它们的迭代方式不同，可能会更快，可能会出现内存泄漏或基于字符串的漏洞利用 </li>
+<li>URIEncode将空格转换为<code>\+</code>，RawUrlEncode通过数组查找将空格变成<code>％20</code>。</li>
+</ul>
+<p><strong>免责声明：</strong> 我多年没有碰过C，而且我也没有真正看过EBCDIC。如果我错了，请告诉我。</p>
+<h2><span id="suggested-implementations">Suggested implementations</span></h2><p>基于这一切，rawurlencode是大部分时间去的方法。正如你在乔纳森·芬兰的答案中看到的，在大多数情况下坚持下去。它处理的是URI组件的现代化方案，urlencode就像旧式的做法，其中+意味着“空间”。</p>
+<p>如果您想要在旧格式和新格式之间进行转换，请确保您的代码不会混乱，并且通过意外的双重编码或类似的“oops”将某个解码后的符号变成空格，围绕这个空间/<br>20％/ +问题的场景。</p>
+<p>如果您正在使用旧版软件，而不喜欢新格式，请使用urlencode，但是，我相信％20实际上是向后兼容的，因为在旧的标准％20下工作，只是不是首选。如果你想玩游戏，请给它一个镜头，让我们知道它是如何解决你的。</p>
+<p>基本上，你应该坚持生，除非你的EBCDIC系统真的恨你。大多数程序员在2000年以后甚至1990年都不会遇到任何系统的EBCDIC（这是推动，但仍然可能在我看来）。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/03/22/urlencode-vs-rawurlencode/" data-title="urlencode与rawurlencode？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/22/call-one-constructor-from-another/" title="从另一个调用一个构造函数">
+  <strong>上一篇：</strong><br/>
+  <span>
+  从另一个调用一个构造函数</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/03/22/how-to-read-a-large-file-line-by-line/"  title="如何逐行读取大文件">
+ <strong>下一篇：</strong><br/> 
+ <span>如何逐行读取大文件
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Lets look at php_raw_url_encode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">And of course, php_url_encode:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Differences in ASCII:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Differences in EBCDIC:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Grand Summary</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Suggested implementations</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,710 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>我如何实现基本的“长轮询”？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我可以找到很多有关长轮询的工作原理（例如，这个，和 /Comet_（programming）#Ajax_with_long_polling“rel=”noreferrer“&amp;gt;这个），但是没有简单的_例子来说明如何在代码中实现这个功能。 我所能找到的是 cometd ，它依赖于Dojo JS框架，相当复杂的服务器系统.. 基本上，我将如何使用Apache来服务请求，以及如何编写一个简单的脚本（">
+<meta name="keywords" content="http,php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我如何实现基本的“长轮询”？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/24/how-do-i-implement-basic-long-polling/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我可以找到很多有关长轮询的工作原理（例如，这个，和 /Comet_（programming）#Ajax_with_long_polling“rel=”noreferrer“&amp;gt;这个），但是没有简单的_例子来说明如何在代码中实现这个功能。 我所能找到的是 cometd ，它依赖于Dojo JS框架，相当复杂的服务器系统.. 基本上，我将如何使用Apache来服务请求，以及如何编写一个简单的脚本（">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我如何实现基本的“长轮询”？">
+<meta name="twitter:description" content="我可以找到很多有关长轮询的工作原理（例如，这个，和 /Comet_（programming）#Ajax_with_long_polling“rel=”noreferrer“&amp;gt;这个），但是没有简单的_例子来说明如何在代码中实现这个功能。 我所能找到的是 cometd ，它依赖于Dojo JS框架，相当复杂的服务器系统.. 基本上，我将如何使用Apache来服务请求，以及如何编写一个简单的脚本（">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/24/how-do-i-implement-basic-long-polling/" title="我如何实现基本的“长轮询”？" itemprop="url">我如何实现基本的“长轮询”？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-24T00:59:32.000Z" itemprop="datePublished"> Published 2018-01-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我可以找到很多有关长轮询的工作原理（例如，<a href="“http://jfarcand.wordpress.com/2007/05/15/new-
+adventures-in-comet-polling-long">这个</a>，和<a href="”http://en.wikipedia.org/"> /<br>Comet_（programming）#Ajax_with_long_polling“rel<br>=”noreferrer“&gt;这个</a>），但是没有简单的_例子来说明如何在代码中实现这个功能。</p>
+<p>我所能找到的是<a href="http://code.google.com/p/cometd/" target="_blank" rel="noopener"> cometd </a>，它依赖于Dojo JS框架，相当复杂的服务器系统..</p>
+<p>基本上，我将如何使用Apache来服务请求，以及如何编写一个简单的脚本（比如在PHP中）来“长时间轮询”服务器以获得新消息？</p>
+<p>这个例子不一定是可扩展的，安全的或完整的，它只是需要工作！</p>
+<a id="more"></a>
+<p>它比我最初想象的要简单。基本上，你有一个什么都不做的页面，直到你想发送的数据可用（比如一个新的消息到达）。</p>
+<p>这是一个非常基本的例子，它在2-10秒后发送一个简单的字符串。三分之一的机会返回一个错误404（在未来的Javascript示例中显示错误处理）</p>
+<p>&lt;代码&gt; msgsrv.php</p>
+<pre><code>&lt;?php
+if(rand(1,3) == 1){
+    /* Fake an error */
+    header(&quot;HTTP/1.0 404 Not Found&quot;);
+    die();
+}
+
+/* Send a string after a random number of seconds (2-10) */
+sleep(rand(2,10));
+echo(&quot;Hi! Have a random number: &quot; . rand(1,10));
+?&gt;
+</code></pre><p>注意：对于一个真正的网站，在像Apache这样的普通网络服务器上运行它会迅速捆绑所有“工作线程”，并使其无法响应其他请求。有办法解决这个问题，但它是建议用Python的[扭曲的东西写一个“长轮询服务器”，它不依赖每个线程请求。<br><a href="http://cometdproject.dojotoolkit.org/" target="_blank" rel="noopener">彗星</a>是一种流行的（它有几种语言），和<a href="“http：//"> Tornado</a>是专门为这种任务而制作的新框架（它是为FriendFeed的长轮询代码而构建的）…但是作为一个简单的例子，A​​pache更多比足够！这个脚本可以很容易地用任何语言编写（我选择了Apache<br>/ PHP，因为它们很常见，而且我碰巧在本地运行它们）</p>
+<p>然后，在Javascript中，请求上述文件（<code>msg_srv.php</code>），然后等待响应。当你得到一个，你的数据行事。然后你请求文件并再次等待，根据数据（和重复）</p>
+<p>接下来是这样一个页面的例子。当页面被加载时，它发送对<code>msgsrv.php</code>文件的初始请求。如果成功，我们将消息附加到<code>#messages</code>div，那么在1秒之后，我们再次调用waitForMsg函数，这会触发等待。</p>
+<p>setTimeout（）<code>是一个非常基本的速率限制器，没有这个就可以正常工作，但是如果</code> msgsrv.php ` <em>总是</em> 立即返回（例如语法错误） -<br>浏览器泛滥，可能会很快冻结。最好检查文件是否包含有效的JSON响应，和/或保持每分钟/每秒的请求总数，并适当地暂停。</p>
+<p>如果页面错误，它将错误附加到<code>#messages</code> div，等待15秒，然后再次尝试（等同于每条消息之后等待1秒）</p>
+<p>这种方法的好处是非常有弹性。如果客户的互联网连接中断，它将超时，然后尝试重新连接 - 这是轮询工作的固有时间，不需要复杂的错误处理。</p>
+<p>无论如何，使用jQuery框架的<code>long_poller.htm</code>代码：</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;BargePoller&lt;/title&gt;
+    &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js&quot; type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+
+    &lt;style type=&quot;text/css&quot; media=&quot;screen&quot;&gt;
+      body{ background:#000;color:#fff;font-size:.9em; }
+      .msg{ background:#aaa;padding:.2em; border-bottom:1px #000 solid}
+      .old{ background-color:#246499;}
+      .new{ background-color:#3B9957;}
+    .error{ background-color:#992E36;}
+    &lt;/style&gt;
+
+    &lt;script type=&quot;text/javascript&quot; charset=&quot;utf-8&quot;&gt;
+    function addmsg(type, msg){
+        /* Simple helper to add a div.
+        type is the name of a CSS class (old/new/error).
+        msg is the contents of the div */
+        $(&quot;#messages&quot;).append(
+            &quot;&lt;div class=&apos;msg &quot;+ type +&quot;&apos;&gt;&quot;+ msg +&quot;&lt;/div&gt;&quot;
+        );
+    }
+
+    function waitForMsg(){
+        /* This requests the url &quot;msgsrv.php&quot;
+        When it complete (or errors)*/
+        $.ajax({
+            type: &quot;GET&quot;,
+            url: &quot;msgsrv.php&quot;,
+
+            async: true, /* If set to non-async, browser shows page as &quot;Loading..&quot;*/
+            cache: false,
+            timeout:50000, /* Timeout in ms */
+
+            success: function(data){ /* called when request to barge.php completes */
+                addmsg(&quot;new&quot;, data); /* Add response to a .msg div (with the &quot;new&quot; class)*/
+                setTimeout(
+                    waitForMsg, /* Request next message */
+                    1000 /* ..after 1 seconds */
+                );
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                addmsg(&quot;error&quot;, textStatus + &quot; (&quot; + errorThrown + &quot;)&quot;);
+                setTimeout(
+                    waitForMsg, /* Try again after.. */
+                    15000); /* milliseconds (15seconds) */
+            }
+        });
+    };
+
+    $(document).ready(function(){
+        waitForMsg(); /* Start the inital request */
+    });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;messages&quot;&gt;
+        &lt;div class=&quot;msg old&quot;&gt;
+            BargePoll message requester!
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>我有一个非常简单的聊天示例，作为<a href="http://github.com/dustin/slosh" target="_blank" rel="noopener">晃动</a>的一部分。</p>
+<p><strong>编辑</strong> ：（因为每个人都在这里粘贴他们的代码）</p>
+<p>这是使用长轮询和<a href="http://github.com/dustin/slosh" target="_blank" rel="noopener"> slosh </a>的完整基于JSON的多用户聊天。这是如何进行呼叫的<br><strong>演示</strong> ，所以请忽略XSS问题。没有人应该先把它消毒。</p>
+<p>请注意，客户端 <em>总是</em> 与服务器有连接，只要有人发送消息，所有人都应该立即看到它。</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
+&lt;!-- Copyright (c) 2008 Dustin Sallings &lt;dustin+html@spy.net&gt; --&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;title&gt;slosh chat&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot;
+      src=&quot;http://code.jquery.com/jquery-latest.js&quot;&gt;&lt;/script&gt;
+    &lt;link title=&quot;Default&quot; rel=&quot;stylesheet&quot; media=&quot;screen&quot; href=&quot;style.css&quot; /&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;h1&gt;Welcome to Slosh Chat&lt;/h1&gt;
+
+    &lt;div id=&quot;messages&quot;&gt;
+      &lt;div&gt;
+        &lt;span class=&quot;from&quot;&gt;First!:&lt;/span&gt;
+        &lt;span class=&quot;msg&quot;&gt;Welcome to chat. Please don&apos;t hurt each other.&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;form method=&quot;post&quot; action=&quot;#&quot;&gt;
+      &lt;div&gt;Nick: &lt;input id=&apos;from&apos; type=&quot;text&quot; name=&quot;from&quot;/&gt;&lt;/div&gt;
+      &lt;div&gt;Message:&lt;/div&gt;
+      &lt;div&gt;&lt;textarea id=&apos;msg&apos; name=&quot;msg&quot;&gt;&lt;/textarea&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;input type=&quot;submit&quot; value=&quot;Say it&quot; id=&quot;submit&quot;/&gt;&lt;/div&gt;
+    &lt;/form&gt;
+
+    &lt;script type=&quot;text/javascript&quot;&gt;
+      function gotData(json, st) {
+        var msgs=$(&apos;#messages&apos;);
+        $.each(json.res, function(idx, p) {
+          var from = p.from[0]
+          var msg = p.msg[0]
+          msgs.append(&quot;&lt;div&gt;&lt;span class=&apos;from&apos;&gt;&quot; + from + &quot;:&lt;/span&gt;&quot; +
+            &quot; &lt;span class=&apos;msg&apos;&gt;&quot; + msg + &quot;&lt;/span&gt;&lt;/div&gt;&quot;);
+        });
+        // The jQuery wrapped msgs above does not work here.
+        var msgs=document.getElementById(&quot;messages&quot;);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+
+      function getNewComments() {
+        $.getJSON(&apos;/topics/chat.json&apos;, gotData);
+      }
+
+      $(document).ready(function() {
+        $(document).ajaxStop(getNewComments);
+        $(&quot;form&quot;).submit(function() {
+          $.post(&apos;/topics/chat&apos;, $(&apos;form&apos;).serialize());
+          return false;
+        });
+        getNewComments();
+      });
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/http/">http</a><a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/24/how-do-i-implement-basic-long-polling/" data-title="我如何实现基本的“长轮询”？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/24/php-array-delete-by-value-not-key/" title="PHP数组按值删除（不是键）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  PHP数组按值删除（不是键）</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/23/debug-certificate-expired-error-in-eclipse-android-plugins/"  title="Eclipse Android插件中的“调试证书过期”错误">
+ <strong>下一篇：</strong><br/> 
+ <span>Eclipse Android插件中的“调试证书过期”错误
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

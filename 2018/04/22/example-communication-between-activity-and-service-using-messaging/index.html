@@ -1,0 +1,1035 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>示例：使用消息传递的活动和服务之间的通信 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我找不到任何如何在活动和服务之间发送消息的例子，我花了太多的时间来解决这个问题。这是一个供他人参考的示例项目。 这个例子允许你直接启动或停止服务，并单独绑定/取消绑定服务。当服务正在运行时，它以10Hz递增一个数字。如果活动绑定到Service，它将显示当前值。数据以Integer形式传输，并以字符串形式传输，这样您就可以看到如何做到这两种不同的方式。活动中还有按钮可将消息发送到服务（更改递增值）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="示例：使用消息传递的活动和服务之间的通信">
+<meta property="og:url" content="https://www.tracholar.top/2018/04/22/example-communication-between-activity-and-service-using-messaging/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我找不到任何如何在活动和服务之间发送消息的例子，我花了太多的时间来解决这个问题。这是一个供他人参考的示例项目。 这个例子允许你直接启动或停止服务，并单独绑定/取消绑定服务。当服务正在运行时，它以10Hz递增一个数字。如果活动绑定到Service，它将显示当前值。数据以Integer形式传输，并以字符串形式传输，这样您就可以看到如何做到这两种不同的方式。活动中还有按钮可将消息发送到服务（更改递增值）">
+<meta property="og:image" content="https://www.tracholar.top/2018/04/22/example-communication-between-activity-and-service-using-messaging/“https://i.stack.imgur.com/CMPS7.png”alt">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="示例：使用消息传递的活动和服务之间的通信">
+<meta name="twitter:description" content="我找不到任何如何在活动和服务之间发送消息的例子，我花了太多的时间来解决这个问题。这是一个供他人参考的示例项目。 这个例子允许你直接启动或停止服务，并单独绑定/取消绑定服务。当服务正在运行时，它以10Hz递增一个数字。如果活动绑定到Service，它将显示当前值。数据以Integer形式传输，并以字符串形式传输，这样您就可以看到如何做到这两种不同的方式。活动中还有按钮可将消息发送到服务（更改递增值）">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/04/22/example-communication-between-activity-and-service-using-messaging/“https://i.stack.imgur.com/CMPS7.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/22/example-communication-between-activity-and-service-using-messaging/" title="示例：使用消息传递的活动和服务之间的通信" itemprop="url">示例：使用消息传递的活动和服务之间的通信</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-22T02:35:12.000Z" itemprop="datePublished"> Published 2018-04-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我找不到任何如何在活动和服务之间发送消息的例子，我花了太多的时间来解决这个问题。这是一个供他人参考的示例项目。</p>
+<p>这个例子允许你直接启动或停止服务，并单独绑定/取消绑定服务。当服务正在运行时，它以10Hz递增一个数字。如果活动绑定到<code>Service</code>，它将显示当前值。数据以Integer形式传输，并以字符串形式传输，这样您就可以看到如何做到这两种不同的方式。活动中还有按钮可将消息发送到服务（更改递增值）。</p>
+<p>&lt;强&gt;截图：</p>
+<p><img src="“https://i.stack.imgur.com/CMPS7.png”alt" alt=""></p>
+<p>&lt;强&gt;的AndroidManifest.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+      package=&quot;com.exampleservice&quot;
+      android:versionCode=&quot;1&quot;
+      android:versionName=&quot;1.0&quot;&gt;
+    &lt;application android:icon=&quot;@drawable/icon&quot; android:label=&quot;@string/app_name&quot;&gt;
+        &lt;activity android:name=&quot;.MainActivity&quot;
+                  android:label=&quot;@string/app_name&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+    &lt;service android:name=&quot;.MyService&quot;&gt;&lt;/service&gt;
+    &lt;/application&gt;
+    &lt;uses-sdk android:minSdkVersion=&quot;8&quot; /&gt;
+&lt;/manifest&gt;
+</code></pre><p>&lt;强&gt; RES \值\ strings.xml中：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;resources&gt;
+    &lt;string name=&quot;app_name&quot;&gt;ExampleService&lt;/string&gt;
+    &lt;string name=&quot;service_started&quot;&gt;Example Service started&lt;/string&gt;
+    &lt;string name=&quot;service_label&quot;&gt;Example Service Label&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre><p>&lt;强&gt; RES \布局\ main.xml中：</p>
+<pre><code>&lt;RelativeLayout
+    android:id=&quot;@+id/RelativeLayout01&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot; &gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnStart&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Start Service&quot; &gt;
+    &lt;/Button&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnStop&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:text=&quot;Stop Service&quot; &gt;
+    &lt;/Button&gt;
+&lt;/RelativeLayout&gt;
+
+&lt;RelativeLayout
+    android:id=&quot;@+id/RelativeLayout02&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot; &gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnBind&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Bind to Service&quot; &gt;
+    &lt;/Button&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnUnbind&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:text=&quot;Unbind from Service&quot; &gt;
+    &lt;/Button&gt;
+&lt;/RelativeLayout&gt;
+
+&lt;TextView
+    android:id=&quot;@+id/textStatus&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;Status Goes Here&quot;
+    android:textSize=&quot;24sp&quot; /&gt;
+
+&lt;TextView
+    android:id=&quot;@+id/textIntValue&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;Integer Value Goes Here&quot;
+    android:textSize=&quot;24sp&quot; /&gt;
+
+&lt;TextView
+    android:id=&quot;@+id/textStrValue&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;String Value Goes Here&quot;
+    android:textSize=&quot;24sp&quot; /&gt;
+
+&lt;RelativeLayout
+    android:id=&quot;@+id/RelativeLayout03&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot; &gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnUpby1&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Increment by 1&quot; &gt;
+    &lt;/Button&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnUpby10&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:text=&quot;Increment by 10&quot; &gt;
+    &lt;/Button&gt;
+&lt;/RelativeLayout&gt;
+</code></pre><p>&lt;强&gt; SRC \ com.exampleservice \ MainActivity.java：</p>
+<pre><code>package com.exampleservice;
+
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+    Button btnStart, btnStop, btnBind, btnUnbind, btnUpby1, btnUpby10;
+    TextView textStatus, textIntValue, textStrValue;
+    Messenger mService = null;
+    boolean mIsBound;
+    final Messenger mMessenger = new Messenger(new IncomingHandler());
+
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MyService.MSG_SET_INT_VALUE:
+                textIntValue.setText(&quot;Int Message: &quot; + msg.arg1);
+                break;
+            case MyService.MSG_SET_STRING_VALUE:
+                String str1 = msg.getData().getString(&quot;str1&quot;);
+                textStrValue.setText(&quot;Str Message: &quot; + str1);
+                break;
+            default:
+                super.handleMessage(msg);
+            }
+        }
+    }
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            mService = new Messenger(service);
+            textStatus.setText(&quot;Attached.&quot;);
+            try {
+                Message msg = Message.obtain(null, MyService.MSG_REGISTER_CLIENT);
+                msg.replyTo = mMessenger;
+                mService.send(msg);
+            }
+            catch (RemoteException e) {
+                // In this case the service has crashed before we could even do anything with it
+            }
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been unexpectedly disconnected - process crashed.
+            mService = null;
+            textStatus.setText(&quot;Disconnected.&quot;);
+        }
+    };
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        btnStart = (Button)findViewById(R.id.btnStart);
+        btnStop = (Button)findViewById(R.id.btnStop);
+        btnBind = (Button)findViewById(R.id.btnBind);
+        btnUnbind = (Button)findViewById(R.id.btnUnbind);
+        textStatus = (TextView)findViewById(R.id.textStatus);
+        textIntValue = (TextView)findViewById(R.id.textIntValue);
+        textStrValue = (TextView)findViewById(R.id.textStrValue);
+        btnUpby1 = (Button)findViewById(R.id.btnUpby1);
+        btnUpby10 = (Button)findViewById(R.id.btnUpby10);
+
+        btnStart.setOnClickListener(btnStartListener);
+        btnStop.setOnClickListener(btnStopListener);
+        btnBind.setOnClickListener(btnBindListener);
+        btnUnbind.setOnClickListener(btnUnbindListener);
+        btnUpby1.setOnClickListener(btnUpby1Listener);
+        btnUpby10.setOnClickListener(btnUpby10Listener);
+
+        restoreMe(savedInstanceState);
+
+        CheckIfServiceIsRunning();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(&quot;textStatus&quot;, textStatus.getText().toString());
+        outState.putString(&quot;textIntValue&quot;, textIntValue.getText().toString());
+        outState.putString(&quot;textStrValue&quot;, textStrValue.getText().toString());
+    }
+    private void restoreMe(Bundle state) {
+        if (state!=null) {
+            textStatus.setText(state.getString(&quot;textStatus&quot;));
+            textIntValue.setText(state.getString(&quot;textIntValue&quot;));
+            textStrValue.setText(state.getString(&quot;textStrValue&quot;));
+        }
+    }
+    private void CheckIfServiceIsRunning() {
+        //If the service is running when the activity starts, we want to automatically bind to it.
+        if (MyService.isRunning()) {
+            doBindService();
+        }
+    }
+
+    private OnClickListener btnStartListener = new OnClickListener() {
+        public void onClick(View v){
+            startService(new Intent(MainActivity.this, MyService.class));
+        }
+    };
+    private OnClickListener btnStopListener = new OnClickListener() {
+        public void onClick(View v){
+            doUnbindService();
+            stopService(new Intent(MainActivity.this, MyService.class));
+        }
+    };
+    private OnClickListener btnBindListener = new OnClickListener() {
+        public void onClick(View v){
+            doBindService();
+        }
+    };
+    private OnClickListener btnUnbindListener = new OnClickListener() {
+        public void onClick(View v){
+            doUnbindService();
+        }
+    };
+    private OnClickListener btnUpby1Listener = new OnClickListener() {
+        public void onClick(View v){
+            sendMessageToService(1);
+        }
+    };
+    private OnClickListener btnUpby10Listener = new OnClickListener() {
+        public void onClick(View v){
+            sendMessageToService(10);
+        }
+    };
+    private void sendMessageToService(int intvaluetosend) {
+        if (mIsBound) {
+            if (mService != null) {
+                try {
+                    Message msg = Message.obtain(null, MyService.MSG_SET_INT_VALUE, intvaluetosend, 0);
+                    msg.replyTo = mMessenger;
+                    mService.send(msg);
+                }
+                catch (RemoteException e) {
+                }
+            }
+        }
+    }
+
+
+    void doBindService() {
+        bindService(new Intent(this, MyService.class), mConnection, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+        textStatus.setText(&quot;Binding.&quot;);
+    }
+    void doUnbindService() {
+        if (mIsBound) {
+            // If we have received the service, and hence registered with it, then now is the time to unregister.
+            if (mService != null) {
+                try {
+                    Message msg = Message.obtain(null, MyService.MSG_UNREGISTER_CLIENT);
+                    msg.replyTo = mMessenger;
+                    mService.send(msg);
+                }
+                catch (RemoteException e) {
+                    // There is nothing special we need to do if the service has crashed.
+                }
+            }
+            // Detach our existing connection.
+            unbindService(mConnection);
+            mIsBound = false;
+            textStatus.setText(&quot;Unbinding.&quot;);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            doUnbindService();
+        }
+        catch (Throwable t) {
+            Log.e(&quot;MainActivity&quot;, &quot;Failed to unbind from the service&quot;, t);
+        }
+    }
+}
+</code></pre><p>&lt;强&gt; SRC \ com.exampleservice \ MyService.java：</p>
+<pre><code>package com.exampleservice;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
+
+public class MyService extends Service {
+    private NotificationManager nm;
+    private Timer timer = new Timer();
+    private int counter = 0, incrementby = 1;
+    private static boolean isRunning = false;
+
+    ArrayList&lt;Messenger&gt; mClients = new ArrayList&lt;Messenger&gt;(); // Keeps track of all current registered clients.
+    int mValue = 0; // Holds last value set by a client.
+    static final int MSG_REGISTER_CLIENT = 1;
+    static final int MSG_UNREGISTER_CLIENT = 2;
+    static final int MSG_SET_INT_VALUE = 3;
+    static final int MSG_SET_STRING_VALUE = 4;
+    final Messenger mMessenger = new Messenger(new IncomingHandler()); // Target we publish for clients to send messages to IncomingHandler.
+
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mMessenger.getBinder();
+    }
+    class IncomingHandler extends Handler { // Handler of incoming messages from clients.
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MSG_REGISTER_CLIENT:
+                mClients.add(msg.replyTo);
+                break;
+            case MSG_UNREGISTER_CLIENT:
+                mClients.remove(msg.replyTo);
+                break;
+            case MSG_SET_INT_VALUE:
+                incrementby = msg.arg1;
+                break;
+            default:
+                super.handleMessage(msg);
+            }
+        }
+    }
+    private void sendMessageToUI(int intvaluetosend) {
+        for (int i=mClients.size()-1; i&gt;=0; i--) {
+            try {
+                // Send data as an Integer
+                mClients.get(i).send(Message.obtain(null, MSG_SET_INT_VALUE, intvaluetosend, 0));
+
+                //Send data as a String
+                Bundle b = new Bundle();
+                b.putString(&quot;str1&quot;, &quot;ab&quot; + intvaluetosend + &quot;cd&quot;);
+                Message msg = Message.obtain(null, MSG_SET_STRING_VALUE);
+                msg.setData(b);
+                mClients.get(i).send(msg);
+
+            }
+            catch (RemoteException e) {
+                // The client is dead. Remove it from the list; we are going through the list from back to front so this is safe to do inside the loop.
+                mClients.remove(i);
+            }
+        }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.i(&quot;MyService&quot;, &quot;Service Started.&quot;);
+        showNotification();
+        timer.scheduleAtFixedRate(new TimerTask(){ public void run() {onTimerTick();}}, 0, 100L);
+        isRunning = true;
+    }
+    private void showNotification() {
+        nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        // In this sample, we&apos;ll use the same text for the ticker and the expanded notification
+        CharSequence text = getText(R.string.service_started);
+        // Set the icon, scrolling text and timestamp
+        Notification notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
+        // The PendingIntent to launch our activity if the user selects this notification
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        // Set the info for the views that show in the notification panel.
+        notification.setLatestEventInfo(this, getText(R.string.service_label), text, contentIntent);
+        // Send the notification.
+        // We use a layout id because it is a unique number.  We use it later to cancel.
+        nm.notify(R.string.service_started, notification);
+    }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(&quot;MyService&quot;, &quot;Received start id &quot; + startId + &quot;: &quot; + intent);
+        return START_STICKY; // run until explicitly stopped.
+    }
+
+    public static boolean isRunning()
+    {
+        return isRunning;
+    }
+
+
+    private void onTimerTick() {
+        Log.i(&quot;TimerTick&quot;, &quot;Timer doing work.&quot; + counter);
+        try {
+            counter += incrementby;
+            sendMessageToUI(counter);
+
+        }
+        catch (Throwable t) { //you should always ultimately catch all exceptions in timer tasks.
+            Log.e(&quot;TimerTick&quot;, &quot;Timer Tick Failed.&quot;, t);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {timer.cancel();}
+        counter=0;
+        nm.cancel(R.string.service_started); // Cancel the persistent notification.
+        Log.i(&quot;MyService&quot;, &quot;Service Stopped.&quot;);
+        isRunning = false;
+    }
+}
+</code></pre><a id="more"></a>
+<p>查看<a href="http://developer.android.com/reference/android/app/Service.html#LocalServiceSample" target="_blank" rel="noopener">LocalService示例</a>。</p>
+<p>您的<code>Service</code>将自身的实例返回给调用<code>onBind</code>的用户。然后，您可以直接与服务交互，例如注册你自己的监听器接口和服务，这样你就可以得到回调。</p>
+<p>要将数据发送到服务，您可以使用：</p>
+<pre><code>Intent intent = new Intent(getApplicationContext(), YourService.class);
+intent.putExtra(&quot;SomeData&quot;,&quot;ItValue&quot;);
+startService(intent);
+</code></pre><p>在onStartCommand（）中服务之后，从intent获取数据。</p>
+<p>用于将数据或事件从服务发送到应用程序（用于一项或多项活动）：</p>
+<pre><code>private void sendBroadcastMessage(String intentFilterName, int arg1, String extraKey) {
+    Intent intent = new Intent(intentFilterName);
+    if (arg1 != -1 &amp;&amp; extraKey != null) {
+        intent.putExtra(extraKey, arg1);
+    }
+    sendBroadcast(intent);
+}
+</code></pre><p>这个方法是从你的服务中调用的。您只需发送活动数据。</p>
+<pre><code>private void someTaskInYourService(){
+
+    //For example you downloading from server 1000 files
+    for(int i = 0; i &lt; 1000; i++) {
+        Thread.sleep(5000) // 5 seconds. Catch in try-catch block
+        sendBroadCastMessage(Events.UPDATE_DOWNLOADING_PROGRESSBAR, i,0,&quot;up_download_progress&quot;);
+    }
+</code></pre><p>为了接收包含数据的事件，请在您的活动中创建并注册registerBroadcastReceivers（）方法：</p>
+<pre><code>private void registerBroadcastReceivers(){
+    broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int arg1 = intent.getIntExtra(&quot;up_download_progress&quot;,0);
+            progressBar.setProgress(arg1);
+        }
+    };
+    IntentFilter progressfilter = new IntentFilter(Events.UPDATE_DOWNLOADING_PROGRESS);
+    registerReceiver(broadcastReceiver,progressfilter);
+</code></pre><p>为了发送更多的数据，你可以修改sendBroadcastMessage（）;<br>`方法。请记住：您必须在onResume（）＆amp;取消注册onStop（）方法！</p>
+<p>&lt;强&gt;更新</p>
+<p>请不要使用我与Activity＆amp;服务。 这是错误的方式。 为了更好的体验，请使用特殊的库文件，例如：</p>
+<p>1）greenrobot的<a href="https://github.com/greenrobot/EventBus" target="_blank" rel="noopener"> EventBus </a></p>
+<p>2）来自Square Inc的<a href="https://github.com/square/otto" target="_blank" rel="noopener"> Otto </a></p>
+<p>P.S。我只在我的项目中使用greenrobot的EventBus，</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/04/22/example-communication-between-activity-and-service-using-messaging/" data-title="示例：使用消息传递的活动和服务之间的通信 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/23/how-to-find-the-last-day-of-the-month-from-date/" title="如何从日期找到月份的最后一天？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何从日期找到月份的最后一天？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/22/bash-tool-to-get-nth-line-from-a-file/"  title="Bash工具从文件中获得第n行">
+ <strong>下一篇：</strong><br/> 
+ <span>Bash工具从文件中获得第n行
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

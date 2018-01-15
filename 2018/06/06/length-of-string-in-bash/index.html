@@ -1,0 +1,638 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>bash中字符串的长度 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何获取存储在变量中的字符串长度并将其分配给另一个变量？ myvar=&amp;quot;some string&amp;quot; echo ${#myvar}   # 11 你如何设置另一个变量到输出11？">
+<meta name="keywords" content="bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bash中字符串的长度">
+<meta property="og:url" content="https://www.tracholar.top/2018/06/06/length-of-string-in-bash/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何获取存储在变量中的字符串长度并将其分配给另一个变量？ myvar=&amp;quot;some string&amp;quot; echo ${#myvar}   # 11 你如何设置另一个变量到输出11？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bash中字符串的长度">
+<meta name="twitter:description" content="如何获取存储在变量中的字符串长度并将其分配给另一个变量？ myvar=&amp;quot;some string&amp;quot; echo ${#myvar}   # 11 你如何设置另一个变量到输出11？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/06/length-of-string-in-bash/" title="bash中字符串的长度" itemprop="url">bash中字符串的长度</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-06T02:13:04.000Z" itemprop="datePublished"> Published 2018-06-06</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">UTF-8 string length</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Length of an argument</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Useful printf correction tool:</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如何获取存储在变量中的字符串长度并将其分配给另一个变量？</p>
+<pre><code>myvar=&quot;some string&quot;
+echo ${#myvar}  
+# 11
+</code></pre><p>你如何设置另一个变量到输出<code>11</code>？</p>
+<a id="more"></a>
+<h3><span id="utf-8-string-length">UTF-8 string length</span></h3><p>除了<a href="https://stackoverflow.com/a/17368090/1983854" target="_blank" rel="noopener">fedorqui的正确答案</a>，我想显示字符串长度和字节长度之间的区别：</p>
+<p>p&gt;</p>
+<pre><code>myvar=&apos;GÃ(C)nÃ(C)ralitÃ(C)s&apos;
+chrlen=${#myvar}
+oLang=$LANG oLcAll=$LC_ALL
+LANG=C LC_ALL=C
+bytlen=${#myvar}
+LANG=$oLang LC_ALL=$oLcAll
+printf &quot;%s is %d char len, but %d bytes len.\n&quot; &quot;${myvar}&quot; $chrlen $bytlen
+</code></pre><p>会呈现：</p>
+<pre><code>GÃ(C)nÃ(C)ralitÃ(C)s is 11 char len, but 14 bytes len.
+</code></pre><p>你甚至可以看看存储的字符：</p>
+<pre><code>myvar=&apos;GÃ(C)nÃ(C)ralitÃ(C)s&apos;
+chrlen=${#myvar}
+oLang=$LANG oLcAll=$LC_ALL
+LANG=C LC_ALL=C
+bytlen=${#myvar}
+printf -v myreal &quot;%q&quot; &quot;$myvar&quot;
+LANG=$oLang LC_ALL=$oLcAll
+printf &quot;%s has %d chars, %d bytes: (%s).\n&quot; &quot;${myvar}&quot; $chrlen $bytlen &quot;$myreal&quot;
+</code></pre><p>会回答：</p>
+<pre><code>GÃ(C)nÃ(C)ralitÃ(C)s has 11 chars, 14 bytes: ($&apos;G\303\251n\303\251ralit\303\251s&apos;).
+</code></pre><p><strong>注意：</strong> 根据[ Isabell Cowan的评论&lt; / a&gt;，我已经把设置和<code>$ LANG</code>一起添加到<code>$ LC_ALL</code>。</p>
+<h3><span id="length-of-an-argument">Length of an argument</span></h3><p>参数与常规变量相同</p>
+<pre><code>strLen() {
+    local bytlen sreal oLang=$LANG oLcAll=$LC_ALL
+    LANG=C LC_ALL=C
+    bytlen=${#1}
+    printf -v sreal %q &quot;$1&quot;
+    LANG=$oLang LC_ALL=$oLcAll
+    printf &quot;String &apos;%s&apos; is %d bytes, but %d chars len: %s.\n&quot; &quot;$1&quot; $bytlen ${#1} &quot;$sreal&quot;
+}
+</code></pre><p>将作为</p>
+<p>使用</p>
+<pre><code>strLen thÃ(C)orÃ¨me
+String &apos;thÃ(C)orÃ¨me&apos; is 10 bytes, but 8 chars len: $&apos;th\303\251or\303\250me&apos;
+</code></pre><h3><span id="useful-printf-correction-tool">Useful <code>printf</code> correction tool:</span></h3><p>如果你：</p>
+<pre><code>for string in GÃ(C)nÃ(C)ralitÃ(C)s Language ThÃ(C)orÃ¨me FÃ(C)vrier  &quot;Left: a&quot; &quot;Yin Yang a¯&quot;;do
+    printf &quot; - %-14s is %2d char length\n&quot; &quot;&apos;$string&apos;&quot;  ${#string}
+done
+
+ - &apos;GÃ(C)nÃ(C)ralitÃ(C)s&apos; is 11 char length
+ - &apos;Language&apos;     is  8 char length
+ - &apos;ThÃ(C)orÃ¨me&apos;   is  8 char length
+ - &apos;FÃ(C)vrier&apos;     is  7 char length
+ - &apos;Left: a&apos;    is  7 char length
+ - &apos;Yin Yang a¯&apos; is 10 char length
+</code></pre><p>不是 <em>漂亮</em> …为此，有一个小功能：</p>
+<pre><code>strU8DiffLen () { 
+    local bytlen oLang=$LANG oLcAll=$LC_ALL
+    LANG=C LC_ALL=C
+    bytlen=${#1}
+    LANG=$oLang LC_ALL=$oLcAll
+    return $(( bytlen - ${#1} ))
+}
+</code></pre><p>那现在：</p>
+<pre><code>for string in GÃ(C)nÃ(C)ralitÃ(C)s Language ThÃ(C)orÃ¨me FÃ(C)vrier  &quot;Left: a&quot; &quot;Yin Yang a¯&quot;;do
+    strU8DiffLen &quot;$string&quot;
+    printf &quot; - %-$((14+$?))s is %2d chars length, but use %2d bytes\n&quot; \
+        &quot;&apos;$string&apos;&quot; ${#string} $((${#string}+$?))
+  done 
+
+ - &apos;GÃ(C)nÃ(C)ralitÃ(C)s&apos;  is 11 chars length, but use 14 bytes
+ - &apos;Language&apos;     is  8 chars length, but use  8 bytes
+ - &apos;ThÃ(C)orÃ¨me&apos;     is  8 chars length, but use 10 bytes
+ - &apos;FÃ(C)vrier&apos;      is  7 chars length, but use  8 bytes
+ - &apos;Left: a&apos;      is  7 chars length, but use  9 bytes
+ - &apos;Yin Yang a¯&apos;   is 10 chars length, but use 12 bytes
+</code></pre><p>要获取存储在变量中的字符串的长度，请说：</p>
+<pre><code>myvar=&quot;some string&quot;
+size=${#myvar} 
+</code></pre><p>要确认它被正确保存，<code>echo</code>它：</p>
+<pre><code>$ echo &quot;$size&quot;
+11
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/06/06/length-of-string-in-bash/" data-title="bash中字符串的长度 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/06/06/how-to-check-visibility-of-software-keyboard-in-android/" title="如何检查Android中软件键盘的可见性？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何检查Android中软件键盘的可见性？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/06/06/how-to-check-if-a-number-is-a-power-of-2/"  title="如何检查一个数是否是2的幂">
+ <strong>下一篇：</strong><br/> 
+ <span>如何检查一个数是否是2的幂
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">UTF-8 string length</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Length of an argument</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Useful printf correction tool:</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

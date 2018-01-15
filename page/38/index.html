@@ -112,53 +112,29 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/large-data-work-flows-using-pandas/" title="“大数据”使用大熊猫的工作流程" itemprop="url">“大数据”使用大熊猫的工作流程</a>
+      <a href="/2018/04/18/how-to-pass-all-arguments-passed-to-my-bash-script-to-a-function-of-mine/" title="如何将传递给我的bash脚本的所有参数传递给我的一个函数？" itemprop="url">如何将传递给我的bash脚本的所有参数传递给我的一个函数？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-18T02:07:39.000Z" itemprop="datePublished"> Published 2018-04-18</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在学习熊猫的过程中，我试图解答这个问题好几个月。我使用SAS进行日常工作，这对我们来说是非常棒的支持。但是，由于其他原因，SAS作为软件是非常糟糕的。</p>
-<p>有一天，我希望用python和pandas取代我使用SAS，但是我目前缺乏大型数据集的核心外工作流程。我不是在谈论需要分布式网络的“大数据”，而是文件太大而不适合内存，但又足够小以适应硬盘驱动器。</p>
-<p>我的第一个想法是使用<code>HDFStore</code>在磁盘上保存大数据集，并只将需要的部分拖放到数据框中进行分析。其他人提到MongoDB是一个更易于使用的替代方案。我的问题是这样的：</p>
-<p>有哪些最佳实践工作流程可以完成以下工作：</p>
-<ul>
-<li>将平面文件加载到永久的磁盘上数据库结构</li>
-<li>查询该数据库以检索要送入熊猫数据结构的数据</li>
-<li>在pandas中处理作品之后更新数据库</li>
-</ul>
-<p>真实世界的例子会受到大家的赞赏，尤其是那些使用“大数据”熊猫的人。</p>
-<p>编辑 - 我想如何工作的例子：</p>
-<ul>
-<li>迭代地导入一个大的平面文件并将其存储在一个永久性的磁盘数据库结构中。这些文件通常太大而不适合内存。</li>
-<li>为了使用“熊猫”，我想读取这些数据的子集（通常只是一些列），可以放在内存中。</li>
-<li>我会通过对所选列进行各种操作来创建新列。</li>
-<li>然后，我必须将这些新列添加到数据库结构中。</li>
-</ul>
-<p>我试图找到一个执行这些步骤的最佳实践方式。阅读关于熊猫和pytables的链接，似乎添加一个新列可能是一个问题。</p>
-<p>编辑 - 特别回应杰夫的问题：</p>
-<ul>
-<li>我正在建立消费者信用风险模型。数据种类包括电话，SSN和地址特征;财产价值;像犯罪记录，破产等贬义的信息……我每天使用的数据集平均有近1000到2000个混合数据类型的字段：数字和字符数据的连续变量，名义变量和有序变量。我很少追加行，但是我执行许多操作来创建新的列。</li>
-<li><p>典型的操作涉及将使用条件逻辑的多个列组合成新的复合列。例如，<code>if var1＆gt; 2 then newvar =&#39;A&#39;elif var2 = 4 then newvar =&#39;B&#39;</code>。这些操作的结果是我数据集中每个记录的新列。<br>最后，我想将这些新列添加到磁盘数据结构中。我会重复第2步，使用交叉表和描述性统计数据来探索数据，试图找到有趣，直观的模型关系。</p>
-</li>
-<li><p>一个典型的项目文件通常大约是1GB。文件被组织成一行，其中包含消费者数据的记录。每行记录的每一行都有相同的列数。这总是如此。</p>
-</li>
-<li>在创建新列时，我将按行逐个分组，这是非常罕见的。但是，创建报告或生成描述性统计信息时，对行进行子集的处理是非常常见的。例如，我可能想为特定的业务线创建一个简单的频率，比如零售信用卡。要做到这一点，我只会选择那些业务线=零售的记录，除了我想报告的任何一列。但是，在创建新列时，我会提取所有数据行，并只提取操作所需的列。<br>建模过程要求我分析每一列，查找与某个结果变量有趣的关系，并创建描述这些关系的新复合列。我探索的专栏通常以小集合完成。例如，我将重点讨论一组刚刚处理财产价值的20列，并观察它们与贷款违约的关系。一旦探索了这些内容，并创建了新的专栏，那么我就转到另一组专栏，说大学教育，重复这个过程。我正在做的是创建候选变量来解释我的数据和一些结果之间的关系。在这个过程的最后，我应用了一些学习技巧，从这些复合列中创建一个等式。</li>
-</ul>
-<p>我很少会将行添加到数据集中。我将几乎总是创建新的列（统计/机器学习说法中的变量或功能）。</p>
+        <p>假设我定义了一个函数abc（）来处理所有与分析传递给我的脚本的参数相关的逻辑。</p>
+<p>如何将我的bash脚本收到的所有参数传递给它？ params的数量是可变的，所以我不能像这样通过硬编码参数：</p>
+<pre><code>abc $1 $2 $3 $4
+</code></pre><p>编辑：更好的是，有什么办法让我的函数可以访问脚本参数的变量？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/large-data-work-flows-using-pandas/#more">Read More</a>
+            <a href="/2018/04/18/how-to-pass-all-arguments-passed-to-my-bash-script-to-a-function-of-mine/#more">Read More</a>
           
        </p>
     </div>
@@ -168,7 +144,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/pandas/">pandas</a><a href="/tags/mongodb/">mongodb</a><a href="/tags/hdf5/">hdf5</a><a href="/tags/large-data/">large-data</a>
+  <span></span> <a href="/tags/bash/">bash</a>
   </div>
 
 </div>
@@ -208,437 +184,48 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/" title="“最小的惊讶”和可变的默认论据" itemprop="url">“最小的惊讶”和可变的默认论据</a>
+      <a href="/2018/04/18/how-and-when-to-use-async-and-await/" title="如何以及何时使用`async`和`await`" itemprop="url">如何以及何时使用`async`和`await`</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-18T01:38:41.000Z" itemprop="datePublished"> Published 2018-04-18</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>任何人用Python来修补已经被下面的问题困住了（或撕碎）：</p>
-<pre><code>def foo(a=[]):
-    a.append(5)
-    return a
-</code></pre><p>Python新手会期望这个函数总是返回一个只有一个元素的列表：<code>[5]</code>。结果是非常不同的，而且非常惊人（对于新手来说）：</p>
-<pre><code>&gt;&gt;&gt; foo()
-[5]
-&gt;&gt;&gt; foo()
-[5, 5]
-&gt;&gt;&gt; foo()
-[5, 5, 5]
-&gt;&gt;&gt; foo()
-[5, 5, 5, 5]
-&gt;&gt;&gt; foo()
-</code></pre><p>我的一位经理曾经第一次遇到这个功能，并称这是一个“戏剧性的设计缺陷”。我回答说，这个行为有一个基本的解释，如果你不了解内部，那确实是非常令人费解和意外的。然而，我无法回答（对我自己）以下问题：在函数定义处绑定默认参数的原因是什么，而不是在函数执行处？我怀疑经验丰富的行为是否有实际用途（谁真的在C中使用静态变量，而没有繁殖错误？）</p>
-<p><strong>编辑</strong> ：</p>
-<p>Baczek做了一个有趣的例子。再加上你的大部分意见和尤其是Utaal的意见，我进一步阐述了：</p>
-<pre><code>&gt;&gt;&gt; def a():
-...     print(&quot;a executed&quot;)
-...     return []
-... 
-&gt;&gt;&gt;            
-&gt;&gt;&gt; def b(x=a()):
-...     x.append(5)
-...     print(x)
-... 
-a executed
-&gt;&gt;&gt; b()
-[5]
-&gt;&gt;&gt; b()
-[5, 5]
-</code></pre><p>对我来说，这个设计的决定似乎是相对于把参数的范围放在哪里：在函数里面还是在一起呢？</p>
-<p>在函数内部进行绑定意味着<code>x</code>在函数被调用时被有效地绑定到指定的默认值，而不是被定义的，这会带来很深的缺陷：` def &lt; /<br>code&gt;行将是“混合”的，这意味着函数对象的绑定的一部分将在定义处发生，而在函数调用时则是部分（分配默认参数）。</p>
-<p>实际的行为更加一致：当行被执行时，该行的所有内容都被执行，这意味着函数定义。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/language-design/">language-design</a><a href="/tags/least-astonishment/">least-astonishment</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/length-of-a-javascript-object/" title="JavaScript对象的长度" itemprop="url">JavaScript对象的长度</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如果我有一个JavaScript对象，请说</p>
-<pre><code>var myObject = new Object();
-myObject[&quot;firstname&quot;] = &quot;Gareth&quot;;
-myObject[&quot;lastname&quot;] = &quot;Simpson&quot;;
-myObject[&quot;age&quot;] = 21;
-</code></pre><p>有没有一个内置的或接受的最佳实践方式来获得这个对象的长度？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/length-of-a-javascript-object/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/javascript-objects/">javascript-objects</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/limiting-floats-to-two-decimal-points/" title="限制浮点数到两个小数点" itemprop="url">限制浮点数到两个小数点</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我希望<code>a</code>四舍五入为13.95 _。</p>
-<pre><code>&gt;&gt;&gt; a
-13.949999999999999
-&gt;&gt;&gt; round(a, 2)
-13.949999999999999
-</code></pre><p><a href="https://docs.python.org/2/library/functions.html#round" target="_blank" rel="noopener"> <code>round</code></a>函数不会以我期望的方式工作。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/limiting-floats-to-two-decimal-points/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/floating-point/">floating-point</a><a href="/tags/rounding/">rounding</a><a href="/tags/precision/">precision</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/linking-to-an-external-url-in-javadoc/" title="链接到Javadoc中的外部URL？" itemprop="url">链接到Javadoc中的外部URL？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>类似于：</p>
-<pre><code>/**
- * See {@linktourl http://google.com}
- */
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/linking-to-an-external-url-in-javadoc/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/url/">url</a><a href="/tags/hyperlink/">hyperlink</a><a href="/tags/javadoc/">javadoc</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/list-filtering-list-comprehension-vs-lambda-filter/" title="列表过滤：列表理解与lambda +过滤器" itemprop="url">列表过滤：列表理解与lambda +过滤器</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我碰巧发现自己有一个基本的过滤需求：我有一个列表，我必须通过项目的属性过滤它。</p>
-<p>我的代码看起来像这样：</p>
-<pre><code>my_list = [x for x in my_list if x.attribute == value]
-</code></pre><p>然而，我想，这样写是不是更好？</p>
-<pre><code>my_list = filter(lambda x: x.attribute == value, my_list)
-</code></pre><p>它更具可读性，如果性能需要，lambda可以被拿出来获得一些东西。</p>
-<p>问题是：在使用第二种方法时是否有任何警告？任何性能差异？我是否完全错过了Pythonic Way<br>?,应该用另一种方式来做（比如使用itemgetter而不是lambda）？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/list-filtering-list-comprehension-vs-lambda-filter/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a><a href="/tags/lambda/">lambda</a><a href="/tags/functional-programming/">functional-programming</a><a href="/tags/filter/">filter</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/lookup-enum-by-string-value/" title="通过字符串值查找枚举" itemprop="url">通过字符串值查找枚举</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>假设我有一个枚举，只是</p>
-<pre><code>public enum Blah {
-    A, B, C, D
+        <p>根据我的理解，<a href="https://docs.microsoft.com/en-
+us/dotnet/csharp/async" target="_blank" rel="noopener"> <code>async</code>和<code>await</code> </a>的作用是使代码易于编写和读取 - 但是使用它们等同于产生后台线程来执行持续时间长的逻辑？</p>
+<p>我正在尝试最基本的例子。我在内部添加了一些评论。你能为我澄清吗？</p>
+<pre><code>// I don&apos;t understand why this method must be marked as `async`.
+private async void button1_Click(object sender, EventArgs e)
+{
+    Task&lt;int&gt; access = DoSomethingAsync();
+    // task independent stuff here
+
+    // this line is reached after the 5 seconds sleep from 
+    // DoSomethingAsync() method. Shouldn&apos;t it be reached immediately? 
+    int a = 1; 
+
+    // from my understanding the waiting should be done here.
+    int x = await access; 
 }
-</code></pre><p>我想找到一个字符串的枚举值，例如<code>“A”</code>，它将是<code>Blah.A</code>。如何做到这一点？</p>
-<p>是我需要的<code>Enum.valueOf（）</code>方法吗？如果是这样，我将如何使用这个？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/lookup-enum-by-string-value/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/enums/">enums</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/making-a-flat-list-out-of-list-of-lists-in-python/" title="从Python列表中列出一个扁平列表" itemprop="url">从Python列表中列出一个扁平列表</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我想知道是否有一个快捷方式可以在Python列表中列出一个简单的列表。</p>
-<p>我可以做一个for循环，但也许有一些很酷的“单线”？我试过用 <em>reduce</em> ，但是出现错误。</p>
-<p>&lt;强&gt;代码</p>
-<pre><code>l = [[1, 2, 3], [4, 5, 6], [7], [8, 9]]
-reduce(lambda x, y: x.extend(y), l)
-</code></pre><p><strong>错误讯息</strong></p>
-<pre><code>Traceback (most recent call last):
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
-  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;lambda&gt;
-AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
+async Task&lt;int&gt; DoSomethingAsync()
+{
+    // is this executed on a background thread?
+    System.Threading.Thread.Sleep(5000);
+    return 1;
+}
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/making-a-flat-list-out-of-list-of-lists-in-python/#more">Read More</a>
+            <a href="/2018/04/18/how-and-when-to-use-async-and-await/#more">Read More</a>
           
        </p>
     </div>
@@ -648,7 +235,7 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a><a href="/tags/multidimensional-array/">multidimensional-array</a><a href="/tags/flatten/">flatten</a>
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
   </div>
 
 </div>
@@ -677,25 +264,44 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/manually-raising-throwing-an-exception-in-python/" title="在Python中手动提高（抛出）异常" itemprop="url">在Python中手动提高（抛出）异常</a>
+      <a href="/2018/04/18/list-of-big-o-for-php-functions/" title="用于PHP函数的Big-O列表" itemprop="url">用于PHP函数的Big-O列表</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-18T01:13:05.000Z" itemprop="datePublished"> Published 2018-04-18</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何在Python中引发异常，以便通过<code>除</code>块之外的其他方法捕获异常？</p>
+        <p>现在使用PHP一段时间后，我注意到并不是所有的PHP都像预期的那样快速地构建函数。考虑以下两种可能的函数实现，使用缓存的素数阵列来查找数字是否为素数。</p>
+<pre><code>//very slow for large $prime_array
+$prime_array = array( 2, 3, 5, 7, 11, 13, .... 104729, ... );
+$result_array = array();
+foreach( $prime_array =&gt; $number ) {
+    $result_array[$number] = in_array( $number, $large_prime_array );
+}
+
+//speed is much less dependent on size of $prime_array, and runs much faster.
+$prime_array =&gt; array( 2 =&gt; NULL, 3 =&gt; NULL, 5 =&gt; NULL, 7 =&gt; NULL,
+                       11 =&gt; NULL, 13 =&gt; NULL, .... 104729 =&gt; NULL, ... );
+foreach( $prime_array =&gt; $number ) {
+    $result_array[$number] = array_key_exists( $number, $large_prime_array );
+}
+</code></pre><p>这是因为in_array是通过线性搜索O（n）来实现的，它会随着<code>$ prime_array</code>的增长而线性减速。其中<code>array_key_exists</code>函数是使用散列查找O（1）实现的，除非散列表被极度填充（在这种情况下，它只是O（n）），否则它不会变慢。</p>
+<p>到目前为止，我不得不通过反复试验来发现这个大O，偶尔也会发现这个大O的实现。 -on-the-c-level“&gt;查看源代码。现在的问题…</p>
+<hr>
+<p>*或者至少有趣的</p>
+<p>例如，很难预测列出的函数是什么，因为可能的实现依赖于PHP的未知核心数据结构：array_merge，array_merge_recursive，array_reverse，array_intersect，array_combine，str_replace（带数组输入）等等。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/manually-raising-throwing-an-exception-in-python/#more">Read More</a>
+            <a href="/2018/04/18/list-of-big-o-for-php-functions/#more">Read More</a>
           
        </p>
     </div>
@@ -705,7 +311,7 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/exception/">exception</a><a href="/tags/exception-handling/">exception-handling</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -734,33 +340,41 @@ AttributeError: &apos;NoneType&apos; object has no attribute &apos;extend&apos;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/map-two-lists-into-a-dictionary-in-python/" title="将两个列表映射到Python中的字典中" itemprop="url">将两个列表映射到Python中的字典中</a>
+      <a href="/2018/04/18/how-to-sort-an-array-of-associative-arrays-by-value-of-a-given-key-in-php/" title="如何通过PHP中的给定键的值来对关联数组的数组进行排序？" itemprop="url">如何通过PHP中的给定键的值来对关联数组的数组进行排序？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-04-18T01:12:31.000Z" itemprop="datePublished"> Published 2018-04-18</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>假设你有：</p>
-<pre><code>keys = (&apos;name&apos;, &apos;age&apos;, &apos;food&apos;)
-values = (&apos;Monty&apos;, 42, &apos;spam&apos;)
-</code></pre><p>生成下面的字典最简单的方法是什么？</p>
-<pre><code>a_dict = {&apos;name&apos; : &apos;Monty&apos;, &apos;age&apos; : 42, &apos;food&apos; : &apos;spam&apos;}
-</code></pre><p>这段代码有用，但我并不为此感到骄傲：</p>
-<pre><code>a_dict = {}
-junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
-</code></pre><p>
+        <p>给定这个数组：</p>
+<pre><code>$inventory = array(
+
+   array(&quot;type&quot;=&gt;&quot;fruit&quot;, &quot;price&quot;=&gt;3.50),
+   array(&quot;type&quot;=&gt;&quot;milk&quot;, &quot;price&quot;=&gt;2.90),
+   array(&quot;type&quot;=&gt;&quot;pork&quot;, &quot;price&quot;=&gt;5.43),
+
+);
+</code></pre><p>我想按价格 <strong>对<code>$ inventory</code>元素进行排序</strong> 以获得：</p>
+<pre><code>$inventory = array(
+
+   array(&quot;type&quot;=&gt;&quot;pork&quot;, &quot;price&quot;=&gt;5.43),
+   array(&quot;type&quot;=&gt;&quot;fruit&quot;, &quot;price&quot;=&gt;3.50),
+   array(&quot;type&quot;=&gt;&quot;milk&quot;, &quot;price&quot;=&gt;2.90),
+
+);
+</code></pre><p>我该怎么做？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/map-two-lists-into-a-dictionary-in-python/#more">Read More</a>
+            <a href="/2018/04/18/how-to-sort-an-array-of-associative-arrays-by-value-of-a-given-key-in-php/#more">Read More</a>
           
        </p>
     </div>
@@ -770,7 +384,382 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/dictionary/">dictionary</a>
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/17/how-do-i-put-a-border-around-an-android-textview/" title="如何在Android的textview中添加边框？" itemprop="url">如何在Android的textview中添加边框？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-17T02:34:07.000Z" itemprop="datePublished"> Published 2018-04-17</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>是否可以在textview中绘制边框？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/17/how-do-i-put-a-border-around-an-android-textview/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/17/how-can-i-add-numbers-in-a-bash-script/" title="如何在bash脚本中添加数字" itemprop="url">如何在bash脚本中添加数字</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-17T02:07:31.000Z" itemprop="datePublished"> Published 2018-04-17</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有这个bash脚本，并且在第16行有一个问题。 我怎样才能把第15行的以前的结果，并添加 它到第16行的变量？</p>
+<pre><code>#!/bin/bash
+
+num=0
+metab=0
+
+for ((i=1; i&lt;=2; i++)); do      
+    for j in `ls output-$i-*`; do
+        echo &quot;$j&quot;
+
+        metab=$(cat $j|grep EndBuffer|awk &apos;{sum+=$2} END { print sum/120}&apos;) (line15)
+        num= $num + $metab   (line16)
+    done
+    echo &quot;$num&quot;
+ done
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/17/how-can-i-add-numbers-in-a-bash-script/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/17/easiest-way-to-split-a-string-on-newlines-in-net/" title="在 NET中换行符的最简单的方法是什么？" itemprop="url">在 NET中换行符的最简单的方法是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-17T01:38:37.000Z" itemprop="datePublished"> Published 2018-04-17</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我需要在.NET中将字符串拆分成换行符，而我知道拆分字符串的唯一方法是使用<a href="“https://msdn.microsoft.com/en-
+us/library/system”。"> Split </a>方法。然而，这不会让我（很容易）分裂一个换行符，那么最好的办法是什么呢？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/17/easiest-way-to-split-a-string-on-newlines-in-net/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/16/what-does-androidlayout-weight-mean/" title="android：layout_weight是什么意思？" itemprop="url">android：layout_weight是什么意思？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-16T02:33:57.000Z" itemprop="datePublished"> Published 2018-04-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我不明白如何使用这个属性。任何人都可以告诉我更多关于它的信息吗？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/16/what-does-androidlayout-weight-mean/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/16/command-not-found-error-in-bash-variable-assignment/" title="在Bash变量赋值中找不到命令错误" itemprop="url">在Bash变量赋值中找不到命令错误</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-16T02:07:22.000Z" itemprop="datePublished"> Published 2018-04-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有一个名为test.sh的脚本：</p>
+<pre><code>#!/bin/bash
+STR = &quot;Hello World&quot;
+echo $STR
+</code></pre><p>当我运行<code>sh test.sh</code>时，我得到这个：</p>
+<pre><code>test.sh: line 2: STR: command not found
+</code></pre><p>我做错了什么？我在网上看到非常基本的/初学者的bash脚本教程，这是他们如何声明变量…所以我不知道我在做什么错了。</p>
+<p>我在Ubuntu Server 9.10上。是的，bash位于<code>/ bin / bash</code>。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/16/command-not-found-error-in-bash-variable-assignment/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/16/distinct-with-lambda/" title="独特（）与lambda？" itemprop="url">独特（）与lambda？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-16T01:38:28.000Z" itemprop="datePublished"> Published 2018-04-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>正确的，所以我有一个枚举，并希望从它得到不同的值。</p>
+<p>使用<code>System.Linq</code>，当然有一个叫做<code>Distinct</code>的扩展方法。在简单的情况下，它可以使用没有参数，如：</p>
+<pre><code>var distinctValues = myStringList.Distinct();
+</code></pre><p>好的，但如果我有一个对象，我需要指定相等的唯一可用的重载：</p>
+<pre><code>var distinctValues = myCustomerList.Distinct(someEqualityComparer);
+</code></pre><p>相等比较参数必须是<code>IEqualityComparer＆lt; T＆gt;</code>的实例。当然，我可以做到这一点，但是有些冗长，而且很滑稽。</p>
+<p>我所期望的是一个需要lambda的重载，比如Func＆lt; T，T，bool＆gt;：</p>
+<pre><code>var distinctValues
+    = myCustomerList.Distinct((c1, c2) =&gt; c1.CustomerId == c2.CustomerId);
+</code></pre><p>任何人都知道，如果有一些这样的扩展存在，或一些相当的解决方法？或者我错过了什么？</p>
+<p>另外，有没有一种方法来指定一个IEqualityComparer inline（不理我）呢？</p>
+<p>&lt;强&gt;更新</p>
+<p>我发现了Anders Hejlsberg的一个回复<a href="“http://social.msdn.microsoft.com/Forums/en-
+US/linqprojectgeneral/thread/6834054e-e1c1-49db-970c-
+370a9012c675”rel">张贴</a>在这个主题的MSDN论坛。他说：</p>
+<blockquote>
+<p>The problem you’re going to run into is that when two objects compare equal<br>they must have the same GetHashCode return value (or else the hash table used<br>internally by Distinct will not function correctly). We use IEqualityComparer<br>because it packages compatible implementations of Equals and GetHashCode into<br>a single interface.</p>
+</blockquote>
+<p>我想这是有道理的。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/16/distinct-with-lambda/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
   </div>
 
 </div>
@@ -795,7 +784,7 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/37/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/36/">36</a><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><a class="page-number" href="/page/40/">40</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><a class="extend next" rel="next" href="/page/39/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/37/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/36/">36</a><a class="page-number" href="/page/37/">37</a><span class="page-number current">38</span><a class="page-number" href="/page/39/">39</a><a class="page-number" href="/page/40/">40</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/39/">Next<span></span></a>
   </nav>
 
 </div>
@@ -821,109 +810,84 @@ junk = map(lambda k, v: a_dict.update({k: v}), keys, values)
 
 
   
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
-
-
-  
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
-			
 		
-			
-				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
 			
 		
 		</ul>

@@ -1,0 +1,598 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>DateTime vs DateTimeOffset | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="目前，我们有一个标准的方式来处理.netDateTimes的TimeZone意识到的方式：每当我们产生一个DateTime我们在UTC（例如使用DateTime.UtcNow），并且每当我们显示一个，我们从UTC到用户的当地时间。 这工作正常，但我一直在阅读有关DateTimeOffset，以及如何捕获对象本身的本地和UTC时间。所以问题是，使用DateTimeOffset和我们已经在做什么的优点">
+<meta name="keywords" content="c-sharp,dot-net">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DateTime vs DateTimeOffset">
+<meta property="og:url" content="https://www.tracholar.top/2018/06/02/datetime-vs-datetimeoffset/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="目前，我们有一个标准的方式来处理.netDateTimes的TimeZone意识到的方式：每当我们产生一个DateTime我们在UTC（例如使用DateTime.UtcNow），并且每当我们显示一个，我们从UTC到用户的当地时间。 这工作正常，但我一直在阅读有关DateTimeOffset，以及如何捕获对象本身的本地和UTC时间。所以问题是，使用DateTimeOffset和我们已经在做什么的优点">
+<meta property="og:image" content="https://www.tracholar.top/2018/06/02/datetime-vs-datetimeoffset/“https://i.stack.imgur.com/QE5xq.png”alt">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DateTime vs DateTimeOffset">
+<meta name="twitter:description" content="目前，我们有一个标准的方式来处理.netDateTimes的TimeZone意识到的方式：每当我们产生一个DateTime我们在UTC（例如使用DateTime.UtcNow），并且每当我们显示一个，我们从UTC到用户的当地时间。 这工作正常，但我一直在阅读有关DateTimeOffset，以及如何捕获对象本身的本地和UTC时间。所以问题是，使用DateTimeOffset和我们已经在做什么的优点">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/06/02/datetime-vs-datetimeoffset/“https://i.stack.imgur.com/QE5xq.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/02/datetime-vs-datetimeoffset/" title="DateTime vs DateTimeOffset" itemprop="url">DateTime vs DateTimeOffset</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-02T01:46:01.000Z" itemprop="datePublished"> Published 2018-06-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>目前，我们有一个标准的方式来处理.net<br>DateTimes的TimeZone意识到的方式：每当我们产生一个DateTime我们在UTC（例如使用DateTime.UtcNow），并且每当我们显示一个，我们从UTC到用户的当地时间。</p>
+<p>这工作正常，但我一直在阅读有关DateTimeOffset，以及如何捕获对象本身的本地和UTC时间。所以问题是，使用DateTimeOffset和我们已经在做什么的优点是什么？</p>
+<a id="more"></a>
+<p><code>DateTimeOffset</code>是 <em>瞬时时间</em> （也称为 <em>绝对时间</em><br>）的表示形式。因此，我的意思是每个人都有一个普遍适用的时机（不包括<a href="https://en.wikipedia.org/wiki/Leap_second" target="_blank" rel="noopener">闰秒</a>，或者相对论效应<a href="https://en.wikipedia.org/wiki/Time_dilation" target="_blank" rel="noopener">时间扩张</a>）。表示瞬间时间的另一种方法是使用<code>DateTime</code>，其中<code>.Kind</code>是<code>DateTimeKind.Utc</code>。</p>
+<p>这与 <em>日历时间</em> （也称为 _<em> ）</em>不同，它是某人日历上的位置，而且全球有许多不同的日历。我们称这些日历 <em>时区</em> 。日历时间由<code>DateTime</code>代表，其中<code>.Kind</code>是<code>DateTimeKind.Unspecified</code>或<code>DateTimeKind.Local</code>。而<code>.Local</code>仅在您隐含了解使用结果的计算机的位置所在的情况下才有意义。 （例如，用户的工作站）</p>
+<p>那么，为什么<code>DateTimeOffset</code>而不是UTC <code>DateTime</code>？ <strong>全部是关于视角。</strong> 我们用一个比喻 - 我们假装是摄影师。</p>
+<p>假设你站在一个日历时间轴上，在你面前的瞬间时间线上指着一个人的照相机。根据时区的规则排列摄像机，由于夏令时会周期性更改，或由于其他时区法律定义的更改而导致时区更改。<br>（你没有一个稳定的手，所以你的相机抖动。）</p>
+<p>站在照片中的人会看到你的相机的角度。如果别人正在拍照，他们可能会从不同的角度。这就是<code>DateTimeOffset</code>的<code>Offset</code>部分所代表的内容。</p>
+<p>所以，如果你标记你的相机“东部时间”，有时你指的是-5，有时你指的是-4。世界各地都有摄像机，都标有不同的东西，都从不同的角度指向相同的瞬时时间线。他们中的一些恰好在彼此的旁边（或在彼此之上），所以只知道偏移量不足以确定时间与哪个时区相关。</p>
+<p>那么UTC呢？那么，这是一个相机，保证有一个稳定的手。它在三脚架上，牢牢地固定在地面上。它不会去任何地方。我们把它的视角称为零点偏移。</p>
+<p><img src="“https://i.stack.imgur.com/QE5xq.png”alt" alt=""></p>
+<p>那么 - 这个比喻告诉我们什么？它提供了一些直观的指导。</p>
+<ul>
+<li><p>如果您是相对于特定地点表示时间，请使用<code>DateTime</code>在日历时间中表示它。只要确保你永远不会混淆一个日历与另一个日历。 <code>Unspecified</code>应该是你的假设。 <code>Local</code>仅来自<code>DateTime.Now</code>。例如，我可能会得到<code>DateTime.Now</code>并将其保存在数据库中 - 但是当我检索它时，我必须假定它是<code>Unspecified</code>。我不能相信我的本地日历是原来的日历。</p>
+</li>
+<li><p>如果您必须时刻确定，请确保您代表瞬间时间。使用<code>DateTimeOffset</code>来执行它，或按惯例使用UTC <code>DateTime</code>。</p>
+</li>
+<li><p>如果您需要追踪瞬间时间，但是您还想知道“用户认为这是他们当地日历上的什么时间？” - 那么你必须<em>使用<code>DateTimeOffset</code>。例如，这对于计时系统非常重要 - 无论是出于技术还是法律上的考虑。<br>如果您需要修改以前记录的<code>DateTimeOffset</code>，则单独的偏移量中没有足够的信息来确保新的偏移量对用户仍然是相关的。您还必须 __</em><br>存储时区标识符（想想 - 我需要该相机的名称，以便即使位置已更改，我也可以拍摄新照片）。</p>
+</li>
+</ul>
+<p>还应该指出的是，<a href="http://nodatime.org" target="_blank" rel="noopener"> Noda Time </a>为此具有称为<code>ZonedDateTime</code>的表示，而.Net<br>base类库没有类似的东西。您需要同时存储<code>DateTimeOffset</code>和<code>TimeZoneInfo.Id</code>值。</p>
+<p>偶尔，你会想要表示一个日历时间，这个日历时间对于“谁在看它”是本地的。例如，当定义 <em>今天</em><br>的含义时。今天一直是午夜到午夜，但是这些代表了即时时间线上几乎无限多的重叠范围。<br>（实际上我们的时区数量是有限的，但是你可以把偏移量表示为tick）所以在这种情况下，要确保你明白如何限制“谁在问”？质疑到一个单一的时间区域，或者将其翻译成适当的瞬间。</p>
+<p>以下是关于<code>DateTimeOffset</code>的其他一些备份这个比喻的小技巧，以及一些保持直线的技巧：</p>
+<p>如果比较两个<code>DateTimeOffset</code>值，它们在比较之前首先归一化为零偏移量。换句话说，<code>2012-01-01T00：00：00 + 00：00</code>和<code>2012-01-01T02：00：00 + 02：00</code>指的是相同的瞬时时刻，因此是等同的。</p>
+<p>如果你正在进行单元测试，并且需要确定偏移量，那么测试<code>DateTimeOffset</code>值和` .Offset &lt; / code&gt;属性分开。</p>
+<p>&lt;.Net&gt; .Net框架中有一个单向隐式转换，它允许您将<code>DateTime</code>传递给任何<code>DateTimeOffset</code>参数或变量。这样做时，<br><strong>.Kind`很重要</strong> 。如果您传递的是UTC类型，它将带有一个零偏移量，但是如果您传递<code>.Local</code>或<code>.Unspecified</code>，它将假定为 <strong>local</strong><br>即可。这个框架基本上是这样说的：“嗯，你让我把日历时间转换成瞬间时间，但是我不知道这是从哪里来的，所以我只打算使用本地日历。”如果在具有不同时区的计算机上加载未指定的<code>DateTime</code>，这是一个巨大的问题。 （恕我直言 - 这应该抛出一个异常 - 但它没有。）</p>
+<p><strong>无耻插件</strong></p>
+<p>许多人和我分享他们觉得这个比喻非常有价值，所以我把它包含在我的Pluralsight课程中，<a href="http://www.pluralsight.com/courses
+/date-time-fundamentals" target="_blank" rel="noopener">日期和时间基础</a>。您可以在标题为“日历时间与瞬时时间”的剪辑中的第二个模块“上下文事项”中找到相机类比的逐步演练。</p>
+<p>来自微软：</p>
+<blockquote>
+<p>These uses for DateTimeOffset values are much more common than those for<br>DateTime values. As a result, DateTimeOffset should be considered the default<br>date and time type for application development.</p>
+</blockquote>
+<p>来源：<a href="https://docs.microsoft.com
+/en-us/dotnet/standard/datetime/choosing-between-datetime" target="_blank" rel="noopener">“在DateTime，DateTimeOffset，TimeSpan之间进行选择和TimeZoneInfo“</a>， <em>MSDN</em></p>
+<p>我们使用<code>DateTimeOffset</code>来处理几乎所有的事情，因为我们的应用程序处理特定的时间点（例如创建/更新记录时）。另外，我们还在SQL<br>Server 2008中使用<code>DATETIMEOFFSET</code>。</p>
+<p>如果您只想处理日期，仅处理时间或处理通用意义上的任何一种情况，那么我将<code>DateTime</code>看作是有用的。例如，如果您有一个闹钟要在每天早上七点关闭，则可以使用<code>Unspecified</code>的<code>DateTimeKind</code>将它存储在<code>DateTime</code> / code&gt;，因为你希望它在上午7点关闭而不管DST。但是，如果要表示警报发生的历史记录，则可以使用<code>DateTimeOffset</code>。</p>
+<p>在使用<code>DateTimeOffset</code>和<code>DateTime</code>混合时，特别是在类型之间进行赋值和比较时要小心。此外，只比较<code>DateTime</code>实例是相同的<code>DateTimeKind</code>，因为<code>DateTime</code>在比较时会忽略时区偏移量。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/06/02/datetime-vs-datetimeoffset/" data-title="DateTime vs DateTimeOffset | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/06/02/find-exec-with-multiple-commands/" title="用多个命令找到-exec">
+  <strong>上一篇：</strong><br/>
+  <span>
+  用多个命令找到-exec</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/06/02/how-do-i-check-if-a-directory-exists-via-php/"  title="如何通过PHP检查目录是否存在？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何通过PHP检查目录是否存在？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

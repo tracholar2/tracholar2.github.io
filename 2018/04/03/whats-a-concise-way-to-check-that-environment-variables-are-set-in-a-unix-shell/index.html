@@ -1,0 +1,643 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>在Unix shell脚本中设置环境变量的简明方法是什么？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有几个Unix shell脚本，我需要在开始做某些事情之前检查是否设置了某些环境变量，所以我这样做： if [ -z &amp;quot;$STATE&amp;quot; ]; then     echo &amp;quot;Need to set STATE&amp;quot;     exit 1 fi    if [ -z &amp;quot;$DEST&amp;quot; ]; then     echo &amp;quot;Need to">
+<meta name="keywords" content="shell,bash,unix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Unix shell脚本中设置环境变量的简明方法是什么？">
+<meta property="og:url" content="https://www.tracholar.top/2018/04/03/whats-a-concise-way-to-check-that-environment-variables-are-set-in-a-unix-shell/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有几个Unix shell脚本，我需要在开始做某些事情之前检查是否设置了某些环境变量，所以我这样做： if [ -z &amp;quot;$STATE&amp;quot; ]; then     echo &amp;quot;Need to set STATE&amp;quot;     exit 1 fi    if [ -z &amp;quot;$DEST&amp;quot; ]; then     echo &amp;quot;Need to">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Unix shell脚本中设置环境变量的简明方法是什么？">
+<meta name="twitter:description" content="我有几个Unix shell脚本，我需要在开始做某些事情之前检查是否设置了某些环境变量，所以我这样做： if [ -z &amp;quot;$STATE&amp;quot; ]; then     echo &amp;quot;Need to set STATE&amp;quot;     exit 1 fi    if [ -z &amp;quot;$DEST&amp;quot; ]; then     echo &amp;quot;Need to">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/03/whats-a-concise-way-to-check-that-environment-variables-are-set-in-a-unix-shell/" title="在Unix shell脚本中设置环境变量的简明方法是什么？" itemprop="url">在Unix shell脚本中设置环境变量的简明方法是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-03T02:05:30.000Z" itemprop="datePublished"> Published 2018-04-03</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Parameter Expansion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">The Colon Command</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Position of double quotes</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有几个Unix shell脚本，我需要在开始做某些事情之前检查是否设置了某些环境变量，所以我这样做：</p>
+<pre><code>if [ -z &quot;$STATE&quot; ]; then
+    echo &quot;Need to set STATE&quot;
+    exit 1
+fi  
+
+if [ -z &quot;$DEST&quot; ]; then
+    echo &quot;Need to set DEST&quot;
+    exit 1
+fi
+</code></pre><p>这是很多打字。有没有更优雅的成语来检查是否设置了一组环境变量？</p>
+<p>编辑：我应该提到，这些变量没有有意义的默认值 - 脚本应该错误，如果有任何未设置。</p>
+<a id="more"></a>
+<h3><span id="parameter-expansion">Parameter Expansion</span></h3><p>显而易见的答案是使用参数扩展的特殊形式之一：</p>
+<pre><code>: ${STATE?&quot;Need to set STATE&quot;}
+: ${DEST:?&quot;Need to set DEST non-empty&quot;}
+</code></pre><p>或者更好（见下面“双引号位置”一节）：</p>
+<pre><code>: &quot;${STATE?Need to set STATE}&quot;
+: &quot;${DEST:?Need to set DEST non-empty}&quot;
+</code></pre><p>第一个变体（只使用<code>？</code>）需要设置STATE，但是STATE =“”（空字符串）是OK的 - 不是你想要的，而是另一种和旧的表示法。</p>
+<p>第二个变体（使用<code>：？</code>）需要设置DEST并且是非空的。</p>
+<p>如果您不提供消息，则shell会提供默认消息。</p>
+<p><code>$ {var？}</code>结构可移植到版本7 UNIX和Bourne Shell（1978年左右）。 <code>$ {var：？}</code>结构稍微比较近一些：我认为它是在1981年左右的System III UNIX中，但在此之前它可能已经在PWB UNIX中。因此，它在Korn<br>Shell中，并且在POSIX shell中，特别是Bash。</p>
+<p>它通常在shell的手册页中有一个名为[参数扩展](“<a href="http://www.gnu.org/software/bash/manual/bash.html" target="_blank" rel="noopener">http://www.gnu.org/software/bash/manual/bash.html</a></p>
+<p>#Shell-Parameter-Expansion”rel)。例如，<code>bash</code>手册说：</p>
+<p>&gt;</p>
+<blockquote>
+<pre><code>${parameter:?word}
+</code></pre><p>Display Error if Null or Unset. If parameter is null or unset, the expansion<br>of word (or a message to that effect if word is not present) is written to the<br>standard error and the shell, if it is not interactive, exits. Otherwise, the<br>value of parameter is substituted.</p>
+</blockquote>
+<h3><span id="the-colon-command">The Colon Command</span></h3><p>我应该补充一点，冒号命令只是简单地评估它的参数，然后成功。它是原来的shell注释符号（在’<code>＃</code>‘之前到行尾）。很长一段时间，Bourne<br>shell脚本有一个冒号作为第一个字符。 C Shell将读取一个脚本，并使用第一个字符来确定它是否用于C Shell（一个’<code>＃</code>‘散列）或Bourne<br>shell（一个’<code>：</code> ‘冒号’）。然后内核加入了这个行为，并且增加了对’<code>＃！/ path / to / program</code>‘的支持，Bourne<br>shell得到了’<code>＃</code>‘注释，而冒号约定走到一边。但是，如果您遇到以冒号开头的脚本，现在您将知道原因。</p>
+<hr>
+<h3><span id="position-of-double-quotes">Position of double quotes</span></h3><p><a href="https://stackoverflow.com/users/320399/blong" target="_blank" rel="noopener"> blong</a>在<a href="“https://stackoverflow.com/questions/307503
+/whats-的最佳路到签该环境变量-被设置功能于UNIX的shellscr">评论</a>：</p>
+<blockquote>
+<p>Any thoughts on this discussion?<br><a href="https://github.com/koalaman/shellcheck/issues/380#issuecomment-145872749" target="_blank" rel="noopener">https://github.com/koalaman/shellcheck/issues/380#issuecomment-145872749</a></p>
+</blockquote>
+<p>讨论的要点是：</p>
+<blockquote>
+<p>a¦Â However, when I <code>shellcheck</code> it (with version 0.4.1), I get this<br>message:</p>
+<pre><code>In script.sh line 13:
+
+: ${FOO:?&quot;The environment variable &apos;FOO&apos; must be set and non-empty&quot;}
+
+  ^-- SC2086: Double quote to prevent globbing and word splitting.
+</code></pre><p>Any advice on what I should do in this case?</p>
+</blockquote>
+<p>简短的回答是“do as <code>shellcheck</code>建议”：</p>
+<pre><code>: &quot;${STATE?Need to set STATE}&quot;
+: &quot;${DEST:?Need to set DEST non-empty}&quot;
+</code></pre><p>为了说明原因，请研究以下内容。请注意，<code>：</code>命令不会回显它的参数（但shell会计算参数）。我们希望看到参数，所以下面的代码使用<code>printf“％s \
+n”</code>来代替<code>：</code>。</p>
+<pre><code>$ mkdir junk
+$ cd junk
+$ &gt; abc
+$ &gt; def
+$ &gt; ghi
+$ 
+$ x=&quot;*&quot;
+$ printf &quot;%s\n&quot; ${x:?You must set x}    # Careless; not recommended
+abc
+def
+ghi
+$ unset x
+$ printf &quot;%s\n&quot; ${x:?You must set x}    # Careless; not recommended
+bash: x: You must set x
+$ printf &quot;%s\n&quot; &quot;${x:?You must set x}&quot;  # Careful: should be used
+bash: x: You must set x
+$ x=&quot;*&quot;
+$ printf &quot;%s\n&quot; &quot;${x:?You must set x}&quot;  # Careful: should be used
+*
+$ printf &quot;%s\n&quot; ${x:?&quot;You must set x&quot;}  # Not quite careful enough
+abc
+def
+ghi
+$ x=
+$ printf &quot;%s\n&quot; ${x:?&quot;You must set x&quot;}  # Not quite careful enough
+bash: x: You must set x
+$ unset x
+$ printf &quot;%s\n&quot; ${x:?&quot;You must set x&quot;}  # Not quite careful enough
+bash: x: You must set x
+$ 
+</code></pre><p>请注意，当整个表达式不是双引号时，<code>$ x</code>中的值如何展开为第一个<code>*</code>，然后是文件名列表。这就是<code>shellcheck</code>推荐的内容。我没有证实它不反对表达式用双引号括起来的形式，但是这是一个合理的假设，它是可以的。</p>
+<p>试试这个：</p>
+<pre><code>[ -z &quot;$STATE&quot; ] &amp;&amp; echo &quot;Need to set STATE&quot; &amp;&amp; exit 1;
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a><a href="/tags/unix/">unix</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/04/03/whats-a-concise-way-to-check-that-environment-variables-are-set-in-a-unix-shell/" data-title="在Unix shell脚本中设置环境变量的简明方法是什么？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/03/code-formatting-shortcut-in-android-studio/" title="Android studio中的代码格式化快捷方式">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Android studio中的代码格式化快捷方式</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/03/collection-was-modified-enumeration-operation-may-not-execute/"  title="收藏被修改;枚举操作可能无法执行">
+ <strong>下一篇：</strong><br/> 
+ <span>收藏被修改;枚举操作可能无法执行
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Parameter Expansion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">The Colon Command</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Position of double quotes</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

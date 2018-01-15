@@ -1,0 +1,617 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Looper的目的是什么？如何使用它？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我是Android新手。我想知道Looper类的作用，以及如何使用它。我已阅读Android Looper类文档，但我无法完全理解它。我曾在很多地方看过，但无法理解它的目的。任何人都可以通过定义Looper的目的来帮助我，也可以通过给出一个简单的例子来帮助我？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Looper的目的是什么？如何使用它？">
+<meta property="og:url" content="https://www.tracholar.top/2018/07/19/what-is-the-purpose-of-looper-and-how-to-use-it/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我是Android新手。我想知道Looper类的作用，以及如何使用它。我已阅读Android Looper类文档，但我无法完全理解它。我曾在很多地方看过，但无法理解它的目的。任何人都可以通过定义Looper的目的来帮助我，也可以通过给出一个简单的例子来帮助我？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Looper的目的是什么？如何使用它？">
+<meta name="twitter:description" content="我是Android新手。我想知道Looper类的作用，以及如何使用它。我已阅读Android Looper类文档，但我无法完全理解它。我曾在很多地方看过，但无法理解它的目的。任何人都可以通过定义Looper的目的来帮助我，也可以通过给出一个简单的例子来帮助我？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/19/what-is-the-purpose-of-looper-and-how-to-use-it/" title="Looper的目的是什么？如何使用它？" itemprop="url">Looper的目的是什么？如何使用它？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-19T02:47:49.000Z" itemprop="datePublished"> Published 2018-07-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我是Android新手。我想知道<code>Looper</code>类的作用，以及如何使用它。我已阅读Android <a href="http://developer.android.com/reference/android/os/Looper.html" target="_blank" rel="noopener">Looper类文档</a>，但我无法完全理解它。<br>我曾在很多地方看过，但无法理解它的目的。任何人都可以通过定义<code>Looper</code>的目的来帮助我，也可以通过给出一个简单的例子来帮助我？</p>
+<p><a id="more"></a> 什么是Looper？**</p>
+<p>Looper是一个用于执行队列中的消息（Runnables）的类。普通线程没有这样的队列，例如简单的线程没有任何队列。它执行一次，在方法执行完成后，线程将不会运行另一个消息（Runnable）。</p>
+<p><strong>我们可以在哪里使用Looper类？</strong></p>
+<p>如果有人想执行多个消息（Runnables），那么他应该使用负责在线程中创建一个队列的Looper类。<br>例如，在编写从互联网下载文件的应用程序时，我们可以使用Looper类将文件下载到队列中。</p>
+<p>它是如何工作的？**</p>
+<p>有<code>prepare（）</code>方法来准备Looper。然后你可以使用<code>loop（）</code>方法在当前线程中创建一个消息循环，现在你的Looper已经准备好执行队列中的请求，直到你退出循环。</p>
+<p>以下是您可以准备Looper的代码。</p>
+<pre><code>class LooperThread extends Thread {
+      public Handler mHandler;
+
+      @Override
+      public void run() {
+          Looper.prepare();
+
+          mHandler = new Handler() {
+              @Override
+              public void handleMessage(Message msg) {
+                  // process incoming messages here
+              }
+          };
+
+          Looper.loop();
+      }
+  }
+</code></pre><p>您可以更好地理解Looper在GUI框架中的作用。 Looper被做成2件事。</p>
+<p>1）Looper <strong>转换正常的线程</strong> ，当run（）方法返回时， <strong>终止，直到Android应用程序正在运行</strong><br>框架（从技术上说，run（）方法返回时它仍然终止，但是让我在下面说明我的意思）。</p>
+<p>2）Looper <strong>提供了一个队列</strong> ，其中要完成的任务被排队，这在GUI框架中也是需要的。</p>
+<p>正如你所知道的，当一个应用程序启动时，系统会为应用程序创建一个名为“main”的执行线程，而Android应用程序通常在一个线程上完全运行，默认情况下是“主线程”。但是<br><strong>主线程不是一些秘密，特殊的线程</strong> 。这只是一个类似于你用<code>new
+Thread（）</code>创建的线程的正常线程，这意味着它的run（）方法返回时它会终止！想想下面的例子。</p>
+<pre><code>public class HelloRunnable implements Runnable {
+    public void run() {
+        System.out.println(&quot;Hello from a thread!&quot;);
+    }
+
+    public static void main(String args[]) {
+        (new Thread(new HelloRunnable())).start();
+    }
+}
+</code></pre><p>现在，让我们将这个简单的原则应用到Android应用程序。如果一个Android应用程序在普通线程上运行会发生什么？一个称为“主”或“用户界面”或任何启动您的应用程序，并绘制所有用户界面的线程。所以，第一个屏幕显示给用户。所以现在怎么办？主线程终止？不，它不应该。它应该等到用户做了什么，对吧？但是我们怎样才能做到这一点呢？那么，我们可以尝试使用<code>Object.wait（）</code>或<code>Thread.sleep（）</code>。例如，主线程完成其初始工作以显示第一个屏幕，然后睡觉。它醒来，意味着中断，当一个新的工作要做。到目前为止这么好，但是现在我们需要一个类似队列的数据结构来保存多个作业。考虑一个用户连续触摸屏幕的情况，任务需要较长的时间才能完成。所以，我们需要有一个数据结构，以先进先出的方式进行工作。另外，你可能会想象，使用中断来实现永不间断运行的线程并不容易，而且会导致代码复杂且不可维护。我们宁愿为此目的创建一个新机制，而Looper就是<em><br><strong>的 </strong></em>。<br>Looper类的官方文档[说：“默认线程没有一个与它们相关的消息循环“，Looper是一个”用于为线程运行消息循环“的类。现在你可以明白它的意思了。</p>
+<p>为了使事情更清楚，让我们来检查主线程转换的代码。这一切都发生在[ ActivityThread class &lt; /<br>A&gt;。在main（）方法中，你可以找到下面的代码，它将一个正常的主线程转换成我们需要的东西。</p>
+<pre><code>public final class ActivityThread {
+    ...
+    public static void main(String[] args) {
+        ...
+        Looper.prepareMainLooper();
+        Looper.loop();
+        ...
+    }
+}
+</code></pre><p>和<code>[Looper.loop（）](“https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/os/Looper.java”rel)</code>方法无限循环，并且一次处理一个消息并处理一个消息：</p>
+<pre><code>public static void loop() {
+    ...
+    for (;;) {
+        Message msg = queue.next(); // might block
+        if (msg == null) {
+            // No message indicates that the message queue is quitting.
+            return;
+        }
+        ...
+        msg.target.dispatchMessage(msg);
+        ...
+    }
+}
+</code></pre><p>所以，基本上Looper是一个解决GUI框架中出现的问题的类。但是这种需求也可能在其他情况下发生。实际上它是一个非常着名的多线程应用程序模式，您可以在Doug<br>Lea的 ___ 中了解更多关于它的知识（特别是4.1.4“Worker Threads”<br>）。另外，你可以想象这种机制在Android框架中并不是唯一的，但是所有的GUI框架可能都需要类似于这个。您可以在Java<br>Swing框架中找到几乎相同的机制。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/07/19/what-is-the-purpose-of-looper-and-how-to-use-it/" data-title="Looper的目的是什么？如何使用它？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/20/getting-all-types-that-implement-an-interface/" title="获取实现接口的所有类型">
+  <strong>上一篇：</strong><br/>
+  <span>
+  获取实现接口的所有类型</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/19/how-to-simulate-the-environment-cron-executes-a-script-with/"  title="如何模拟环境cron执行脚本？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何模拟环境cron执行脚本？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

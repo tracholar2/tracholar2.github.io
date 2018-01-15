@@ -1,0 +1,682 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>什么是最准确的方式来检索用户在PHP中的正确的IP地址？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我知道有很多可用于IP地址检索的 $ _ SERVER变量标头。我想知道是否有一个普遍的共识，如何最准确地检索用户的真实IP地址（知道没有方法是完美的）使用所述变量？ 我花了一些时间试图找到一个深入的解决方案，并基于一些来源提出了以下代码。如果有人能够在答案中找出漏洞，或者对可能更准确的东西进行说明，我会很喜欢的。 编辑包含来自@Alix的优化_ ** /**  * Retrieves the b">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是最准确的方式来检索用户在PHP中的正确的IP地址？">
+<meta property="og:url" content="https://www.tracholar.top/2018/05/02/what-is-the-most-accurate-way-to-retrieve-a-users-correct-ip-address-in-php/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我知道有很多可用于IP地址检索的 $ _ SERVER变量标头。我想知道是否有一个普遍的共识，如何最准确地检索用户的真实IP地址（知道没有方法是完美的）使用所述变量？ 我花了一些时间试图找到一个深入的解决方案，并基于一些来源提出了以下代码。如果有人能够在答案中找出漏洞，或者对可能更准确的东西进行说明，我会很喜欢的。 编辑包含来自@Alix的优化_ ** /**  * Retrieves the b">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是最准确的方式来检索用户在PHP中的正确的IP地址？">
+<meta name="twitter:description" content="我知道有很多可用于IP地址检索的 $ _ SERVER变量标头。我想知道是否有一个普遍的共识，如何最准确地检索用户的真实IP地址（知道没有方法是完美的）使用所述变量？ 我花了一些时间试图找到一个深入的解决方案，并基于一些来源提出了以下代码。如果有人能够在答案中找出漏洞，或者对可能更准确的东西进行说明，我会很喜欢的。 编辑包含来自@Alix的优化_ ** /**  * Retrieves the b">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/02/what-is-the-most-accurate-way-to-retrieve-a-users-correct-ip-address-in-php/" title="什么是最准确的方式来检索用户在PHP中的正确的IP地址？" itemprop="url">什么是最准确的方式来检索用户在PHP中的正确的IP地址？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-02T01:15:03.000Z" itemprop="datePublished"> Published 2018-05-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Words of Warning (update)</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我知道有很多可用于IP地址检索的 <strong>$ _ SERVER</strong><br>变量标头。我想知道是否有一个普遍的共识，如何最准确地检索用户的真实IP地址（知道没有方法是完美的）使用所述变量？</p>
+<p>我花了一些时间试图找到一个深入的解决方案，并基于一些来源提出了以下代码。如果有人能够在答案中找出漏洞，或者对可能更准确的东西进行说明，我会很喜欢的。</p>
+<p>编辑包含来自@Alix的优化_ **</p>
+<pre><code>/**
+ * Retrieves the best guess of the client&apos;s actual IP address.
+ * Takes into account numerous HTTP proxy headers due to variations
+ * in how different ISPs handle IP addresses in headers between hops.
+ */
+public function get_ip_address() {
+ // Check for shared internet/ISP IP
+ if (!empty($_SERVER[&apos;HTTP_CLIENT_IP&apos;]) &amp;&amp; $this-&gt;validate_ip($_SERVER[&apos;HTTP_CLIENT_IP&apos;]))
+  return $_SERVER[&apos;HTTP_CLIENT_IP&apos;];
+
+ // Check for IPs passing through proxies
+ if (!empty($_SERVER[&apos;HTTP_X_FORWARDED_FOR&apos;])) {
+  // Check if multiple IP addresses exist in var
+   $iplist = explode(&apos;,&apos;, $_SERVER[&apos;HTTP_X_FORWARDED_FOR&apos;]);
+   foreach ($iplist as $ip) {
+    if ($this-&gt;validate_ip($ip))
+     return $ip;
+   }
+  }
+ }
+ if (!empty($_SERVER[&apos;HTTP_X_FORWARDED&apos;]) &amp;&amp; $this-&gt;validate_ip($_SERVER[&apos;HTTP_X_FORWARDED&apos;]))
+  return $_SERVER[&apos;HTTP_X_FORWARDED&apos;];
+ if (!empty($_SERVER[&apos;HTTP_X_CLUSTER_CLIENT_IP&apos;]) &amp;&amp; $this-&gt;validate_ip($_SERVER[&apos;HTTP_X_CLUSTER_CLIENT_IP&apos;]))
+  return $_SERVER[&apos;HTTP_X_CLUSTER_CLIENT_IP&apos;];
+ if (!empty($_SERVER[&apos;HTTP_FORWARDED_FOR&apos;]) &amp;&amp; $this-&gt;validate_ip($_SERVER[&apos;HTTP_FORWARDED_FOR&apos;]))
+  return $_SERVER[&apos;HTTP_FORWARDED_FOR&apos;];
+ if (!empty($_SERVER[&apos;HTTP_FORWARDED&apos;]) &amp;&amp; $this-&gt;validate_ip($_SERVER[&apos;HTTP_FORWARDED&apos;]))
+  return $_SERVER[&apos;HTTP_FORWARDED&apos;];
+
+ // Return unreliable IP address since all else failed
+ return $_SERVER[&apos;REMOTE_ADDR&apos;];
+}
+
+/**
+ * Ensures an IP address is both a valid IP address and does not fall within
+ * a private network range.
+ *
+ * @access public
+ * @param string $ip
+ */
+public function validate_ip($ip) {
+    if (filter_var($ip, FILTER_VALIDATE_IP, 
+                        FILTER_FLAG_IPV4 | 
+                        FILTER_FLAG_IPV6 |
+                        FILTER_FLAG_NO_PRIV_RANGE | 
+                        FILTER_FLAG_NO_RES_RANGE) === false)
+        return false;
+    self::$ip = $ip;
+    return true;
+}
+</code></pre><h2><span id="words-of-warning-update">Words of Warning (update)</span></h2><p>REMOTE<em>ADDR <code>仍然代表IP地址的最可靠的来源。这里提到的另一个</code> $ </em> SERVER<br><code>变量可以很容易地被远程客户端欺骗。此解决方案的目的是尝试确定代理服务器后面的客户端的IP地址。为了您的一般目的，您可以考虑将其与直接从</code> $ _<br>SERVER [‘REMOTE_ADDR’] `返回的IP地址结合使用并将两者都存储。</p>
+<p>对于99.9％的用户来说，这个解决方案将完美地满足您的需求。**它不会保护您免受希望滥用您的系统的恶意用户的0.1％的注入自己的请求标头。如果依靠IP地址来执行关键任务，请使用<code>REMOTE_ADDR</code>，而不必担心代理服务器后面的问题。</p>
+<a id="more"></a>
+<p><strong>这是获取IP地址的更简洁，更简洁的方式：</strong></p>
+<pre><code>function get_ip_address(){
+    foreach (array(&apos;HTTP_CLIENT_IP&apos;, &apos;HTTP_X_FORWARDED_FOR&apos;, &apos;HTTP_X_FORWARDED&apos;, &apos;HTTP_X_CLUSTER_CLIENT_IP&apos;, &apos;HTTP_FORWARDED_FOR&apos;, &apos;HTTP_FORWARDED&apos;, &apos;REMOTE_ADDR&apos;) as $key){
+        if (array_key_exists($key, $_SERVER) === true){
+            foreach (explode(&apos;,&apos;, $_SERVER[$key]) as $ip){
+                $ip = trim($ip); // just to be safe
+
+                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false){
+                    return $ip;
+                }
+            }
+        }
+    }
+}
+</code></pre><p>希望它有帮助！</p>
+<hr>
+<p>你的代码似乎已经相当完整了，我看不到任何可能的错误（除了通常的IP警告），我会改变<code>validate_ip（）</code>函数来依靠过滤器扩展虽然：</p>
+<pre><code>public function validate_ip($ip)
+{
+    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false)
+    {
+        return false;
+    }
+
+    self::$ip = sprintf(&apos;%u&apos;, ip2long($ip)); // you seem to want this
+
+    return true;
+}
+</code></pre><p>您的<code>HTTP_X_FORWARDED_FOR</code>片段可以简化为：</p>
+<pre><code>// check for IPs passing through proxies
+if (!empty($_SERVER[&apos;HTTP_X_FORWARDED_FOR&apos;]))
+{
+    // check if multiple ips exist in var
+    if (strpos($_SERVER[&apos;HTTP_X_FORWARDED_FOR&apos;], &apos;,&apos;) !== false)
+    {
+        $iplist = explode(&apos;,&apos;, $_SERVER[&apos;HTTP_X_FORWARDED_FOR&apos;]);
+
+        foreach ($iplist as $ip)
+        {
+            if ($this-&gt;validate_ip($ip))
+                return $ip;
+        }
+    }
+
+    else
+    {
+        if ($this-&gt;validate_ip($_SERVER[&apos;HTTP_X_FORWARDED_FOR&apos;]))
+            return $_SERVER[&apos;HTTP_X_FORWARDED_FOR&apos;];
+    }
+}
+</code></pre><p>对此：</p>
+<pre><code>// check for IPs passing through proxies
+if (!empty($_SERVER[&apos;HTTP_X_FORWARDED_FOR&apos;]))
+{
+    $iplist = explode(&apos;,&apos;, $_SERVER[&apos;HTTP_X_FORWARDED_FOR&apos;]);
+
+    foreach ($iplist as $ip)
+    {
+        if ($this-&gt;validate_ip($ip))
+            return $ip;
+    }
+}
+</code></pre><p>您可能还想要验证IPv6地址。</p>
+<p>即使如此，获取用户的真实IP地址将是不可靠的。他们所需要做的就是使用匿名代理服务器（不遵循http_x_forwarded_for，http_forwarded等标题），所有你得到的是他们的代理服务器的IP地址。</p>
+<p>然后你就可以看到是否有一个匿名的代理服务器IP地址列表，但是没有办法确定这个IP地址是100％准确的，而且最多的是让你知道它是一个代理服务器。如果有人很聪明，他们可以欺骗HTTP转发头。</p>
+<p>假设我不喜欢当地的大学。我弄清楚他们注册了哪些IP地址，并通过做坏事取得他们在你的网站上禁止的IP地址，因为我知道你尊重HTTP转发。名单是无止境的。</p>
+<p>然后就像你所猜测的那样，有内部IP地址，比如我之前提到的大学网络。很多使用10.x.x.x格式。所以你只需要知道它被转发了共享的网络。</p>
+<p>然后，我不会从头开始，但动态IP地址已经成为宽带的一种方式。所以。即使你得到一个用户的IP地址，预计它会在2 - 3个月内最长时间改变。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/05/02/what-is-the-most-accurate-way-to-retrieve-a-users-correct-ip-address-in-php/" data-title="什么是最准确的方式来检索用户在PHP中的正确的IP地址？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/02/json-encode-mysql-results/" title="JSON编码MySQL结果">
+  <strong>上一篇：</strong><br/>
+  <span>
+  JSON编码MySQL结果</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/05/01/using-context-in-a-fragment/"  title="在片段中使用上下文">
+ <strong>下一篇：</strong><br/> 
+ <span>在片段中使用上下文
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Words of Warning (update)</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

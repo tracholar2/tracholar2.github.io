@@ -1,0 +1,662 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>我怎样才能捕获到一个字符串var_dump的结果？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我想捕捉 ` var_dump &amp;lt; / code&amp;gt; 转换为字符串。 PHP文档说：  As with anything that outputs its result directly to the browser, theoutput-control functionscan be used to capture the output of this function, and sa">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我怎样才能捕获到一个字符串var_dump的结果？">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/11/how-can-i-capture-the-result-of-var-dump-to-a-string/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我想捕捉 ` var_dump &amp;lt; / code&amp;gt; 转换为字符串。 PHP文档说：  As with anything that outputs its result directly to the browser, theoutput-control functionscan be used to capture the output of this function, and sa">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我怎样才能捕获到一个字符串var_dump的结果？">
+<meta name="twitter:description" content="我想捕捉 ` var_dump &amp;lt; / code&amp;gt; 转换为字符串。 PHP文档说：  As with anything that outputs its result directly to the browser, theoutput-control functionscan be used to capture the output of this function, and sa">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/11/how-can-i-capture-the-result-of-var-dump-to-a-string/" title="我怎样才能捕获到一个字符串var_dump的结果？" itemprop="url">我怎样才能捕获到一个字符串var_dump的结果？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-11T01:04:06.000Z" itemprop="datePublished"> Published 2018-02-11</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Try </span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Why?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">Demo:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">The difference in output:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">var_export ($debug_export in above example):</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">var_dump ($debug_dump in above example):</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.3.</span> <span class="toc-text">print_r ($debug_printr in above example):</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Caveat: var_export does not handle circular references</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我想捕捉<a href="http://us3.php.net/manual/en/function.var-
+dump.php" target="_blank" rel="noopener"> ` var_dump &lt; / code&gt; </a>转换为字符串。</p>
+<p>PHP文档说：</p>
+<blockquote>
+<p>As with anything that outputs its result directly to the browser, the<br><a href="http://us3.php.net/manual/en/ref.outcontrol.php" target="_blank" rel="noopener">output-control functions</a><br>can be used to capture the output of this function, and save it in a string<br>(for example).</p>
+</blockquote>
+<p>有人可以给我一个这样的例子吗？</p>
+<p>print_r（）`不是一个有效的可能性，因为它不会给我提供我需要的信息。</p>
+<a id="more"></a>
+<p>使用输出缓冲：</p>
+<pre><code>&lt;?php
+ob_start();
+var_dump($someVar);
+$result = ob_get_clean();
+?&gt;
+</code></pre><h1><span id="try-var_export">Try </span></h1><p>您可能希望查看<a href="http://php.net/var_export" target="_blank" rel="noopener"> <code>var_export</code> </a>，而不要提供与<code>var_dump</code>相同的输出，它会提供第二个<code>$ return</code>参数，使其返回输出而不是打印输出：</p>
+<pre><code>$debug = var_export($my_var, true);
+</code></pre><h2><span id="why">Why?</span></h2><p>我更喜欢使用<code>ob_start</code>和<code>ob_get_clean（）</code>。我也发现输出有点容易阅读，因为它只是PHP代码。</p>
+<p><code>var_dump</code>和<code>var_export</code>之间的区别在于var_export返回一个变量的可解析的字符串表示形式 __ 而<code>var_dump</code>只是转储有关变量的信息。这在实践中意味着<code>var_export</code>为您提供有效的PHP代码（但是可能不会提供相当多的关于变量的信息，尤其是在您使用<a href="“http：//">resources </a>）。</p>
+<h3><span id="demo">Demo:</span></h3><pre><code>$demo = array(
+    &quot;bool&quot; =&gt; false,
+    &quot;int&quot; =&gt; 1,
+    &quot;float&quot; =&gt; 3.14,
+    &quot;string&quot; =&gt; &quot;hello world&quot;,
+    &quot;array&quot; =&gt; array(),
+    &quot;object&quot; =&gt; new stdClass(),
+    &quot;resource&quot; =&gt; tmpfile(),
+    &quot;null&quot; =&gt; null,
+);
+
+// var_export -- nice, one-liner
+$debug_export = var_export($demo, true);
+
+// var_dump
+ob_start();
+var_dump($demo);
+$debug_dump = ob_get_clean();
+
+// print_r -- included for completeness, though not recommended
+$debug_printr = print_r($demo, true);
+</code></pre><h2><span id="the-difference-in-output">The difference in output:</span></h2><h3><span id="var_export-debug_export-in-above-example">var_export (<code>$debug_export</code> in above example):</span></h3><pre><code> array (
+  &apos;bool&apos; =&gt; false,
+  &apos;int&apos; =&gt; 1,
+  &apos;float&apos; =&gt; 3.1400000000000001,
+  &apos;string&apos; =&gt; &apos;hello world&apos;,
+  &apos;array&apos; =&gt; 
+  array (
+  ),
+  &apos;object&apos; =&gt; 
+  stdClass::__set_state(array(
+  )),
+  &apos;resource&apos; =&gt; NULL, // Note that this resource pointer is now NULL
+  &apos;null&apos; =&gt; NULL,
+)
+</code></pre><h3><span id="var_dump-debug_dump-in-above-example">var_dump (<code>$debug_dump</code> in above example):</span></h3><pre><code> array(8) {
+  [&quot;bool&quot;]=&gt;
+  bool(false)
+  [&quot;int&quot;]=&gt;
+  int(1)
+  [&quot;float&quot;]=&gt;
+  float(3.14)
+  [&quot;string&quot;]=&gt;
+  string(11) &quot;hello world&quot;
+  [&quot;array&quot;]=&gt;
+  array(0) {
+  }
+  [&quot;object&quot;]=&gt;
+  object(stdClass)#1 (0) {
+  }
+  [&quot;resource&quot;]=&gt;
+  resource(4) of type (stream)
+  [&quot;null&quot;]=&gt;
+  NULL
+}
+</code></pre><h3><span id="print_r-debug_printr-in-above-example">print_r (<code>$debug_printr</code> in above example):</span></h3><pre><code>Array
+(
+    [bool] =&gt; 
+    [int] =&gt; 1
+    [float] =&gt; 3.14
+    [string] =&gt; hello world
+    [array] =&gt; Array
+        (
+        )
+
+    [object] =&gt; stdClass Object
+        (
+        )
+
+    [resource] =&gt; Resource id #4
+    [null] =&gt; 
+)
+</code></pre><h2><span id="caveat-var_export-does-not-handle-circular-references">Caveat: <code>var_export</code> does not handle circular references</span></h2><p>如果您正尝试转储具有循环引用的变量，则调用<code>var_export</code>将导致PHP警告：</p>
+<pre><code>$circular = array();
+$circular[&apos;self&apos;] =&amp; $circular;
+var_export($circular);
+</code></pre><p>结果在：</p>
+<pre><code>Warning: var_export does not handle circular references in example.php on line 3
+array (
+  &apos;self&apos; =&gt; 
+  array (
+    &apos;self&apos; =&gt; NULL,
+  ),
+)
+</code></pre><p>另一方面，当遇到循环引用时，<code>var_dump</code>和<code>print_r</code>将输出字符串<code>* RECURSION *</code>。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/11/how-can-i-capture-the-result-of-var-dump-to-a-string/" data-title="我怎样才能捕获到一个字符串var_dump的结果？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/11/why-is-it-important-to-override-gethashcode-when-equals-method-is-overridden/" title="当Equals方法被覆盖时，为什么重写GetHashCode非常重要？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  当Equals方法被覆盖时，为什么重写GetHashCode非常重要？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/11/how-to-pass-variables-and-data-from-php-to-javascript/"  title="如何将变量和数据从PHP传递到JavaScript？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何将变量和数据从PHP传递到JavaScript？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Try </span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Why?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">Demo:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">The difference in output:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">var_export ($debug_export in above example):</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">var_dump ($debug_dump in above example):</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.3.</span> <span class="toc-text">print_r ($debug_printr in above example):</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Caveat: var_export does not handle circular references</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

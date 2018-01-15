@@ -1,0 +1,661 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何在Android中发现我的应用程序的内存使用情况？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何以编程方式找到我的Android应用程序上使用的内存？ 我希望有办法做到这一点。另外，如何获得手机的免费记忆？">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在Android中发现我的应用程序的内存使用情况？">
+<meta property="og:url" content="https://www.tracholar.top/2018/03/06/how-do-i-discover-memory-usage-of-my-application-in-android/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何以编程方式找到我的Android应用程序上使用的内存？ 我希望有办法做到这一点。另外，如何获得手机的免费记忆？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何在Android中发现我的应用程序的内存使用情况？">
+<meta name="twitter:description" content="如何以编程方式找到我的Android应用程序上使用的内存？ 我希望有办法做到这一点。另外，如何获得手机的免费记忆？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/06/how-do-i-discover-memory-usage-of-my-application-in-android/" title="如何在Android中发现我的应用程序的内存使用情况？" itemprop="url">如何在Android中发现我的应用程序的内存使用情况？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-03-06T02:27:42.000Z" itemprop="datePublished"> Published 2018-03-06</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如何以编程方式找到我的Android应用程序上使用的内存？</p>
+<p>我希望有办法做到这一点。另外，如何获得手机的免费记忆？</p>
+<p><a id="more"></a> 请注意，像Linux这样的现代操作系统的内存使用是一个非常复杂而难以理解的领域。事实上，你实际上正确地解释你得到的数字的机会是非常低的。<br>（几乎每次我和其他工程师一起查看内存使用情况的数字时，总会长时间讨论他们的实际含义，只会导致一个模糊的结论。）</p>
+<p>注意：我们现在有更多关于[管理您的应用程序内存&lt; / a&gt;，其中涵盖了大部分的材料，并且更新了Android的状态。**</p>
+<p>第一件事大概是阅读这篇文章的最后部分，这篇文章讨论了如何在Android上管理内存：</p>
+<p>[从Android 2.0开始的服务API更改&lt; / A&gt;</p>
+<p>现在<code>ActivityManager.getMemoryInfo（）</code>是我们用于查看整个内存使用情况的最高级别的API。这主要是为了帮助应用程序衡量系统到后台进程没有更多内存需要多长时间，因此需要开始查杀所需的进程（如服务）。对于纯Java应用程序，这应该没什么用处，因为Java堆限制的存在部分是为了避免一个应用程序能够强调系统到这一点。</p>
+<p>进一步讲，你可以使用调试API来获取关于内存使用情况的原始内核级信息：<a href="“http://developer.android.com/intl/de/reference/android/os/"> android.os.Debug.MemoryInfo</a></p>
+<p>注意从2.0开始，还有一个API（<code>ActivityManager.getProcessMemoryInfo</code>）来获取有关另一个进程的信息：<a href="“http://developer.android.com/reference/android">ActivityManager.getProcessMemoryInfo（int<br>[]）</a></p>
+<p>这将返回一个包含所有这些数据的低级别的MemoryInfo结构：</p>
+<pre><code>/** The proportional set size for dalvik. */
+public int dalvikPss;
+/** The private dirty pages used by dalvik. */
+public int dalvikPrivateDirty;
+/** The shared dirty pages used by dalvik. */
+public int dalvikSharedDirty;
+
+/** The proportional set size for the native heap. */
+public int nativePss;
+/** The private dirty pages used by the native heap. */
+public int nativePrivateDirty;
+/** The shared dirty pages used by the native heap. */
+public int nativeSharedDirty;
+
+/** The proportional set size for everything else. */
+public int otherPss;
+/** The private dirty pages used by everything else. */
+public int otherPrivateDirty;
+/** The shared dirty pages used by everything else. */
+public int otherSharedDirty;
+</code></pre><p>但是至于<code>Pss</code>，<code>PrivateDirty</code>和<code>SharedDirty</code>之间的区别是什么……现在好玩的开始了。</p>
+<p>Android（和一般的Linux系统）中的大量内存实际上是跨多个进程共享的。那么一个进程使用多少内存真的不清楚。把这个页面添加到磁盘的顶部（更不要说我们在Android上不使用的swap了），而且更加清晰。</p>
+<p>因此，如果你把所有的物理RAM都映射到每个进程，并把所有的进程加起来，你可能会得到比实际总RAM大得多的数字。</p>
+<p>`是内核计算考虑到内存共享的指标 -<br>基本上，进程中每个内存页面的数量与使用该页面的其他进程数量的比例。通过这种方式，您可以（理论上）在所有进程中合计pss以查看它们正在使用的总RAM，并比较进程之间的pss以粗略地了解它们的相对权重。</p>
+<p>另一个有趣的指标是 Private<br>`，它基本上是进程内的RAM数量，不能被分页到磁盘（它不被磁盘上的相同数据支持）不与其他任何进程共享。另一种看待这个问题的方法是当这个进程消失的时候，系统可以使用的RAM（也可能很快包含到缓存和其他用途中）。</p>
+<p>这几乎是SDK API。但是，您可以使用设备作为开发者进行更多操作。</p>
+<p>使用<code>adb</code>，可以获得关于正在运行的系统的内存使用情况的大量信息。一个常见的命令是<code>adb shell dumpsys meminfo</code>，它会吐出一堆有关每个Java进程的内存使用情况的信息，包含上述信息以及其他各种信息。您也可以使用单个进程的名称或pid来查看，例如<code>adb shell
+dumpsys meminfo system</code>给我系统进程：</p>
+<pre><code>** MEMINFO in pid 890 [system] **
+                    native   dalvik    other    total
+            size:    10940     7047      N/A    17987
+       allocated:     8943     5516      N/A    14459
+            free:      336     1531      N/A     1867
+           (Pss):     4585     9282    11916    25783
+  (shared dirty):     2184     3596      916     6696
+    (priv dirty):     4504     5956     7456    17916
+
+ Objects
+           Views:      149        ViewRoots:        4
+     AppContexts:       13       Activities:        0
+          Assets:        4    AssetManagers:        4
+   Local Binders:      141    Proxy Binders:      158
+Death Recipients:       49
+ OpenSSL Sockets:        0
+
+ SQL
+            heap:      205          dbFiles:        0
+       numPagers:        0   inactivePageKB:        0
+    activePageKB:        0
+</code></pre><p>顶部是主要部分，其中<code>size</code>是特定堆的地址空间中的总大小，<code>allocated</code>是堆认为它的实际分配的kb <code>free</code>是剩余的空闲堆，它用于额外的分配，而<code>pss</code>和<code>priv dirty</code>与之前讨论的相同与每个堆相关联。</p>
+<p>如果您只想查看所有进程的内存使用情况，可以使用命令<code>adb shell procrank</code>。这在同一个系统上的输出如下所示：</p>
+<pre><code>  PID      Vss      Rss      Pss      Uss  cmdline
+  890   84456K   48668K   25850K   21284K  system_server
+ 1231   50748K   39088K   17587K   13792K  com.android.launcher2
+  947   34488K   28528K   10834K    9308K  com.android.wallpaper
+  987   26964K   26956K    8751K    7308K  com.google.process.gapps
+  954   24300K   24296K    6249K    4824K  com.android.phone
+  948   23020K   23016K    5864K    4748K  com.android.inputmethod.latin
+  888   25728K   25724K    5774K    3668K  zygote
+  977   24100K   24096K    5667K    4340K  android.process.acore
+...
+   59     336K     332K      99K      92K  /system/bin/installd
+   60     396K     392K      93K      84K  /system/bin/keystore
+   51     280K     276K      74K      68K  /system/bin/servicemanager
+   54     256K     252K      69K      64K  /system/bin/debuggerd
+</code></pre><p>这里的<code>Vss</code>和<code>Rss</code>列基本上是噪声（这些是一个进程的直接地址空间和RAM使用情况，如果将RAM的使用跨进程你得到一个可笑的大数目）。</p>
+<p>Pss <code>就像我们之前看到的一样，而</code> Uss <code>是</code> Priv Dirty `。</p>
+<p>这里有趣的是：<code>Pss</code>和<code>Uss</code>与我们在<code>meminfo</code>中看到的略有不同。这是为什么？那么procrank使用不同的内核机制来收集它的数据，而不是<code>meminfo</code>，他们给出了稍微不同的结果。这是为什么？老实说我没有线索。我相信<code>procrank</code>可能是更准确的一个……但实际上，这只是说出了一个问题：“记下你得到的任何内存信息，通常是一粒非常大的谷粒。” p&gt; 最后是命令<code>adb
+shell cat / proc / meminfo</code>，给出系统总体内存使用情况的总结。这里有很多数据，只有前几个数值才值得讨论（而其余的数据只有很少人能够理解，而我对那些少数人的问题往往导致相互矛盾的解释）：</p>
+<pre><code>MemTotal:         395144 kB
+MemFree:          184936 kB
+Buffers:             880 kB
+Cached:            84104 kB
+SwapCached:            0 kB
+</code></pre><p>MemTotal是内核和用户空间的可用内存总量（通常小于设备的实际物理内存，因为无线电，DMA缓冲区，等）。</p>
+<p>MemFree `是根本没有使用的RAM的数量。你在这里看到的数字非常高。通常在Android系统上，这只有几MB，因为我们尝试使用可用的内存来保持进程运行</p>
+<p>缓存`是用于文件系统缓存和其他类似内容的内存。典型的系统需要20MB左右，以避免进入坏的寻呼状态;<br>Android内存不足杀手会针对特定的系统进行调整，以确保后台进程在高速缓存的RAM消耗太多而导致进行分页之前被终止。</p>
+<p>是的，你可以通过编程获得记忆信息，并决定是否进行内存密集型工作。</p>
+<p>通过调用</p>
+<p>获取VM堆大小</p>
+<pre><code>Runtime.getRuntime().totalMemory();
+</code></pre><p>通过调用</p>
+<p>获取分配的VM内存</p>
+<pre><code>Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+</code></pre><p>通过调用</p>
+<p>获取VM堆大小限制</p>
+<pre><code>Runtime.getRuntime().maxMemory()
+</code></pre><p>通过调用</p>
+<p>获取本地分配的内存</p>
+<pre><code>Debug.getNativeHeapAllocatedSize();
+</code></pre><p>我创建了一个应用程序来计算OutOfMemoryError行为并监视内存使用情况。</p>
+<p><a href="https://play.google.com/store/apps/details?id=net.coocood.oomresearch" target="_blank" rel="noopener"> https://play.google.com/store/apps/details?id = net.coocood.oomresearch</a></p>
+<p>你可以从中获取源代码 <a href="https://github.com/coocood/oom-research" target="_blank" rel="noopener"> https://github.com/coocood/oom-research</a></p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/03/06/how-do-i-discover-memory-usage-of-my-application-in-android/" data-title="如何在Android中发现我的应用程序的内存使用情况？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/07/change-the-maximum-upload-file-size/" title="更改最大的上传文件大小">
+  <strong>上一篇：</strong><br/>
+  <span>
+  更改最大的上传文件大小</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/03/06/how-to-grep-a-continuous-stream/"  title="如何“grep”连续的流？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何“grep”连续的流？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

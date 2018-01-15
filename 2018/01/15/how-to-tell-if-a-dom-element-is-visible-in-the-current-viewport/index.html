@@ -1,0 +1,690 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何判断一个DOM元素在当前视口中是否可见？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="有没有一种有效的方式来判断一个DOM元素（在HTML文档中）当前是否可见（出现在 视口 中）？ （关于Firefox的问题）">
+<meta name="keywords" content="html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何判断一个DOM元素在当前视口中是否可见？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="有没有一种有效的方式来判断一个DOM元素（在HTML文档中）当前是否可见（出现在 视口 中）？ （关于Firefox的问题）">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何判断一个DOM元素在当前视口中是否可见？">
+<meta name="twitter:description" content="有没有一种有效的方式来判断一个DOM元素（在HTML文档中）当前是否可见（出现在 视口 中）？ （关于Firefox的问题）">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport/" title="如何判断一个DOM元素在当前视口中是否可见？" itemprop="url">如何判断一个DOM元素在当前视口中是否可见？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">How to use:</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>有没有一种有效的方式来判断一个DOM元素（在HTML文档中）当前是否可见（出现在 <strong>视口</strong> 中）？</p>
+<p>（关于Firefox的问题）</p>
+<a id="more"></a>
+<p><strong>更新：</strong> 时间流逝，浏览器也如此。 <strong>不再推荐此技术</strong> ，您应该在下面使用@ Dan的解决方案（<a href="https://stackoverflow.com/a/7557433/5628" target="_blank" rel="noopener">https://stackoverflow.com/ a / 7557433/5628</a>）如果你不需要支持IE＆lt; 7。</p>
+<p>原始解决方案（现已过时）：**</p>
+<p>这将检查元素在当前视口中是否完全可见：</p>
+<pre><code>function elementInViewport(el) {
+  var top = el.offsetTop;
+  var left = el.offsetLeft;
+  var width = el.offsetWidth;
+  var height = el.offsetHeight;
+
+  while(el.offsetParent) {
+    el = el.offsetParent;
+    top += el.offsetTop;
+    left += el.offsetLeft;
+  }
+
+  return (
+    top &gt;= window.pageYOffset &amp;&amp;
+    left &gt;= window.pageXOffset &amp;&amp;
+    (top + height) &lt;= (window.pageYOffset + window.innerHeight) &amp;&amp;
+    (left + width) &lt;= (window.pageXOffset + window.innerWidth)
+  );
+}
+</code></pre><p>您可以简单地修改这个元素，以确定元素的任何部分在视口中是否可见：</p>
+<pre><code>function elementInViewport2(el) {
+  var top = el.offsetTop;
+  var left = el.offsetLeft;
+  var width = el.offsetWidth;
+  var height = el.offsetHeight;
+
+  while(el.offsetParent) {
+    el = el.offsetParent;
+    top += el.offsetTop;
+    left += el.offsetLeft;
+  }
+
+  return (
+    top &lt; (window.pageYOffset + window.innerHeight) &amp;&amp;
+    left &lt; (window.pageXOffset + window.innerWidth) &amp;&amp;
+    (top + height) &gt; window.pageYOffset &amp;&amp;
+    (left + width) &gt; window.pageXOffset
+  );
+}
+</code></pre><p>现在<a href="http://www.quirksmode.org/dom/w3c_cssom.html" target="_blank" rel="noopener">大多数浏览器</a>都支持<a href="“https：//developer.mozilla">getBoundingClientRect</a>方法，这已经成为最佳实践。使用旧的答案是<a href="http://jsperf.com
+/getboundingclientrect-vs-fallback-version" target="_blank" rel="noopener">很慢</a>，<a href="“http：//">不准确</a>和<a href="”http：">有几个错误</a>。</p>
+<p>选择正确的解决方案是<a href="http://www.quirksmode.org/js/findpos.html" target="_blank" rel="noopener">几乎从不精确</a>。您可以<a href="http://javascript.ru/ui/offset" target="_blank" rel="noopener">阅读更多</a>关于它的错误。</p>
+<hr>
+<p>这个解决方案已经在IE7 +，iOS5 + Safari，Android2 +，Blackberry，Opera Mobile和IE<br>Mobile上进行了测试 <a href="“http://ejohn.org/blog/getboundingclientrect-is-
+awesome/”rel"> 10 </a></p>
+<hr>
+<pre><code>function isElementInViewport (el) {
+
+    //special bonus for those using jQuery
+    if (typeof jQuery === &quot;function&quot; &amp;&amp; el instanceof jQuery) {
+        el = el[0];
+    }
+
+    var rect = el.getBoundingClientRect();
+
+    return (
+        rect.top &gt;= 0 &amp;&amp;
+        rect.left &gt;= 0 &amp;&amp;
+        rect.bottom &lt;= (window.innerHeight || document.documentElement.clientHeight) &amp;&amp; /*or $(window).height() */
+        rect.right &lt;= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+    );
+}
+</code></pre><hr>
+<h2><span id="how-to-use">How to use:</span></h2><p>你可以确定上面给出的函数在被调用的时候返回正确的答案，但是跟踪元素的可见性作为一个事件呢？</p>
+<p>将下面的代码放在<code>＆lt; body＆gt;</code>标记的底部：</p>
+<pre><code>function onVisibilityChange(el, callback) {
+    var old_visible;
+    return function () {
+        var visible = isElementInViewport(el);
+        if (visible != old_visible) {
+            old_visible = visible;
+            if (typeof callback == &apos;function&apos;) {
+                callback();
+            }
+        }
+    }
+}
+
+var handler = onVisibilityChange(el, function() {
+    /* your code go here */
+});
+
+
+//jQuery
+$(window).on(&apos;DOMContentLoaded load resize scroll&apos;, handler); 
+
+/* //non-jQuery
+if (window.addEventListener) {
+    addEventListener(&apos;DOMContentLoaded&apos;, handler, false); 
+    addEventListener(&apos;load&apos;, handler, false); 
+    addEventListener(&apos;scroll&apos;, handler, false); 
+    addEventListener(&apos;resize&apos;, handler, false); 
+} else if (window.attachEvent)  {
+    attachEvent(&apos;onDOMContentLoaded&apos;, handler); // IE9+ :(
+    attachEvent(&apos;onload&apos;, handler);
+    attachEvent(&apos;onscroll&apos;, handler);
+    attachEvent(&apos;onresize&apos;, handler);
+}
+*/
+</code></pre><hr>
+<p>如果你做了任何的DOM修改，他们当然可以改变你的元素的可见性。</p>
+<p>指南和常见陷阱：**</p>
+<p><strong>也许你需要跟踪页面缩放/移动设备捏？</strong><br>jQuery应处理<a href="http://api.jquery.com/resize/" target="_blank" rel="noopener">缩放/捏</a>跨浏览器，否则<a href="https://stackoverflow.com/questions/995914
+/catch-browsers-zoom-event-in-
+javascript" target="_blank" rel="noopener">第一</a>或<a href="“https://stackoverflow.com/questions/11183174/simplest-way-
+to-detect-a-pinch&quot;">第二个</a>链接应该帮助你。</p>
+<p>如果 <strong>修改DOM</strong> ，则会影响元素的可见性。你应该控制它并手动调用<code>handler（）</code>。不幸的是，我们没有跨浏览器<code>onrepaint</code>事件。另一方面，它允许我们进行优化，并仅对DOM修改进行重新检查，这些修改会改变元素的可见性。</p>
+<p><strong>从来没有</strong> 在jQuery中使用它[ $（document）.ready（）<br>a&gt;，因为<a href="https://stackoverflow.com/questions/1324568/is-document-
+ready-also-css-ready" target="_blank" rel="noopener">目前没有保修CSS已经被应用</a> 。你的代码可以在硬盘上用你的CSS在本地工作，但是一旦放到远程服务器上，它就会失败。</p>
+<p>在<code>DOMContentLoaded</code>之后，<a href="https://stackoverflow.com/questions/3520780
+/when-is-window-onload-fired" target="_blank" rel="noopener">样式被应用</a><br>，但<a href="https://stackoverflow.com/questions/8835413/difference-between-
+load-vs-domcontentloaded" target="_blank" rel="noopener">图片尚未加载</a>。所以，我们应该添加<code>window.onload</code>事件监听器。</p>
+<p>我们无法捕捉缩放/捏事件。</p>
+<p>最后的手段可能是以下代码：</p>
+<pre><code>/* TODO: this looks like a very bad code */
+setInterval(handler, 600); 
+</code></pre><p>如果您关心的话，您可以使用非常棒的功能<a href="https://developer.mozilla.org/en-
+US/docs/DOM/Using_the_Page_Visibility_API" target="_blank" rel="noopener"> pageVisibiliy </a> HTML5 API您的网页上的标签是活动和可见的。</p>
+<p>TODO：这种方法不能处理两种情况：</p>
+<ul>
+<li><p>使用<code>z-index</code>重叠</p>
+</li>
+<li><p>在元素容器中使用<code>overflow-scroll</code></p>
+</li>
+<li>试试新的<a href="https://pawelgrzybek.com/the-intersection-observer-api-explained/" target="_blank" rel="noopener"> https://pawelgrzybek.com/the-intersection -observer-API的说明/ </a></li>
+</ul>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport/" data-title="如何判断一个DOM元素在当前视口中是否可见？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/how-to-style-a-checkbox-using-css/" title="如何使用CSS设计复选框？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何使用CSS设计复选框？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/php-delete-an-element-from-an-array/"  title="PHP：从数组中删除一个元素">
+ <strong>下一篇：</strong><br/> 
+ <span>PHP：从数组中删除一个元素
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">How to use:</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

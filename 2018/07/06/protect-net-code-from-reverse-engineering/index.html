@@ -1,0 +1,597 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>从反向工程保护 NET代码？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="混淆是一种方式，但它不能保护应用程序的盗版保护安全。如何确保应用程序不被篡改，以及如何确保注册机制不能被反向设计？ 也可以将C＃应用程序转换为本机代码，而 Xenocode太昂贵了。 C＃提供了很多功能，并且是我的代码的理想语言，所以再次用C ++编写整个代码库是不可能的。 安全证书可以很容易地从.NET中签名的程序集中移除。">
+<meta name="keywords" content="c-sharp,dot-net">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从反向工程保护 NET代码？">
+<meta property="og:url" content="https://www.tracholar.top/2018/07/06/protect-net-code-from-reverse-engineering/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="混淆是一种方式，但它不能保护应用程序的盗版保护安全。如何确保应用程序不被篡改，以及如何确保注册机制不能被反向设计？ 也可以将C＃应用程序转换为本机代码，而 Xenocode太昂贵了。 C＃提供了很多功能，并且是我的代码的理想语言，所以再次用C ++编写整个代码库是不可能的。 安全证书可以很容易地从.NET中签名的程序集中移除。">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从反向工程保护 NET代码？">
+<meta name="twitter:description" content="混淆是一种方式，但它不能保护应用程序的盗版保护安全。如何确保应用程序不被篡改，以及如何确保注册机制不能被反向设计？ 也可以将C＃应用程序转换为本机代码，而 Xenocode太昂贵了。 C＃提供了很多功能，并且是我的代码的理想语言，所以再次用C ++编写整个代码库是不可能的。 安全证书可以很容易地从.NET中签名的程序集中移除。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/06/protect-net-code-from-reverse-engineering/" title="从反向工程保护 NET代码？" itemprop="url">从反向工程保护 NET代码？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-06T01:50:24.000Z" itemprop="datePublished"> Published 2018-07-06</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>混淆是一种方式，但它不能保护应用程序的盗版保护安全。如何确保应用程序不被篡改，以及如何确保注册机制不能被反向设计？</p>
+<p>也可以将C＃应用程序转换为本机代码，而<a href="http://en.wikipedia.org/wiki/Spoon_%28software%29" target="_blank" rel="noopener"> Xenocode</a>太昂贵了。</p>
+<p>C＃提供了很多功能，并且是我的代码的理想语言，所以再次用C ++编写整个代码库是不可能的。</p>
+<p>安全证书可以很容易地从.NET中签名的程序集中移除。</p>
+<p><a id="more"></a> 你不能。</p>
+<p>有些步骤可以使它变得更加困难，但最终本地机器上的任何可执行文件都是可破解的。最终，必须将代码转换为本地机器代码，并且每个可运行的应用程序都易受攻击。</p>
+<p>你想做的只是让它难以破解，使它不值得人们的麻烦。</p>
+<p>我有一些建议可以帮助您保护您的应用程序：</p>
+<ul>
+<li><strong>混淆</strong> 您的代码。 <a href="http://en.wikipedia.org/wiki/Dotfuscator" target="_blank" rel="noopener"> Dotfuscator </a>有一个免费版本，并附带Visual Studio。</li>
+<li>使用<a href="http://en.wikipedia.org/wiki/Public-key_cryptography" target="_blank" rel="noopener">公/私钥</a>或 <strong>非对称加密</strong> 生成您的产品许可证。这可确保只有您_可以生成您的许可证代码。即使您的应用程序被破解，您也可以确定它们不会为您的应用程序释放密钥生成器，因为无法逆转密钥生成算法。</li>
+<li>使用 <strong>第三方打包程序</strong> 将.NET可执行文件打包到加密的Win32包装应用程序中。 <a href="http://www.oreans.com/" target="_blank" rel="noopener"> Themida </a>是最好的之一。这会阻止人们在<a href="http://www.red-gate.com/products/reflector/" target="_blank" rel="noopener"> .NET Reflector </a>中反映您的应用程序，并且使解包变得很痛苦用于倒车。</li>
+<li>编写您自己的 <strong>自定义打包程序</strong> 。如果第三方包装员太贵，可以考虑自己写。有时候定制的打包程序可能会非常有效，因为没有很好的发布方法来解压它们。教程 <em><a href="http://www.stonedcoder.org/~kd/lib/61-267-1-PB.pdf" target="_blank" rel="noopener">如何编写自己的打包程序</a> </em> 提供了大量关于编写自己的Win32打包器的信息。</li>
+</ul>
+<p>但最终，如果人们希望你的应用程序破解，他们会。看看那些有大量资源来保护他们的应用程序的商业软件，然而在这些应用程序甚至公开发布之前就已经被破解了。</p>
+<p>熟练的逆向工程师可以启动<a href="http://www.hex-
+rays.com/idapro/" target="_blank" rel="noopener"> IDA-Pro </a>，并通过应用程序切片，如黄油无论你做什么。打包的应用程序可以解压缩和混淆只能防止它在公园散步。您的复杂许可证代码的所有努力工作都可以通过一个字节补丁来解决。</p>
+<p>你只需要接受一个非常现实的机会就是盗用你的软件。有些人永远不会为你的申请付钱，不管这些是你不需要担心的人。</p>
+<p>不过，许多企业都不会冒险提起诉讼，并乐于购买软件许可证，许多计算机用户不愿意冒险，发现错误，或者技术不够精通。这些是你的真正的客户，你应该集中精力为他们提供良好的用户体验，而忽视破解软件的人。</p>
+<p>之前我的申请是盗版的，我把它作为个人的冒犯者。在这里，我是一个小时候的开发人员，把我的心和灵魂灌输到应用程序中，这些人胆怯地从我身上偷盗？他们直接从我口袋里拿钱！</p>
+<p>我立即加入了一堆严厉的DRM代码，试图用非法或破解的副本来破坏任何人。我当然应该努力使自己的应用程序更好，而不是试图阻止不可避免的事情。不仅如此，而且我正在伤害我的真正的客户，所有这些额外的保护我都投入了。</p>
+<p>经过漫长的战斗之后，我意识到自己正在与潮水搏斗，而这一切浪费的时间都是徒劳的。我拿出了除了准系统许可证功能之外的所有电话家庭代码，并且从不回头。</p>
+<p>你不能完全保护任何应用程序（托管或不）。如果像Playstation和iPad这样的系统能够被破解，供应商甚至可以控制硬件，那么你的应用有什么希望？谢天谢地，你并不是真的想要。在我看来，你需要确保你的应用程序足够强大，以至于不能意外地盗用你的产品，而不能再盗取你的产品。<br>__</p>
+<p>例如，如果您使用每台计算机的许可证，则在安装到新的第二台计算机上时，该许可证不应该正常工作。你需要一个很好的错误信息来防止额外的支持电话，但是不要花费额外的时间来解决这个问题，也不要花费太多的时间来解决问题。</p>
+<p>另一个例子是时间限制的试用。甚至不用担心简单的事情，如用户可以回滚系统时钟。有人谁知道他们正在破坏你的许可证，只要用户 <em>知道</em> 违规时，你已经做得足够了。</p>
+<p>您需要这么做，因为用户不关心您的许可证。许可证是在没有人需要的情况下关心的东西。没有人阅读他们，他们真的不应该。因此，如果您的应用程序的开箱即用行为符合许可证，则告知用户边界位置的最佳方式是。在第一种情况下，这意味着第二次安装或试用版模式安装失败。对于后者，它可能仅仅意味着检查配置文件中的纯文本日期。无论哪种方式，请确保您以优雅，乐于助人和尊重的方式处理它。</p>
+<p>这就解释了这意味着什么。但为什么不去呢？ <strong>为什么不插入你能找到的每一个小洞？</strong> 答案分为两部分。首先，如果有人会有意识地违反了您的许可条款的道德标准</p>
+<ul>
+<li>即使以一种简单的方式 -<br>他们也会愿意做一些更困难或更危险的事情，比如将您的申请从<a href="“http://en.wikipedia.org/wiki/Torrent_file”rel">洪流</a>站点<br>-<br>而且运行从不可信源下载的应用程序也有一定的危险。让这些用户感到困扰只是一个小小的烦恼，并且会给付费用户带来问题。保持简单可能会阻止某人挖掘您的应用程序并发布更全面的破解。其次，你很少有眼睛可以找到缺陷;黑客有很多，他们有更多的实践找到他们。你只需要错过一个小小的缺陷，你的应用程序将在盗版网站上分发，就好像你什么都不做。你每次都要正确;他们只有幸运一次。所以所需的努力是非常高的，任何成功的可能性都非常低。</li>
+</ul>
+<p>最终，如果有人想要盗用你的应用程序（而不是仅仅使用它），那么这就是他们的主要目标。没有什么可以阻止他们。_这是软件的本质;一旦组成你的产品的文件在用户的计算机上，他们就可以按照自己的意愿去做。这在Java或<a href="http://en.wikipedia.org/wiki/.NET_Framework" target="_blank" rel="noopener">.NET</a>等托管环境中尤为重要，但它绝对适用于本地代码以及。时间在他们身边，给予足够的时间任何数字安全可以被打破。</p>
+<p>由于您无法阻止用户盗用您的产品，因此您的最佳行动方式就是让这类用户参与到您的利益之中。通常可以让他们为你工作，而不是反对你。考虑到这一点，不管你的应用程序是什么，它可能是值得的，保持一个几乎完全的功能，并没有到期的免费版本。即使是1美元的价格和免费的价格之间的差别也是巨大的，如果没有其他原因，客户就不用信用卡来信任您。你的产品的免费版不仅能够有效地杀死盗版发行（为什么冒着盗版版本，当你可以合法的价格？），它有可能大大扩大你的观众。</p>
+<p>结果是，你可能需要增加付费版本的价格，所以最后，而不是2000美元的用户，每个20美元，你有10万免费用户，其中500个愿意支付99美元的“专业“版。这比你花费大量时间锁定你的产品赚得更多的钱。更重要的是，您可以吸引这些免费的用户，并以几种重要的方式利用这种关系。</p>
+<p>一个是支持。悲观主义者会借此机会抱怨支持100,000个免费用户的成本增加，但是却发生了一些惊人的事情：您的产品很大程度上是自我支持的。您可以随时查看大型开源项目，这些项目没有任何支持费用。用户将加紧实现目标。</p>
+<p>自由用户通常减少了对支持的期望，并且有充分的理由。所有你需要做的就是把免费版标记为只有社区支持的资格，并为此目的建立一个用户主持的在线论坛。您的支持知识库是自我生成的，高级用户将代表您需要额外手持的人员。更重要的是，这将使您能够更快地识别和纠正错误，最终提高产品质量并降低总体支持成本。之前这是不可能的，因为你的用户群不够大，但是当你把自由用户当作客户时，它可以很好地工作。</p>
+<p>另一个是反馈。通过观看您的论坛，您将了解到您可能从未考虑过的重要改进想法。这可以让您最终将更多的免费用户转变为付费用户，并创造更吸引人的产品，吸引更多的受众。</p>
+<p>最后，你需要考虑营销。所有这些免费的用户现在是粉丝而不是对手，他们将采取相应的行动。不仅如此，在发布下一个版本时，这些用户将全部通过您的批准分销渠道，而不是其他一些未知的机制。这意味着你的下一个版本，你开始与更大的，高度感兴趣和支持的观众联系在一起。</p>
+<p>为专业版预留的最佳功能是旨在简化企业部署和管理的工具。一个黑客并不认为这是一个足够的理由来破解它自己的用途，但是对于一个想要购买300个许可证的公司来说，这是一个必须要做的事情。当然，专业版本也是盗版的，但是不要为此付出汗水，因为无论你做了什么，你都不可能把产品卖给海盗，所以它不会让你付出任何代价。<br>/ em&gt;收入。</p>
+<p>虽然从心理上来说，可能很难放弃你的产品，希望你能理解它是如何成为最好的方法。不仅如此，这是长远的唯一途径。我知道有人在外面，认为他们不想这样做。毕竟，他们已经得到好几年的销售锁定20美元的产品了。但是这太糟糕了，因为如果你不这样做，最终别人会_。他们的产品会和你的产品一样好，或者足够接近他们可以自称的。然后突然之间你的定价看起来很离谱，销售额急剧下降，没有别的办法可以做了。如果必要的话，你可以选择额外的中间层，但不太可能帮到你。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/07/06/protect-net-code-from-reverse-engineering/" data-title="从反向工程保护 NET代码？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/06/checking-bash-exit-status-of-several-commands-efficiently/" title="有效地检查几个命令的Bash退出状态">
+  <strong>上一篇：</strong><br/>
+  <span>
+  有效地检查几个命令的Bash退出状态</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/05/how-to-emulate-gps-location-in-the-android-emulator/"  title="如何在Android模拟器中模拟GPS位置？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何在Android模拟器中模拟GPS位置？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

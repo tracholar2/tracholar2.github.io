@@ -1,0 +1,643 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Android网络库比较：OkHTTP，Retrofit和Volley [关闭] | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="来自iOS开发人员学习Android的两部分的问题，涉及Android项目，该项目将从JSON到图像到音频和视频的流式下载请求： _在iOS上，我广泛使用了 AFNetworking项目。有没有Android的等效库？  我已经阅读了 OkHTTP 和改造 Square，以及 Volley ，但还没有开发经验跟他们。我希望有人可以提供一些最佳用例的具体例子。从我读到的，似乎OkHTTP是三个中最强">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android网络库比较：OkHTTP，Retrofit和Volley [关闭]">
+<meta property="og:url" content="https://www.tracholar.top/2018/05/18/comparison-of-android-networking-libraries-okhttp-retrofit-and-volley/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="来自iOS开发人员学习Android的两部分的问题，涉及Android项目，该项目将从JSON到图像到音频和视频的流式下载请求： _在iOS上，我广泛使用了 AFNetworking项目。有没有Android的等效库？  我已经阅读了 OkHTTP 和改造 Square，以及 Volley ，但还没有开发经验跟他们。我希望有人可以提供一些最佳用例的具体例子。从我读到的，似乎OkHTTP是三个中最强">
+<meta property="og:image" content="https://www.tracholar.top/2018/05/18/comparison-of-android-networking-libraries-okhttp-retrofit-and-volley/“https://i.stack.imgur.com/3u6s6.png”alt">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android网络库比较：OkHTTP，Retrofit和Volley [关闭]">
+<meta name="twitter:description" content="来自iOS开发人员学习Android的两部分的问题，涉及Android项目，该项目将从JSON到图像到音频和视频的流式下载请求： _在iOS上，我广泛使用了 AFNetworking项目。有没有Android的等效库？  我已经阅读了 OkHTTP 和改造 Square，以及 Volley ，但还没有开发经验跟他们。我希望有人可以提供一些最佳用例的具体例子。从我读到的，似乎OkHTTP是三个中最强">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/05/18/comparison-of-android-networking-libraries-okhttp-retrofit-and-volley/“https://i.stack.imgur.com/3u6s6.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/18/comparison-of-android-networking-libraries-okhttp-retrofit-and-volley/" title="Android网络库比较：OkHTTP，Retrofit和Volley [关闭]" itemprop="url">Android网络库比较：OkHTTP，Retrofit和Volley [关闭]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-18T02:38:21.000Z" itemprop="datePublished"> Published 2018-05-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>来自iOS开发人员学习Android的两部分的问题，涉及Android项目，该项目将从JSON到图像到音频和视频的流式下载请求：</p>
+<p>_在iOS上，我广泛使用了<a href="https://github.com/AFNetworking/AFNetworking" target="_blank" rel="noopener"> AFNetworking</a>项目。有没有Android的等效库？</p>
+<ul>
+<li>我已经阅读了<a href="http://square.github.io/okhttp/" target="_blank" rel="noopener"> OkHTTP </a>和<a href="“http：//square.github。">改造</a> Square，以及<a href="https://developers.google.com/live/shows/474338138" target="_blank" rel="noopener"> Volley </a>，但还没有开发经验跟他们。我希望有人可以提供一些最佳用例的具体例子。从我读到的，似乎OkHTTP是三个中最强大的，并且可以处理这个项目的需求（上面提到）。</li>
+</ul>
+<a id="more"></a>
+<blockquote>
+<p>I’m hoping someone can provide some concrete examples of best use cases for<br>each.</p>
+</blockquote>
+<p>如果您正在与Web服务通信，请使用Retrofit。如果您正在下载图像，请使用对等库Picasso。如果您需要执行位于Retrofit /<br>Picasso之外的HTTP操作，请使用OkHTTP。</p>
+<p>Volley大概与Retrofit +<br>Picasso竞争。好的一面是一个图书馆。在负面的情况下，这是一个没有记录的文件，一个不被支持的文件，“把代码放在墙上，并在其上做一个I / O表示”库。</p>
+<p>编辑 - Volley现在正式得到Google的支持。请参阅<a href="https://developer.android.com/training/volley/index.html" target="_blank" rel="noopener">Google开发人员指南</a></p>
+<blockquote>
+<p>From what I’ve read, seems like OkHTTP is the most robust of the 3</p>
+</blockquote>
+<p>如果可用的话，改造会自动使用OkHTTP。有一个<a href="https://plus.google.com/108284392618554783657/posts/eJJxhkTQ4yU" target="_blank" rel="noopener"> Jake Wharton的Gist</a>将Volley连接到OkHTTP。</p>
+<blockquote>
+<p>and could handle the requirements of this project (mentioned above).</p>
+</blockquote>
+<p>大概你不会用“流式传输”的传统定义来“流式下载音频和视频”。相反，Android的媒体框架将为您处理这些HTTP请求。</p>
+<p>也就是说，如果你打算尝试自己的基于HTTP的流媒体，OkHTTP应该处理这种情况;我不记得Volley将如何处理这种情况。既没有改造也没有毕加索的设计。</p>
+<p>一方面，Volley完全专注于处理单个的小型HTTP请求。所以如果你的HTTP请求处理有一些怪癖，Volley可能有一个钩。另一方面，如果您在图像处理方面存在一些问题，那么您唯一真正的钩子就是<br><strong>ImageCache</strong> 。<br>“这不是什么，但也不是很多！”。但它有更多的其他优点，例如一旦你定义你的请求，从一个片段或活动中使用它们是无痛的不像平行AsyncTasks</p>
+<p>Volley的优点和缺点：**</p>
+<p>那么Volley怎么样呢？</p>
+<p>网络部分不仅仅是图像。凌空是打算成为的 你的后端的一个组成部分。对于基于a的新项目 简单的REST服务，这可能是一个巨大的胜利。</p>
+<ul>
+<li><p>NetworkImageView比请求清理更积极 毕加索，GC使用模式更保守。 NetworkImageView完全依赖于强大的内存引用，和 一旦有新的请求，清理所有的请求数据 ImageView，或一旦ImageView移出屏幕。</p>
+</li>
+<li><p>性能。这篇文章没有评估这个说法，但是他们很清楚 在内存使用模式中要谨慎一些。 Volley也努力批量回调到主线程来 减少上下文切换。</p>
+</li>
+</ul>
+<p>排球显然也有未来。如果你愿意的话，请查看RequestFuture 感兴趣。</p>
+<p>如果你正在处理高分辨率的压缩图像，那么Volley就是 这是唯一的解决方案。“</p>
+<p>Volley可以和Okhttp一起使用（新版本的Okhttp支持NIO以获得更好的性能）</p>
+<p>排在“生命周期”中扮演着不错的角色。</p>
+<p>排球的问题：<br>由于Volley是新的，很少有东西不被支持，但它是固定的。</p>
+<ul>
+<li><p>多部分请求（解决方案：<a href="https://github.com/vinaysshenoy/enhanced-volley" target="_blank" rel="noopener"> https://github.com/vinaysshenoy/enhanced-volley </a>）</p>
+</li>
+<li><p>状态代码201被视为错误，现在从200到207的状态代码是成功的响应（修正：&lt;​​a href =“<a href="https://github.com/Vinayrraj/CustomVolley”rel" target="_blank" rel="noopener">https://github.com/Vinayrraj/CustomVolley”rel</a> =“nofollow noreferrer“&gt; <a href="https://github.com/Vinayrraj/CustomVolley" target="_blank" rel="noopener">https://github.com/Vinayrraj/CustomVolley</a> ）</p>
+</li>
+</ul>
+<p>在Google volley的最新版本中， <strong>**更新</strong> ：2XX状态代码错误是 <strong>[ </strong> ！感谢Ficus Kirkpatrick！</p>
+<ul>
+<li><p>它没有文档记录，但许多人都支持在github中抽象排版，java可以像文档那样找到<a href="“http://files.evancharlton.com/volley-docs/”rel">此处</a>。 在android开发人员网站上，您可能会找到<a href="https://developer.android.com/training/volley/index.html" target="_blank" rel="noopener">使用Volley传输网络数据</a>指南。和源代码可以在<a href="“https://android.googlesource.com/platform/frameworks/volley/+/master/src/main/java/com/android/volley”rel"> Google Git </a></p>
+</li>
+<li><p>解决/更改[排雷的重定向政策<br>a&gt;框架使用<a href="https://gist.github.com/JakeWharton/5616899" target="_blank" rel="noopener"> Volley with OkHTTP</a>（CommonsWare上面提到）</p>
+</li>
+</ul>
+<p>你也可以阅读<a href="“https://www.bignerdranch.com/blog/solving-the-
+android-image-loading-problem-volley-vs-picasso/”rel">比较Volley的图像加载与毕加索</a></p>
+<p>&lt;强&gt;改造：</p>
+<p>它由<a href="http://square.github.io/retrofit/" target="_blank" rel="noopener"> Square </a>发布，这提供了非常容易使用的REST<br>API（更新：瞧！与NIO支持）</p>
+<p><strong>改造的优点：</strong></p>
+<p>与Volley相比，Retrofit的REST API代码是简短的，并提供了 优秀的API文档，并在社区中有良好的支持！ 添加到项目中非常简单。</p>
+<ul>
+<li>我们可以将它与任何序列化库一起使用，并进行错误处理。</li>
+</ul>
+<p>&lt;强&gt;更新   - Retrofit 2.0.0-beta2中有很多非常好的变化</p>
+<ul>
+<li>使用OkHttp 2.0进行的Retrofit版本1.6现在依赖 <strong><a href="https://github.com/square/okio" target="_blank" rel="noopener"> Okio </a> </strong> 以支持 __ 和 <em>java.nio</em> ，这使得使用 <em>ByteString</em> 和 <em>Buffer访问，存储和处理数据变得更加容易</em> 做一些聪明的事情来节省CPU和内存。 （仅供参考：这让我想起了NIO支持的<a href="https://github.com/koush/ion" target="_blank" rel="noopener"> Koush的OIN </a>库）。_ 我们可以使用[ <strong>与RxJava一起改造</strong> &lt; / a&gt;使用 <em>rxObservables</em> 组合和链接REST调用，以避免丑陋的回调链 <em>（以避免回调地狱!!）</em> 。 </li>
+</ul>
+<p>1.6版本的改造缺点：**</p>
+<p>内存相关的错误处理功能不好（在旧版本的Retrofit / OkHttp中）并不确定是否使用支持Java NIO的Okio进行了改进。</p>
+<ul>
+<li>如果我们使用这个，最小的线程协助可能会导致回调地狱 以不正确的方式。</li>
+</ul>
+<p>（以上所有的缺点都已经在新版本的Retrofit 2.0 beta中解决了）</p>
+<p>=============================================== =========================</p>
+<p>&lt;强&gt;更新</p>
+<p>Android Async vs Volley vs Retrofit性能基准测试（毫秒，更低的值更好）：_ <strong> </strong></p>
+<p><img src="“https://i.stack.imgur.com/3u6s6.png”alt" alt=""></p>
+<p>（FYI之上的改进基准信息将会提高，因为新版本的OKhttp依赖于NIO Okio库）</p>
+<blockquote>
+<p>In all three tests with varying repeats (1 a 25 times), Volley was<br>anywhere from 50% to 75% faster. Retrofit clocked in at an impressive 50% to<br>90% faster than the AsyncTasks, hitting the same endpoint the same number of<br>times. On the Dashboard test suite, this translated into loading/parsing the<br>data several seconds faster. That is a massive real-world difference. In order<br>to make the tests fair, the times for AsyncTasks/Volley included the JSON<br>parsing as Retrofit does it for you automatically.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><strong>RetroFit Wins in benchmark test!</strong></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>In the end, we decided to go with Retrofit for our application. Not only is<br>it ridiculously fast, but it meshes quite well with our existing architecture.<br>We were able to make a parent Callback Interface that automatically performs<br>error handling, caching, and pagination with little to no effort for our APIs.<br>In order to merge in Retrofit, we had to rename our variables to make our<br>models GSON compliant, write a few simple interfaces, delete functions from<br>the old API, and modify our fragments to not use AsyncTasks. Now that we have<br>a few fragments completely converted, itas pretty painless. There were some<br>growing pains and issues that we had to overcome, but overall it went<br>smoothly. In the beginning, we ran into a few technical issues/bugs, but<br>Square has a fantastic Google+ community that was able to help us through it.</p>
+</blockquote>
+<p>什么时候使用Volley？</p>
+<p>当我们需要加载图像以及使用REST API时，我们可以使用Volley！同时需要多个n / w请求的网络调用排队系统！<br>Volley与Retrofit相比还有更好的内存相关的错误处理能力_ **</p>
+<p>OkHttp <strong>可以与Volley一起使用，默认情况下，Retrofit使用 </strong>OkHttp**<br>！它具有SPDY支持，连接池，磁盘缓存，透明压缩！最近，它已经通过 <em>Okio</em> 库得到了一些Java NIO的支持。</p>
+<p>来源，信用：[ <strong>凌空vs Josh Ruesch先生翻译</strong> **</p>
+<p>注意： <em>关于流式传输取决于您想要的流式传输类型，如RTSP / RTCP。</em></p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/05/18/comparison-of-android-networking-libraries-okhttp-retrofit-and-volley/" data-title="Android网络库比较：OkHTTP，Retrofit和Volley [关闭] | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/19/best-way-to-allow-plugins-for-a-php-application/" title="允许插入PHP应用程序的最佳方法">
+  <strong>上一篇：</strong><br/>
+  <span>
+  允许插入PHP应用程序的最佳方法</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/05/18/how-to-join-multiple-lines-of-file-names-into-one-with-custom-delimiter/"  title="如何将多行文件名加入自定义分隔符？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何将多行文件名加入自定义分隔符？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

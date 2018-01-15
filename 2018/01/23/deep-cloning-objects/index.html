@@ -1,0 +1,649 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>深入克隆对象 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我想要做一些事情： MyObject myObj = GetMyObj(); // Create and fill a new object MyObject newObj = myObj.Clone(); 然后对新对象进行更改，这些新对象不会反映在原始对象中。 我不经常需要这个功能，所以当有必要的时候，我已经开始创建一个新的对象，然后单独地复制每个属性，但总是让我感觉有一个更好或更优雅处理情况的">
+<meta name="keywords" content="c-sharp,dot-net">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入克隆对象">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/23/deep-cloning-objects/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我想要做一些事情： MyObject myObj = GetMyObj(); // Create and fill a new object MyObject newObj = myObj.Clone(); 然后对新对象进行更改，这些新对象不会反映在原始对象中。 我不经常需要这个功能，所以当有必要的时候，我已经开始创建一个新的对象，然后单独地复制每个属性，但总是让我感觉有一个更好或更优雅处理情况的">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入克隆对象">
+<meta name="twitter:description" content="我想要做一些事情： MyObject myObj = GetMyObj(); // Create and fill a new object MyObject newObj = myObj.Clone(); 然后对新对象进行更改，这些新对象不会反映在原始对象中。 我不经常需要这个功能，所以当有必要的时候，我已经开始创建一个新的对象，然后单独地复制每个属性，但总是让我感觉有一个更好或更优雅处理情况的">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/23/deep-cloning-objects/" title="深入克隆对象" itemprop="url">深入克隆对象</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-23T01:24:50.000Z" itemprop="datePublished"> Published 2018-01-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我想要做一些事情：</p>
+<pre><code>MyObject myObj = GetMyObj(); // Create and fill a new object
+MyObject newObj = myObj.Clone();
+</code></pre><p>然后对新对象进行更改，这些新对象不会反映在原始对象中。</p>
+<p>我不经常需要这个功能，所以当有必要的时候，我已经开始创建一个新的对象，然后单独地复制每个属性，但总是让我感觉有一个更好或更优雅处理情况的方法。</p>
+<p>如何克隆或深层复制对象，以便可以修改克隆的对象，而不会在原始对象中反映出任何更改？</p>
+<a id="more"></a>
+<p>虽然标准做法是实施<a href="http://msdn.microsoft.com/en-
+us/library/system.icloneable.aspx" target="_blank" rel="noopener"> <code>ICloneable</code>代码&gt; </a>界面（描述<a href="https://stackoverflow.com/questions/78536
+/cloning-objects-
+in-c/78568#78568" target="_blank" rel="noopener">这里</a>，所以我不会反胃），这里是一个很好的深层克隆对象复印机，我发现在<a href="http://www.codeproject.com/Articles/23832
+/Implementing-Deep-Cloning-via-Serializing-objects" target="_blank" rel="noopener">代码项目</a>不久前，并将其纳入我们的东西。</p>
+<p>正如其他地方所提到的，它确实需要你的对象是可序列化的。</p>
+<pre><code>using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+
+/// &lt;summary&gt;
+/// Reference Article http://www.codeproject.com/KB/tips/SerializedObjectCloner.aspx
+/// Provides a method for performing a deep copy of an object.
+/// Binary Serialization is used to perform the copy.
+/// &lt;/summary&gt;
+public static class ObjectCopier
+{
+    /// &lt;summary&gt;
+    /// Perform a deep Copy of the object.
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name=&quot;T&quot;&gt;The type of object being copied.&lt;/typeparam&gt;
+    /// &lt;param name=&quot;source&quot;&gt;The object instance to copy.&lt;/param&gt;
+    /// &lt;returns&gt;The copied object.&lt;/returns&gt;
+    public static T Clone&lt;T&gt;(T source)
+    {
+        if (!typeof(T).IsSerializable)
+        {
+            throw new ArgumentException(&quot;The type must be serializable.&quot;, &quot;source&quot;);
+        }
+
+        // Don&apos;t serialize a null object, simply return the default for that object
+        if (Object.ReferenceEquals(source, null))
+        {
+            return default(T);
+        }
+
+        IFormatter formatter = new BinaryFormatter();
+        Stream stream = new MemoryStream();
+        using (stream)
+        {
+            formatter.Serialize(stream, source);
+            stream.Seek(0, SeekOrigin.Begin);
+            return (T)formatter.Deserialize(stream);
+        }
+    }
+}
+</code></pre><p>它的想法是序列化你的对象，然后将它反序列化成一个新的对象。好处是，当对象变得太复杂时，你不必关心克隆所有东西。</p>
+<p>并使用扩展方法（也来自最初引用的来源）：</p>
+<p>如果您希望使用C＃3.0的新<a href="http://en.wikipedia.org/wiki/Extension_method" target="_blank" rel="noopener">扩展方法</a>，请将方法更改为有以下签名：</p>
+<pre><code>public static T Clone&lt;T&gt;(this T source)
+{
+   //...
+}
+</code></pre><p>现在方法调用变成了<code>objectBeingCloned.Clone（）;</code>。</p>
+<p>编辑<strong>（2015年1月10日）以为我会再次访问这个，提到我最近开始使用（Newtonsoft）Json来做到这一点，它[应该更轻，并避免[可序列化]标签。<br>（ </strong>NB** @atconway在评论中指出，私人成员不是使用JSON方法克隆的）</p>
+<pre><code>/// &lt;summary&gt;
+/// Perform a deep Copy of the object, using Json as a serialisation method. NOTE: Private members are not cloned using this method.
+/// &lt;/summary&gt;
+/// &lt;typeparam name=&quot;T&quot;&gt;The type of object being copied.&lt;/typeparam&gt;
+/// &lt;param name=&quot;source&quot;&gt;The object instance to copy.&lt;/param&gt;
+/// &lt;returns&gt;The copied object.&lt;/returns&gt;
+public static T CloneJson&lt;T&gt;(this T source)
+{            
+    // Don&apos;t serialize a null object, simply return the default for that object
+    if (Object.ReferenceEquals(source, null))
+    {
+        return default(T);
+    }
+
+    // initialize inner objects individually
+    // for example in default constructor some list property initialized with some values,
+    // but in &apos;source&apos; these items are cleaned -
+    // without ObjectCreationHandling.Replace default constructor values will be added to result
+    var deserializeSettings = new JsonSerializerSettings {ObjectCreationHandling = ObjectCreationHandling.Replace};
+
+    return JsonConvert.DeserializeObject&lt;T&gt;(JsonConvert.SerializeObject(source), deserializeSettings);
+}
+</code></pre><p>我想要一个克隆器，用于非常简单的对象，主要是基本单元和列表。如果你的对象是JSON可序列化的盒子，那么这个方法将做的伎俩。这不需要修改或实现克隆类上的接口，而只需要像JSON.NET这样的JSON序列化程序。</p>
+<pre><code>public static T Clone&lt;T&gt;(T source)
+{
+    var serialized = JsonConvert.SerializeObject(source);
+    return JsonConvert.DeserializeObject&lt;T&gt;(serialized);
+}
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/23/deep-cloning-objects/" data-title="深入克隆对象 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/23/echo-newline-in-bash-prints-literal-n/" title="在Bash回声换行打印字面值 n">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在Bash回声换行打印字面值 n</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/23/adding-a-favicon-to-a-static-html-page/"  title="将一个favicon添加到一个静态的HTML页面">
+ <strong>下一篇：</strong><br/> 
+ <span>将一个favicon添加到一个静态的HTML页面
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,608 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>何时在C＃中使用静态类[复制] | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="This question already has an answer here:  Class with single method – best approach? 14 answers   以下是 MSDN必须在&amp;lt; em&amp;gt;何时使用静态类_ ： &amp;gt;  static class CompanyInfo  {      public static string GetCompan">
+<meta name="keywords" content="c-sharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="何时在C＃中使用静态类[复制]">
+<meta property="og:url" content="https://www.tracholar.top/2018/05/17/when-to-use-static-classes-in-c-sharp/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="This question already has an answer here:  Class with single method – best approach? 14 answers   以下是 MSDN必须在&amp;lt; em&amp;gt;何时使用静态类_ ： &amp;gt;  static class CompanyInfo  {      public static string GetCompan">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="何时在C＃中使用静态类[复制]">
+<meta name="twitter:description" content="This question already has an answer here:  Class with single method – best approach? 14 answers   以下是 MSDN必须在&amp;lt; em&amp;gt;何时使用静态类_ ： &amp;gt;  static class CompanyInfo  {      public static string GetCompan">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/17/when-to-use-static-classes-in-c-sharp/" title="何时在C＃中使用静态类[复制]" itemprop="url">何时在C＃中使用静态类[复制]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-17T01:43:07.000Z" itemprop="datePublished"> Published 2018-05-17</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/205689/class-with-single-method-best-approach">Class with single method – best approach?</a> 14 answers </li>
+</ul>
+<p>以下是<a href="http://msdn.microsoft.com/en-
+us/library/79b3xss3%28v=vs.80%29.aspx" target="_blank" rel="noopener"> MSDN必须在&lt; em&gt;何时使用静态类_ </a>：</p>
+<p>&gt;</p>
+<blockquote>
+<pre><code>static class CompanyInfo
+
+{
+
+    public static string GetCompanyName() { return &quot;CompanyName&quot;; }
+
+    public static string GetCompanyAddress() { return &quot;CompanyAddress&quot;;
+</code></pre><p>}</p>
+<pre><code>    //...
+
+}
+</code></pre><p>Use a static class as a unit of organization for methods not associated with<br>particular objects. Also, a static class can make your implementation simpler<br>and faster because you do not have to create an object in order to call its<br>methods. It is useful to organize the methods inside the class in a meaningful<br>way, such as the methods of the Math class in the System namespace.</p>
+</blockquote>
+<p>对我来说，这个例子似乎并没有涵盖静态类的很多可能的使用场景。在过去，我使用静态类来实现无状态的相关函数套件，但就是这样。那么，在什么情况下（而不应该）把一个类声明为静态的呢？</p>
+<p><a id="more"></a> 我在前面的Stack Overflow答案中写下了我对静态类的想法： 使用单一方法的类 - 最好的方法？_ [ &lt; EM&gt;</p>
+<p>我曾经喜欢充满静态方法的工具类。他们对辅助方法进行了大量整合，否则这些方法会导致冗余和维护地狱。他们很容易使用，没有实例化，没有处理，只是fire’n’forget。我想这是我第一次不知情的尝试创建一个面向服务的架构</p>
+<ul>
+<li>许多无状态的服务，只是他们的工作，没有别的。随着系统的发展，龙即将到来。</li>
+</ul>
+<p>&lt;强&gt;多态性</p>
+<p>假设我们有方法UtilityClass.SomeMethod愉快地嗡嗡声。突然，我们需要稍微改变功能。大部分的功能是一样的，但是我们必须改变几个部分。如果不是一个静态方法，我们可以根据需要制作派生类并更改方法内容。由于这是一个静态的方法，我们不能。当然，如果我们只是需要在旧方法之前或之后添加功能，我们可以创建一个新的类并在其中调用旧的类</p>
+<ul>
+<li>但这只是粗略的。</li>
+</ul>
+<p>接口问题**</p>
+<p>由于逻辑原因，静态方法不能通过接口定义。而且由于我们不能重载静态方法，所以当我们需要通过接口传递它们时，静态类就没有用处了。这使我们无法使用静态类作为策略模式的一部分。我们可能会通过<a href="http://blogs.msdn.com/kirillosenkov/archive/2008/02/06
+/how-to-override-static-methods.aspx" target="_blank" rel="noopener">修补一些问题传递代表而不是接口</a>。</p>
+<p>&lt;强&gt;测试</p>
+<p>这基本上与上面提到的接口问题一起。由于我们交换实现的能力非常有限，所以在使用测试代码替换生产代码时也会遇到困难。再次，我们可以把它们包装起来，但是它要求我们改变大部分的代码，只是为了能够接受包装器而不是实际的对象。</p>
+<p><strong>促进blob</strong></p>
+<p>由于静态方法通常被用作实用方法，而实用方法通常会有不同的目的，所以我们很快就会得到一个充满非一致性功能的大类 -<br>理想情况下，每个类都应该有一个单一的目的系统。只要他们的目的明确，我宁愿有五倍的课程。</p>
+<p><strong>参数蠕变</strong></p>
+<p>首先，那个可爱又天真的静态方法可能只有一个参数。随着功能的增长，添加了一些新的参数。不久，进一步添加的参数是可选的，所以我们创建方法的重载（或只是添加默认值，支持它们的语言）。不久，我们有一个方法需要10个参数。只有前三个是必需的，参数4-7是可选的。但是，如果指定了参数6，则还需要填充7-9<br>…如果我们创建了一个具有执行此静态方法的目的的类，则可以通过在构造函数，并允许用户通过属性设置可选值，或者同时设置多个相互依赖的值的方法。而且，如果一种方法已经发展到这种复杂程度，那么它很可能需要在自己的类中。</p>
+<p>要求消费者毫无理由地创建类的实例**</p>
+<p>其中一个最常见的论点是：为什么要求我们的类的消费者创建一个调用这个单一方法的实例，而之后没有使用这个实例呢？在大多数语言中创建一个类的实例是非常非常便宜的操作，所以速度不是问题。向消费者添加额外的代码是为将来更可维护的解决方案打下基础的低成本。最后，如果你想避免创建实例，只需创建一个允许轻松重用的类的单例包装器（singleton<br>wrapper），尽管这确实要求你的类是无状态的。如果它不是无状态的，那么仍然可以创建静态包装方法来处理所有事情，同时仍然可以长期为您提供所有的好处。最后，你也可以创建一个隐藏实例的类，就好像它是一个单例：MyWrapper.Instance是一个只返回<code>new MyClass（）;</code><br><strong>只有西斯以绝对值交易</strong></p>
+<p>当然，我也不喜欢静态方法。真正的实用程序类别不会造成任何膨胀风险，这是静态方法的绝佳例子 -<br>以System.Convert为例。如果你的项目是一次性的，对未来的维护没有任何要求，那么整体架构确实不是很重要 - 静态的或者非静态的并不重要 -<br>但是开发速度确实是这样。</p>
+<p><strong>标准，标准，标准！</strong></p>
+<p>使用实例方法不会阻止您使用静态方法，反之亦然。只要分化背后有推理，标准化。没有什么比通过不同的实现方法来查看业务层更糟了。</p>
+<p>当决定是否使类为静态或非静态时，您需要查看您想要表示的信息。这需要更多的“ <strong>自下而上”</strong><br>风格的编程方式，以便您专注于您首先表示的数据。你正在写一个类似岩石或椅子的真实世界对象吗？这些东西是物理的，并有物理属性，如颜色，重量告诉你，你可能想实例化具有不同属性的多个对象。我可能同时需要一把黑色的椅子和一把红色的椅子。如果你同时需要两种配置，那么你立即知道你会想将它实例化为一个对象，这样每个对象可以是唯一的，并且同时存在。</p>
+<p>另一方面，静态函数更倾向于不属于真实世界的对象或可以轻易表示的对象。请记住，C＃的前身是C ++和C，您可以在其中定义不存在于类中的全局函数。这更多地用于“<br><strong>自上而下</strong><br>”编程。静态方法可以用于这样的情况，即“对象”执行任务是没有意义的。通过强制你使用类，这只是使组合相关的功能更容易，这有助于你创建更多可维护的代码。</p>
+<p>大多数类可以用静态或非静态表示，但是当你怀疑的时候，可以回到你的OOP根目录，试着去思考你所代表的东西。这是一个执行动作的对象（可以加速，减速，转弯的车）或更抽象的东西（如显示输出）。</p>
+<p>与你的内部面向对象取得联系，你永远不会出错！</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/05/17/when-to-use-static-classes-in-c-sharp/" data-title="何时在C＃中使用静态类[复制] | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/17/configure-bin-shm-bad-interpreter/" title="/configure：/ bin / sh ^ M：糟糕的解释器">
+  <strong>上一篇：</strong><br/>
+  <span>
+  /configure：/ bin / sh ^ M：糟糕的解释器</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/05/17/convert-seconds-to-hourminutesecond/"  title="将秒转换为小时：分钟：秒">
+ <strong>下一篇：</strong><br/> 
+ <span>将秒转换为小时：分钟：秒
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

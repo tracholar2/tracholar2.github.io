@@ -1,0 +1,602 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>用Unix工具解析JSON | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我试图解析从curl请求返回的JSON，如下所示： curl &amp;apos;http://twitter.com/users/username.json&amp;apos; |     sed -e &amp;apos;s/[{}]/&amp;apos;&amp;apos;/g&amp;apos; |      awk -v k=&amp;quot;text&amp;quot; &amp;apos;{n=split($0,a,&amp;quot;,&amp;quot;); fo">
+<meta name="keywords" content="bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Unix工具解析JSON">
+<meta property="og:url" content="https://www.tracholar.top/2018/03/20/parsing-json-with-unix-tools/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我试图解析从curl请求返回的JSON，如下所示： curl &amp;apos;http://twitter.com/users/username.json&amp;apos; |     sed -e &amp;apos;s/[{}]/&amp;apos;&amp;apos;/g&amp;apos; |      awk -v k=&amp;quot;text&amp;quot; &amp;apos;{n=split($0,a,&amp;quot;,&amp;quot;); fo">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Unix工具解析JSON">
+<meta name="twitter:description" content="我试图解析从curl请求返回的JSON，如下所示： curl &amp;apos;http://twitter.com/users/username.json&amp;apos; |     sed -e &amp;apos;s/[{}]/&amp;apos;&amp;apos;/g&amp;apos; |      awk -v k=&amp;quot;text&amp;quot; &amp;apos;{n=split($0,a,&amp;quot;,&amp;quot;); fo">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/20/parsing-json-with-unix-tools/" title="用Unix工具解析JSON" itemprop="url">用Unix工具解析JSON</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-03-20T02:03:33.000Z" itemprop="datePublished"> Published 2018-03-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Historical notes</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我试图解析从curl请求返回的JSON，如下所示：</p>
+<pre><code>curl &apos;http://twitter.com/users/username.json&apos; |
+    sed -e &apos;s/[{}]/&apos;&apos;/g&apos; | 
+    awk -v k=&quot;text&quot; &apos;{n=split($0,a,&quot;,&quot;); for (i=1; i&lt;=n; i++) print a[i]}&apos;
+</code></pre><p>上面的代码把JSON分成了几个字段，例如：</p>
+<pre><code>% ...
+&quot;geo_enabled&quot;:false
+&quot;friends_count&quot;:245
+&quot;profile_text_color&quot;:&quot;000000&quot;
+&quot;status&quot;:&quot;in_reply_to_screen_name&quot;:null
+&quot;source&quot;:&quot;web&quot;
+&quot;truncated&quot;:false
+&quot;text&quot;:&quot;My status&quot;
+&quot;favorited&quot;:false
+% ...
+</code></pre><p>如何打印特定字段（用<code>-v k = text</code>表示）？</p>
+<a id="more"></a>
+<p>有许多工具是专门为了从命令行操纵JSON而设计的，比使用Awk更容易，更可靠，比如<a href="“https：//"> <code>jq</code> </a>：</p>
+<pre><code>curl -s &apos;https://api.github.com/users/lambda&apos; | jq -r &apos;.name&apos;
+</code></pre><p>您也可以使用可能已经安装在您的系统上的工具来执行此操作，例如使用<a href="“https://docs.python.org/2/library/json.html”rel"> <code>json</code>模块</a>，所以要避免任何额外的依赖，同时还要有合适的JSON解析器。下面假设你想要使用原始JSON应该被编码的UTF-8，也是大多数现代终端使用的：</p>
+<p>Python 2：</p>
+<pre><code>export PYTHONIOENCODING=utf8
+curl -s &apos;https://api.github.com/users/lambda&apos; | \
+    python -c &quot;import sys, json; print json.load(sys.stdin)[&apos;name&apos;]&quot;
+</code></pre><p>Python 3：</p>
+<pre><code>curl -s &apos;https://api.github.com/users/lambda&apos; | \
+    python3 -c &quot;import sys, json; print(json.load(sys.stdin)[&apos;name&apos;])&quot;
+</code></pre><h3><span id="historical-notes">Historical notes</span></h3><p>这个答案最初是建议<a href="http://github.com/micha/jsawk" target="_blank" rel="noopener"> jsawk </a>，它应该仍然有效，但比使用起来要麻烦一点<code>jq</code>，并且依赖于一个独立的JavaScript解释器被安装，这比Python解释器不太常见，所以上面的答案可能是最好的：</p>
+<pre><code>curl -s &apos;https://api.github.com/users/lambda&apos; | jsawk -a &apos;return this.name&apos;
+</code></pre><p>这个答案最初也是使用了Twitter API，但是这个API不再有效，因此很难复制这些例子来测试，而新的Twitter<br>API需要API密钥，所以我已经转向使用GitHub API可以在没有API密钥的情况下使用。原始问题的第一个答案是：</p>
+<pre><code>curl &apos;http://twitter.com/users/username.json&apos; | jq -r &apos;.text&apos;
+</code></pre><p>要快速提取特定键的值，我个人喜欢使用“grep -o”，它只返回正则表达式的匹配。例如，要从tweets中获取“text”字段，如：</p>
+<pre><code>grep -Po &apos;&quot;text&quot;:.*?[^\\]&quot;,&apos; tweets.json
+</code></pre><p>这个正则表达式比你想像的更强大。例如，它可以很好地处理内嵌逗号和内部引号的字符串。我认为只要多做一点工作，就可以使一个实际上保证提取价值的东西，如果它是原子的。<br>（如果嵌套，那么正则表达式不能这样做）</p>
+<p>为了进一步清理（尽管保留字符串的原始转义），可以使用如下代码：<code>| perl -pe的/“text”：//; s / ^“//; s /”，$ //&#39;</code>。<br>（我为<a href="https://gist.github.com/1024217" target="_blank" rel="noopener">这个分析</a>做了这个。）</p>
+<p>对于所有坚持使用真正的JSON解析器的人来说，这是正确的，但是</p>
+<ul>
+<li>为了做一个非常快速的分析，比如计算数据来检查数据清理错误，或者对数据有一个总体的了解，在命令行上敲出一些东西会更快。打开编辑器来编写脚本会让人分心。</li>
+<li><code>grep -o</code>比Python标准的<code>json</code>库要快几个数量级，至少在推文（每个大约2KB）时这么做。我不知道这是因为<code>json</code>慢（我应该比较yajl有时）;但是原则上，正则表达式应该更快，因为它是有限状态并且更加可优化，而不是必须支持递归的解析器，在这种情况下，花费大量的CPU构建树来构建您不关心的结构。 （如果有人写了一个有限状态转换器，做了适当的（深度限制的）JSON解析，那太棒了！同时我们有“grep -o”。）</li>
+</ul>
+<p>为了编写可维护的代码，我总是使用一个真正的解析库。我还没有尝试过<a href="https://github.com/micha/jsawk" target="_blank" rel="noopener"> jsawk</a>，但是如果运行良好的话，那么这个地址就是第一点。</p>
+<p>最后一个更奇怪的解决方案是：我编写了一个使用Python <code>json</code>的脚本，并将所需的键提取到制表符分隔的列中;那么我通过一个包装器来遍历<code>awk</code>，允许对列进行命名访问。<br><a href="https://github.com/brendano/tsvutils" target="_blank" rel="noopener">在这里：json2tsv和tsvawk脚本</a>。所以这个例子就是：</p>
+<pre><code>json2tsv id text &lt; tweets.json | tsvawk &apos;{print &quot;tweet &quot; $id &quot; is: &quot; $text}&apos;
+</code></pre><p>这个方法并没有解决＃2的问题，它比单个Python脚本的效率更低，而且有点脆弱：它强制对字符串值中的换行符和制表符进行标准化，以便与awk的字段/记录分隔的视图世界。但它确实让你保持在命令行上，比<code>grep -o</code>更正确。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/03/20/parsing-json-with-unix-tools/" data-title="用Unix工具解析JSON | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/20/how-do-i-obtain-crash-data-from-my-android-application/" title="如何从我的Android应用程序获取崩溃数据？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何从我的Android应用程序获取崩溃数据？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/03/20/linqs-distinct-on-a-particular-property/"  title="LINQ在特定属性上的Distinct（）">
+ <strong>下一篇：</strong><br/> 
+ <span>LINQ在特定属性上的Distinct（）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Historical notes</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

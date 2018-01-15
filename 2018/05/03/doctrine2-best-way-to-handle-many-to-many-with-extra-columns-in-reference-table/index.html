@@ -1,0 +1,771 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Doctrine2：在参考表中用多余的列来处理多对多的最佳方式 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我想知道在Doctrine2中，什么是最好，最干净，最简单的与多对多关系的工作方式。 假设我们有一个像 木偶大师 由几个轨道的Metallica。但请注意，一个曲目可能出现在更多的专辑中，如Metallica的 __ - 三张专辑正在播放这首歌曲。 因此，我需要的是专辑和曲目之间的多对多关系，使用第三张表和一些附加列（如指定专辑中曲目的位置）。实际上，正如Doctrine的文档所建议的那样，我必须">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Doctrine2：在参考表中用多余的列来处理多对多的最佳方式">
+<meta property="og:url" content="https://www.tracholar.top/2018/05/03/doctrine2-best-way-to-handle-many-to-many-with-extra-columns-in-reference-table/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我想知道在Doctrine2中，什么是最好，最干净，最简单的与多对多关系的工作方式。 假设我们有一个像 木偶大师 由几个轨道的Metallica。但请注意，一个曲目可能出现在更多的专辑中，如Metallica的 __ - 三张专辑正在播放这首歌曲。 因此，我需要的是专辑和曲目之间的多对多关系，使用第三张表和一些附加列（如指定专辑中曲目的位置）。实际上，正如Doctrine的文档所建议的那样，我必须">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Doctrine2：在参考表中用多余的列来处理多对多的最佳方式">
+<meta name="twitter:description" content="我想知道在Doctrine2中，什么是最好，最干净，最简单的与多对多关系的工作方式。 假设我们有一个像 木偶大师 由几个轨道的Metallica。但请注意，一个曲目可能出现在更多的专辑中，如Metallica的 __ - 三张专辑正在播放这首歌曲。 因此，我需要的是专辑和曲目之间的多对多关系，使用第三张表和一些附加列（如指定专辑中曲目的位置）。实际上，正如Doctrine的文档所建议的那样，我必须">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/03/doctrine2-best-way-to-handle-many-to-many-with-extra-columns-in-reference-table/" title="Doctrine2：在参考表中用多余的列来处理多对多的最佳方式" itemprop="url">Doctrine2：在参考表中用多余的列来处理多对多的最佳方式</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-03T01:15:15.000Z" itemprop="datePublished"> Published 2018-05-03</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">So what’s wrong?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">EDIT</span></a>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我想知道在Doctrine2中，什么是最好，最干净，最简单的与多对多关系的工作方式。</p>
+<p>假设我们有一个像<a href="http://www.last.fm/music/Metallica/Master+of+Puppets" target="_blank" rel="noopener"> <em>木偶大师</em> 由几个轨道的Metallica</a>。但请注意，一个曲目可能出现在更多的专辑中，如<a href="http://www.last.fm/music/Metallica/Master+of+Puppets/Battery" target="_blank" rel="noopener">Metallica的 __ </a><br>- 三张专辑正在播放这首歌曲。</p>
+<p>因此，我需要的是专辑和曲目之间的多对多关系，使用第三张表和一些附加列（如指定专辑中曲目的位置）。实际上，正如Doctrine的文档所建议的那样，我必须使用双重一对多关系来实现这个功能。</p>
+<pre><code>/** @Entity() */
+class Album {
+    /** @Id @Column(type=&quot;integer&quot;) */
+    protected $id;
+
+    /** @Column() */
+    protected $title;
+
+    /** @OneToMany(targetEntity=&quot;AlbumTrackReference&quot;, mappedBy=&quot;album&quot;) */
+    protected $tracklist;
+
+    public function __construct() {
+        $this-&gt;tracklist = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function getTitle() {
+        return $this-&gt;title;
+    }
+
+    public function getTracklist() {
+        return $this-&gt;tracklist-&gt;toArray();
+    }
+}
+
+/** @Entity() */
+class Track {
+    /** @Id @Column(type=&quot;integer&quot;) */
+    protected $id;
+
+    /** @Column() */
+    protected $title;
+
+    /** @Column(type=&quot;time&quot;) */
+    protected $duration;
+
+    /** @OneToMany(targetEntity=&quot;AlbumTrackReference&quot;, mappedBy=&quot;track&quot;) */
+    protected $albumsFeaturingThisTrack; // btw: any idea how to name this relation? :)
+
+    public function getTitle() {
+        return $this-&gt;title;
+    }
+
+    public function getDuration() {
+        return $this-&gt;duration;
+    }
+}
+
+/** @Entity() */
+class AlbumTrackReference {
+    /** @Id @Column(type=&quot;integer&quot;) */
+    protected $id;
+
+    /** @ManyToOne(targetEntity=&quot;Album&quot;, inversedBy=&quot;tracklist&quot;) */
+    protected $album;
+
+    /** @ManyToOne(targetEntity=&quot;Track&quot;, inversedBy=&quot;albumsFeaturingThisTrack&quot;) */
+    protected $track;
+
+    /** @Column(type=&quot;integer&quot;) */
+    protected $position;
+
+    /** @Column(type=&quot;boolean&quot;) */
+    protected $isPromoted;
+
+    public function getPosition() {
+        return $this-&gt;position;
+    }
+
+    public function isPromoted() {
+        return $this-&gt;isPromoted;
+    }
+
+    public function getAlbum() {
+        return $this-&gt;album;
+    }
+
+    public function getTrack() {
+        return $this-&gt;track;
+    }
+}
+</code></pre><p>示例数据：</p>
+<pre><code>             Album
++----+--------------------------+
+| id | title                    |
++----+--------------------------+
+|  1 | Master of Puppets        |
+|  2 | The Metallica Collection |
++----+--------------------------+
+
+               Track
++----+----------------------+----------+
+| id | title                | duration |
++----+----------------------+----------+
+|  1 | Battery              | 00:05:13 |
+|  2 | Nothing Else Matters | 00:06:29 |
+|  3 | Damage Inc.          | 00:05:33 |
++----+----------------------+----------+
+
+              AlbumTrackReference
++----+----------+----------+----------+------------+
+| id | album_id | track_id | position | isPromoted |
++----+----------+----------+----------+------------+
+|  1 |        1 |        2 |        2 |          1 |
+|  2 |        1 |        3 |        1 |          0 |
+|  3 |        1 |        1 |        3 |          0 |
+|  4 |        2 |        2 |        1 |          0 |
++----+----------+----------+----------+------------+
+</code></pre><p>现在我可以显示与他们相关的专辑和曲目列表：</p>
+<pre><code>$dql = &apos;
+    SELECT   a, tl, t
+    FROM     Entity\Album a
+    JOIN     a.tracklist tl
+    JOIN     tl.track t
+    ORDER BY tl.position ASC
+&apos;;
+
+$albums = $em-&gt;createQuery($dql)-&gt;getResult();
+
+foreach ($albums as $album) {
+    echo $album-&gt;getTitle() . PHP_EOL;
+
+    foreach ($album-&gt;getTracklist() as $track) {
+        echo sprintf(&quot;\t#%d - %-20s (%s) %s\n&quot;, 
+            $track-&gt;getPosition(),
+            $track-&gt;getTrack()-&gt;getTitle(),
+            $track-&gt;getTrack()-&gt;getDuration()-&gt;format(&apos;H:i:s&apos;),
+            $track-&gt;isPromoted() ? &apos; - PROMOTED!&apos; : &apos;&apos;
+        );
+    }   
+}
+</code></pre><p>结果是我所期望的，也就是说：一张专辑列表，它们的曲目按照适当的顺序排列，并且被提升的曲目被标记为提升。</p>
+<pre><code>The Metallica Collection
+    #1 - Nothing Else Matters (00:06:29) 
+Master of Puppets
+    #1 - Damage Inc.          (00:05:33) 
+    #2 - Nothing Else Matters (00:06:29)  - PROMOTED!
+    #3 - Battery              (00:05:13) 
+</code></pre><h2><span id="so-whats-wrong">So what’s wrong?</span></h2><p>这段代码演示了什么是错的：</p>
+<pre><code>foreach ($album-&gt;getTracklist() as $track) {
+    echo $track-&gt;getTrack()-&gt;getTitle();
+}
+</code></pre><p>相册:: getTracklist（）<code>返回一个</code> AlbumTrackReference <code>对象而不是</code> Track<br><code>对象的数组。我无法创建代理方法会导致如果</code> Album <code>和</code> Track <code>两者都有</code> getTitle（）<code>方法？我可以在</code> Album ::<br>getTracklist（）`方法中做一些额外的处理，但最简单的方法是什么？我被迫写这样的东西吗？</p>
+<pre><code>public function getTracklist() {
+    $tracklist = array();
+
+    foreach ($this-&gt;tracklist as $key =&gt; $trackReference) {
+        $tracklist[$key] = $trackReference-&gt;getTrack();
+
+        $tracklist[$key]-&gt;setPosition($trackReference-&gt;getPosition());
+        $tracklist[$key]-&gt;setPromoted($trackReference-&gt;isPromoted());
+    }
+
+    return $tracklist;
+}
+
+// And some extra getters/setters in Track class
+</code></pre><h1><span id="edit">EDIT</span></h1><p>@beberlei建议使用代理方法：</p>
+<pre><code>class AlbumTrackReference {
+    public function getTitle() {
+        return $this-&gt;getTrack()-&gt;getTitle()
+    }
+}
+</code></pre><p>这是一个好主意，但是我使用了两个参考对象：<code>$ album-＆gt; getTracklist（）[12] - ＆gt; getTitle（）</code>和<code>$
+track-＆gt; getAlbums（）[1] - ＆gt; getTitle（）</code>，所以<code>getTitle（）</code>方法应该根据调用的上下文返回不同的数据。</p>
+<p>我将不得不这样做：</p>
+<pre><code>getTracklist() {
+    foreach ($this-&gt;tracklist as $trackRef) { $trackRef-&gt;setContext($this); }
+}
+
+// ....
+
+getAlbums() {
+    foreach ($this-&gt;tracklist as $trackRef) { $trackRef-&gt;setContext($this); }
+}
+
+// ...
+
+AlbumTrackRef::getTitle() {
+     return $this-&gt;{$this-&gt;context}-&gt;getTitle();
+}
+</code></pre><p>这不是一个很干净的方式。</p>
+<a id="more"></a>
+<p>我在Doctrine用户邮件列表中打开了一个类似的问题，得到了一个非常简单的答案;</p>
+<p>把多对多的关系视为一个实体本身，然后你意识到你有三个对象，它们之间有一对多和多对一的关系。</p>
+<p><a href="http://groups.google.com/group/doctrine-
+user/browse_thread/thread/d1d87c96052e76f7/436b896e83c10868#436b896e83c10868" target="_blank" rel="noopener"> http://groups.google.com/组/教义用户/ browse_thread /线程/ d1d87c96052e76f7 /<br>436b896e83c10868＃436b896e83c10868 </a></p>
+<p>一旦一个关系有数据，它就不是一个关系！</p>
+<p>从$ album-＆gt; getTrackList（）开始，您总是会收到“专辑曲目引用”实体，那么从Track和代理中添加方法呢？</p>
+<pre><code>class AlbumTrackReference
+{
+    public function getTitle()
+    {
+        return $this-&gt;getTrack()-&gt;getTitle();
+    }
+
+    public function getDuration()
+    {
+        return $this-&gt;getTrack()-&gt;getDuration();
+    }
+}
+</code></pre><p>这样，你的循环就可以大大简化，所有其他的代码都可以循环播放专辑的曲目，因为所有的方法都是在AlbumTrakcReference里面代理的：</p>
+<pre><code>foreach ($album-&gt;getTracklist() as $track) {
+    echo sprintf(&quot;\t#%d - %-20s (%s) %s\n&quot;, 
+        $track-&gt;getPosition(),
+        $track-&gt;getTitle(),
+        $track-&gt;getDuration()-&gt;format(&apos;H:i:s&apos;),
+        $track-&gt;isPromoted() ? &apos; - PROMOTED!&apos; : &apos;&apos;
+    );
+}
+</code></pre><p>btw你应该重命名AlbumTrackReference（例如“AlbumTrack”）。这显然不仅仅是一个参考，而且包含了更多的逻辑。由于有可能是轨道没有连接到一个专辑，但只是通过促销CD或东西，这也允许一个更清洁的分离也可以。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/05/03/doctrine2-best-way-to-handle-many-to-many-with-extra-columns-in-reference-table/" data-title="Doctrine2：在参考表中用多余的列来处理多对多的最佳方式 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/03/showing-all-errors-and-warnings/" title="显示所有错误和警告">
+  <strong>上一篇：</strong><br/>
+  <span>
+  显示所有错误和警告</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/05/02/asynctask-android-example/"  title="AsyncTask的Android例子">
+ <strong>下一篇：</strong><br/> 
+ <span>AsyncTask的Android例子
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">So what’s wrong?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">EDIT</span></a>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

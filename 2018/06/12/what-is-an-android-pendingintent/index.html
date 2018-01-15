@@ -1,0 +1,590 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>什么是Android PendingIntent？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我是Android的新手。我阅读Android文档，但我仍然需要更多的说明。任何人都可以告诉我一个PendingIntent是什么？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是Android PendingIntent？">
+<meta property="og:url" content="https://www.tracholar.top/2018/06/12/what-is-an-android-pendingintent/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我是Android的新手。我阅读Android文档，但我仍然需要更多的说明。任何人都可以告诉我一个PendingIntent是什么？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是Android PendingIntent？">
+<meta name="twitter:description" content="我是Android的新手。我阅读Android文档，但我仍然需要更多的说明。任何人都可以告诉我一个PendingIntent是什么？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/12/what-is-an-android-pendingintent/" title="什么是Android PendingIntent？" itemprop="url">什么是Android PendingIntent？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-12T02:42:30.000Z" itemprop="datePublished"> Published 2018-06-12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我是Android的新手。我阅读Android文档，但我仍然需要更多的说明。任何人都可以告诉我一个<code>PendingIntent</code>是什么？</p>
+<p><a id="more"></a> <code>PendingIntent</code>是你给外部应用程序（比如<code>NotificationManager</code>，<code>AlarmManager</code>，Home Screen ` AppWidgetManager &lt;代码&gt;或其他第三方应用程序），<br><strong>允许外部应用程序使用您的应用程序的权限来执行预定义的代码</strong> 。</p>
+<p>如果您向外部应用程序提供一个Intent，它将使用自己的权限执行您的<code>Intent</code>。但是，如果您向外部应用程序发送<code>PendingIntent</code>，则该应用程序将使用您的应用程序的许可执行您的<code>Intent</code>。</p>
+<p><a href="http://developer.android.com/reference/android/content/Intent.html" target="_blank" rel="noopener"> <strong>意向</strong> </a></p>
+<p>Intent是Android中的标准消息传递机制，表达用户执行某些工作的意图。它们允许您与其他由您或Android操作系统定义的组件进行交互。</p>
+<p>广播示例</p>
+<ul>
+<li>消息</li>
+<li>启动相机</li>
+<li>启动服务</li>
+<li>启动一项活动</li>
+<li>显示网页或联络人清单</li>
+<li>拨打电话号码或接听电话</li>
+</ul>
+<p>它们被用于两种方式</p>
+<p>1）由你来调用一个组件</p>
+<p>2）由系统通知你一些事件。</p>
+<p>创建意图的逻辑流程通常如下：</p>
+<ul>
+<li>创建意图</li>
+<li>湾添加意向选项 - ＆gt; <em>实施例。</em><br>℃。运行意向</li>
+</ul>
+<p>现实生活中的例子：假设我在早上起床，而我“ _<br>**”去洗手间。我首先必须考虑去洗手间，但是这不能让我进入洗手间。然后，我必须告诉我的大脑首先起床，然后走到洗手间，然后放开，然后去洗手，然后去擦手。一旦我知道我要去哪里，我发送命令开始，我的身体采取行动。</p>
+<p><a href="http://developer.android.com/reference/android/app/PendingIntent.html" target="_blank" rel="noopener"> <strong>PENDINGINTENT</strong></a></p>
+<p><code>PendingIntent</code>指定将来采取的行动。它允许您将未来的Intent传递给另一个应用程序，并允许该应用程序执行该Intent，就好像它具有与您的应用程序相同的权限`，而不管您的应用程序是否还在最后调用Intent<br>。这是一个令牌，你给外国的应用程序，允许外国应用程序使用您的应用程序的权限执行预定义的一段代码。</p>
+<p>通过给另一个应用程序提供一个<code>PendingIntent</code>，你赋予它执行你指定的操作的权利，就好像另一个应用程序是你自己的一样（具有相同的权限和标识）。因此，<code>您应该小心如何构建</code> <code>PendingIntent</code>：例如，您提供的基本Intent会将组件名称显式设置为您自己的组件，确保它最终被发送到那里和其他地方。</p>
+<p>这是您要执行的意图操作，但是在稍后的时间。想象一下把意图放在冰上。它需要的原因是因为必须在应用程序中创建并从一个有效的<code>Context</code>启动一个Intent，但是在某些情况下，当你想要运行该操作因为你在技术上不在应用程序的上下文中（两个常见的例子是从通知或<code>BroadcastReceiver</code>启动一个Activity。通过创建一个你想用的<code>PendingIntent</code>在你有<code>Context</code>的情况下启动一个Activity（从另一个Activity或Service内部进行）</p>
+<p>从现实生活的例子中继续：比方说，我想洗澡，但我想刷牙后，吃早餐，然后淋浴。所以我知道我不会在30-40分钟之前洗澡。我还有头脑，需要准备我的衣服，然后走上楼梯回浴室，然后脱衣服，然后淋浴。但是，这将不会发生，直到30-40分钟过去。我现在有一个待办事项的淋浴意图。这是等待30-40分钟。</p>
+<p>这几乎是待定意图和常规意图之间的区别。 简而言之：</p>
+<p>常规意图 - ＆gt; <code>不要求有意愿</code><br>待定意图 - ＆gt; <code>需要定期创建</code><br>意图有两种类型： <strong>显式</strong> 和 <strong>隐式</strong></p>
+<p>显式意图** ：当您的应用程序知道要调用哪个组件执行某个操作时</p>
+<p>隐式意图**：当您的应用程序不知道哪个组件可以准确执行您所需的操作时。对于Ex，如果你只是说你想显示一个URL，系统决定什么组件将满足这个意图。</p>
+<p>为了更好地理解关于意图的想法。链接下的链接</p>
+<ul>
+<li><a href="“http://slidenerd.com/2014/10/31/android-intents-explicit-and-implicit-intents/?utm_content=bufferee36f&amp;utm_medium=social&amp;utm_source=plus.google.com&amp;amp"> Slidenerd.com </a></li>
+<li><a href="https://www.youtube.com/watch?v=2TK6KX_RDe8&amp;list=PLonJJ3BVjZW6hYgvtkaWvwAVvOFB7fkLa&amp;index=23" target="_blank" rel="noopener"> Android意向教程</a></li>
+<li><a href="https://www.youtube.com/watch?v=HUgjOJEosaE&amp;list=UUbP2HeYGC3kfHjHLMPplZuQ" target="_blank" rel="noopener">其他</a></li>
+</ul>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/06/12/what-is-an-android-pendingintent/" data-title="什么是Android PendingIntent？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/06/13/how-do-i-make-a-textbox-that-only-accepts-numbers/" title="如何制作只接受数字的文本框？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何制作只接受数字的文本框？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/06/12/bash-ignoring-error-for-a-particular-command/"  title="Bash忽略特定命令的错误">
+ <strong>下一篇：</strong><br/> 
+ <span>Bash忽略特定命令的错误
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

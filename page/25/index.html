@@ -112,28 +112,26 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-you-split-a-list-into-evenly-sized-chunks/" title="你如何将一个列表分成均匀大小的块？" itemprop="url">你如何将一个列表分成均匀大小的块？</a>
+      <a href="/2018/05/19/fastest-way-of-inserting-in-entity-framework/" title="在实体框架中插入的最快方式" itemprop="url">在实体框架中插入的最快方式</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-05-19T01:43:37.000Z" itemprop="datePublished"> Published 2018-05-19</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个任意长度的列表，我需要将它分成相等大小的块并对其进行操作。有一些明显的方法可以做到这一点，比如保留一个计数器和两个列表，当第二个列表填满时，将其添加到第一个列表中，并清空下一轮数据的第二个列表，但这可能是非常昂贵的。</p>
-<p>我想知道是否有任何人有一个很好的解决这个任何长度的名单，例如使用生成器。</p>
-<p>我正在寻找<code>itertools</code>中的一些有用的东西，但我找不到任何明显有用的东西。虽然可能已经错过了。</p>
-<p>相关问题：[什么是最好的“python”方式来遍历块的列表？</p>
+        <p>我正在寻找插入实体框架的最快方法。</p>
+<p>我在问这个问题，因为你有一个活跃的TransactionScope，并且插入是巨大的（4000+）。它可能会持续超过10分钟（交易的默认超时），这将导致不完整的交易。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-you-split-a-list-into-evenly-sized-chunks/#more">Read More</a>
+            <a href="/2018/05/19/fastest-way-of-inserting-in-entity-framework/#more">Read More</a>
           
        </p>
     </div>
@@ -143,7 +141,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/list/">list</a><a href="/tags/split/">split</a><a href="/tags/chunks/">chunks</a>
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
   </div>
 
 </div>
@@ -183,31 +181,62 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-you-use-a-variable-in-a-regular-expression/" title="你如何在正则表达式中使用变量？" itemprop="url">你如何在正则表达式中使用变量？</a>
+      <a href="/2018/05/19/how-to-override-trait-function-and-call-it-from-the-overridden-function/" title="如何覆盖trait函数并从覆盖的函数调用它？" itemprop="url">如何覆盖trait函数并从覆盖的函数调用它？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-05-19T01:17:41.000Z" itemprop="datePublished"> Published 2018-05-19</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想在JavaScript中创建一个String.replaceAll（）方法，我想使用RegEx是最简单的方法。但是，我不知道如何将一个变量传递给RegEx。我已经可以做到这一点，将所有“B”的实例替换为“A”。</p>
-<pre><code>&quot;ABABAB&quot;.replace(/B/g, &quot;A&quot;);
-</code></pre><p>但是我想要做这样的事情：</p>
-<pre><code>String.prototype.replaceAll = function(replaceThis, withThis) {
-    this.replace(/replaceThis/g, withThis);
-};
-</code></pre><p>但是，显然这只会替换文本“replaceThis”…所以如何将这个变量传递给我的RegEx字符串呢？</p>
+        <p>情景：</p>
+<pre><code>trait A {
+    function calc($v) {
+        return $v+1;
+    }
+}
+
+class MyClass {
+    use A;
+
+    function calc($v) {
+        $v++;
+        return A::calc($v);
+    }
+}
+
+print (new MyClass())-&gt;calc(2); // should print 4
+</code></pre><p>这段代码不起作用，我找不到像继承的方式调用trait函数的方法。我尝试调用<code>self :: calc（$ v）</code>，<code>static :: calc（$
+v）</code>，<code>parent :: calc（$ v）</code> ，<code>A :: calc（$ v）</code>和下面的内容：</p>
+<pre><code>trait A {
+    function calc($v) {
+        return $v+1;
+    }
+}
+
+class MyClass {
+    use A {
+        calc as traitcalc;
+    }
+
+    function calc($v) {
+        $v++;
+        return traitcalc($v);
+    }
+}
+</code></pre><p>没有什么作用。</p>
+<p>有没有办法让它工作，或者我必须完全覆盖比这更复杂的特质功能：）</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-you-use-a-variable-in-a-regular-expression/#more">Read More</a>
+            <a href="/2018/05/19/how-to-override-trait-function-and-call-it-from-the-overridden-function/#more">Read More</a>
           
        </p>
     </div>
@@ -217,7 +246,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/regex/">regex</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -246,30 +275,352 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-data-binding-work-in-angularjs/" title="数据绑定在AngularJS中如何工作？" itemprop="url">数据绑定在AngularJS中如何工作？</a>
+      <a href="/2018/05/19/best-way-to-allow-plugins-for-a-php-application/" title="允许插入PHP应用程序的最佳方法" itemprop="url">允许插入PHP应用程序的最佳方法</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-05-19T01:17:12.000Z" itemprop="datePublished"> Published 2018-05-19</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>数据绑定如何在<code>AngularJS</code>框架中工作</p>
-<p>我还没有在<a href="http://angularjs.org" target="_blank" rel="noopener">他们的网站</a>上找到技术细节。当数据从视图传播到模型时，它是如何工作的或多或少都很清楚。但是，AngularJS如何在没有setter和getters的情况下追踪模型属性的变化？</p>
-<p>我发现有可能做这项工作的<a href="https://stackoverflow.com/questions/1029241
-/javascript-object-watch-for-all-browsers" target="_blank" rel="noopener"> JavaScript观察者</a>。但是，它们不支持<a href="http://en.wikipedia.org/wiki/Internet_Explorer_6" target="_blank" rel="noopener"> Internet Explorer 6</a>和<a href="“http：//"> Internet Explorer 7</a>。那么，AngularJS如何知道我改变了以下内容，并在视图上反映了这种变化？</p>
-<pre><code>myobject.myproperty=&quot;new value&quot;;
+        <p>我开始使用PHP创建一个新的Web应用程序，这一次我想创建一些人们可以使用插件接口来扩展的东西。</p>
+<p>如何在代码中编写“钩子”，以便插件可以附加到特定的事件？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/19/best-way-to-allow-plugins-for-a-php-application/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/18/comparison-of-android-networking-libraries-okhttp-retrofit-and-volley/" title="Android网络库比较：OkHTTP，Retrofit和Volley [关闭]" itemprop="url">Android网络库比较：OkHTTP，Retrofit和Volley [关闭]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-18T02:38:21.000Z" itemprop="datePublished"> Published 2018-05-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>来自iOS开发人员学习Android的两部分的问题，涉及Android项目，该项目将从JSON到图像到音频和视频的流式下载请求：</p>
+<p>_在iOS上，我广泛使用了<a href="https://github.com/AFNetworking/AFNetworking" target="_blank" rel="noopener"> AFNetworking</a>项目。有没有Android的等效库？</p>
+<ul>
+<li>我已经阅读了<a href="http://square.github.io/okhttp/" target="_blank" rel="noopener"> OkHTTP </a>和<a href="“http：//square.github。">改造</a> Square，以及<a href="https://developers.google.com/live/shows/474338138" target="_blank" rel="noopener"> Volley </a>，但还没有开发经验跟他们。我希望有人可以提供一些最佳用例的具体例子。从我读到的，似乎OkHTTP是三个中最强大的，并且可以处理这个项目的需求（上面提到）。</li>
+</ul>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/18/comparison-of-android-networking-libraries-okhttp-retrofit-and-volley/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/18/how-to-join-multiple-lines-of-file-names-into-one-with-custom-delimiter/" title="如何将多行文件名加入自定义分隔符？" itemprop="url">如何将多行文件名加入自定义分隔符？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-18T02:11:14.000Z" itemprop="datePublished"> Published 2018-05-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想将<code>ls -1</code>的结果合并到一行中，并用我想要的方式分隔它。</p>
+<p>是否有任何标准的Linux命令可以用来实现这个目标？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/18/how-to-join-multiple-lines-of-file-names-into-one-with-custom-delimiter/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/18/how-to-get-the-type-of-t-from-a-member-of-a-generic-class-or-method/" title="如何从泛型类或方法的成员中获取T的类型？" itemprop="url">如何从泛型类或方法的成员中获取T的类型？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-18T01:43:26.000Z" itemprop="datePublished"> Published 2018-05-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>假设我有一个类或方法的通用成员，所以：</p>
+<pre><code>public class Foo&lt;T&gt;
+{
+    public List&lt;T&gt; Bar { get; set; }
+
+    public void Baz()
+    {
+        // get type of T
+    }   
+}
+</code></pre><p>当我实例化类时，<code>T</code>变成<code>MyTypeObject1</code>，所以这个类有一个通用的列表属性：<code>List＆lt; MyTypeObject1＆gt;</code>。这同样适用于非泛型类中的泛型方法：</p>
+<pre><code>public class Foo
+{
+    public void Bar&lt;T&gt;()
+    {
+        var baz = new List&lt;T&gt;();
+
+        // get type of T
+    }
+}
+</code></pre><p>我想知道，我的类的列表包含什么类型的对象。因此，名为<code>Bar</code>或局部变量<code>baz</code>的list属性包含什么类型的<code>T</code>？</p>
+<p>我不能执行<code>Bar [0] .GetType（）</code>，因为列表可能包含零个元素。我该怎么做？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/18/how-to-get-the-type-of-t-from-a-member-of-a-generic-class-or-method/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/17/get-the-current-language-in-device/" title="获取设备中的当前语言" itemprop="url">获取设备中的当前语言</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-17T02:38:17.000Z" itemprop="datePublished"> Published 2018-05-17</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我们如何获得在Android设备中选择的当前语言？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/17/get-the-current-language-in-device/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/17/configure-bin-shm-bad-interpreter/" title="/configure：/ bin / sh ^ M：糟糕的解释器" itemprop="url">/configure：/ bin / sh ^ M：糟糕的解释器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-17T02:11:08.000Z" itemprop="datePublished"> Published 2018-05-17</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/39527571/are-shell-scripts-sensitive-to-encoding-and-line-endings">Are shell scripts sensitive to encoding and line endings?</a> 1 answer </li>
+</ul>
+<p>我一直试图在我的fed 12系统上安装lpng142。对我来说似乎是一个问题。我得到这个错误</p>
+<pre><code>[root@localhost lpng142]# ./configure
+bash: ./configure: /bin/sh^M: bad interpreter: No such file or directory
+[root@localhost lpng142]# 
+</code></pre><p>我该如何解决这个问题？ <code>/ etc / fstab</code>文件：</p>
+<pre><code>#
+# /etc/fstab
+# Created by anaconda on Wed May 26 18:12:05 2010
+#
+# Accessible filesystems, by reference, are maintained under &apos;/dev/disk&apos;
+# See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info
+#
+/dev/mapper/VolGroup-lv_root /                       ext4    defaults        1 1
+UUID=ce67cf79-22c3-45d4-8374-bd0075617cc8 /boot                   ext4    
+defaults        1 2
+/dev/mapper/VolGroup-lv_swap swap                    swap    defaults        0 0
+tmpfs                   /dev/shm                tmpfs   defaults        0 0
+devpts                  /dev/pts                devpts  gid=5,mode=620  0 0
+sysfs                   /sys                    sysfs   defaults        0 0
+proc                    /proc                   proc    defaults        0 0
 </code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-data-binding-work-in-angularjs/#more">Read More</a>
+            <a href="/2018/05/17/configure-bin-shm-bad-interpreter/#more">Read More</a>
           
        </p>
     </div>
@@ -279,7 +630,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/angularjs/">angularjs</a><a href="/tags/data-binding/">data-binding</a>
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a>
   </div>
 
 </div>
@@ -308,326 +659,47 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/" title="Facebook如何禁用浏览器的集成开发者工具？" itemprop="url">Facebook如何禁用浏览器的集成开发者工具？</a>
+      <a href="/2018/05/17/when-to-use-static-classes-in-c-sharp/" title="何时在C＃中使用静态类[复制]" itemprop="url">何时在C＃中使用静态类[复制]</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-05-17T01:43:07.000Z" itemprop="datePublished"> Published 2018-05-17</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>显然，由于最近发生的诈骗事件，开发者工具被人们利用来发布垃圾邮件，甚至被用于“黑客”账户。 Facebook阻止了开发者工具，我甚至无法使用控制台。</p>
-<p><img src="“https://i.stack.imgur.com/Wiatp.png”alt" alt=""></p>
-<p>他们是怎么做到的？ <a href="https://stackoverflow.com/questions/7559409
-/disable-developer-tools" target="_blank" rel="noopener">一个堆栈溢出帖子声称这是不可能的</a>，但Facebook已经证明他们错了。</p>
-<p>只要进入Facebook并打开开发者工具，在控制台中输入一个字符，就会弹出这个警告。不管你输入什么，它都不会被执行。</p>
-<p>这怎么可能？</p>
-<p>他们甚至在控制台中阻止自动完成：</p>
-<p><img src="“https://i.stack.imgur.com/j0Zmx.png”alt" alt=""></p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
+        <p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/205689/class-with-single-method-best-approach">Class with single method – best approach?</a> 14 answers </li>
+</ul>
+<p>以下是<a href="http://msdn.microsoft.com/en-
+us/library/79b3xss3%28v=vs.80%29.aspx" target="_blank" rel="noopener"> MSDN必须在&lt; em&gt;何时使用静态类_ </a>：</p>
+<p>&gt;</p>
+<blockquote>
+<pre><code>static class CompanyInfo
 
+{
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/facebook/">facebook</a>
-  </div>
+    public static string GetCompanyName() { return &quot;CompanyName&quot;; }
 
-</div>
+    public static string GetCompanyAddress() { return &quot;CompanyAddress&quot;;
+</code></pre><p>}</p>
+<pre><code>    //...
 
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-does-javascript-prototype-work/" title="JavaScript .prototype如何工作？" itemprop="url">JavaScript .prototype如何工作？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我并不是那么喜欢动态编程语言，但是我已经写下了自己的JavaScript代码。我从来没有真正理解这个基于原型的编程，有没有人知道这是如何工作的？</p>
-<pre><code>var obj = new Object(); // not a functional object
-obj.prototype.test = function() { alert(&apos;Hello?&apos;); }; // this is wrong!
-
-function MyObject() {} // a first class functional object
-MyObject.prototype.test = function() { alert(&apos;OK&apos;); } // OK
-</code></pre><p>我记得曾经跟人们讨论过很多次（我不太确定自己在做什么），但据我所知，没有一个班级的概念。这只是一个对象，这些对象的实例是原始的克隆，对吧？</p>
-<p>但是，在JavaScript中这个<code>.prototype</code>属性的确切目的是什么呢？它与实例化对象有什么关系？</p>
-<hr>
-<h3 id="Edit"><a href="#Edit" class="headerlink" title="Edit"></a>Edit</h3><p>这些<a href="http://ejohn.org/apps/learn/#64" target="_blank" rel="noopener">幻灯片</a>的确帮助我们理解了这个话题。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-does-javascript-prototype-work/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/prototype-oriented/">prototype-oriented</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-does-pythons-super-work-with-multiple-inheritance/" title="Python的super（）如何处理多重继承？" itemprop="url">Python的super（）如何处理多重继承？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在Python面向对象的编程中，我非常新，而且我遇到了麻烦 理解<code>super（）</code>函数（新样式类），特别是在涉及多重继承的时候。</p>
-<p>例如，如果你有类似的东西：</p>
-<pre><code>class First(object):
-    def __init__(self):
-        print &quot;first&quot;
-
-class Second(object):
-    def __init__(self):
-        print &quot;second&quot;
-
-class Third(First, Second):
-    def __init__(self):
-        super(Third, self).__init__()
-        print &quot;that&apos;s it&quot;
-</code></pre><p>我不明白的是：<code>Third（）</code>类会继承两个构造方法吗？如果是，那么将使用super（）运行哪一个？为什么？</p>
-<p>如果你想运行另一个呢？我知道这与Python方法解析顺序有关（<a href="http://en.wikipedia.org/wiki/C3_linearization" target="_blank" rel="noopener"> MRO</a>）。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-does-pythons-super-work-with-multiple-inheritance/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/multiple-inheritance/">multiple-inheritance</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-does-the-java-for-each-loop-work/" title="Java为每个循环如何工作？" itemprop="url">Java为每个循环如何工作？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>考虑：</p>
-<pre><code>List&lt;String&gt; someList = new ArrayList&lt;String&gt;();
-// add &quot;monkey&quot;, &quot;donkey&quot;, &quot;skeleton key&quot; to someList
-
-
-
-for (String item : someList) {
-    System.out.println(item);
 }
-</code></pre><p>为什么对于<code>循环，等价的</code>看起来像不用每个<em>语法的 </em>？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-does-the-java-for-each-loop-work/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/foreach/">foreach</a><a href="/tags/syntactic-sugar/">syntactic-sugar</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-does-the-property-decorator-work/" title="property装饰器是如何工作的？" itemprop="url">property装饰器是如何工作的？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我想了解内置函数<code>property</code>是如何工作的。我感到困惑的是，<code>property</code>也可以作为装饰器使用，但是只有作为内置函数使用时才需要参数，而不能用作装饰器。</p>
-<p>这个例子来自<a href="http://docs.python.org/2/library/functions.html#property" target="_blank" rel="noopener">文档</a>：</p>
-<pre><code>class C(object):
-    def __init__(self):
-        self._x = None
-
-    def getx(self):
-        return self._x
-    def setx(self, value):
-        self._x = value
-    def delx(self):
-        del self._x
-    x = property(getx, setx, delx, &quot;I&apos;m the &apos;x&apos; property.&quot;)
-</code></pre><p><code>property</code>的参数是<code>getx</code>，<code>setx</code>，<code>delx</code>和一个doc字符串。</p>
-<p>在<code>下面的代码中，property</code>用作装饰器。它的对象是<code>x</code>函数，但是在上面的代码中，参数中没有对象函数的地方。</p>
-<pre><code>class C(object):
-    def __init__(self):
-        self._x = None
-
-    @property
-    def x(self):
-        &quot;&quot;&quot;I&apos;m the &apos;x&apos; property.&quot;&quot;&quot;
-        return self._x
-
-    @x.setter
-    def x(self, value):
-        self._x = value
-
-    @x.deleter
-    def x(self):
-        del self._x
-</code></pre><p>而且，如何创建<code>x.setter</code>和<code>x.deleter</code>装饰器？ 我很困惑。</p>
+</code></pre><p>Use a static class as a unit of organization for methods not associated with<br>particular objects. Also, a static class can make your implementation simpler<br>and faster because you do not have to create an object in order to call its<br>methods. It is useful to organize the methods inside the class in a meaningful<br>way, such as the methods of the Math class in the System namespace.</p>
+</blockquote>
+<p>对我来说，这个例子似乎并没有涵盖静态类的很多可能的使用场景。在过去，我使用静态类来实现无状态的相关函数套件，但就是这样。那么，在什么情况下（而不应该）把一个类声明为静态的呢？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-the-property-decorator-work/#more">Read More</a>
+            <a href="/2018/05/17/when-to-use-static-classes-in-c-sharp/#more">Read More</a>
           
        </p>
     </div>
@@ -637,7 +709,7 @@ for (String item : someList) {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/properties/">properties</a><a href="/tags/decorator/">decorator</a><a href="/tags/python-decorators/">python-decorators</a><a href="/tags/python-internals/">python-internals</a>
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
   </div>
 
 </div>
@@ -666,28 +738,27 @@ for (String item : someList) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-trello-access-the-users-clipboard/" title="Trello如何访问用户的剪贴板？" itemprop="url">Trello如何访问用户的剪贴板？</a>
+      <a href="/2018/05/17/convert-seconds-to-hourminutesecond/" title="将秒转换为小时：分钟：秒" itemprop="url">将秒转换为小时：分钟：秒</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-05-17T01:17:03.000Z" itemprop="datePublished"> Published 2018-05-17</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>当您将鼠标悬停在<a href="http://en.wikipedia.org/wiki/Trello" target="_blank" rel="noopener"> Trello </a>的卡片上，然后按<code>Ctrl</code> + <code>C</code>，此卡的网址将被复制到剪贴板。他们如何做到这一点？</p>
-<p>据我所知，没有涉及Flash电影。我已经安装了<a href="http://en.wikipedia.org/wiki/Flashblock" target="_blank" rel="noopener"> Flashblock</a>，并且Firefox网络选项卡没有显示加载的Flash影片。<br>（这是通常的方法，例如，ZeroClipboard。）</p>
-<p>他们如何实现这个魔法？</p>
-<p>（在这一刻，我想我有一个顿悟：你不能选择页面上的文本，所以我假设他们有一个不可见的元素，他们创建一个通过JavaScript代码的文本选择，<code>Ctrl</code>+ <code>C</code>触发浏览器的默认行为，复制不可见节点的文本值。）</p>
+        <p>我需要将秒数转换为“小时：分钟：秒”。</p>
+<p>例如：“685”转换为“00:11:25”</p>
+<p>我怎样才能做到这一点？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-trello-access-the-users-clipboard/#more">Read More</a>
+            <a href="/2018/05/17/convert-seconds-to-hourminutesecond/#more">Read More</a>
           
        </p>
     </div>
@@ -697,65 +768,7 @@ for (String item : someList) {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/coffeescript/">coffeescript</a><a href="/tags/clipboard/">clipboard</a><a href="/tags/trello/">trello</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-does-the-this-keyword-work/" title="“this”这个关键字是如何工作的？" itemprop="url">“this”这个关键字是如何工作的？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我注意到，关于<code>这个</code>关键字是什么以及它是如何在堆栈溢出网站的JavaScript中正确使用（和不正确）的，似乎并没有明确的解释。 p&gt;<br>我目睹了一些非常奇怪的行为，并没有明白为什么会发生。</p>
-<p><code></code> <code></code> <code></code> <code></code> <code></code>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-does-the-this-keyword-work/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/this/">this</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -780,7 +793,7 @@ for (String item : someList) {
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/24/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><a class="extend next" rel="next" href="/page/26/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/24/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/26/">Next<span></span></a>
   </nav>
 
 </div>
@@ -806,109 +819,84 @@ for (String item : someList) {
 
 
   
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
-
-
-  
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
-			
 		
-			
-				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
 			
 		
 		</ul>

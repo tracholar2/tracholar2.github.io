@@ -1,0 +1,663 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>PHP：从数组中删除一个元素 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="是否有一种简单的方法可以用PHP从数组中删除一个元素，这样不再包含那个元素？ 我认为将它设置为null会做到这一点，但显然这是行不通的。">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP：从数组中删除一个元素">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/php-delete-an-element-from-an-array/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="是否有一种简单的方法可以用PHP从数组中删除一个元素，这样不再包含那个元素？ 我认为将它设置为null会做到这一点，但显然这是行不通的。">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP：从数组中删除一个元素">
+<meta name="twitter:description" content="是否有一种简单的方法可以用PHP从数组中删除一个元素，这样不再包含那个元素？ 我认为将它设置为null会做到这一点，但显然这是行不通的。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/php-delete-an-element-from-an-array/" title="PHP：从数组中删除一个元素" itemprop="url">PHP：从数组中删除一个元素</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Delete one array element</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text"> method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text"></span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Delete multiple array elements</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.1.</span> <span class="toc-text"> method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.2.</span> <span class="toc-text"></span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>是否有一种简单的方法可以用<code>PHP</code>从数组中删除一个元素，这样不再包含那个元素？</p>
+<p>我认为将它设置为<code>null</code>会做到这一点，但显然这是行不通的。</p>
+<a id="more"></a>
+<p>删除一个数组元素有不同的方法，其中一些比其他的更有用于某些特定的任务。</p>
+<h1><span id="delete-one-array-element">Delete one array element</span></h1><p>如果你只想删除一个数组元素，你可以使用<a href="https://secure.php.net/manual/en/function.unset.php" target="_blank" rel="noopener"> <code>unset （）</code></a>或替代<a href="https://secure.php.net/manual/en/function.array-splice.php" target="_blank" rel="noopener"> ` array_splice（ ）</a>。</p>
+<p>另外，如果你有这个价值，不知道删除元素的关键，你可以使用<a href="“http://php.net/manual/en/function.array-search.php”rel"> <code>array_search（）</code></a>来获取密钥。</p>
+<h3><span id="unset-method"> method</span></h3><p>注意当你使用<code>unset（）</code>时，数组键不会改变/ reindex。如果你想重新索引密钥，你可以使用<a href="http://php.net/manual/en/function.array-
+values.php" target="_blank" rel="noopener"> <code>array_values（）
+unset（）</code>之后的&lt;&gt; </a>将把所有的键转换为从0开始的数字枚举键。</p>
+<p>代码</p>
+<pre><code>&lt;?php
+
+    $array = array(0 =&gt; &quot;a&quot;, 1 =&gt; &quot;b&quot;, 2 =&gt; &quot;c&quot;);
+    unset($array[1]);
+               //a Key which you want to delete
+
+?&gt;
+</code></pre><p>输出</p>
+<pre><code>Array (
+    [0] =&gt; a
+    [2] =&gt; c
+)
+</code></pre><h3><span id="array_splice"></span></h3><p>method</p>
+<p>如果使用array_splice（）<code>，键将被自动重新索引，但是关联键不会改变与</code> array_values（）`相反，这将把所有键转换为数字密钥。</p>
+<p>另外<code>array_splice（）</code>需要offset，而不是key !,作为第二个参数。</p>
+<p>代码</p>
+<pre><code>&lt;?php
+
+    $array = array(0 =&gt; &quot;a&quot;, 1 =&gt; &quot;b&quot;, 2 =&gt; &quot;c&quot;);
+    array_splice($array, 1, 1);
+                       //a Offset which you want to delete
+
+?&gt;
+</code></pre><p>输出</p>
+<pre><code>Array (
+    [0] =&gt; a
+    [1] =&gt; c
+)
+</code></pre><p><code>array_splice（）</code>与<code>unset（）</code>一样，通过引用获取数组，这意味着你不想把这些函数的返回值赋给数组</p>
+<h1><span id="delete-multiple-array-elements">Delete multiple array elements</span></h1><p>如果您想要删除多个数组元素而不想多次调用<code>unset（）</code>或<code>array_splice（）</code>，可以使用<code>array_diff （）</code>或<code>array_diff_key（）</code>，具体取决于您是否知道要删除的元素的值或键。</p>
+<h3><span id="array_diff-method"> method</span></h3><p>如果您知道要删除的数组元素的值，则可以使用<code>array_diff（）</code>。与之前的<code>unset（）</code>一样，它不会改变/重新索引数组的键。</p>
+<p>代码</p>
+<pre><code>&lt;?php
+
+    $array = array(0 =&gt; &quot;a&quot;, 1 =&gt; &quot;b&quot;, 2 =&gt; &quot;c&quot;);
+    $array = array_diff($array, [&quot;a&quot;, &quot;c&quot;]);
+                              //aaaaaaaaaaa Array values which you want to delete
+
+?&gt;
+</code></pre><p>输出</p>
+<pre><code>Array (
+    [1] =&gt; b
+)
+</code></pre><h3><span id="array_diff_key"></span></h3><p>method</p>
+<p>如果您知道要删除的元素的键，那么您要使用<code>array_diff_key（）</code>。在这里，你必须确保你把键作为第二个参数的键而不是值。否则，您必须使用[ <code>array_flip（）</code> &lt; / A&gt;。而且在这里键不会改变/ reindex。</p>
+<p>代码</p>
+<pre><code>&lt;?php
+
+    $array = array(0 =&gt; &quot;a&quot;, 1 =&gt; &quot;b&quot;, 2 =&gt; &quot;c&quot;);
+    $array = array_diff_key($array, [0 =&gt; &quot;xy&quot;, &quot;2&quot; =&gt; &quot;xy&quot;]);
+                                   //a           a Array keys which you want to delete
+?&gt;
+</code></pre><p>输出</p>
+<pre><code>Array (
+    [1] =&gt; b
+)
+</code></pre><p>另外，如果您想使用<code>unset（）</code>或<code>array_splice（）</code>删除多个具有相同值的元素，您可以使用<a href="“http：//"> <code>array_keys（）</code></a>获取特定值的所有关键字，然后删除所有元素</p>
+<p>应该指出的是，<a href="http://php.net/unset" target="_blank" rel="noopener"> <code>unset（）</code></a>将保持索引不变，这是当使用字符串索引（数组作为散列表）时，你会期待什么，但是在处理整数索引数组时可能会感到非常惊讶：</p>
+<pre><code>$array = array(0, 1, 2, 3);
+unset($array[2]);
+var_dump($array);
+/* array(3) {
+  [0]=&gt;
+  int(0)
+  [1]=&gt;
+  int(1)
+  [3]=&gt;
+  int(3)
+} */
+
+$array = array(0, 1, 2, 3);
+array_splice($array, 2, 1);
+var_dump($array);
+/* array(3) {
+  [0]=&gt;
+  int(0)
+  [1]=&gt;
+  int(1)
+  [2]=&gt;
+  int(3)
+} */
+</code></pre><p>因此，如果您想规范化您的电子邮件地址，可以使用<a href="http://php.net/array_splice" target="_blank" rel="noopener"> <code>array_splice（）</code></a>。整数键。另一种选择是在<a href="http://php.net/manual/en/function.array-flip.php" target="_blank" rel="noopener"> <code>array_values（）</code>](http://php.net/array_values)。 .net / unset“rel =”noreferrer“&gt; <code>unset（）</code></a>：</p>
+<pre><code>$array = array(0, 1, 2, 3);
+
+unset($array[2]);
+$array = array_values($array);
+var_dump($array);
+/* array(3) {
+  [0]=&gt;
+  int(0)
+  [1]=&gt;
+  int(1)
+  [2]=&gt;
+  int(3)
+} */
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/php-delete-an-element-from-an-array/" data-title="PHP：从数组中删除一个元素 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport/" title="如何判断一个DOM元素在当前视口中是否可见？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何判断一个DOM元素在当前视口中是否可见？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/how-do-you-easily-horizontally-center-a-div-using-css/"  title="你如何轻松地水平居中使用CSS的div？">
+ <strong>下一篇：</strong><br/> 
+ <span>你如何轻松地水平居中使用CSS的div？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Delete one array element</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text"> method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text"></span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Delete multiple array elements</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.1.</span> <span class="toc-text"> method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.2.</span> <span class="toc-text"></span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,699 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何在Android中声明全局变量？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我正在创建一个需要登录的应用程序。我创建了主要和登录活动。 在主要活动onCreate方法中，我添加了以下条件： public void onCreate(Bundle savedInstanceState) {     super.onCreate(savedInstanceState);     setContentView(R.layout.main);      ...      load">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在Android中声明全局变量？">
+<meta property="og:url" content="https://www.tracholar.top/2018/04/18/how-to-declare-global-variables-in-android/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我正在创建一个需要登录的应用程序。我创建了主要和登录活动。 在主要活动onCreate方法中，我添加了以下条件： public void onCreate(Bundle savedInstanceState) {     super.onCreate(savedInstanceState);     setContentView(R.layout.main);      ...      load">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何在Android中声明全局变量？">
+<meta name="twitter:description" content="我正在创建一个需要登录的应用程序。我创建了主要和登录活动。 在主要活动onCreate方法中，我添加了以下条件： public void onCreate(Bundle savedInstanceState) {     super.onCreate(savedInstanceState);     setContentView(R.layout.main);      ...      load">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/18/how-to-declare-global-variables-in-android/" title="如何在Android中声明全局变量？" itemprop="url">如何在Android中声明全局变量？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-18T02:34:25.000Z" itemprop="datePublished"> Published 2018-04-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我正在创建一个需要登录的应用程序。我创建了主要和登录活动。</p>
+<p>在主要活动<code>onCreate</code>方法中，我添加了以下条件：</p>
+<pre><code>public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
+
+    ...
+
+    loadSettings();
+    if(strSessionString == null)
+    {
+        login();
+    }
+    ...
+}
+</code></pre><p>当登录表单终止时执行的<code>onActivityResult</code>方法如下所示：</p>
+<pre><code>@Override
+public void onActivityResult(int requestCode,
+                             int resultCode,
+                             Intent data)
+{
+    super.onActivityResult(requestCode, resultCode, data);
+    switch(requestCode)
+    {
+        case(SHOW_SUBACTICITY_LOGIN):
+        {
+            if(resultCode == Activity.RESULT_OK)
+            {
+
+                strSessionString = data.getStringExtra(Login.SESSIONSTRING);
+                connectionAvailable = true;
+                strUsername = data.getStringExtra(Login.USERNAME);
+            }
+        }
+    }
+</code></pre><p>问题是登录表单有时出现两次（<code>login（）</code>方法被调用两次），而且当电话键盘滑动时登录表单又出现了，我猜问题是变量&lt;代码&gt;<br>strSessionString</p>
+<p>有没有人知道如何设置变量全球为了避免登录窗体出现后，用户已经成功验证？</p>
+<a id="more"></a>
+<p>我在09年的时候写了这个答案，当时Android相对比较新，而Android开发中还有很多不是很成熟的领域。我在这篇文章的底部增加了一个附录，讨论了一些批评，并详细说明了我使用Singletons而不是子类化Application的哲学分歧。阅读它需要您自担风险。</p>
+<p><strong>原始答案：</strong></p>
+<p>你遇到的更一般的问题是如何在多个活动和应用程序的所有部分中保存状态。一个静态变量（例如，一个单例）是实现这一点的常见Java方法。然而，我发现在Android中更优雅的方式是将您的状态与应用程序上下文相关联。</p>
+<p>正如你所知，每个Activity也是一个Context，它是关于它最广义的执行环境的信息。你的应用程序也有一个上下文，Android保证它将作为一个实例存在你的应用程序中。</p>
+<p>做到这一点的方法是创建你自己的<a href="http://developer.android.com/reference/android/app/Application.html" target="_blank" rel="noopener">android.app的子类。应用程序</a>，然后在清单中的应用程序标签中指定该类。现在，Android将自动创建该类的一个实例，并使其可用于整个应用程序。您可以使用<code>Context.getApplicationContext（）</code>方法从任何<code>context</code>访问它（<code>Activity</code>）也提供了一个方法`getApplication（）代码&gt;具有完全相同的效果）。以下是一个非常简单的例子，需要注意的是：</p>
+<pre><code>class MyApp extends Application {
+
+  private String myState;
+
+  public String getState(){
+    return myState;
+  }
+  public void setState(String s){
+    myState = s;
+  }
+}
+
+class Blah extends Activity {
+
+  @Override
+  public void onCreate(Bundle b){
+    ...
+    MyApp appState = ((MyApp)getApplicationContext());
+    String state = appState.getState();
+    ...
+  }
+}
+</code></pre><p>这与使用静态变量或单例的效果基本相同，但很好地集成到现有的Android框架中。请注意，这不会跨进程工作（如果您的应用程序是具有多个进程的罕见程序之一）。</p>
+<p>从上面的例子可以看出来假设我们做了这样的事情：</p>
+<pre><code>class MyApp extends Application {
+
+  private String myState = /* complicated and slow initialization */;
+
+  public String getState(){
+    return myState;
+  }
+}
+</code></pre><p>现在，这个缓慢的初始化（例如打磁盘，打网络，阻塞等）将在每次应用程序实例化时执行！你可能会认为这个过程只有一次，我必须付出代价，对吗？例如，正如Dianne<br>Hackborn在下面提到的那样，您的流程完全可以被实例化 -<br>只要处理背景广播事件。如果你的广播处理不需要这个状态，你可能只是做了一整套复杂而慢的操作。懒惰的实例是这里游戏的名字。以下是使用Application的一个稍微复杂一点的方法，它对于最简单的用途更有意义：</p>
+<pre><code>class MyApp extends Application {
+
+  private MyStateManager myStateManager = new MyStateManager();
+
+  public MyStateManager getStateManager(){
+    return myStateManager ;
+  }
+}
+
+class MyStateManager {
+
+  MyStateManager() {
+    /* this should be fast */
+  }
+
+  String getState() {
+    /* if necessary, perform blocking calls here */
+    /* make sure to deal with any multithreading/synchronicity issues */
+
+    ...
+
+    return state;
+  }
+}
+
+class Blah extends Activity {
+
+  @Override
+  public void onCreate(Bundle b){
+    ...
+    MyStateManager stateManager = ((MyApp)getApplicationContext()).getStateManager();
+    String state = stateManager.getState();
+    ...
+  }
+}
+</code></pre><p>虽然我更喜欢Application子类化，在这里使用singleton作为更优雅的解决方案，但是我宁愿开发人员在真正需要的时候使用单例，而不考虑将状态与Application子类关联的性能和多线程含义。<br><strong><br>注1：</strong>同样作为anticafe评论，为了正确地绑定你的应用程序覆盖到你的应用程序标签是必要的清单文件。再次，请参阅Android文档以获取更多信息。一个例子：</p>
+<pre><code>&lt;application
+     android:name=&quot;my.application.MyApp&quot; 
+     android:icon=&quot;...&quot;
+     android:label=&quot;...&quot;&gt;
+&lt;/application&gt;
+</code></pre><p>注2：**<br>user608578询问如何在管理原生对象生命周期的情况下工作。我没有加速在Android上使用本地代码的速度，我没有资格回答这将如何与我的解决方案进行交互。如果有人有这个答案，我愿意把他们的信息，并把这个信息在这个帖子最大的可见度。</p>
+<p>&lt;强&gt;附录：</p>
+<p>正如一些人已经指出的那样， <strong>持久</strong><br>状态的解决方案并不是一个解决方案，在原始答案中我应该强调一些。即这并不意味着成为保存用户或其他信息的解决方案，这些信息在整个应用程序的生命周期中都是持久的。因此，我认为下面的大多数批评都与应用程序在任何时候被杀害等等无关，因为任何永久需要保存到磁盘的内容都不应该通过应用程序子类来存储。这意味着存储临时的，易于重新创建的应用程序状态（例如用户是否登录）和单个实例的组件（例如应用程序网络管理器）（<br><strong>NOT</strong> 单例！）的性质。</p>
+<p>Dayerman非常友善地指出了一个有趣的<a href="https://plus.google.com/u/0/117230458394250799679/posts/DsfpW51Vvow" target="_blank" rel="noopener">与Reto Meier和Dianne的对话Hackborn</a>，其中不鼓励使用Application子类来支持Singleton模式。<br>Somatik早些时候也指出了这种性质，虽然我当时没有看到。由于Reto和Dianne在维护Android平台方面的角色，我不能真诚地推荐忽视他们的建议。他们说什么，去。我不希望不同意这个意见，表示宁愿Singleton比Application子类更好。在我的不同意见中，我将使用<a href="https://softwareengineering.stackexchange.com/a/40610/98638" target="_blank" rel="noopener">StackExchange对Singleton设计模式的解释</a>中最好的解释，以便我不必在这个答案中定义术语。我强烈建议在继续之前浏览链接。逐点：</p>
+<p>Dianne表示：“没有理由从应用程序中进行子类化，它与创建一个单例模式没有区别……”这第一个要求是不正确的。这有两个主要原因。<br>1）Application类为应用程序开发人员提供了更好的生命周期保证。它保证有应用程序的生命周期。一个单身人士并不明确地束缚在应用程序的生命周期中（虽然它是有效的）。对于普通的应用程序开发人员来说，这可能不是问题，但我认为这正是Android<br>API应该提供的契约类型，它还为Android系统提供了更多的灵活性，最大限度地缩短了关联的生命周期数据。<br>2）Application类为应用程序开发者提供了一个单实例持有者的状态，这与一个Singleton持有者是非常不同的。有关不同的列表，请参阅上面的单例解释链接。</p>
+<p>“Dianne继续说道，”只要你将来发现你的Application对象变成了这个应该是独立应用程序逻辑的混乱的东西，那么你将来可能会后悔的。这当然不是不正确的，但是这不是选择Singleton<br>over Application子类的原因。<br>Diane的论点没有提供使用Singleton比Application子类更好的原因，她试图建立的一个原则是使用Singleton并不比应用程序子类更糟糕，我相信它是错误的。</p>
+<p>她继续说道：“这更自然地引导你如何管理这些东西 - 按需求初始化它们。”这忽略了这样的事实，即没有理由不能使用应用程序子类按需进行初始化。再次没有区别。</p>
+<p>“Dianne以”这个框架本身就拥有大量的单身人士来管理它为应用程序维护的所有小共享数据，比如加载资源的缓存，对象池等等。我不是说使用单身人士不能正常工作，或者不是合法的选择。我认为Singletons并不像使用Application子类那样提供与Android系统的强大合同，而且使用Singletons通常指的是不易修改的不灵活的设计，并且导致许多问题在后面。恕我直言，Android<br>API为开发者应用程序提供的强有力契约是Android编程中最吸引人和令人愉悦的方面之一，也促成了开发者的早期采用，推动了Android平台取得今天的成功。建议使用单身人士隐含地远离强大的API合同，在我看来，削弱了Android框架。</p>
+<p>Dianne也在下面评论，提到使用Application子类的另一个缺点，他们可能会鼓励或者更容易编写更少的性能代码。这是非常真实的，我已经编辑了这个答案，强调了在这里考虑perf的重要性，如果你使用Application子类，采取正确的方法。正如Dianne所说的，重要的是要记住，每当你的进程被加载的时候，你的Application类将被实例化（如果你的应用程序在多个进程中运行，可以一次多次执行），即使进程只是被加载用于后台广播事件。因此，更重要的是使用Application类作为指向应用程序共享组件指针的存储库，而不是作为进行任何处理的地方！</p>
+<p>我把下面的单身人士的名单留给你，从早期的StackExchange链接中偷走：</p>
+<ul>
+<li>无法使用抽象或接口类; </li>
+<li>无法继承; </li>
+<li>跨应用程序的高耦合（难以修改）; </li>
+<li>很难测试（不能在单元测试中伪造/模拟）; </li>
+<li>在可变状态下难以并行化（需要大量锁定）; </li>
+</ul>
+<p>并添加我自己的：</p>
+<ul>
+<li>不适合Android（或大多数其他）开发的不明确且无法管理的生命周期合同</li>
+</ul>
+<p>创建这个子类</p>
+<pre><code>public class MyApp extends Application {
+  String foo;
+}
+</code></pre><p>在AndroidManifest.xml中添加android：name</p>
+<p>**示例</p>
+<pre><code>&lt;application android:name=&quot;.MyApp&quot; 
+       android:icon=&quot;@drawable/icon&quot; 
+       android:label=&quot;@string/app_name&quot;&gt;
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/04/18/how-to-declare-global-variables-in-android/" data-title="如何在Android中声明全局变量？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/19/simplest-php-example-for-retrieving-user-timeline-with-twitter-api-version-1-1/" title="最简单的PHP示例，用于使用Twitter API版本1 1检索user_timeline">
+  <strong>上一篇：</strong><br/>
+  <span>
+  最简单的PHP示例，用于使用Twitter API版本1 1检索user_timeline</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/18/how-to-pass-all-arguments-passed-to-my-bash-script-to-a-function-of-mine/"  title="如何将传递给我的bash脚本的所有参数传递给我的一个函数？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何将传递给我的bash脚本的所有参数传递给我的一个函数？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

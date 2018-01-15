@@ -1,0 +1,625 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>jQuery click（）与onClick | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个巨大的jQuery应用程序，我正在使用以下两种方法来进行点击事件。 第一种方法** HTML&amp;lt;div id=&amp;quot;myDiv&amp;quot;&amp;gt;Some Content&amp;lt;/div&amp;gt; jQuery$(&amp;apos;#myDiv&amp;apos;).click(function(){     //Some code }); 第二种方法** HTML&amp;lt;div id=&amp;quo">
+<meta name="keywords" content="javascript,html,jquery">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jQuery click（）与onClick">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/jquery-click-vs-onclick/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个巨大的jQuery应用程序，我正在使用以下两种方法来进行点击事件。 第一种方法** HTML&amp;lt;div id=&amp;quot;myDiv&amp;quot;&amp;gt;Some Content&amp;lt;/div&amp;gt; jQuery$(&amp;apos;#myDiv&amp;apos;).click(function(){     //Some code }); 第二种方法** HTML&amp;lt;div id=&amp;quo">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jQuery click（）与onClick">
+<meta name="twitter:description" content="我有一个巨大的jQuery应用程序，我正在使用以下两种方法来进行点击事件。 第一种方法** HTML&amp;lt;div id=&amp;quot;myDiv&amp;quot;&amp;gt;Some Content&amp;lt;/div&amp;gt; jQuery$(&amp;apos;#myDiv&amp;apos;).click(function(){     //Some code }); 第二种方法** HTML&amp;lt;div id=&amp;quo">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/jquery-click-vs-onclick/" title="jQuery click（）与onClick" itemprop="url">jQuery click（）与onClick</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">HTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">jQuery</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">HTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">JavaScript function call</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个巨大的jQuery应用程序，我正在使用以下两种方法来进行点击事件。</p>
+<p>第一种方法**</p>
+<h3><span id="html">HTML</span></h3><pre><code>&lt;div id=&quot;myDiv&quot;&gt;Some Content&lt;/div&gt;
+</code></pre><h3><span id="jquery">jQuery</span></h3><pre><code>$(&apos;#myDiv&apos;).click(function(){
+    //Some code
+});
+</code></pre><p>第二种方法**</p>
+<h3><span id="html">HTML</span></h3><pre><code>&lt;div id=&quot;myDiv&quot; onClick=&quot;divFunction()&quot;&gt;Some Content&lt;/div&gt;
+</code></pre><h3><span id="javascript-function-call">JavaScript function call</span></h3><pre><code>function divFunction(){
+    //Some code
+}
+</code></pre><p>我在应用程序中使用第一种或第二种方法。哪一个更好？更好的表现？和标准？</p>
+<p><a id="more"></a> 使用<code>$（&#39;＃myDiv&#39;）。click（function（）{</code>更好**，因为它遵循标准的事件注册模型（jQuery<br><a href="“https">内部</a>使用<a href="”https://developer.mozilla.org/en-US"> <code>addEventListener</code> </a>和<a href="”http://msdn.microsoft.com/en-us/library/ie/ms536343%28v="><code>attachEvent</code> </a>）。</p>
+<p>基本上以<a href="http://www.quirksmode.org/js/events_advanced.html" target="_blank" rel="noopener">现代的方式</a>注册事件是<a href="“http：//en.wikipedia">unobtrusive </a>处理事件的方式。另外，要为目标注册多个事件侦听器，您可以为同一个目标调用<code>addEventListener（）</code>。</p>
+<pre><code>var myEl = document.getElementById(&apos;myelement&apos;);
+
+myEl.addEventListener(&apos;click&apos;, function() {
+    alert(&apos;Hello world&apos;);
+}, false);
+
+myEl.addEventListener(&apos;click&apos;, function() {
+    alert(&apos;Hello world again!!!&apos;);
+}, false);
+</code></pre><p><a href="http://jsfiddle.net/aj55x/1/" target="_blank" rel="noopener"> http://jsfiddle.net/aj55x/1/ </a></p>
+<blockquote>
+<p><strong><a href="https://developer.mozilla.org/en-
+US/docs/DOM/element.addEventListener#Why_use_addEventListener.3F" target="_blank" rel="noopener">Why use addEventListener?</a></strong> (From MDN)</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>addEventListener is the way to register an event listener as specified in<br>W3C DOM. Its benefits are as follows:</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>It allows adding more than a single handler for an event. This is<br>particularly useful for DHTML libraries or Mozilla extensions that need to<br>work well even if other libraries/extensions are used.</p>
+</li>
+<li><p>It gives you finer-grained control of the phase when the listener gets<br>activated (capturing vs. bubbling)</p>
+</li>
+<li><p>It works on any DOM element, not just HTML elements.</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>更多关于现代活动注册 - ＆gt; <a href="http://www.quirksmode.org/js/events_advanced.html" target="_blank" rel="noopener"> http://www.quirksmode.org/js/events_advanced.html</a></p>
+<p>其他方法，例如设置<a href="https://developer.mozilla.org/en-
+US/docs/DOM/event#HTML_attribute" target="_blank" rel="noopener"> HTML属性</a>，例如：</p>
+<pre><code>&lt;button onclick=&quot;alert(&apos;Hello world!&apos;)&quot;&gt;
+</code></pre><p>或<a href="https://developer.mozilla.org/en-
+US/docs/DOM/event#DOM_element_properties" target="_blank" rel="noopener"> DOM元素属性</a>，例如：</p>
+<pre><code>myEl.onclick = function(event){alert(&apos;Hello world&apos;);}; 
+</code></pre><p>旧的，他们可以很容易地写出来。</p>
+<p>应该避免使用HTML属性_ **，因为它使得标记更大，可读性也更差。对内容/结构和行为的担忧并没有很好的分离，使得一个难以发现的bug。</p>
+<p><strong>**<em>DOM元素属性</em> </strong> 方法的问题是每个事件只能绑定一个事件处理程序。</p>
+<p>有关传统事件处理的更多信息 - ＆gt; <a href="http://www.quirksmode.org/js/events_tradmod.html" target="_blank" rel="noopener"> http://www.quirksmode.org/js/events_tradmod.html</a></p>
+<p>MDN参考：<a href="https://developer.mozilla.org/en-US/docs/DOM/event" target="_blank" rel="noopener"> https://developer.mozilla.org/en-<br>US/docs/DOM/事件</a></p>
+<p>为了获得更好的性能，请使用原生JavaScript。为了更快的开发，请使用jQuery。在 <em><a href="http://jsperf.com/jquery-vs-native-element-performance" target="_blank" rel="noopener"> jQuery<br>vs本地元素性能</a>中检查性能比较</em></p>
+<p>我已经在Windows Server 2008 R2 / 7 64位的Firefox 16.0 32位上做了一个测试</p>
+<pre><code>$(&apos;span&apos;); // 6,604 operations per second
+document.getElementsByTagName(&apos;span&apos;); // 10,331,708 operations/sec
+</code></pre><p>对于点击事件，请检查 <em>[原生浏览器事件vs jquery触发器</em> a&gt; <em> 或 </em><a href="http://jsperf.com/jquery-vs-native-click-event-binding" target="_blank" rel="noopener">jQuery与原生Click事件绑定</a> _</p>
+<p>在Windows Server 2008 R2 / 7 64位版本的Chrome 32.0.1229.79 32位版本中进行测试</p>
+<pre><code>$(&apos;#jquery a&apos;).click(window.testClickListener); // 2,957 operations/second
+
+[].forEach.call( document.querySelectorAll(&apos;#native a&apos;), function(el) {
+    el.addEventListener(&apos;click&apos;, window.testClickListener, false);
+}); // 18,196 operations/second
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/jquery/">jquery</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/jquery-click-vs-onclick/" data-title="jQuery click（）与onClick | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/hide-scroll-bar-but-while-still-being-able-to-scroll/" title="隐藏滚动条，但仍然可以滚动">
+  <strong>上一篇：</strong><br/>
+  <span>
+  隐藏滚动条，但仍然可以滚动</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/jquery-disable-enable-submit-button/"  title="jQuery禁用/启用提交按钮">
+ <strong>下一篇：</strong><br/> 
+ <span>jQuery禁用/启用提交按钮
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">HTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">jQuery</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">HTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">JavaScript function call</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

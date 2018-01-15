@@ -1,0 +1,612 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>从Grep RegEx捕获组 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我在sh（Mac OSX 10.6）中使用了这个小脚本来查看文件数组。 Google在这一点上停止了帮助： files=&amp;quot;*.jpg&amp;quot; for f in $files     do         echo $f | grep -oEi &amp;apos;[0-9]+_([a-z]+)_[0-9a-z]*&amp;apos;         name=$?         echo $nam">
+<meta name="keywords" content="shell,bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从Grep RegEx捕获组">
+<meta property="og:url" content="https://www.tracholar.top/2018/06/11/capturing-groups-from-a-grep-regex/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我在sh（Mac OSX 10.6）中使用了这个小脚本来查看文件数组。 Google在这一点上停止了帮助： files=&amp;quot;*.jpg&amp;quot; for f in $files     do         echo $f | grep -oEi &amp;apos;[0-9]+_([a-z]+)_[0-9a-z]*&amp;apos;         name=$?         echo $nam">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从Grep RegEx捕获组">
+<meta name="twitter:description" content="我在sh（Mac OSX 10.6）中使用了这个小脚本来查看文件数组。 Google在这一点上停止了帮助： files=&amp;quot;*.jpg&amp;quot; for f in $files     do         echo $f | grep -oEi &amp;apos;[0-9]+_([a-z]+)_[0-9a-z]*&amp;apos;         name=$?         echo $nam">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/11/capturing-groups-from-a-grep-regex/" title="从Grep RegEx捕获组" itemprop="url">从Grep RegEx捕获组</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-11T02:13:43.000Z" itemprop="datePublished"> Published 2018-06-11</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我在<code>sh</code>（Mac OSX 10.6）中使用了这个小脚本来查看文件数组。 Google在这一点上停止了帮助：</p>
+<pre><code>files=&quot;*.jpg&quot;
+for f in $files
+    do
+        echo $f | grep -oEi &apos;[0-9]+_([a-z]+)_[0-9a-z]*&apos;
+        name=$?
+        echo $name
+    done
+</code></pre><p>到目前为止（显然，对于你的shell专家）<code>$ name</code>仅仅保留0,1或2，这取决于<code>grep</code>是否发现文件名与所提供的内容匹配。<br><strong>我想要捕获parens<code>（[a-z] +）中的内容</code>并将其存储到变量</strong> 。</p>
+<p>如果可能<strong>，我希望 </strong>仅使用<code>grep</code>。如果没有，请不要Python或Perl等。<code>sed</code>或者类似的东西 - 我是shell的新手，想从*<br>nix纯粹角度攻击这个。</p>
+<p>另外，作为一个超酷的bonu，我很好奇我如何在shell中连接字符串？我捕获的是在$<br>name中存储的字符串“somename”，我想添加字符串“.jpg”到它的末尾，我可以<code>cat $ name&#39;.jpg&#39;</code>？</p>
+<p>请解释发生了什么，如果你有时间的话。</p>
+<a id="more"></a>
+<p>如果你使用Bash，你甚至不需要使用<code>grep</code>：</p>
+<pre><code>files=&quot;*.jpg&quot;
+regex=&quot;[0-9]+_([a-z]+)_[0-9a-z]*&quot;
+for f in $files
+do
+    if [[ $f =~ $regex ]]
+    then
+        name=&quot;${BASH_REMATCH[1]}&quot;
+        echo &quot;${name}.jpg&quot;    # concatenate strings
+        name=&quot;${name}.jpg&quot;    # same thing stored in a variable
+    else
+        echo &quot;$f doesn&apos;t match&quot; &gt;&amp;2 # this could get noisy if there are a lot of non-matching files
+    fi
+done
+</code></pre><p>将正则表达式放在一个变量中更好。如果包含字面，某些模式将不起作用。</p>
+<p>这是使用Bash的正则表达式匹配运算符的<code>=〜</code>。匹配的结果被保存到一个名为<code>$ BASH_REMATCH</code>的数组中。第一个捕获组存储在索引1中，索引2中的第二个（如果有的话）等。索引零是完全匹配。</p>
+<p>您应该知道，如果没有定位符，这个正则表达式（以及使用<code>grep</code>的那个）将会匹配下面的任何一个例子或更多，这可能不是您要找的东西：</p>
+<pre><code>123_abc_d4e5
+xyz123_abc_d4e5
+123_abc_d4e5.xyz
+xyz123_abc_d4e5.xyz
+</code></pre><p>为了消除第二个和第四个例子，使你的正则表达式如下所示：</p>
+<pre><code>^[0-9]+_([a-z]+)_[0-9a-z]*
+</code></pre><p>表示字符串必须带有一个或多个数字开始_。克拉代表字符串的开始。如果您在正则表达式的末尾添加美元符号，如下所示：</p>
+<pre><code>^[0-9]+_([a-z]+)_[0-9a-z]*$
+</code></pre><p>那么第三个例子也将被消除，因为点不在正则表达式中的字符之间，而美元符号表示字符串的结尾。请注意，第四个例子也没有通过这个匹配。</p>
+<p>如果您有GNU <code>grep</code>（约2.5或更高版本，我认为在添加<code>\ K</code>运算符时）：</p>
+<pre><code>name=$(echo &quot;$f&quot; | grep -Po &apos;(?i)[0-9]+_\K[a-z]+(?=_[0-9a-z]*)&apos;).jpg
+</code></pre><p><code>\ K</code>运算符（可变长度后顾）会导致前面的模式匹配，但不包括结果中的匹配。固定长度的等价物是<code>（？&lt;=）</code> -<br>模式将包含在右括号之前。如果量词可以匹配不同长度的字符串（例如<code>+</code>，<code>*</code>，<code>{2,4}</code>代码&gt;）。</p>
+<p><code>（？=）</code>运算符匹配固定或可变长度的模式，称为“预见”。它也不包括结果中匹配的字符串。</p>
+<p>为了使匹配不区分大小写，使用<code>（？i）</code>运算符。它会影响到它后面的模式，所以它的位置非常重要。</p>
+<p>可能需要根据文件名中是否有其他字符来调整正则表达式。你会注意到，在这种情况下，我展示了一个在捕获子字符串的同时连接字符串的例子。</p>
+<p>纯粹的<code>grep</code>并不是真正可行的，至少不是一般的。</p>
+<p>但是，如果你的模式是合适的，你可以在管道中多次使用<code>grep</code>来首先将你的行减少到一个已知的格式，然后提取你想要的位。 （尽管像<code>cut</code>和<code>sed</code>这样的工具在这方面要好得多）。</p>
+<p>假设为了争辩，你的模式比较简单一些：<code>[0-9] + _（[a-z] +）_</code>你可以像这样提取它：</p>
+<pre><code>echo $name | grep -Ei &apos;[0-9]+_[a-z]+_&apos; | grep -oEi &apos;[a-z]+&apos;
+</code></pre><p>第一个<code>grep</code>会删除所有与您的整个模板不匹配的行，第二个<code>grep</code>（它有<code>-
+只匹配</code>指定）将显示名称的阿尔法部分。这只适用于这个模式，因为这个模式是合适的：“alpha部分”足够具体，可以抽出你想要的东西。</p>
+<p>（另外：我个人使用<code>grep</code> + <code>cut</code>来实现你所要做的：<code>echo $ name | grep {pattern} | cut -d _
+-f 2</code>。这将得到<code>cut</code>通过在分隔符<code>_</code>上进行分割来将行解析为字段，并返回字段2（字段编号从1开始））。</p>
+<p>Unix的哲学就是要有一些工具可以做一件事，做得很好，并且将它们结合起来以实现不重要的任务，所以我认为<code>grep</code> + <code>sed</code>代码&gt;等是一个更unicit的方式做事情： - ）</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/06/11/capturing-groups-from-a-grep-regex/" data-title="从Grep RegEx捕获组 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/06/11/send-email-intent/" title="发送电子邮件意向">
+  <strong>上一篇：</strong><br/>
+  <span>
+  发送电子邮件意向</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/06/11/how-convert-byte-array-to-string/"  title="如何将字节数组转换为字符串">
+ <strong>下一篇：</strong><br/> 
+ <span>如何将字节数组转换为字符串
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

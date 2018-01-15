@@ -1,0 +1,569 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>困境：何时使用片段vs活动： | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我知道Activities被设计成代表我的应用程序的单个屏幕，而Fragments被设计成可重用的UI布局，其中嵌入了逻辑。 p&amp;gt;直到不久之前，我开发了一个应用程序，因为它说应该开发它。 我创建了一个Activity来表示我的应用程序的一个屏幕，并使用了ViewPager或Google Maps的Fragments。我很少创建一个可重复使用的ListFragment或其他UI。 最近，我偶然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="困境：何时使用片段vs活动：">
+<meta property="og:url" content="https://www.tracholar.top/2018/04/07/dilemma-when-to-use-fragments-vs-activities/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我知道Activities被设计成代表我的应用程序的单个屏幕，而Fragments被设计成可重用的UI布局，其中嵌入了逻辑。 p&amp;gt;直到不久之前，我开发了一个应用程序，因为它说应该开发它。 我创建了一个Activity来表示我的应用程序的一个屏幕，并使用了ViewPager或Google Maps的Fragments。我很少创建一个可重复使用的ListFragment或其他UI。 最近，我偶然">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="困境：何时使用片段vs活动：">
+<meta name="twitter:description" content="我知道Activities被设计成代表我的应用程序的单个屏幕，而Fragments被设计成可重用的UI布局，其中嵌入了逻辑。 p&amp;gt;直到不久之前，我开发了一个应用程序，因为它说应该开发它。 我创建了一个Activity来表示我的应用程序的一个屏幕，并使用了ViewPager或Google Maps的Fragments。我很少创建一个可重复使用的ListFragment或其他UI。 最近，我偶然">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/07/dilemma-when-to-use-fragments-vs-activities/" title="困境：何时使用片段vs活动：" itemprop="url">困境：何时使用片段vs活动：</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-07T02:32:59.000Z" itemprop="datePublished"> Published 2018-04-07</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我知道<code>Activities</code>被设计成代表我的应用程序的单个屏幕，而<code>Fragments</code>被设计成可重用的UI布局，其中嵌入了逻辑。 p&gt;<br>直到不久之前，我开发了一个应用程序，因为它说应该开发它。 我创建了一个<code>Activity</code>来表示我的应用程序的一个屏幕，并使用了<code>ViewPager</code>或<code>Google Maps</code>的Fragments。我很少创建一个可重复使用的<code>ListFragment</code>或其他UI。</p>
+<p>最近，我偶然发现了一个只包含2个<code>Activities</code>的项目，一个是<code>SettingsActivity</code>，另外一个是。 <code>MainActivity</code>的布局填充了许多隐藏的全屏UI片段，只显示一个。在<code>Acitivty</code>逻辑中，在应用程序的不同屏幕之间有许多<code>FragmentTransitions</code>。</p>
+<p>我喜欢这种方法是因为应用程序使用<code>ActionBar</code>，它保持不变，不会随屏幕切换动画一起移动，这是<code>Activity</code>切换。这给了这些屏幕转换更流畅的感觉。</p>
+<p>所以我想我要问的就是分享你目前关于这个主题的发展方式，我知道它可能看起来像一个基于观点的问题，但我把它看作是一个Android设计和架构问题。不是真正的意见。</p>
+<p><strong>更新（01.05.2014）</strong> ：继 <strong>Square</strong> 的 <strong>Eric Burke</strong><br>发表演讲之后（我不得不说是一个很棒的演示文稿为Android开发者提供了许多有用的工具，而且我与Square没有任何关系。）</p>
+<p><a href="http://www.infoq.com/presentations/Android-Design/" target="_blank" rel="noopener"> http://www.infoq.com/presentations/Android-Design/</a></p>
+<p>根据我过去几个月的个人经验，我发现构建我的应用程序的最佳方式是创建代表应用程序中 <strong>流</strong> 的片段组，并将所有这些片段在一个<code>Activity</code>中。所以基本上，您的应用程序中的<code>Activities</code>数量与流量数量相同。<br>这样一来，操作栏在所有流程的屏幕上都保持完好，但正在通过改变流程来重新创建，这是非常有意义的。正如埃里克·伯克（Eric<br>Burke）所说的那样，我也逐渐认识到，尽可能少使用<code>Activities</code>的哲学并不适用于所有情况，因为它在他所谓的“上帝”活动。</p>
+<p><a id="more"></a> 专家会告诉你：“当我看到UI时，我会知道是使用<code>Activity</code>还是<code>Fragment</code>”。一开始这个没有任何意义，但是最终你可以确定是否需要<code>Fragment</code>。</p>
+<p>有一个很好的做法，我发现对我很有帮助。当我试图向我的女儿解释一些事情的时候，我想起了这件事。</p>
+<p>也就是说，设想一个代表屏幕的盒子。你可以加载另一个屏幕在这个盒子？如果你使用一个新的盒子，你将不得不从第一个盒子复制多个项目？如果答案是肯定的，那么你应该使用<code>Fragments</code>，因为根<code>Activity</code>可以容纳所有重复的元素，以节省你创建它们的时间，你可以简单的替换盒子。</p>
+<p>不过 <strong>不要忘记</strong> ，你总是需要一个盒子容器（<code>Activity</code>），否则你的零件将被分散。所以一个箱子里面有零件。</p>
+<p>注意不要误用盒子。 Android的UX专家建议（你可以在YouTube上找到它们），当我们应该明确加载另一个<code>Activity</code>，而不是使用<code>Fragment</code>（就像我们处理导航抽屉时类别）。一旦您对<code>Fragments</code>感到满意，您可以观看所有视频。更是他们的强制性材料。</p>
+<p>你现在可以看看你的用户界面，看看你是否需要<code>Activity</code>或者<code>Fragment</code>？你有新的观点吗？我想你是。</p>
+<p>我的哲学是这样的：</p>
+<p>只有在绝对需要时才创建一个活动。随着后台堆栈可用于提交大量的片段事务，我尝试尽可能在应用程序中创建尽可能少的活动。此外，各种片段之间的通信要容易得多，而不是在活动之间来回发送数据。</p>
+<p>活动转换很昂贵，对吗？至少我相信 - 既然旧活动被摧毁/暂停/停止，推入堆栈，然后新的活动必须被创建/开始/恢复。</p>
+<p>这是我的哲学，因为碎片被引入。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/04/07/dilemma-when-to-use-fragments-vs-activities/" data-title="困境：何时使用片段vs活动： | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/08/fatal-error-maximum-execution-time-of-30-seconds-exceeded/" title="致命错误：超过30秒的最大执行时间">
+  <strong>上一篇：</strong><br/>
+  <span>
+  致命错误：超过30秒的最大执行时间</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/07/when-do-we-need-curly-braces-around-shell-variables/"  title="我们什么时候需要在shell变量上花括号？">
+ <strong>下一篇：</strong><br/> 
+ <span>我们什么时候需要在shell变量上花括号？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

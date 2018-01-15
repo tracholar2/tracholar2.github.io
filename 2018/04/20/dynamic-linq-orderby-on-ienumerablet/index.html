@@ -1,0 +1,762 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>IEnumerable T上的动态LINQ OrderBy | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我在动态LINQ的VS2008示例中找到了一个示例，它允许您使用类似sql的字符串（例如OrderBy（“Name，Age DESC”））来进行排序。不幸的是，这个方法只能用于IQueryable＆lt; T＆gt;;有什么办法可以在IEnumerable＆lt; T＆gt;上获得这个功能吗？">
+<meta name="keywords" content="c-sharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IEnumerable T上的动态LINQ OrderBy">
+<meta property="og:url" content="https://www.tracholar.top/2018/04/20/dynamic-linq-orderby-on-ienumerablet/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我在动态LINQ的VS2008示例中找到了一个示例，它允许您使用类似sql的字符串（例如OrderBy（“Name，Age DESC”））来进行排序。不幸的是，这个方法只能用于IQueryable＆lt; T＆gt;;有什么办法可以在IEnumerable＆lt; T＆gt;上获得这个功能吗？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IEnumerable T上的动态LINQ OrderBy">
+<meta name="twitter:description" content="我在动态LINQ的VS2008示例中找到了一个示例，它允许您使用类似sql的字符串（例如OrderBy（“Name，Age DESC”））来进行排序。不幸的是，这个方法只能用于IQueryable＆lt; T＆gt;;有什么办法可以在IEnumerable＆lt; T＆gt;上获得这个功能吗？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/20/dynamic-linq-orderby-on-ienumerablet/" title="IEnumerable T上的动态LINQ OrderBy" itemprop="url">IEnumerable T上的动态LINQ OrderBy</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-20T01:38:55.000Z" itemprop="datePublished"> Published 2018-04-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我在<a href="http://msdn2.microsoft.com/en-
+us/bb330936.aspx" target="_blank" rel="noopener">动态LINQ的VS2008示例</a>中找到了一个示例，它允许您使用类似sql的字符串（例如<code>OrderBy（“Name，Age
+DESC”））</code>来进行排序。不幸的是，这个方法只能用于<code>IQueryable＆lt; T＆gt;</code>;有什么办法可以在<code>IEnumerable＆lt;
+T＆gt;</code>上获得这个功能吗？</p>
+<p><a id="more"></a> 刚刚偶然发现了这个老头子…</p>
+<p>要做到这一点，没有动态的LINQ库，你只需要下面的代码。这涵盖了大多数常见的场景，包括嵌套属性。</p>
+<p>为了使它与IEnumerable＆lt; T＆gt;一起工作，你可以添加一些通过<code>AsQueryable</code>包装的方法，但是下面的代码是核心<code>Expression</code>代码&gt;逻辑需要。</p>
+<pre><code>public static IOrderedQueryable&lt;T&gt; OrderBy&lt;T&gt;(
+    this IQueryable&lt;T&gt; source, 
+    string property)
+{
+    return ApplyOrder&lt;T&gt;(source, property, &quot;OrderBy&quot;);
+}
+
+public static IOrderedQueryable&lt;T&gt; OrderByDescending&lt;T&gt;(
+    this IQueryable&lt;T&gt; source, 
+    string property)
+{
+    return ApplyOrder&lt;T&gt;(source, property, &quot;OrderByDescending&quot;);
+}
+
+public static IOrderedQueryable&lt;T&gt; ThenBy&lt;T&gt;(
+    this IOrderedQueryable&lt;T&gt; source, 
+    string property)
+{
+    return ApplyOrder&lt;T&gt;(source, property, &quot;ThenBy&quot;);
+}
+
+public static IOrderedQueryable&lt;T&gt; ThenByDescending&lt;T&gt;(
+    this IOrderedQueryable&lt;T&gt; source, 
+    string property)
+{
+    return ApplyOrder&lt;T&gt;(source, property, &quot;ThenByDescending&quot;);
+}
+
+static IOrderedQueryable&lt;T&gt; ApplyOrder&lt;T&gt;(
+    IQueryable&lt;T&gt; source, 
+    string property, 
+    string methodName) 
+{
+    string[] props = property.Split(&apos;.&apos;);
+    Type type = typeof(T);
+    ParameterExpression arg = Expression.Parameter(type, &quot;x&quot;);
+    Expression expr = arg;
+    foreach(string prop in props) {
+        // use reflection (not ComponentModel) to mirror LINQ
+        PropertyInfo pi = type.GetProperty(prop);
+        expr = Expression.Property(expr, pi);
+        type = pi.PropertyType;
+    }
+    Type delegateType = typeof(Func&lt;,&gt;).MakeGenericType(typeof(T), type);
+    LambdaExpression lambda = Expression.Lambda(delegateType, expr, arg);
+
+    object result = typeof(Queryable).GetMethods().Single(
+            method =&gt; method.Name == methodName
+                    &amp;&amp; method.IsGenericMethodDefinition
+                    &amp;&amp; method.GetGenericArguments().Length == 2
+                    &amp;&amp; method.GetParameters().Length == 2)
+            .MakeGenericMethod(typeof(T), type)
+            .Invoke(null, new object[] {source, lambda});
+    return (IOrderedQueryable&lt;T&gt;)result;
+}
+</code></pre><hr>
+<p>编辑：如果要将它与<code>dynamic</code>混合使用，它会变得更有趣 - 尽管注意<code>dynamic</code>仅适用于LINQ-to-<br>Objects（ORM的表达式树等等不能真正代表<code>动态</code>查询 - <code>MemberExpression</code>不支持它）。但是，有一种方法可以用LINQ到对象来实现。请注意，<code>Hashtable</code>的选择是由于有利的锁定语义：</p>
+<pre><code>using Microsoft.CSharp.RuntimeBinder;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+static class Program
+{
+    private static class AccessorCache
+    {
+        private static readonly Hashtable accessors = new Hashtable();
+
+        private static readonly Hashtable callSites = new Hashtable();
+
+        private static CallSite&lt;Func&lt;CallSite, object, object&gt;&gt; GetCallSiteLocked(
+            string name) 
+        {
+            var callSite = (CallSite&lt;Func&lt;CallSite, object, object&gt;&gt;)callSites[name];
+            if(callSite == null)
+            {
+                callSites[name] = callSite = CallSite&lt;Func&lt;CallSite, object, object&gt;&gt;
+                    .Create(Binder.GetMember(
+                                CSharpBinderFlags.None, 
+                                name, 
+                                typeof(AccessorCache),
+                                new CSharpArgumentInfo[] { 
+                                    CSharpArgumentInfo.Create(
+                                        CSharpArgumentInfoFlags.None, 
+                                        null) 
+                                }));
+            }
+            return callSite;
+        }
+
+        internal static Func&lt;dynamic,object&gt; GetAccessor(string name)
+        {
+            Func&lt;dynamic, object&gt; accessor = (Func&lt;dynamic, object&gt;)accessors[name];
+            if (accessor == null)
+            {
+                lock (accessors )
+                {
+                    accessor = (Func&lt;dynamic, object&gt;)accessors[name];
+                    if (accessor == null)
+                    {
+                        if(name.IndexOf(&apos;.&apos;) &gt;= 0) {
+                            string[] props = name.Split(&apos;.&apos;);
+                            CallSite&lt;Func&lt;CallSite, object, object&gt;&gt;[] arr 
+                                = Array.ConvertAll(props, GetCallSiteLocked);
+                            accessor = target =&gt;
+                            {
+                                object val = (object)target;
+                                for (int i = 0; i &lt; arr.Length; i++)
+                                {
+                                    var cs = arr[i];
+                                    val = cs.Target(cs, val);
+                                }
+                                return val;
+                            };
+                        } else {
+                            var callSite = GetCallSiteLocked(name);
+                            accessor = target =&gt;
+                            {
+                                return callSite.Target(callSite, (object)target);
+                            };
+                        }
+                        accessors[name] = accessor;
+                    }
+                }
+            }
+            return accessor;
+        }
+    }
+
+    public static IOrderedEnumerable&lt;dynamic&gt; OrderBy(
+        this IEnumerable&lt;dynamic&gt; source, 
+        string property)
+    {
+        return Enumerable.OrderBy&lt;dynamic, object&gt;(
+            source, 
+            AccessorCache.GetAccessor(property), 
+            Comparer&lt;object&gt;.Default);
+    }
+
+    public static IOrderedEnumerable&lt;dynamic&gt; OrderByDescending(
+        this IEnumerable&lt;dynamic&gt; source, 
+        string property)
+    {
+        return Enumerable.OrderByDescending&lt;dynamic, object&gt;(
+            source, 
+            AccessorCache.GetAccessor(property), 
+            Comparer&lt;object&gt;.Default);
+    }
+
+    public static IOrderedEnumerable&lt;dynamic&gt; ThenBy(
+        this IOrderedEnumerable&lt;dynamic&gt; source, 
+        string property)
+    {
+        return Enumerable.ThenBy&lt;dynamic, object&gt;(
+            source, 
+            AccessorCache.GetAccessor(property), 
+            Comparer&lt;object&gt;.Default);
+    }
+
+    public static IOrderedEnumerable&lt;dynamic&gt; ThenByDescending(
+        this IOrderedEnumerable&lt;dynamic&gt; source, 
+        string property)
+    {
+        return Enumerable.ThenByDescending&lt;dynamic, object&gt;(
+            source, 
+            AccessorCache.GetAccessor(property), 
+            Comparer&lt;object&gt;.Default);
+    }
+
+    static void Main()
+    {
+        dynamic a = new ExpandoObject(), 
+                b = new ExpandoObject(), 
+                c = new ExpandoObject();
+        a.X = &quot;abc&quot;;
+        b.X = &quot;ghi&quot;;
+        c.X = &quot;def&quot;;
+        dynamic[] data = new[] { 
+            new { Y = a },
+            new { Y = b }, 
+            new { Y = c } 
+        };
+
+        var ordered = data.OrderByDescending(&quot;Y.X&quot;).ToArray();
+        foreach (var obj in ordered)
+        {
+            Console.WriteLine(obj.Y.X);
+        }
+    }
+}
+</code></pre><p>太容易了，没有任何并发​​症：</p>
+<ul>
+<li>使用System.Linq.Dynamic; <code>在顶部添加</code>。</li>
+<li>使用<code>vehicles = vehicles.AsQueryable（）。OrderBy（“Make ASC，Year DESC”）。ToList（）;</code></li>
+</ul>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/04/20/dynamic-linq-orderby-on-ienumerablet/" data-title="IEnumerable T上的动态LINQ OrderBy | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/20/how-does-cat-eof-work-in-bash/" title="“猫”EOF“如何在bash中工作？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  “猫”EOF“如何在bash中工作？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/20/set-http-header-to-utf-8-using-php/"  title="使用PHP将HTTP标头设置为UTF-8">
+ <strong>下一篇：</strong><br/> 
+ <span>使用PHP将HTTP标头设置为UTF-8
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -112,58 +112,33 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/why-is-subtracting-these-two-times-in-1927-giving-a-strange-result/" title="为什么要减去这两次（在1927年）给出一个奇怪的结果？" itemprop="url">为什么要减去这两次（在1927年）给出一个奇怪的结果？</a>
+      <a href="/2018/05/28/install-mysql-on-ubuntu-without-a-password-prompt/" title="在没有密码提示的情况下在Ubuntu上安装MySQL" itemprop="url">在没有密码提示的情况下在Ubuntu上安装MySQL</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-05-28T02:12:10.000Z" itemprop="datePublished"> Published 2018-05-28</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如果我运行下面的程序，该程序分析引用时间间隔1秒的两个日期字符串并对它们进行比较：</p>
-<pre><code>public static void main(String[] args) throws ParseException {
-    SimpleDateFormat sf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);  
-    String str3 = &quot;1927-12-31 23:54:07&quot;;  
-    String str4 = &quot;1927-12-31 23:54:08&quot;;  
-    Date sDt3 = sf.parse(str3);  
-    Date sDt4 = sf.parse(str4);  
-    long ld3 = sDt3.getTime() /1000;  
-    long ld4 = sDt4.getTime() /1000;
-    System.out.println(ld4-ld3);
-}
-</code></pre><p>输出结果是：</p>
-<pre><code>353
-</code></pre><p>为什么<code>ld4-ld3</code>不是<code>1</code>（正如我期望的那样，在时间上的一秒差异），而是<code>353</code>？</p>
-<p>如果我在1秒后将日期更改为时间：</p>
-<pre><code>String str3 = &quot;1927-12-31 23:54:08&quot;;  
-String str4 = &quot;1927-12-31 23:54:09&quot;;  
-</code></pre><p>那么<code>ld4-ld3</code>将会是<code>1</code>。</p>
-<hr>
-<p>Java版本：</p>
-<pre><code>java version &quot;1.6.0_22&quot;
-Java(TM) SE Runtime Environment (build 1.6.0_22-b04)
-Dynamic Code Evolution Client VM (build 0.2-b02-internal, 19.0-b04-internal, mixed mode)
+        <p>如何在Ubuntu上编写脚本来安装MySQL服务器？</p>
+<p>sudo apt-get install mysql `会安装，但它也会要求在控制台输入密码。</p>
+<p>我如何以非交互的方式做到这一点？也就是说，写一个脚本，可以提供密码？</p>
+<pre><code>#!/bin/bash
+sudo apt-get install mysql  # To install MySQL server
 
-Timezone(`TimeZone.getDefault()`):
-
-sun.util.calendar.ZoneInfo[id=&quot;Asia/Shanghai&quot;,
-offset=28800000,dstSavings=0,
-useDaylight=false,
-transitions=19,
-lastRule=null]
-
-Locale(Locale.getDefault()): zh_CN
+# How to write script for assigning password to MySQL root user
+# End
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-is-subtracting-these-two-times-in-1927-giving-a-strange-result/#more">Read More</a>
+            <a href="/2018/05/28/install-mysql-on-ubuntu-without-a-password-prompt/#more">Read More</a>
           
        </p>
     </div>
@@ -173,7 +148,7 @@ Locale(Locale.getDefault()): zh_CN
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/date/">date</a><a href="/tags/timezone/">timezone</a>
+  <span></span> <a href="/tags/bash/">bash</a>
   </div>
 
 </div>
@@ -213,43 +188,527 @@ Locale(Locale.getDefault()): zh_CN
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-install-a-python-package-with-a-whl-file/" title="如何用.whl文件安装Python包？" itemprop="url">如何用.whl文件安装Python包？</a>
+      <a href="/2018/05/28/ienumerable-vs-list-what-to-use-how-do-they-work/" title="IEnumerable与列表 - 使用什么？他们如何工作？" itemprop="url">IEnumerable与列表 - 使用什么？他们如何工作？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-05-28T01:45:05.000Z" itemprop="datePublished"> Published 2018-05-28</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我在我的Windows机器上安装Python软件包（特别是JPype1 0.5.7）时遇到了问题，并希望使用Christoph<br>Gohlke的Window二进制文件进行安装。 （就我的经验而言，这减轻了许多其他软件包安装的困扰。）</p>
-<p>然而，尽管过去Christoph曾经提供.exe文件，但最近似乎他正在上传.whl文件。</p>
-<p><a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#jpype" target="_blank" rel="noopener"> http://www.lfd.uci.edu/~gohlke/pythonlibs /＃jpype</a></p>
-<p>但是，如何安装.whl文件？</p>
-<blockquote>
-<p>Notes:</p>
-</blockquote>
-<p>&gt;</p>
-<blockquote>
+        <p>我对Enumerators如何工作以及LINQ有一些疑问。考虑这两个简单的选择：</p>
+<pre><code>List&lt;Animal&gt; sel = (from animal in Animals 
+                    join race in Species
+                    on animal.SpeciesKey equals race.SpeciesKey
+                    select animal).Distinct().ToList();
+</code></pre><p>或</p>
+<pre><code>IEnumerable&lt;Animal&gt; sel = (from animal in Animals 
+                           join race in Species
+                           on animal.SpeciesKey equals race.SpeciesKey
+                           select animal).Distinct();
+</code></pre><p>我改变了我的原始对象的名字，这看起来像一个更通用的例子。查询本身并不重要。我想问的是这个：</p>
+<pre><code>foreach (Animal animal in sel) { /*do stuff*/ }
+</code></pre><p>我注意到，如果我使用IEnumerable <code>IEnumerable</code>，当我调试和检查“sel”，在这种情况下是IEnumerable，它有一些有趣的成员：“inner”，“outer<br>“，”innerKeySelector“和”outerKeySelector“，这些最后2看起来是代表。<br>“内部”成员中没有“动物”实例，而是“物种”实例，这对我来说很奇怪。 “外”成员确实包含“动物”实例。我认为这两位代表决定哪一个进入，哪一个进出？</p>
+<p>我注意到，如果使用“Distinct”，“inner”包含6个项目（这是不正确的，因为只有2个是Distinct），但是“outer”包含正确的值。再一次，委托方法可能决定了这一点，但这比我对IEnumerable的了解还多一些。</p>
 <ul>
-<li><p>I’ve found <a href="https://wheel.readthedocs.org/en/latest/" target="_blank" rel="noopener">documents on<br>wheel</a>, but they don’t seem so<br>staightforward in explaining how to install .whl files.</p>
+<li>最重要的是，两个选项中的哪一个是最好的表现？</li>
+</ul>
+<p>邪恶的List转换通过<code>.ToList（）</code>？</p>
+<p>或者直接使用枚举器？</p>
+<p>如果可以的话，也请解释一下或者抛出一些解释IEnumerable使用的链接。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/28/ienumerable-vs-list-what-to-use-how-do-they-work/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/28/import-file-size-limit-in-phpmyadmin/" title="在PHPMyAdmin中导入文件大小限制" itemprop="url">在PHPMyAdmin中导入文件大小限制</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-28T01:19:30.000Z" itemprop="datePublished"> Published 2018-05-28</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我已经改变了我所知道的所有php.ini参数： upload_max_filesize，post_max_size。</p>
+<p>为什么我仍然看到2MB？</p>
+<p>使用Zend Server CE，在Windows 7主机上的Ubuntu VirtualBox上。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/28/import-file-size-limit-in-phpmyadmin/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a><a href="/tags/mysql/">mysql</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/27/how-to-define-a-circle-shape-in-an-android-xml-drawable-file/" title="如何在android xml可绘制文件中定义一个圆形状？" itemprop="url">如何在android xml可绘制文件中定义一个圆形状？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-27T02:39:59.000Z" itemprop="datePublished"> Published 2018-05-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有一些问题找到Android的XML的形状定义的文档。我想在XML文件中定义一个简单的填充了纯色的圆圈，将其包含到我的布局文件中。</p>
+<p>可悲的是，android.com上的文档并不包含Shape类的XML属性。我想我应该使用<a href="http://developer.android.com/reference/android/graphics/drawable/shapes/ArcShape.html" target="_blank" rel="noopener"> ArcShape</a>绘制一个圆圈但没有解释如何设置圆弧所需的尺寸，颜色或角度。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/27/how-to-define-a-circle-shape-in-an-android-xml-drawable-file/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/27/bash-how-best-to-include-other-scripts/" title="Bash：如何包含其他脚本？" itemprop="url">Bash：如何包含其他脚本？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-27T02:12:04.000Z" itemprop="datePublished"> Published 2018-05-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>通常包含脚本的方式是使用“source”</p>
+<p>例如：</p>
+<p>main.sh：</p>
+<pre><code>#!/bin/bash
+
+source incl.sh
+
+echo &quot;The main script&quot;
+</code></pre><p>incl.sh：</p>
+<pre><code>echo &quot;The included script&quot;
+</code></pre><p>执行“./main.sh”的输出是：</p>
+<pre><code>The included script
+The main script
+</code></pre><p>…现在，如果您尝试从另一个位置执行该shell脚本，除非它位于您的路径中，否则它将无法找到包含。</p>
+<p>确保脚本可以找到包含脚本的好方法是什么，特别是脚本需要是可移植的？
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/27/bash-how-best-to-include-other-scripts/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/27/curious-null-coalescing-operator-custom-implicit-conversion-behaviour/" title="好奇的空合并运算符自定义隐式转换行为" itemprop="url">好奇的空合并运算符自定义隐式转换行为</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-27T01:44:41.000Z" itemprop="datePublished"> Published 2018-05-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><strong>注意：这似乎已在<a href="https://github.com/dotnet/roslyn" target="_blank" rel="noopener"> Roslyn </a>中解决</strong></p>
+<p>这个问题出现在我写<a href="https://stackoverflow.com/questions/6238074" target="_blank" rel="noopener">这个</a>的答案时，它讲述了<a href="“http："> null-<br>coalescing运算符</a>。</p>
+<p>提醒一下，空合并运算符的思想是形式表达式</p>
+<pre><code>x ?? y
+</code></pre><p>首先评估<code>x</code>，然后：</p>
+<ul>
+<li>如果<code>x</code>的值为null，则评估<code>y</code>，这是表达式的最终结果</li>
+<li>如果<code>x</code>的值是非null，则<code>y</code>是 <em>not</em> ，并且<code>x</code>是表达式的最终结果，必要时转换为<code>y</code>的编译时类型</li>
+</ul>
+<p>现在 <em>通常</em> 不需要转换，或者它只是从一个可以为空的类型转换为一个不可空的类型 - 通常类型是相同的，或者仅仅来自（说）<code>int ？</code>到<code>int</code>。但是，您可以创建您自己的隐式转换运算符，并在必要时使用它们。</p>
+<p>对于<code>x的简单情况y</code>，我还没有看到任何奇怪的行为。但是，用<code>（x ?? y）?? z</code>我看到一些令人困惑的行为。</p>
+<p>这是一个简短但完整的测试程序 - 结果在评论中：</p>
+<pre><code>using System;
+
+public struct A
+{
+    public static implicit operator B(A input)
+    {
+        Console.WriteLine(&quot;A to B&quot;);
+        return new B();
+    }
+
+    public static implicit operator C(A input)
+    {
+        Console.WriteLine(&quot;A to C&quot;);
+        return new C();
+    }
+}
+
+public struct B
+{
+    public static implicit operator C(B input)
+    {
+        Console.WriteLine(&quot;B to C&quot;);
+        return new C();
+    }
+}
+
+public struct C {}
+
+class Test
+{
+    static void Main()
+    {
+        A? x = new A();
+        B? y = new B();
+        C? z = new C();
+        C zNotNull = new C();
+
+        Console.WriteLine(&quot;First case&quot;);
+        // This prints
+        // A to B
+        // A to B
+        // B to C
+        C? first = (x ?? y) ?? z;
+
+        Console.WriteLine(&quot;Second case&quot;);
+        // This prints
+        // A to B
+        // B to C
+        var tmp = x ?? y;
+        C? second = tmp ?? z;
+
+        Console.WriteLine(&quot;Third case&quot;);
+        // This prints
+        // A to B
+        // B to C
+        C? third = (x ?? y) ?? zNotNull;
+    }
+}
+</code></pre><p>所以我们有三个自定义的值类型：<code>A</code>，<code>B</code>和<code>C</code>，转换从A到B，A到C， B到C。</p>
+<p>我可以理解第二种情况和第三种情况…但是为什么在第一种情况下会有额外的A到B的转换？特别是，我真的很希望第一种情况和第二种情况是相同的 -<br>毕竟只是将一个表达式提取到一个局部变量中。</p>
+<p>有什么事情发生？在C＃编译器中，我非常犹豫要哭“bug”，但是我很难理解发生了什么…</p>
+<p>编辑：好吧，这是一个很糟糕的例子，感谢配置器的答案，这给了我更多的理由认为这是一个错误。编辑：示例甚至不需要两个空合并操作符…</p>
+<pre><code>using System;
+
+public struct A
+{
+    public static implicit operator int(A input)
+    {
+        Console.WriteLine(&quot;A to int&quot;);
+        return 10;
+    }
+}
+
+class Test
+{
+    static A? Foo()
+    {
+        Console.WriteLine(&quot;Foo() called&quot;);
+        return new A();
+    }
+
+    static void Main()
+    {
+        int? y = 10;
+
+        int? result = Foo() ?? y;
+    }
+}
+</code></pre><p>这个输出是：</p>
+<pre><code>Foo() called
+Foo() called
+A to int
+</code></pre><p><code>Foo（）</code>在这里被调用两次的事实对我来说是非常令人惊讶的 - 我看不出有两次表达式的原因。_ p&gt;
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/27/curious-null-coalescing-operator-custom-implicit-conversion-behaviour/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/27/how-can-i-sort-arrays-and-data-in-php/" title="我怎样才能排序在PHP中的数组和数据？" itemprop="url">我怎样才能排序在PHP中的数组和数据？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-27T01:18:54.000Z" itemprop="datePublished"> Published 2018-05-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <blockquote>
+<p>Due to the enormous and ever repeating amount of <em>“How do I sort my unique<br>snowflake of an array?”</em> questions, this is a reference collection of basic<br>sorting methods in PHP. Please close any question which does not markedly<br>differ as a duplicate of this one.</p>
+</blockquote>
+<p>如何在PHP中排序数组？ 如何在PHP中对 <em>复杂</em> 数组进行排序？<br>如何在PHP中排序对象数组？</p>
+<hr>
+<ul>
+<li><p><a href="https://stackoverflow.com/a/17364128/476" target="_blank" rel="noopener">基本的一维数组;含。多维数组，包括对象数组;含。根据另一个数组对数组进行排序</a></p>
 </li>
-<li><p>This question is a duplicate with <a href="https://stackoverflow.com/questions/27041264/how-to-install-whl-
-file-in-python-windows" target="_blank" rel="noopener">this<br>question</a>, which wasn’t directly answered.</p>
+<li><p><a href="https://stackoverflow.com/a/17364468/476" target="_blank" rel="noopener">用SPL排序</a></p>
+</li>
+<li><p><a href="https://stackoverflow.com/a/17365409" target="_blank" rel="noopener">稳定排序</a></p>
 </li>
 </ul>
+<p>对于使用PHP现有函数的实际答案，请参阅1.关于排序算法的学术性详细答案（PHP的函数实现以及您可能需要真正复杂的情况），见2。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/05/27/how-can-i-sort-arrays-and-data-in-php/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/27/get-url-query-string/" title="获取URL查询字符串" itemprop="url">获取URL查询字符串</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-27T01:18:20.000Z" itemprop="datePublished"> Published 2018-05-27</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>从“URL查询”字符串获取参数的“少需要的代码”的方式是什么？</p>
+<blockquote>
+<p>www.mysite.com/category/subcategory?myqueryhash</p>
 </blockquote>
-<p>&gt;</p>
-<p>
+<p>输出应该是：<code>myqueryhash</code><br>我知道这个方法：</p>
+<pre><code>www.mysite.com/category/subcategory?q=myquery
+
+&lt;?php
+   echo $_GET[&apos;q&apos;];  //Output: myquery
+?&gt;
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-install-a-python-package-with-a-whl-file/#more">Read More</a>
+            <a href="/2018/05/27/get-url-query-string/#more">Read More</a>
           
        </p>
     </div>
@@ -259,7 +718,7 @@ file-in-python-windows" target="_blank" rel="noopener">this<br>question</a>, whi
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/windows/">windows</a><a href="/tags/pip/">pip</a><a href="/tags/python-wheel/">python-wheel</a><a href="/tags/jpype/">jpype</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -288,38 +747,214 @@ file-in-python-windows" target="_blank" rel="noopener">this<br>question</a>, whi
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-install-pip-on-macos-or-os-x/" title="如何在macOS或OS X上安装点子？" itemprop="url">如何在macOS或OS X上安装点子？</a>
+      <a href="/2018/05/26/viewpager-and-fragments-whats-the-right-way-to-store-fragments-state/" title="ViewPager和片段什么是正确的方式来存储片段的状态？" itemprop="url">ViewPager和片段什么是正确的方式来存储片段的状态？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-05-26T02:39:40.000Z" itemprop="datePublished"> Published 2018-05-26</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我昨天大部分时间都在寻找安装<code>pip</code>（Python包管理器）的明确答案。我找不到一个好的解决方案。</p>
-<p>我该如何安装？</p>
-<p>
+        <p>片段似乎是非常好的UI界面逻辑分成一些模块。但是与<code>ViewPager</code>一起，它的生命周期对我来说还是很模糊的。所以大师的想法是非常需要的！</p>
+<h3 id="Edit"><a href="#Edit" class="headerlink" title="Edit"></a>Edit</h3><p>见下面的哑巴解决方案; - ）</p>
+<h2 id="Scope"><a href="#Scope" class="headerlink" title="Scope"></a>Scope</h2><p>主要活动有一个带有片段的<code>ViewPager</code>。这些片段可以为其他（子域）活动实现一些不同的逻辑，所以片段的数据通过活动内的回调接口填充。一切运行正常，但！！</p>
+<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>当活动被重新创建（例如在方向改变时），所以<code>ViewPager</code>的片段也是如此。代码（你会发现下面）说，每当创建活动，我尝试创建一个新的<code>ViewPager</code>碎片适配器相同的碎片（也许这是问题），但FragmentManager已经拥有了所有这些片段存储在某处（在哪里？），并启动这些娱乐机制。因此，娱乐机制调用onAttach，onCreateView等“旧”片段与我的回调接口调用启动数据通过活动的实施方法。但是这个方法指向通过Activity的onCreate方法创建的新创建的片段。</p>
+<h2 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h2><p>也许我正在使用错误的模式，但即使是Android 3 Pro书也没有太多的介绍。所以， **请给我一个两拳，并指出如何以正确的方式做到这一点。非常感谢！</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>主要活动_</p>
+<pre><code>public class DashboardActivity extends BasePagerActivity implements OnMessageListActionListener {
+
+private MessagesFragment mMessagesFragment;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    Logger.d(&quot;Dash onCreate&quot;);
+    super.onCreate(savedInstanceState);
+
+    setContentView(R.layout.viewpager_container);
+    new DefaultToolbar(this);
+
+    // create fragments to use
+    mMessagesFragment = new MessagesFragment();
+    mStreamsFragment = new StreamsFragment();
+
+    // set titles and fragments for view pager
+    Map&lt;String, Fragment&gt; screens = new LinkedHashMap&lt;String, Fragment&gt;();
+    screens.put(getApplicationContext().getString(R.string.dashboard_title_dumb), new DumbFragment());
+    screens.put(getApplicationContext().getString(R.string.dashboard_title_messages), mMessagesFragment);
+
+    // instantiate view pager via adapter
+    mPager = (ViewPager) findViewById(R.id.viewpager_pager);
+    mPagerAdapter = new BasePagerAdapter(screens, getSupportFragmentManager());
+    mPager.setAdapter(mPagerAdapter);
+
+    // set title indicator
+    TitlePageIndicator indicator = (TitlePageIndicator) findViewById(R.id.viewpager_titles);
+    indicator.setViewPager(mPager, 1);
+
+}
+
+/* set of fragments callback interface implementations */
+
+@Override
+public void onMessageInitialisation() {
+
+    Logger.d(&quot;Dash onMessageInitialisation&quot;);
+    if (mMessagesFragment != null)
+        mMessagesFragment.loadLastMessages();
+}
+
+@Override
+public void onMessageSelected(Message selectedMessage) {
+
+    Intent intent = new Intent(this, StreamActivity.class);
+    intent.putExtra(Message.class.getName(), selectedMessage);
+    startActivity(intent);
+}
+</code></pre><p>BasePagerActivity aka helper _</p>
+<pre><code>public class BasePagerActivity extends FragmentActivity {
+
+BasePagerAdapter mPagerAdapter;
+ViewPager mPager;
+}
+</code></pre><p><em>适配器</em> 的</p>
+<pre><code>public class BasePagerAdapter extends FragmentPagerAdapter implements TitleProvider {
+
+private Map&lt;String, Fragment&gt; mScreens;
+
+public BasePagerAdapter(Map&lt;String, Fragment&gt; screenMap, FragmentManager fm) {
+
+    super(fm);
+    this.mScreens = screenMap;
+}
+
+@Override
+public Fragment getItem(int position) {
+
+    return mScreens.values().toArray(new Fragment[mScreens.size()])[position];
+}
+
+@Override
+public int getCount() {
+
+    return mScreens.size();
+}
+
+@Override
+public String getTitle(int position) {
+
+    return mScreens.keySet().toArray(new String[mScreens.size()])[position];
+}
+
+// hack. we don&apos;t want to destroy our fragments and re-initiate them after
+@Override
+public void destroyItem(View container, int position, Object object) {
+
+    // TODO Auto-generated method stub
+}
+
+}
+</code></pre><p><em>片段</em></p>
+<pre><code>public class MessagesFragment extends ListFragment {
+
+private boolean mIsLastMessages;
+
+private List&lt;Message&gt; mMessagesList;
+private MessageArrayAdapter mAdapter;
+
+private LoadMessagesTask mLoadMessagesTask;
+private OnMessageListActionListener mListener;
+
+// define callback interface
+public interface OnMessageListActionListener {
+    public void onMessageInitialisation();
+    public void onMessageSelected(Message selectedMessage);
+}
+
+@Override
+public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    // setting callback
+    mListener = (OnMessageListActionListener) activity;
+    mIsLastMessages = activity instanceof DashboardActivity;
+
+}
+
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    inflater.inflate(R.layout.fragment_listview, container);
+    mProgressView = inflater.inflate(R.layout.listrow_progress, null);
+    mEmptyView = inflater.inflate(R.layout.fragment_nodata, null);
+    return super.onCreateView(inflater, container, savedInstanceState);
+}
+
+@Override
+public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+    // instantiate loading task
+    mLoadMessagesTask = new LoadMessagesTask();
+
+    // instantiate list of messages
+    mMessagesList = new ArrayList&lt;Message&gt;();
+    mAdapter = new MessageArrayAdapter(getActivity(), mMessagesList);
+    setListAdapter(mAdapter);
+}
+
+@Override
+public void onResume() {
+    mListener.onMessageInitialisation();
+    super.onResume();
+}
+
+public void onListItemClick(ListView l, View v, int position, long id) {
+    Message selectedMessage = (Message) getListAdapter().getItem(position);
+    mListener.onMessageSelected(selectedMessage);
+    super.onListItemClick(l, v, position, id);
+}
+
+/* public methods to load messages from host acitivity, etc... */
+}
+</code></pre><h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>愚蠢的解决方案是使用putFragment将片段保存在主机Activity的onSaveInstanceState中，并通过getFragment将它们放入onCreate中。但是我仍然有一种奇怪的感觉，那就是不应该像这样…请参阅下面的代码：</p>
+<pre><code>    @Override
+protected void onSaveInstanceState(Bundle outState) {
+
+    super.onSaveInstanceState(outState);
+    getSupportFragmentManager()
+            .putFragment(outState, MessagesFragment.class.getName(), mMessagesFragment);
+}
+
+protected void onCreate(Bundle savedInstanceState) {
+    Logger.d(&quot;Dash onCreate&quot;);
+    super.onCreate(savedInstanceState);
+
+    ...
+    // create fragments to use
+    if (savedInstanceState != null) {
+        mMessagesFragment = (MessagesFragment) getSupportFragmentManager().getFragment(
+                savedInstanceState, MessagesFragment.class.getName());
+                StreamsFragment.class.getName());
+    }
+    if (mMessagesFragment == null)
+        mMessagesFragment = new MessagesFragment();
+    ...
+}
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-install-pip-on-macos-or-os-x/#more">Read More</a>
+            <a href="/2018/05/26/viewpager-and-fragments-whats-the-right-way-to-store-fragments-state/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/install/">install</a><a href="/tags/pip/">pip</a><a href="/tags/macos/">macos</a>
-  </div>
 
 </div>
 
@@ -347,25 +982,25 @@ file-in-python-windows" target="_blank" rel="noopener">this<br>question</a>, whi
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-install-pip-on-windows/" title="我如何在Windows上安装点子？" itemprop="url">我如何在Windows上安装点子？</a>
+      <a href="/2018/05/26/how-to-create-a-file-in-linux-from-terminal-window/" title="如何从终端窗口在Linux中创建一个文件？" itemprop="url">如何从终端窗口在Linux中创建一个文件？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-05-26T02:12:01.000Z" itemprop="datePublished"> Published 2018-05-26</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><a href="https://pip.pypa.io/en/stable/" target="_blank" rel="noopener"> <code>pip</code> </a>是<a href="“的替代品”"> <code>easy_install</code></a>。但是，我应该在Windows上使用<code>easy_install</code>安装<code>pip</code>吗？有更好的方法吗？</p>
+        <p>在Linux中创建文件最简单的方法是什么？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-install-pip-on-windows/#more">Read More</a>
+            <a href="/2018/05/26/how-to-create-a-file-in-linux-from-terminal-window/#more">Read More</a>
           
        </p>
     </div>
@@ -375,382 +1010,7 @@ file-in-python-windows" target="_blank" rel="noopener">this<br>question</a>, whi
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/windows/">windows</a><a href="/tags/pip/">pip</a><a href="/tags/installation/">installation</a><a href="/tags/easy-install/">easy-install</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-do-i-invoke-a-java-method-when-given-the-method-name-as-a-string/" title="将方法名称作为字符串时，如何调用Java方法？" itemprop="url">将方法名称作为字符串时，如何调用Java方法？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如果我有两个变量：</p>
-<pre><code>Object obj;
-String methodName = &quot;getName&quot;;
-</code></pre><p>如果不知道<code>obj</code>的类，我怎么能调用<code>methodName</code>标识的方法呢？</p>
-<p>被调用的方法没有参数，并且有一个<code>String</code>返回值。这是一个Java bean的getter _。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-invoke-a-java-method-when-given-the-method-name-as-a-string/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/reflection/">reflection</a><a href="/tags/invoke/">invoke</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-do-i-join-two-lists-in-java/" title="如何在Java中加入两个列表？" itemprop="url">如何在Java中加入两个列表？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>条件：不要修改原来的列表;只有JDK，没有外部库。单线或JDK 1.3版本的奖励积分。</p>
-<p>有一个比以下简单的方法：</p>
-<pre><code>List&lt;String&gt; newList = new ArrayList&lt;String&gt;();
-newList.addAll(listOne);
-newList.addAll(listTwo);
-</code></pre><p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-join-two-lists-in-java/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/list/">list</a><a href="/tags/jdk1-5/">jdk1.5</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-do-i-list-all-files-of-a-directory/" title="如何列出目录的所有文件？" itemprop="url">如何列出目录的所有文件？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何在Python中列出目录中的所有文件，并将它们添加到<code>list</code>？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-list-all-files-of-a-directory/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/directory/">directory</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-do-i-loop-through-or-enumerate-a-javascript-object/" title="如何循环或枚举JavaScript对象？" itemprop="url">如何循环或枚举JavaScript对象？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有一个JavaScript对象，如下所示：</p>
-<pre><code>var p = {
-    &quot;p1&quot;: &quot;value1&quot;,
-    &quot;p2&quot;: &quot;value2&quot;,
-    &quot;p3&quot;: &quot;value3&quot;
-};
-</code></pre><p>现在我想遍历所有的<code>p</code>元素（<code>p1</code>，<code>p2</code>，<code>p3</code> …）并获得他们的钥匙和价值观。我该怎么做？</p>
-<p>如果需要，我可以修改JavaScript对象。我的最终目标是循环访问一些关键值对，如果可能的话，我想避免使用<code>eval</code>。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-loop-through-or-enumerate-a-javascript-object/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/loops/">loops</a><a href="/tags/each/">each</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-do-i-parse-xml-in-python/" title="如何在Python中解析XML？" itemprop="url">如何在Python中解析XML？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在包含xml的数据库中有很多行，我试图编写一个Python脚本来检查这些行，并计算特定节点属性的实例数。例如，我的树看起来像：</p>
-<pre><code>&lt;foo&gt;
-   &lt;bar&gt;
-      &lt;type foobar=&quot;1&quot;/&gt;
-      &lt;type foobar=&quot;2&quot;/&gt;
-   &lt;/bar&gt;
-&lt;/foo&gt;
-</code></pre><p>如何使用Python访问XML中的属性1和2？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-parse-xml-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/xml/">xml</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-do-i-pass-a-variable-by-reference/" title="如何通过引用传递变量？" itemprop="url">如何通过引用传递变量？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Python文档似乎不清楚参数是通过引用还是值传递的，下面的代码会生成未更改的“原始”值</p>
-<pre><code>class PassByReference:
-    def __init__(self):
-        self.variable = &apos;Original&apos;
-        self.change(self.variable)
-        print(self.variable)
-
-    def change(self, var):
-        var = &apos;Changed&apos;
-</code></pre><p>有什么事情可以通过实际参考来传递变量吗？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-pass-a-variable-by-reference/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a><a href="/tags/reference/">reference</a><a href="/tags/parameter-passing/">parameter-passing</a><a href="/tags/pass-by-reference/">pass-by-reference</a>
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a>
   </div>
 
 </div>
@@ -775,7 +1035,7 @@ newList.addAll(listTwo);
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/20/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><a class="page-number" href="/page/23/">23</a><span class="space">&hellip;</span><a class="page-number" href="/page/57/">57</a><a class="extend next" rel="next" href="/page/22/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/20/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><a class="page-number" href="/page/23/">23</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/22/">Next<span></span></a>
   </nav>
 
 </div>
@@ -801,109 +1061,84 @@ newList.addAll(listTwo);
 
 
   
-<div class="categorieslist">
-	<p class="asidetitle">Categories</p>
-		<ul>
-		
-		  
-			<li><a href="/categories/javascript/" title="javascript">javascript<sup>1</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/python/" title="python">python<sup>4</sup></a></li>
-		  
-		
-		  
-			<li><a href="/categories/spark/" title="spark">spark<sup>2</sup></a></li>
-		  
-		
-		</ul>
-</div>
-
-
-  
 <div class="tagslist">
 	<p class="asidetitle">Tags</p>
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>199</sup></a></li>
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>197</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/javascript/" title="javascript">javascript<sup>165</sup></a></li>
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/string/" title="string">string<sup>40</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/jquery/" title="jquery">jquery<sup>35</sup></a></li>
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/list/" title="list">list<sup>27</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/arrays/" title="arrays">arrays<sup>25</sup></a></li>
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/collections/" title="collections">collections<sup>15</sup></a></li>
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/dictionary/" title="dictionary">dictionary<sup>15</sup></a></li>
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/performance/" title="performance">performance<sup>15</sup></a></li>
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/exception/" title="exception">exception<sup>12</sup></a></li>
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/html/" title="html">html<sup>11</sup></a></li>
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/json/" title="json">json<sup>11</sup></a></li>
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/file-io/" title="file-io">file-io<sup>11</sup></a></li>
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/date/" title="date">date<sup>10</sup></a></li>
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/pip/" title="pip">pip<sup>10</sup></a></li>
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/oop/" title="oop">oop<sup>9</sup></a></li>
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/random/" title="random">random<sup>9</sup></a></li>
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/node-js/" title="node.js">node.js<sup>9</sup></a></li>
-			
 		
-			
-				<li><a href="/tags/object/" title="object">object<sup>9</sup></a></li>
 			
 		
 		</ul>

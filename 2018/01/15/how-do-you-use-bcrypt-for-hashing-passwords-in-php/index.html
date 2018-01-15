@@ -1,0 +1,815 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>你如何使用bcrypt在PHP中哈希密码？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我偶尔听到“使用bcrypt在PHP中存储密码，bcrypt规则”的建议。 但是bcrypt是什么？PHP不提供任何这样的功能，维基百科关于文件加密工具的喋喋不休，Web搜索只是揭示一些河豚在不同的语言。现在Blowfish也可以通过mcrypt在PHP中使用，但是如何帮助存储密码呢？河豚是一个通用的密码，它有两种方式。如果可以加密，则可以解密。密码需要单向散列函数。 是什么解释？">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你如何使用bcrypt在PHP中哈希密码？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/how-do-you-use-bcrypt-for-hashing-passwords-in-php/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我偶尔听到“使用bcrypt在PHP中存储密码，bcrypt规则”的建议。 但是bcrypt是什么？PHP不提供任何这样的功能，维基百科关于文件加密工具的喋喋不休，Web搜索只是揭示一些河豚在不同的语言。现在Blowfish也可以通过mcrypt在PHP中使用，但是如何帮助存储密码呢？河豚是一个通用的密码，它有两种方式。如果可以加密，则可以解密。密码需要单向散列函数。 是什么解释？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你如何使用bcrypt在PHP中哈希密码？">
+<meta name="twitter:description" content="我偶尔听到“使用bcrypt在PHP中存储密码，bcrypt规则”的建议。 但是bcrypt是什么？PHP不提供任何这样的功能，维基百科关于文件加密工具的喋喋不休，Web搜索只是揭示一些河豚在不同的语言。现在Blowfish也可以通过mcrypt在PHP中使用，但是如何帮助存储密码呢？河豚是一个通用的密码，它有两种方式。如果可以加密，则可以解密。密码需要单向散列函数。 是什么解释？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/how-do-you-use-bcrypt-for-hashing-passwords-in-php/" title="你如何使用bcrypt在PHP中哈希密码？" itemprop="url">你如何使用bcrypt在PHP中哈希密码？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">How to use bcrypt:</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Using PHP &gt;= 5.5-DEV</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Using PHP &gt;= 5.3.7, &lt; 5.5-DEV (also RedHat PHP &gt;= 5.3.3)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Using PHP &lt; 5.3.7 (DEPRECATED)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Face It, Cryptography is hard.</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Libraries</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">PHP 5.5 API - (Available for 5.3.7+)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Zend\Crypt\Password\Bcrypt (5.3.2+)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text">PasswordLib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.</span> <span class="toc-text">PHPASS</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">About BCrypt</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Wrap Up</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我偶尔听到“使用bcrypt在PHP中存储密码，bcrypt规则”的建议。</p>
+<p>但是<code>bcrypt</code>是什么？<br>PHP不提供任何这样的功能，维基百科关于文件加密工具的喋喋不休，Web搜索只是揭示一些<a href="“http://en.wikipedia.org/wiki/Blowfish_%28cipher%29”rel">河豚</a>在不同的语言。现在Blowfish也可以通过<code>mcrypt</code>在PHP中使用，但是如何帮助存储密码呢？河豚是一个通用的密码，它有两种方式。如果可以加密，则可以解密。密码需要单向散列函数。</p>
+<p>是什么解释？</p>
+<p><a id="more"></a> bcrypt<br><code>是一个散列算法，可以通过硬件来扩展（通过可配置的循环次数）。其缓慢和多轮确保攻击者必须部署大量资金和硬件才能破解密码。添加到每个密码[盐](https://en.wikipedia.org/wiki/Salt_%28cryptography%29)（</code>bcrypt ` REQUIRES盐），你可以肯定的是，一个攻击实际上是不可行的，没有任何可笑的资金或硬件的金额。</p>
+<p>bcrypt <code>使用 _Eksblowfish_
+算法来散列密码。虽然Eksblowfish的加密阶段和Blowfish的加密阶段完全相同，但是Eksblowfish的关键调度阶段可以确保任何后续状态都依赖于salt和密钥（用户密码），并且没有状态可以被预先计算而不知道两者。
+**由于这个关键的区别，</code> bcrypt `是一个单向散列算法。<strong> 不知道salt，不能检索纯文本密码，round </strong>和key** （密码）。<br>[<a href="http://www.usenix.org/events/usenix99/provos/provos_html/node4.html" target="_blank" rel="noopener">来源</a>]</p>
+<h1><span id="how-to-use-bcrypt">How to use bcrypt:</span></h1><h2><span id="using-php-gt-55-dev">Using PHP &gt;= 5.5-DEV</span></h2><p>密码散列函数<a href="http://php.net/password_hash" target="_blank" rel="noopener">现在已直接构建到PHP＆gt; = 5.5 </a>。您现在可以使用<a href="http://php.net/password_hash" target="_blank" rel="noopener"> <code>password_hash（）</code> </a>创建一个<code>bcrypt</code>任何密码的散列：</p>
+<pre><code>&lt;?php
+// Usage 1:
+echo password_hash(&apos;rasmuslerdorf&apos;, PASSWORD_DEFAULT).&quot;\n&quot;;
+// $2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+// For example:
+// $2y$10$.vGA1O9wmRjrwAVXD98HNOgsNpDczlqm3Jq7KnEd1rVAGv3Fykk1a
+
+// Usage 2:
+$options = [      &apos;cost&apos; =&gt; 11
+];
+echo password_hash(&apos;rasmuslerdorf&apos;, PASSWORD_BCRYPT, $options).&quot;\n&quot;;
+// $2y$11$6DP.V0nO7YI3iSki4qog6OQI5eiO6Jnjsqg7vdnb.JgGIsxniOn4C
+</code></pre><p>要验证用户提供的密码与现有的哈希值，可以使用[ <code>password_verify（）</code> &lt; / a&gt;这样的：</p>
+<pre><code>&lt;?php
+// See the password_hash() example to see where this came from.
+$hash = &apos;$2y$07$BCryptRequires22Chrcte/VlQH0piJtjXl.0t1XkA8pw9dMXTpOq&apos;;
+
+if (password_verify(&apos;rasmuslerdorf&apos;, $hash)) {
+    echo &apos;Password is valid!&apos;;
+} else {
+    echo &apos;Invalid password.&apos;;
+}
+</code></pre><h2><span id="using-php-gt-537-lt-55-dev-also-redhat-php-gt-533">Using PHP &gt;= 5.3.7, &lt; 5.5-DEV (also RedHat PHP &gt;= 5.3.3)</span></h2><p>在<a href="http://php.net/password_verify" target="_blank" rel="noopener">兼容性库](https://github.com/ircmaxell/password_compat) / wiki / GitHub“rel<br>=”noreferrer“&gt; GitHub</a>是基于上述函数的源代码创建的，这些函数最初是用C编写的，它提供了相同的功能。安装兼容性库后，用法与上述相同（如果仍在5.3.x分支上，则减去速记数组表示法）。</p>
+<h2><span id="using-php-lt-537-deprecated">Using PHP &lt; 5.3.7 <em>(DEPRECATED)</em></span></h2><p>您可以使用<code>crypt（）</code>函数来生成输入字符串的bcrypt散列。这个类可以自动生成salt并验证输入的现有散列。<br><strong>如果您使用的PHP版本高于或等于5.3.7，强烈建议您使用内置函数或compat库</strong> 。这种替代方法仅用于历史目的。</p>
+<pre><code>class Bcrypt
+{
+  private $rounds;
+
+  public function __construct($rounds = 12)
+  {
+    if (CRYPT_BLOWFISH != 1) {
+      throw new Exception(&quot;bcrypt not supported in this installation. See http://php.net/crypt&quot;);
+    }
+
+    $this-&gt;rounds = $rounds;
+  }
+
+  public function hash($input)
+  {
+    $hash = crypt($input, $this-&gt;getSalt());
+
+    if (strlen($hash) &gt; 13)
+      return $hash;
+
+    return false;
+  }
+
+  public function verify($input, $existingHash)
+  {
+    $hash = crypt($input, $existingHash);
+
+    return $hash === $existingHash;
+  }
+
+  private function getSalt()
+  {
+    $salt = sprintf(&apos;$2a$%02d$&apos;, $this-&gt;rounds);
+
+    $bytes = $this-&gt;getRandomBytes(16);
+
+    $salt .= $this-&gt;encodeBytes($bytes);
+
+    return $salt;
+  }
+
+  private $randomState;
+  private function getRandomBytes($count)
+  {
+    $bytes = &apos;&apos;;
+
+    if (function_exists(&apos;openssl_random_pseudo_bytes&apos;) &amp;&amp;
+        (strtoupper(substr(PHP_OS, 0, 3)) !== &apos;WIN&apos;)) { // OpenSSL is slow on Windows
+      $bytes = openssl_random_pseudo_bytes($count);
+    }
+
+    if ($bytes === &apos;&apos; &amp;&amp; is_readable(&apos;/dev/urandom&apos;) &amp;&amp;
+       ($hRand = @fopen(&apos;/dev/urandom&apos;, &apos;rb&apos;)) !== FALSE) {
+      $bytes = fread($hRand, $count);
+      fclose($hRand);
+    }
+
+    if (strlen($bytes) &lt; $count) {
+      $bytes = &apos;&apos;;
+
+      if ($this-&gt;randomState === null) {
+        $this-&gt;randomState = microtime();
+        if (function_exists(&apos;getmypid&apos;)) {
+          $this-&gt;randomState .= getmypid();
+        }
+      }
+
+      for ($i = 0; $i &lt; $count; $i += 16) {
+        $this-&gt;randomState = md5(microtime() . $this-&gt;randomState);
+
+        if (PHP_VERSION &gt;= &apos;5&apos;) {
+          $bytes .= md5($this-&gt;randomState, true);
+        } else {
+          $bytes .= pack(&apos;H*&apos;, md5($this-&gt;randomState));
+        }
+      }
+
+      $bytes = substr($bytes, 0, $count);
+    }
+
+    return $bytes;
+  }
+
+  private function encodeBytes($input)
+  {
+    // The following is code from the PHP Password Hashing Framework
+    $itoa64 = &apos;./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&apos;;
+
+    $output = &apos;&apos;;
+    $i = 0;
+    do {
+      $c1 = ord($input[$i++]);
+      $output .= $itoa64[$c1 &gt;&gt; 2];
+      $c1 = ($c1 &amp; 0x03) &lt;&lt; 4;
+      if ($i &gt;= 16) {
+        $output .= $itoa64[$c1];
+        break;
+      }
+
+      $c2 = ord($input[$i++]);
+      $c1 |= $c2 &gt;&gt; 4;
+      $output .= $itoa64[$c1];
+      $c1 = ($c2 &amp; 0x0f) &lt;&lt; 2;
+
+      $c2 = ord($input[$i++]);
+      $c1 |= $c2 &gt;&gt; 6;
+      $output .= $itoa64[$c1];
+      $output .= $itoa64[$c2 &amp; 0x3f];
+    } while (true);
+
+    return $output;
+  }
+}
+</code></pre><p>你可以像这样使用这个代码：</p>
+<pre><code>$bcrypt = new Bcrypt(15);
+
+$hash = $bcrypt-&gt;hash(&apos;password&apos;);
+$isGood = $bcrypt-&gt;verify(&apos;password&apos;, $hash);
+</code></pre><p>或者，您也可以使用<a href="http://www.openwall.com/phpass/" target="_blank" rel="noopener">可移植PHP散列框架</a>。</p>
+<p>那么，你想使用bcrypt？然而，像其他密码学领域一样，你不应该自己来做。如果您需要担心管理密钥，存储盐份或生成随机数字等任何操作，那么您就会犯错。</p>
+<p>原因很简单：它非常简单易于搞砸了bcrypt 。事实上，如果你仔细看看这个页面上的每一段代码，你都会注意到它至少违反了这些常见问题之一。</p>
+<h1><span id="face-it-cryptography-is-hard">Face It, Cryptography is hard.</span></h1><p>留给专家吧。把它留给那些维护这些库的人。如果你需要做出决定，那就错了。</p>
+<p>相反，只需使用一个库。有几个根据您的要求而定。</p>
+<h1><span id="libraries">Libraries</span></h1><p>这是一些比较常见的API的细目。</p>
+<h2><span id="php-55-api-available-for-537">PHP 5.5 API - (Available for 5.3.7+)</span></h2><p>从PHP 5.5开始，引入了一个用于哈希密码的新API。还有一个适用于5.3.7+的垫片兼容性库。这有一个同行评审和 <em>简单</em> 来使用实现的好处。</p>
+<pre><code>function register($username, $password) {
+    $hash = password_hash($password, PASSWORD_BCRYPT);
+    save($username, $hash);
+}
+
+function login($username, $password) {
+    $hash = loadHashByUsername($username);
+    if (password_verify($password, $hash)) {
+        //login
+    } else {
+        // failure
+    }
+}
+</code></pre><p>真的，它的目标非常简单。</p>
+<p>资源：</p>
+<ul>
+<li>文档：PHP.net上的<a href="http://php.net/password" target="_blank" rel="noopener"> </a></li>
+<li>兼容性库：在GitHub上[  * PHP的RFC：<a href="http://wiki.php.net/rfc/password_hash" target="_blank" rel="noopener"> wiki.php.net </a></li>
+</ul>
+<h2><span id="zendcryptpasswordbcrypt-532">Zend\Crypt\Password\Bcrypt (5.3.2+)</span></h2><p>这是另一个类似于PHP 5.5的API，也有类似的用途。</p>
+<pre><code>function register($username, $password) {
+    $bcrypt = new Zend\Crypt\Password\Bcrypt();
+    $hash = $bcrypt-&gt;create($password);
+    save($user, $hash);
+}
+
+function login($username, $password) {
+    $hash = loadHashByUsername($username);
+    $bcrypt = new Zend\Crypt\Password\Bcrypt();
+    if ($bcrypt-&gt;verify($password, $hash)) {
+        //login
+    } else {
+        // failure
+    }
+}
+</code></pre><p>资源：</p>
+<ul>
+<li><p>文档：Zend上的<a href="http://framework.zend.com/manual/2.0/en/modules/zend.crypt.password.html" target="_blank" rel="noopener"> </a><br>LI&gt;</p>
+</li>
+<li><p>博客文章：[使用Zend Crypt进行密码散列<br>一&gt;</p>
+</li>
+</ul>
+<h2><span id="passwordlib">PasswordLib</span></h2><p>这是一个稍微不同的密码哈希方法。<br>PasswordLib不是简单地支持bcrypt，而是支持大量的哈希算法。它主要用于需要支持可能不受控制的传统和不同系统的兼容性的环境。它支持大量的哈希算法。并且支持5.3.2<br>+</p>
+<pre><code>function register($username, $password) {
+    $lib = new PasswordLib\PasswordLib();
+    $hash = $lib-&gt;createPasswordHash($password, &apos;$2y$&apos;, array(&apos;cost&apos; =&gt; 12));
+    save($user, $hash);
+}
+
+function login($username, $password) {
+    $hash = loadHashByUsername($username);
+    $lib = new PasswordLib\PasswordLib();
+    if ($lib-&gt;verifyPasswordHash($password, $hash)) {
+        //login
+    } else {
+        // failure
+    }
+}
+</code></pre><p>参考文献：</p>
+<ul>
+<li>源代码/文档：<a href="https://github.com/ircmaxell/PHP-PasswordLib" target="_blank" rel="noopener"> GitHub </a></li>
+</ul>
+<h2><span id="phpass">PHPASS</span></h2><p>这是一个支持bcrypt的层，但是也支持一个相当强大的算法，如果你没有访问PHP＆gt; = 5.3.2的话，它是非常有用的。它实际上支持PHP<br>3.0+（虽然没有bcrypt）</p>
+<pre><code>function register($username, $password) {
+    $phpass = new PasswordHash(12, false);
+    $hash = $phpass-&gt;HashPassword($password);
+    save($user, $hash);
+}
+
+function login($username, $password) {
+    $hash = loadHashByUsername($username);
+    $phpass = new PasswordHash(12, false);
+    if ($phpass-&gt;CheckPassword($password, $hash)) {
+        //login
+    } else {
+        // failure
+    }
+}
+</code></pre><p>资源</p>
+<ul>
+<li>代码：<a href="“http://cvsweb.openwall.com/cgi/cvsweb.cgi/projects/phpass/PasswordHash.php?rev=1.8;content-type=text%2Fplain”rel"> cvsweb </a></li>
+<li>项目网站：<a href="http://www.openwall.com/phpass/" target="_blank" rel="noopener"> OpenWall </a></li>
+<li>对＆lt; 5.3.0算法：<a href="“https://stackoverflow.com/questions/16042128/is-this-a-good-hashing-password-function-in-php-if-not-why/16044003#16044003”">在StackOverflow上</a></li>
+</ul>
+<p><strong>注意：</strong>不要使用不在openwall上托管的PHPASS选项，它们是不同的项目!!!</p>
+<h1><span id="about-bcrypt">About BCrypt</span></h1><p>如果你注意到，这些库中的每一个都会返回一个字符串。这是因为BCrypt如何在内部工作。关于这个的答案有很多。这是我写的一个选择，我不会在这里复制/粘贴，而是链接到：</p>
+<ul>
+<li><a href="https://stackoverflow.com/questions/4948322/fundamental-difference-between-hashing-and-encryption-algorithms/4948393#4948393" target="_blank" rel="noopener">散列和加密算法之间的根本区别</a> - 解释术语和一些基本信息。</li>
+<li><p><a href="https://stackoverflow.com/questions/7523625/is-there-a-way-to-reverse-a-hash-without-rainbow-tables/7691164#7691164" target="_blank" rel="noopener">关于逆转哈希没有彩虹表格</a> - 基本上为什么我们应该首先使用bcrypt …<br>存储bcrypt哈希值 - 基本上为什么包含在哈希值中的salt和算法结果</p>
+</li>
+<li><p><a href="“https://stackoverflow.com/questions/15662729/how-to-continuously-keep-the-number-of-bcrypt-rounds-relevant-to-the-current-yea/15663892#">如何更新bcrypt哈希的成本</a> - 基本上如何选择，然后维护bcrypt哈希的成本。</p>
+</li>
+<li><a href="https://stackoverflow.com/questions/16594613/how-to-hash-long-passwords-72-characters-with-blowfish/16597402#16597402" target="_blank" rel="noopener">如何使用bcrypt散列长密码</a> - 解释bcrypt的72个字符的密码限制。</li>
+<li><a href="https://stackoverflow.com/questions/16280194/php-crypt-for-password-hashing-blowfish-produces-weird-output/16280909#16280909" target="_blank" rel="noopener"> bcrypt如何使用盐</a></li>
+<li><a href="https://stackoverflow.com/questions/16891729/best-practices-salting-peppering-passwords/16896216#16896216" target="_blank" rel="noopener">腌制和胡椒粉密码的最佳做法</a> - 基本上，不要不要用“辣椒”</li>
+<li><a href="https://stackoverflow.com/questions/8841719/update-old-stored-md5-passwords-in-php-to-increase-security/8842142#8842142" target="_blank" rel="noopener">迁移旧的<code>md5</code>密码来加密</a></li>
+</ul>
+<h1><span id="wrap-up">Wrap Up</span></h1><p>有很多不同的选择。你选择哪个取决于你。不过，我会 <strong>HIGHLY</strong> 建议您使用上述库中的一个来处理这个问题。</p>
+<p>再一次，如果你直接使用<code>crypt（）</code>，你可能做错了。如果您的代码直接使用<code>hash（）</code>（或<code>md5（）</code>或<code>sha1（）</code>），那么几乎肯定会出错。</p>
+<p>只要使用图书馆…</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/how-do-you-use-bcrypt-for-hashing-passwords-in-php/" data-title="你如何使用bcrypt在PHP中哈希密码？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/what-is-the-difference-between-section-and-div/" title="section和div有什么区别？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  section和div有什么区别？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/html-5-is-it-br-br-or-br/"  title="HTML 5：它是br，还是br /？">
+ <strong>下一篇：</strong><br/> 
+ <span>HTML 5：它是br，还是br /？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">How to use bcrypt:</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Using PHP &gt;= 5.5-DEV</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Using PHP &gt;= 5.3.7, &lt; 5.5-DEV (also RedHat PHP &gt;= 5.3.3)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Using PHP &lt; 5.3.7 (DEPRECATED)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Face It, Cryptography is hard.</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Libraries</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">PHP 5.5 API - (Available for 5.3.7+)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Zend\Crypt\Password\Bcrypt (5.3.2+)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text">PasswordLib</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.</span> <span class="toc-text">PHPASS</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">About BCrypt</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Wrap Up</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

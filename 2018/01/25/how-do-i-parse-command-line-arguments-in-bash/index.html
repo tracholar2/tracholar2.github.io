@@ -1,0 +1,774 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何解析Bash中的命令行参数？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="说，我有一个脚本，被调用这一行： ./myscript -vfd ./foo/bar/someFile -o /fizz/someOtherFile 或这个： ./myscript -v -f -d -o /fizz/someOtherFile ./foo/bar/someFile  解析这种方法的可接受方式是，在每种情况下（或两者的一些组合）$ v，$ f和$ d &amp;lt; / code&amp;gt;">
+<meta name="keywords" content="bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何解析Bash中的命令行参数？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/25/how-do-i-parse-command-line-arguments-in-bash/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="说，我有一个脚本，被调用这一行： ./myscript -vfd ./foo/bar/someFile -o /fizz/someOtherFile 或这个： ./myscript -v -f -d -o /fizz/someOtherFile ./foo/bar/someFile  解析这种方法的可接受方式是，在每种情况下（或两者的一些组合）$ v，$ f和$ d &amp;lt; / code&amp;gt;">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何解析Bash中的命令行参数？">
+<meta name="twitter:description" content="说，我有一个脚本，被调用这一行： ./myscript -vfd ./foo/bar/someFile -o /fizz/someOtherFile 或这个： ./myscript -v -f -d -o /fizz/someOtherFile ./foo/bar/someFile  解析这种方法的可接受方式是，在每种情况下（或两者的一些组合）$ v，$ f和$ d &amp;lt; / code&amp;gt;">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/25/how-do-i-parse-command-line-arguments-in-bash/" title="如何解析Bash中的命令行参数？" itemprop="url">如何解析Bash中的命令行参数？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-25T01:55:43.000Z" itemprop="datePublished"> Published 2018-01-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Preferred Method: Using straight bash without getopt[s]</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Straight Bash Space Separated</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Straight Bash Equals Separated</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Using getopt[s]</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>说，我有一个脚本，被调用这一行：</p>
+<pre><code>./myscript -vfd ./foo/bar/someFile -o /fizz/someOtherFile
+</code></pre><p>或这个：</p>
+<pre><code>./myscript -v -f -d -o /fizz/someOtherFile ./foo/bar/someFile 
+</code></pre><p>解析这种方法的可接受方式是，在每种情况下（或两者的一些组合）<code>$ v</code>，<code>$ f</code>和<code>$ d &lt; / code&gt;将全部设置为</code> true <code>和</code>$ outFile <code>将等于</code> / fizz / someOtherFile `？</p>
+<a id="more"></a>
+<h1><span id="preferred-method-using-straight-bash-without-getopts">Preferred Method: Using straight bash without getopt[s]</span></h1><p>我原本是回答OP的问题。这个Q / A得到了很多关注，所以我也应该提供非魔术的方式来做到这一点。我将扩展<a href="https://stackoverflow.com/a/13359121/321973" target="_blank" rel="noopener">guneysus的答案</a>，以解决令人讨厌的sed，并包括[<br>传递键值对参数的两种最常见的方式是：</p>
+<h2><span id="straight-bash-space-separated">Straight Bash Space Separated</span></h2><p>使用<code>./myscript.sh -e conf -s / etc -l / usr / lib / etc / hosts</code></p>
+<pre><code>#!/bin/bash
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key=&quot;$1&quot;
+
+case $key in
+    -e|--extension)
+    EXTENSION=&quot;$2&quot;
+    shift # past argument
+    shift # past value
+    ;;
+    -s|--searchpath)
+    SEARCHPATH=&quot;$2&quot;
+    shift # past argument
+    shift # past value
+    ;;
+    -l|--lib)
+    LIBPATH=&quot;$2&quot;
+    shift # past argument
+    shift # past value
+    ;;
+    --default)
+    DEFAULT=YES
+    shift # past argument
+    ;;
+    *)    # unknown option
+    POSITIONAL+=(&quot;$1&quot;) # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- &quot;${POSITIONAL[@]}&quot; # restore positional parameters
+
+echo FILE EXTENSION  = &quot;${EXTENSION}&quot;
+echo SEARCH PATH     = &quot;${SEARCHPATH}&quot;
+echo LIBRARY PATH    = &quot;${LIBPATH}&quot;
+echo DEFAULT         = &quot;${DEFAULT}&quot;
+echo &quot;Number files in SEARCH PATH with EXTENSION:&quot; $(ls -1 &quot;${SEARCHPATH}&quot;/*.&quot;${EXTENSION}&quot; | wc -l)
+if [[ -n $1 ]]; then
+    echo &quot;Last line of file specified as non-opt/last argument:&quot;
+    tail -1 &quot;$1&quot;
+fi
+</code></pre><h2><span id="straight-bash-equals-separated">Straight Bash Equals Separated</span></h2><p>使用<code>./ myscript.sh -e = conf -s = / etc -l = / usr / lib / etc / hosts</code></p>
+<pre><code>#!/bin/bash
+
+for i in &quot;$@&quot;
+do
+case $i in
+    -e=*|--extension=*)
+    EXTENSION=&quot;${i#*=}&quot;
+    shift # past argument=value
+    ;;
+    -s=*|--searchpath=*)
+    SEARCHPATH=&quot;${i#*=}&quot;
+    shift # past argument=value
+    ;;
+    -l=*|--lib=*)
+    LIBPATH=&quot;${i#*=}&quot;
+    shift # past argument=value
+    ;;
+    --default)
+    DEFAULT=YES
+    shift # past argument with no value
+    ;;
+    *)
+          # unknown option
+    ;;
+esac
+done
+echo &quot;FILE EXTENSION  = ${EXTENSION}&quot;
+echo &quot;SEARCH PATH     = ${SEARCHPATH}&quot;
+echo &quot;LIBRARY PATH    = ${LIBPATH}&quot;
+echo &quot;Number files in SEARCH PATH with EXTENSION:&quot; $(ls -1 &quot;${SEARCHPATH}&quot;/*.&quot;${EXTENSION}&quot; | wc -l)
+if [[ -n $1 ]]; then
+    echo &quot;Last line of file specified as non-opt/last argument:&quot;
+    tail -1 $1
+fi
+</code></pre><p>为了更好地理解<code>$ {i＃* =}</code>，在<a href="“http://tldp.org/LDP/abs/html/string-
+manipulation中搜索”Substring">本指南</a>。它在功能上等同于<code>sed&#39;s / [^ =] * = //&#39;＆lt;＆lt;＆lt; “$
+i”</code>它调用一个不必要的子进程或者<code>echo“$ i”| sed&#39;s / [^ =] * = //“</code>它调用两个不必要的子进程。</p>
+<h1><span id="using-getopts">Using getopt[s]</span></h1><p>来自：<a href="http://mywiki.wooledge.org/BashFAQ/035#getopts" target="_blank" rel="noopener">http://mywiki.wooledge.org/BashFAQ/035#getopts</a></p>
+<p>不要使用getopt（1）。<code>getopt</code>不能处理空的参数字符串或带有嵌入空格的参数。请忘记它曾经存在过。</p>
+<p>POSIX shell（和其他）提供<code>getopts</code>，可以安全地使用。这是一个简单的<code>getopts</code>示例：</p>
+<pre><code>#!/bin/sh
+
+# A POSIX variable
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+
+# Initialize our own variables:
+output_file=&quot;&quot;
+verbose=0
+
+while getopts &quot;h?vf:&quot; opt; do
+    case &quot;$opt&quot; in
+    h|\?)
+        show_help
+        exit 0
+        ;;
+    v)  verbose=1
+        ;;
+    f)  output_file=$OPTARG
+        ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+[ &quot;$1&quot; = &quot;--&quot; ] &amp;&amp; shift
+
+echo &quot;verbose=$verbose, output_file=&apos;$output_file&apos;, Leftovers: $@&quot;
+
+# End of file
+</code></pre><p><code>getopts</code>的优点是：</p>
+<ul>
+<li>它是可移植的，可以在例如短跑。 </li>
+<li>它可以自动地以预期的Unix方式处理像<code>-vf filename</code>这样的东西。</li>
+</ul>
+<p><code>getopts</code>的缺点是它只能处理简短的选项（<code>-h</code>，而不是<code>\- help</code>）， p&gt;</p>
+<p>有一个<a href="http://wiki.bash-
+hackers.org/howto/getopts_tutorial" target="_blank" rel="noopener"> getopts教程</a>，它解释了所有的语法和变量的含义。在bash中，还有<code>help getopts</code>，这可能是提供信息的。</p>
+<p><strong>没有回答提及 <em>增强的getopt</em><br>。而<a href="https://stackoverflow.com/a/14203146/825924" target="_blank" rel="noopener">排名最高的答案</a>是误导性的：</strong>它忽略<code>-âvfd</code>风格（由OP请求），位置参数之后的选项（OP也请求），它忽略解析错误。代替：</p>
+<ul>
+<li>**在util-linux或以前的GNU glibc中使用增强的<code>getopt</code>。 1 </li>
+<li>它与<code>getopt_long（）</code>一起使用GNU glibc的C函数。</li>
+<li><p>所有 __ 有用的区别特征（其他人都没有）： </p>
+<ul>
+<li><p>处理空格，引用字符，甚至在参数 2<br>中使用二进制</p>
+</li>
+<li><p>它可以在最后处理选项：<code>script.sh -o outFile file1 file2 -v</code>    <em> 允许<code>=</code> -style long选项：<code>script.sh --outfile = fileOut --infile fileIn</code>  </em> 很早以前，没有一个GNU系统是缺少这个的（例如，任何Linux都有）。</p>
+</li>
+</ul>
+</li>
+<li>您可以使用以下代码测试它的存在：<code>getopt --test</code>→返回值4 </li>
+<li>其他<code>getopt</code>或shell-builtin <code>getopts</code>的用途有限。</li>
+</ul>
+<p>以下的电话</p>
+<pre><code>myscript -vfd ./foo/bar/someFile -o /fizz/someOtherFile
+myscript -v -f -d -o/fizz/someOtherFile -- ./foo/bar/someFile
+myscript --verbose --force --debug ./foo/bar/someFile -o/fizz/someOtherFile
+myscript --output=/fizz/someOtherFile ./foo/bar/someFile -vfd
+myscript ./foo/bar/someFile -df -v --output /fizz/someOtherFile
+</code></pre><p>全部返回</p>
+<pre><code>verbose: y, force: y, debug: y, in: ./foo/bar/someFile, out: /fizz/someOtherFile
+</code></pre><p>用下面的<code>myscript</code></p>
+<pre><code>#!/bin/bash
+
+getopt --test &gt; /dev/null
+if [[ $? -ne 4 ]]; then
+    echo &quot;Iam sorry, `getopt --test` failed in this environment.&quot;
+    exit 1
+fi
+
+OPTIONS=dfo:v
+LONGOPTIONS=debug,force,output:,verbose
+
+# -temporarily store output to be able to check for errors
+# -e.g. use a--optionsa parameter by name to activate quoting/enhanced mode
+# -pass arguments only via   -- &quot;$@&quot;   to separate them correctly
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTIONS --name &quot;$0&quot; -- &quot;$@&quot;)
+if [[ $? -ne 0 ]]; then
+    # e.g. $? == 1
+    #  then getopt has complained about wrong arguments to stdout
+    exit 2
+fi
+# read getoptas output this way to handle the quoting right:
+eval set -- &quot;$PARSED&quot;
+
+# now enjoy the options in order and nicely split until we see --
+while true; do
+    case &quot;$1&quot; in
+        -d|--debug)
+            d=y
+            shift
+            ;;
+        -f|--force)
+            f=y
+            shift
+            ;;
+        -v|--verbose)
+            v=y
+            shift
+            ;;
+        -o|--output)
+            outFile=&quot;$2&quot;
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo &quot;Programming error&quot;
+            exit 3
+            ;;
+    esac
+done
+
+# handle non-option arguments
+if [[ $# -ne 1 ]]; then
+    echo &quot;$0: A single input file is required.&quot;
+    exit 4
+fi
+
+echo &quot;verbose: $v, force: $f, debug: $d, in: $1, out: $outFile&quot;
+</code></pre><hr>
+<p>增强的getopt在大多数“bash系统”上都可用，包括Cygwin;在OS X上尝试<a href="https://stackoverflow.com/a/37485578/825924" target="_blank" rel="noopener"> brew install gnu-getopt</a><br>2  POSIX <code>exec（）</code>约定没有可靠的方法在命令行参数中传递二进制NULL;那些字节过早地结束了论点<br>1997年或之前发布的第一个版本（我只追溯到1997年）</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/25/how-do-i-parse-command-line-arguments-in-bash/" data-title="如何解析Bash中的命令行参数？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/25/lazy-load-of-images-in-listview/" title="在ListView中延迟加载图像">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在ListView中延迟加载图像</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/25/should-using-statements-be-inside-or-outside-the-namespace/"  title="“使用”语句应该在命名空间的内部还是外部？">
+ <strong>下一篇：</strong><br/> 
+ <span>“使用”语句应该在命名空间的内部还是外部？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Preferred Method: Using straight bash without getopt[s]</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Straight Bash Space Separated</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Straight Bash Equals Separated</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Using getopt[s]</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

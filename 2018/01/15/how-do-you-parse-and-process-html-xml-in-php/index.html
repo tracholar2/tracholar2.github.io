@@ -1,0 +1,747 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何解析和处理PHP中的HTML / XML？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何解析HTML / XML并从中提取信息？">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何解析和处理PHP中的HTML &#x2F; XML？">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/how-do-you-parse-and-process-html-xml-in-php/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何解析HTML / XML并从中提取信息？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何解析和处理PHP中的HTML &#x2F; XML？">
+<meta name="twitter:description" content="如何解析HTML / XML并从中提取信息？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/how-do-you-parse-and-process-html-xml-in-php/" title="如何解析和处理PHP中的HTML / XML？" itemprop="url">如何解析和处理PHP中的HTML / XML？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Native XML Extensions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">3rd Party Libraries (libxml based)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text"> (not updated for years)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.3.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.4.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.5.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.6.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">3rd-Party (not libxml-based)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">[PHP Simple HTML DOM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">HTML 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">WebServices</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.2.</span> <span class="toc-text">.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Regular Expressions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Books</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">示例：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.1.</span> <span class="toc-text">How to get HTML elements:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.2.</span> <span class="toc-text">How to modify HTML elements:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.3.</span> <span class="toc-text">Extract content from HTML:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.4.</span> <span class="toc-text">Scraping Slashdot:</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如何解析HTML / XML并从中提取信息？</p>
+<a id="more"></a>
+<h2><span id="native-xml-extensions">Native XML Extensions</span></h2><p>我更喜欢使用<a href="http://php.net/manual/en/refs.xml.php" target="_blank" rel="noopener">原生XML扩展</a>之一，因为它们捆绑在一起PHP，通常比所有的第三方库更快，并给我所有我需要的标记控制。</p>
+<h3><span id="dom"></span></h3><blockquote>
+<p>The DOM extension allows you to operate on XML documents through the DOM API<br>with PHP 5. It is an implementation of the W3C’s Document Object Model Core<br>Level 3, a platform- and language-neutral interface that allows programs and<br>scripts to dynamically access and update the content, structure and style of<br>documents.</p>
+</blockquote>
+<p>DOM能够解析和修改真实世界的（破碎的）HTML，它可以执行[ XPath查询&lt; / A&gt;。它基于<a href="http://xmlsoft.org/html/libxml-HTMLparser.html" target="_blank" rel="noopener"> libxml</a>。</p>
+<p>使用DOM需要一些时间来提高生产力，但是那个时候IMO完全值得。由于DOM是一个与语言无关的接口，所以你会发现许多语言的实现，所以如果你需要改变你的编程语言，那么你很可能已经知道如何使用该语言的DOM<br>API了。</p>
+<p>一个基本的用法示例可以在<a href="“https://stackoverflow.com/questions/3820666
+/regular-expression-for-grabbing-the-href-attribute-of-
+an-a-element/">抓取A元素的href属性</a>和一般概念概述可以在<a href="”https://stackoverflow.com/questions/4979836/noob-question-about-
+domdocument">在PHP中的DOMDocument</a></p>
+<p><a href="https://stackoverflow.com/search?q=DOM+HTML+%5BPHP%5D&amp;submit=search" target="_blank" rel="noopener">如何使用DOM扩展已经在StackOverflow上进行了广泛的介绍</a>，所以如果你选择使用它，你可以肯定你遇到的大部分问题都可以通过搜索/浏览Stack<br>Overflow来解决。</p>
+<h3><span id="xmlreader"></span></h3><blockquote>
+<p>The XMLReader extension is an XML pull parser. The reader acts as a cursor<br>going forward on the document stream and stopping at each node on the way.</p>
+</blockquote>
+<p>与XML一样，XMLReader基于libxml。我不知道如何触发HTML解析器模块，因此使用XMLReader解析断开的HTML的可能性比使用DOM明显地告诉它使用libxml的HTML解析器模块的可能性要低。</p>
+<p>一个基本的用法示例可以在<a href="https://stackoverflow.com/questions/3299033
+/getting-all-values-from-h1-tags-using-php/3299140#3299140" target="_blank" rel="noopener">获取所有来自h1标签的值都使用php </a></p>
+<h3><span id="xml-parser"></span></h3><blockquote>
+<p>This extension lets you create XML parsers and then define handlers for<br>different XML events. Each XML parser also has a few parameters you can<br>adjust.</p>
+</blockquote>
+<p>XML解析器库也基于libxml，并实现了<a href="http://en.wikipedia.org/wiki/Simple_API_for_XML" target="_blank" rel="noopener"> SAX</a>风格的XML推送解析器。对于内存管理来说，这可能是比DOM或SimpleXML更好的选择，但是比使用XMLReader实现的pull解析器更难于使用。</p>
+<h3><span id="simplexml"></span></h3><blockquote>
+<p>The SimpleXML extension provides a very simple and easily usable toolset to<br>convert XML to an object that can be processed with normal property selectors<br>and array iterators.</p>
+</blockquote>
+<p>当您知道HTML是有效的XHTML时，SimpleXML是一个选项。如果您需要解析破碎的HTML，甚至不要考虑SimpleXml，因为它会窒息。</p>
+<p>一个基本的用法示例可以在<a href="“https://stackoverflow.com/questions/4906073/a
+-simple-program-to-crud-node-and-node-values-of-xml-文件“">一个简单的程序来CRUD节点和xml文件的节点值</a>，并有<a href="”http://php.net/manual/en/simplexml.examples-basic.php“rel">PHP手册中的大量额外示例</a>。</p>
+<hr>
+<h2><span id="3rd-party-libraries-libxml-based">3rd Party Libraries (libxml based)</span></h2><p>如果你喜欢使用第三方库，我建议使用一个实际使用 DOM](<a href="http://schlitt.info/opensource/blog/0704_xpath.html" target="_blank" rel="noopener">http://schlitt.info/opensource/blog/0704_xpath.html</a>) / <a href="http://xmlsoft.org/" target="_blank" rel="noopener"> libxml</a>，而不是字符串解析。</p>
+<h3><span id="fluentdom"></span></h3><blockquote>
+<p>FluentDOM provides a jQuery-like fluent XML interface for the DOMDocument in<br>PHP. Selectors are written in XPath or CSS (using a CSS to XPath converter).<br>Current versions extend the DOM implementing standard interfaces and add<br>features from the DOM Living Standard. FluentDOM can load formats like JSON,<br>CSV, JsonML, RabbitFish and others. Can be installed via Composer.</p>
+</blockquote>
+<p>###<br><a href="https://github.com/wasinger/htmlpagedom/blob/master/README.md" target="_blank" rel="noopener">HtmlPageDom</a></p>
+<blockquote>
+<p>Wa72\HtmlPageDom` is a PHP library for easy manipulation of HTML documents<br>using It requires <a href="https://github.com/symfony/DomCrawler" target="_blank" rel="noopener">DomCrawler from Symfony2<br>components</a> for traversing the DOM tree<br>and extends it by adding methods for manipulating the DOM tree of HTML<br>documents.</p>
+</blockquote>
+<h3><span id="phpquery-not-updated-for-years"> (not updated for years)</span></h3><blockquote>
+<p>phpQuery is a server-side, chainable, CSS3 selector driven Document Object<br>Model (DOM) API based on jQuery JavaScript Library written in PHP5 and<br>provides additional Command Line Interface (CLI).</p>
+</blockquote>
+<p>另见：<a href="https://github.com/electrolinux/phpquery" target="_blank" rel="noopener"> https://github.com/electrolinux/phpquery</a></p>
+<p>###<br><a href="http://framework.zend.com/manual/current/en/modules/zend.dom.intro.html" target="_blank" rel="noopener">Zend_Dom</a></p>
+<blockquote>
+<p>Zend_Dom provides tools for working with DOM documents and structures.<br>Currently, we offer Zend_Dom_Query, which provides a unified interface for<br>querying DOM documents utilizing both XPath and CSS selectors.</p>
+</blockquote>
+<h3><span id="querypath"></span></h3><blockquote>
+<p>QueryPath is a PHP library for manipulating XML and HTML. It is designed to<br>work not only with local files, but also with web services and database<br>resources. It implements much of the jQuery interface (including CSS-style<br>selectors), but it is heavily tuned for server-side use. Can be installed via<br>Composer.</p>
+</blockquote>
+<h3><span id="fdomdocument"></span></h3><blockquote>
+<p>fDOMDocument extends the standard DOM to use exceptions at all occasions of<br>errors instead of PHP warnings or notices. They also add various custom<br>methods and shortcuts for convenience and to simplify the usage of DOM.</p>
+</blockquote>
+<h3><span id="sabrexml"></span></h3><blockquote>
+<p>sabre/xml is a library that wraps and extends the XMLReader and XMLWriter<br>classes to create a simple “xml to object/array” mapping system and design<br>pattern. Writing and reading XML is single-pass and can therefore be fast and<br>require low memory on large xml files.</p>
+</blockquote>
+<h3><span id="fluidxml"></span></h3><blockquote>
+<p>FluidXML is a PHP library for manipulating XML with a concise and fluent<br>API. It leverages XPath and the fluent programming pattern to be fun and<br>effective.</p>
+</blockquote>
+<hr>
+<h2><span id="3rd-party-not-libxml-based">3rd-Party (not libxml-based)</span></h2><p>建立在DOM / libxml基础上的好处是你可以获得很好的性能，因为你基于本地扩展。然而，并不是所有的第三方库都沿着这条路线走下去。其中一些列在下面</p>
+<h3><span id="php-simple-html-dom">[PHP Simple HTML DOM</span></h3><p>Parser](<a href="http://simplehtmldom.sourceforge.net/manual.htm#section_traverse" target="_blank" rel="noopener">http://simplehtmldom.sourceforge.net/manual.htm#section_traverse</a>)</p>
+<blockquote>
+<ul>
+<li><p>An HTML DOM parser written in PHP5+ lets you manipulate HTML in a very<br>easy way!</p>
+</li>
+<li><p>Require PHP 5+.</p>
+</li>
+<li><p>Supports invalid HTML.</p>
+</li>
+<li><p>Find tags on an HTML page with selectors just like jQuery.</p>
+</li>
+<li><p>Extract contents from HTML in a single line.</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>我一般不推荐这个解析器。代码库是可怕的，解析器本身是比较慢，内存饿了。并非所有的jQuery选择器（例如<a href="https://api.jquery.com
+/child-selector/" target="_blank" rel="noopener">子选择器</a>）都是可能的。任何基于libxml的库都应该比这更容易。</p>
+<h3><span id="php-html-parser"></span></h3><blockquote>
+<p>PHPHtmlParser is a simple, flexible, html parser which allows you to select<br>tags using any css selector, like jQuery. The goal is to assiste in the<br>development of tools which require a quick, easy way to scrap html, whether<br>it’s valid or not! This project was original supported by sunra/php-simple-<br>html-dom-parser but the support seems to have stopped so this project is my<br>adaptation of his previous work.</p>
+</blockquote>
+<p>再次，我不会推荐这个解析器。<br>CPU占用率高，速度慢。也没有函数来清除所创建的DOM对象的内存。这些问题特别是嵌套循环。文档本身是不准确的，拼写错误，自16年4月14日以来没有对修复做出反应。</p>
+<h3><span id="ganon"></span></h3><blockquote>
+<ul>
+<li><p>A universal tokenizer and HTML/XML/RSS DOM Parser</p>
+<ul>
+<li><p>Ability to manipulate elements and their attributes</p>
+</li>
+<li><p>Supports invalid HTML and UTF8</p>
+</li>
+</ul>
+</li>
+<li><p>Can perform advanced CSS3-like queries on elements (like jQuery –<br>namespaces supported)</p>
+</li>
+<li><p>A HTML beautifier (like HTML Tidy)</p>
+<ul>
+<li><p>Minify CSS and Javascript</p>
+</li>
+<li><p>Sort attributes, change character case, correct indentation, etc.</p>
+</li>
+</ul>
+</li>
+<li><p>Extensible</p>
+<ul>
+<li><p>Parsing documents using callbacks based on current character/token</p>
+</li>
+<li><p>Operations separated in smaller functions for easy overriding</p>
+</li>
+</ul>
+</li>
+<li><p>Fast and Easy</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<p>没用过无法分辨是否有好处。</p>
+<hr>
+<h2><span id="html-5">HTML 5</span></h2><p>您可以使用上面的解析HTML5，但[由于HTML5允许的标记，可能会出现怪癖。所以对于HTML5，你要考虑使用一个专用的解析器，比如</p>
+<p><a href="https://github.com/html5lib/html5lib-php" target="_blank" rel="noopener"> html5lib </a></p>
+<blockquote>
+<p>A Python and PHP implementations of a HTML parser based on the WHATWG HTML5<br>specification for maximum compatibility with major desktop web browsers.</p>
+</blockquote>
+<p>一旦HTML5完成，我们可能会看到更多的专用解析器。还有一个W3的标题为<a href="http://www.w3.org/QA/2008/07/html5-parsing-howto.html" target="_blank" rel="noopener">如何为HTML<br>5解析</a>，值得一试。</p>
+<hr>
+<h2><span id="webservices">WebServices</span></h2><p>如果您不想编程PHP，您也可以使用Web服务。一般来说，我发现这些功能很少，但这只是我和我的用例。</p>
+<h3><span id="yql"></span></h3><blockquote>
+<p>The YQL Web Service enables applications to query, filter, and combine data<br>from different sources across the Internet. YQL statements have a SQL-like<br>syntax, familiar to any developer with database experience.</p>
+</blockquote>
+<h3><span id="scraperwiki">.</span></h3><blockquote>
+<p>ScraperWiki’s external interface allows you to extract data in the form you<br>want for use on the web or in your own applications. You can also extract<br>information about the state of any scraper.</p>
+</blockquote>
+<hr>
+<h2><span id="regular-expressions">Regular Expressions</span></h2><p>上次和 <strong>最不推荐</strong> ，您可以使用[正则表达式**一&gt;。一般情况下在HTML上使用正则表达式是不鼓励的。</p>
+<p>大多数在网页上可以找到匹配标记的代码片段都很脆弱。在大多数情况下，他们只为一个非常特殊的HTML工作。微小的标记变化，比如在某个地方添加空格，或者在标签中添加或者改变属性，会导致正则表达式在不正确的写入时失败。在HTML上使用正则表达式之前，您应该知道自己在做什么。</p>
+<p>HTML解析器已经知道了HTML的语法规则。正则表达式必须教你每个新的正则表达式。在某些情况下，正则表达式很好，但这取决于你的用例。</p>
+<p>您可以编写更可靠的解析器](<a href="https://stackoverflow.com/search?q=regular%20expression%20tutorials)](“https://stackoverflow.com/questions/4029341/dom-parser-that-allows-html5" target="_blank" rel="noopener">https://stackoverflow.com/search?q=regular%20expression%20tutorials)](“https://stackoverflow.com/questions/4029341/dom-parser-that-allows-html5</a><br>-style-in-script-tag/4029412”) &gt;，但是使用正则表达式写一个 <em>完全可靠的</em><br>自定义分析器是浪费时间，前面提到的库已经存在了，并且做得更好。</p>
+<p>另请参阅[解析Html The Cthulhu Way &lt; / A&gt;</p>
+<hr>
+<h2><span id="books">Books</span></h2><p>如果你想花一些钱，看看</p>
+<ul>
+<li><a href="http://www.phparch.com/books/phparchitects-guide-to-web-scraping-with-php" target="_blank" rel="noopener"> PHP架构师使用PHP进行Web浏览的指南</a></li>
+</ul>
+<p>我不隶属于PHP Architect或作者。</p>
+<p>尝试<a href="http://simplehtmldom.sourceforge.net/" target="_blank" rel="noopener"> <strong>简单的HTML DOM解析器</strong> </a></p>
+<ul>
+<li>以PHP 5+编写的HTML DOM解析器，可让您以非常简单的方式操作HTML！</li>
+<li>需要PHP 5 +。</li>
+<li>支援无效的HTML。</li>
+<li>使用选择器（如jQuery）在HTML页面上查找标签。</li>
+<li>从一行HTML中提取内容。</li>
+<li><a href="http://sourceforge.net/projects/simplehtmldom/files/" target="_blank" rel="noopener">下载</a></li>
+</ul>
+<p>，点击 [</p>
+<h2><span id="示例">示例：</span></h2><p>](<a href="http://simplehtmldom.sourceforge.net/manual.htm" target="_blank" rel="noopener">http://simplehtmldom.sourceforge.net/manual.htm</a>)</p>
+<h3><span id="how-to-get-html-elements">How to get HTML elements:</span></h3><pre><code>// Create DOM from URL or file
+$html = file_get_html(&apos;http://www.example.com/&apos;);
+
+// Find all images
+foreach($html-&gt;find(&apos;img&apos;) as $element)
+       echo $element-&gt;src . &apos;&lt;br&gt;&apos;;
+
+// Find all links
+foreach($html-&gt;find(&apos;a&apos;) as $element)
+       echo $element-&gt;href . &apos;&lt;br&gt;&apos;;
+</code></pre><p>结果</p>
+<h3><span id="how-to-modify-html-elements">How to modify HTML elements:</span></h3><pre><code>// Create DOM from string
+$html = str_get_html(&apos;&lt;div id=&quot;hello&quot;&gt;Hello&lt;/div&gt;&lt;div id=&quot;world&quot;&gt;World&lt;/div&gt;&apos;);
+
+$html-&gt;find(&apos;div&apos;, 1)-&gt;class = &apos;bar&apos;;
+
+$html-&gt;find(&apos;div[id=hello]&apos;, 0)-&gt;innertext = &apos;foo&apos;;
+
+echo $html;
+</code></pre><p>结果</p>
+<h3><span id="extract-content-from-html">Extract content from HTML:</span></h3><pre><code>// Dump contents (without tags) from HTML
+echo file_get_html(&apos;http://www.google.com/&apos;)-&gt;plaintext;
+</code></pre><p>结果</p>
+<h3><span id="scraping-slashdot">Scraping Slashdot:</span></h3><pre><code>// Create DOM from URL
+$html = file_get_html(&apos;http://slashdot.org/&apos;);
+
+// Find all article blocks
+foreach($html-&gt;find(&apos;div.article&apos;) as $article) {
+    $item[&apos;title&apos;]     = $article-&gt;find(&apos;div.title&apos;, 0)-&gt;plaintext;
+    $item[&apos;intro&apos;]    = $article-&gt;find(&apos;div.intro&apos;, 0)-&gt;plaintext;
+    $item[&apos;details&apos;] = $article-&gt;find(&apos;div.details&apos;, 0)-&gt;plaintext;
+    $articles[] = $item;
+}
+
+print_r($articles);
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/how-do-you-parse-and-process-html-xml-in-php/" data-title="如何解析和处理PHP中的HTML / XML？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/how-to-write-ahover-in-inline-css/" title="如何写一个：悬停在内联CSS？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何写一个：悬停在内联CSS？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/what-is-the-difference-between-section-and-div/"  title="section和div有什么区别？">
+ <strong>下一篇：</strong><br/> 
+ <span>section和div有什么区别？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Native XML Extensions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">3rd Party Libraries (libxml based)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.2.</span> <span class="toc-text"> (not updated for years)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.3.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.4.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.5.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.6.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">3rd-Party (not libxml-based)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">[PHP Simple HTML DOM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">HTML 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">WebServices</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.1.</span> <span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.2.</span> <span class="toc-text">.</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Regular Expressions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">Books</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">示例：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.1.</span> <span class="toc-text">How to get HTML elements:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.2.</span> <span class="toc-text">How to modify HTML elements:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.3.</span> <span class="toc-text">Extract content from HTML:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">8.4.</span> <span class="toc-text">Scraping Slashdot:</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

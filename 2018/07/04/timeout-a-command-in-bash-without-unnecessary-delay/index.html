@@ -1,0 +1,671 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>超时在bash命令没有不必要的延迟 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="这个答案到命令行命令在一段时间后自动杀死一个命令 提出了一个1行方法来从bash命令行中超时长命令： ( /path/to/slow command with options ) &amp;amp; sleep 5 ; kill $! 但是，一个给定的“长时间运行”命令可能会比超时更早完成。 （让我们把它称为“通常长时间运行但有时是快速的”命令，或者叫做“tlrbsf”）。 所以这个漂亮的1-liner方">
+<meta name="keywords" content="bash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="超时在bash命令没有不必要的延迟">
+<meta property="og:url" content="https://www.tracholar.top/2018/07/04/timeout-a-command-in-bash-without-unnecessary-delay/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="这个答案到命令行命令在一段时间后自动杀死一个命令 提出了一个1行方法来从bash命令行中超时长命令： ( /path/to/slow command with options ) &amp;amp; sleep 5 ; kill $! 但是，一个给定的“长时间运行”命令可能会比超时更早完成。 （让我们把它称为“通常长时间运行但有时是快速的”命令，或者叫做“tlrbsf”）。 所以这个漂亮的1-liner方">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="超时在bash命令没有不必要的延迟">
+<meta name="twitter:description" content="这个答案到命令行命令在一段时间后自动杀死一个命令 提出了一个1行方法来从bash命令行中超时长命令： ( /path/to/slow command with options ) &amp;amp; sleep 5 ; kill $! 但是，一个给定的“长时间运行”命令可能会比超时更早完成。 （让我们把它称为“通常长时间运行但有时是快速的”命令，或者叫做“tlrbsf”）。 所以这个漂亮的1-liner方">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/04/timeout-a-command-in-bash-without-unnecessary-delay/" title="超时在bash命令没有不必要的延迟" itemprop="url">超时在bash命令没有不必要的延迟</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-04T02:16:41.000Z" itemprop="datePublished"> Published 2018-07-04</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p><a href="https://stackoverflow.com/questions/601543#637753" target="_blank" rel="noopener">这个答案</a>到<a href="https://stackoverflow.com/questions/601543" target="_blank" rel="noopener">命令行命令在一段时间后自动杀死一个命令</a></p>
+<p>提出了一个1行方法来从bash命令行中超时长命令：</p>
+<pre><code>( /path/to/slow command with options ) &amp; sleep 5 ; kill $!
+</code></pre><p>但是，一个给定的“长时间运行”命令可能会比超时更早完成。 （让我们把它称为“通常长时间运行但有时是快速的”命令，或者叫做“tlrbsf”）。</p>
+<p>所以这个漂亮的1-liner方法有一些问题。首先，<code>sleep</code>不是有条件的，所以在序列完成所需的时间上设置了一个不希望的下限。如果在2秒钟内完成命令，则考虑睡眠30s或2m甚至5m，这是非常不理想的。其次，<code>kill</code>是无条件的，所以这个序列会试图杀死一个没有运行的进程并抱怨它。</p>
+<p>因此…</p>
+<hr>
+<ul>
+<li>有一个bash实现（另一个问题已经有了Perl和C的答案）</li>
+<li>将在两个之前的终止处终止：</li>
+<li>不会杀死不存在的/不在运行的进程（或者，可选地：不会对 __ 抱怨关于不良kill）</li>
+<li>并不一定是一行代码</li>
+<li>可以在Cygwin或Linux下运行</li>
+</ul>
+<p>…对于奖励点，在前台运行命令tlrbsf <em>，在后台运行任何’睡眠’或额外的进程，这样 </em>的stdin / stdout / stderr &gt;<br>tlrbsf_ 命令可以被重定向，就像它直接运行一样？</p>
+<p>如果是这样，请分享您的代码。如果没有，请解释原因。</p>
+<p>我花了一段时间试图破解前面提到的例子，但我已经达到了我的bash技能的极限。</p>
+<a id="more"></a>
+<p>我想这正是你所要求的：</p>
+<p><a href="http://www.bashcookbook.com/bashinfo/source/bash-4.0/examples/scripts/timeout3" target="_blank" rel="noopener"> http://www.bashcookbook.com/bashinfo/源/的bash-4.0 /实施例/脚本/ timeout3</a></p>
+<pre><code>#!/bin/bash
+#
+# The Bash shell script executes a command with a time-out.
+# Upon time-out expiration SIGTERM (15) is sent to the process. If the signal
+# is blocked, then the subsequent SIGKILL (9) terminates it.
+#
+# Based on the Bash documentation example.
+
+# Hello Chet,
+# please find attached a &quot;little easier&quot;  :-)  to comprehend
+# time-out example.  If you find it suitable, feel free to include
+# anywhere: the very same logic as in the original examples/scripts, a
+# little more transparent implementation to my taste.
+#
+# Dmitry V Golovashkin &lt;Dmitry.Golovashkin@sas.com&gt;
+
+scriptName=&quot;${0##*/}&quot;
+
+declare -i DEFAULT_TIMEOUT=9
+declare -i DEFAULT_INTERVAL=1
+declare -i DEFAULT_DELAY=1
+
+# Timeout.
+declare -i timeout=DEFAULT_TIMEOUT
+# Interval between checks if the process is still alive.
+declare -i interval=DEFAULT_INTERVAL
+# Delay between posting the SIGTERM signal and destroying the process by SIGKILL.
+declare -i delay=DEFAULT_DELAY
+
+function printUsage() {
+    cat &lt;&lt;EOF
+
+Synopsis
+    $scriptName [-t timeout] [-i interval] [-d delay] command
+    Execute a command with a time-out.
+    Upon time-out expiration SIGTERM (15) is sent to the process. If SIGTERM
+    signal is blocked, then the subsequent SIGKILL (9) terminates it.
+
+    -t timeout
+        Number of seconds to wait for command completion.
+        Default value: $DEFAULT_TIMEOUT seconds.
+
+    -i interval
+        Interval between checks if the process is still alive.
+        Positive integer, default value: $DEFAULT_INTERVAL seconds.
+
+    -d delay
+        Delay between posting the SIGTERM signal and destroying the
+        process by SIGKILL. Default value: $DEFAULT_DELAY seconds.
+
+As of today, Bash does not support floating point arithmetic (sleep does),
+therefore all delay/time values must be integers.
+EOF
+}
+
+# Options.
+while getopts &quot;:t:i:d:&quot; option; do
+    case &quot;$option&quot; in
+        t) timeout=$OPTARG ;;
+        i) interval=$OPTARG ;;
+        d) delay=$OPTARG ;;
+        *) printUsage; exit 1 ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+# $# should be at least 1 (the command to execute), however it may be strictly
+# greater than 1 if the command itself has options.
+if (($# == 0 || interval &lt;= 0)); then
+    printUsage
+    exit 1
+fi
+
+# kill -0 pid   Exit code indicates if a signal may be sent to $pid process.
+(
+    ((t = timeout))
+
+    while ((t &gt; 0)); do
+        sleep $interval
+        kill -0 $$ || exit 0
+        ((t -= interval))
+    done
+
+    # Be nice, post SIGTERM first.
+    # The &apos;exit 0&apos; below will be executed if any preceeding command fails.
+    kill -s SIGTERM $$ &amp;&amp; kill -0 $$ || exit 0
+    sleep $delay
+    kill -s SIGKILL $$
+) 2&gt; /dev/null &amp;
+
+exec &quot;$@&quot;
+</code></pre><p>您可能正在寻找coreutils中的<code>timeout</code>命令。由于它是coreutils的一部分，它在技术上是一个C的解决方案，但它仍然是coreutils。 <code>info timeout</code>了解更多细节。<br>这是一个例子：</p>
+<pre><code>timeout 5 /path/to/slow/command with options
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/07/04/timeout-a-command-in-bash-without-unnecessary-delay/" data-title="超时在bash命令没有不必要的延迟 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/04/save-bitmap-to-location/" title="将位图保存到位置">
+  <strong>上一篇：</strong><br/>
+  <span>
+  将位图保存到位置</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/04/how-to-determine-if-a-type-implements-an-interface-with-c-sharp-reflection/"  title="如何确定一个类型是否实现了一个使用C＃反射的接口">
+ <strong>下一篇：</strong><br/> 
+ <span>如何确定一个类型是否实现了一个使用C＃反射的接口
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

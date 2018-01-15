@@ -1,0 +1,673 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何检查Android的互联网访问？ InetAddress永远不会超时 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我得到了一个AsyncTask来检查网络对主机名的访问。但是doInBackground（）永远不会超时。任何人都有线索？ public class HostAvailabilityTask extends AsyncTask&amp;lt;String, Void, Boolean&amp;gt; {      private Main main;      public HostAvailabilityTas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何检查Android的互联网访问？ InetAddress永远不会超时">
+<meta property="og:url" content="https://www.tracholar.top/2018/04/28/how-to-check-internet-access-on-android-inetaddress-never-times-out/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我得到了一个AsyncTask来检查网络对主机名的访问。但是doInBackground（）永远不会超时。任何人都有线索？ public class HostAvailabilityTask extends AsyncTask&amp;lt;String, Void, Boolean&amp;gt; {      private Main main;      public HostAvailabilityTas">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何检查Android的互联网访问？ InetAddress永远不会超时">
+<meta name="twitter:description" content="我得到了一个AsyncTask来检查网络对主机名的访问。但是doInBackground（）永远不会超时。任何人都有线索？ public class HostAvailabilityTask extends AsyncTask&amp;lt;String, Void, Boolean&amp;gt; {      private Main main;      public HostAvailabilityTas">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/28/how-to-check-internet-access-on-android-inetaddress-never-times-out/" title="如何检查Android的互联网访问？ InetAddress永远不会超时" itemprop="url">如何检查Android的互联网访问？ InetAddress永远不会超时</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-28T02:36:12.000Z" itemprop="datePublished"> Published 2018-04-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Network connection / Internet access</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text">A) Ping a Server (easy)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text">B) Connect to a Socket on the Internet (advanced)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.3.</span> <span class="toc-text">Possible Questions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.4.</span> <span class="toc-text">Extra: One-shot AsyncTask Example</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我得到了一个<code>AsyncTask</code>来检查网络对主机名的访问。但是<code>doInBackground（）</code>永远不会超时。任何人都有线索？</p>
+<pre><code>public class HostAvailabilityTask extends AsyncTask&lt;String, Void, Boolean&gt; {
+
+    private Main main;
+
+    public HostAvailabilityTask(Main main) {
+        this.main = main;
+    }
+
+    protected Boolean doInBackground(String... params) {
+        Main.Log(&quot;doInBackground() isHostAvailable():&quot;+params[0]);
+
+        try {
+            return InetAddress.getByName(params[0]).isReachable(30); 
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;       
+    }
+
+    protected void onPostExecute(Boolean... result) {
+        Main.Log(&quot;onPostExecute()&quot;);
+
+        if(result[0] == false) {
+            main.setContentView(R.layout.splash);
+            return;
+        }
+
+        main.continueAfterHostCheck();
+    }   
+}
+</code></pre><a id="more"></a>
+<p>@Eddie。只需稍作编辑即可<a href="https://stackoverflow.com/a/2001824/194894" target="_blank" rel="noopener">您的解决方案</a> -<br>如果设备处于飞行模式（或者可能是在没有可用网络的情况下），<code>cm.getActiveNetworkInfo（）</code>将会是<code>null</code>，所以你需要添加一个<code>null</code>的检查。</p>
+<p>以下是修改后的解决方案：</p>
+<pre><code>public boolean isOnline() {
+    ConnectivityManager cm =
+        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+    return netInfo != null &amp;&amp; netInfo.isConnectedOrConnecting();
+}
+</code></pre><p>同时将以下权限添加到<code>AndroidManifest.xml</code>：</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.ACCESS_NETWORK_STATE&quot; /&gt;
+</code></pre><p>另一个小问题是，如果你在给定的时间点绝对需要网络连接，那么使用<code>netInfo.isConnected（）</code>而不是`netInfo.isConnectedOrConnecting &lt; /代码&gt;。我想这取决于个人用例。</p>
+<h1><span id="network-connection-internet-access">Network connection / Internet access</span></h1><ul>
+<li><code>isConnectedOrConnecting（）</code>（用于大多数答案）检查任何 <strong>网络</strong> 连接</li>
+<li>要知道这些网络中是否有 <strong>互联网</strong> 访问权限，请使用以下其中一项</li>
+</ul>
+<h3><span id="a-ping-a-server-easy">A) Ping a Server (easy)</span></h3><pre><code>// ICMP 
+public boolean isOnline() {
+    Runtime runtime = Runtime.getRuntime();
+    try {
+        Process ipProcess = runtime.exec(&quot;/system/bin/ping -c 1 8.8.8.8&quot;);
+        int     exitValue = ipProcess.waitFor();
+        return (exitValue == 0);
+    }
+    catch (IOException e)          { e.printStackTrace(); }
+    catch (InterruptedException e) { e.printStackTrace(); }
+
+    return false;
+}
+</code></pre><p><code>\+</code>可以在主线程上运行</p>
+<p>如果没有互联网可用，一些旧设备（Galays S3等）无法工作</p>
+<p><code>\-</code></p>
+<h3><span id="b-connect-to-a-socket-on-the-internet-advanced">B) Connect to a Socket on the Internet (advanced)</span></h3><pre><code>// TCP/HTTP/DNS (depending on the port, 53=DNS, 80=HTTP, etc.)
+public boolean isOnline() {
+    try {
+        int timeoutMs = 1500;
+        Socket sock = new Socket();
+        SocketAddress sockaddr = new InetSocketAddress(&quot;8.8.8.8&quot;, 53);
+
+        sock.connect(sockaddr, timeoutMs);
+        sock.close();
+
+        return true;
+    } catch (IOException e) { return false; }
+}
+</code></pre><p>非常快（无论哪种方式），适用于所有设备， __ 可靠</p>
+<p><code>〜</code>无法在ui任务上运行</p>
+<p><code>\-</code> none</p>
+<p>这在每台设备上都非常可靠，而且速度非常快。它需要在一个单独的任务中运行（例如<code>ScheduledExecutorService</code>或<code>AsyncTask</code>）。</p>
+<h3><span id="possible-questions">Possible Questions</span></h3><ul>
+<li>速度够快吗？</li>
+</ul>
+<p><em>是的，非常快; - ）</em></p>
+<ul>
+<li>除了在互联网上测试某些东西外，没有可靠的方法来检查互联网吗？</li>
+</ul>
+<p><em>不是我所知道的，但是让我知道，我会编辑我的答案。</em></p>
+<ul>
+<li>如果DNS停机怎么办？</li>
+</ul>
+<p>Google DNS（例如<code>8.8.8.8</code>）是世界上最大的公共DNS。截至2013年，它每天服务1300亿个请求。我们只是说，你的应用程序可能不会成为今天的话题。_</p>
+<ul>
+<li><p>需要哪些权限？</p>
+<pre><code>＆lt; uses-permission android：name =“android.permission.INTERNET”/＆gt;
+</code></pre></li>
+</ul>
+<p>只要互联网接入 - 惊喜^^（顺便说一句，你有没有想过，这里建议的一些方法，甚至可以有一个关于互联网访问的远程胶水，没有这种权限？）_</p>
+<h3><span id="extra-one-shot-asynctask-example">Extra: One-shot <code>AsyncTask</code> Example</span></h3><pre><code>class InternetCheck extends AsyncTask&lt;Void,Void,Boolean&gt; {
+
+    private Consumer mConsumer;
+    public  interface Consumer { void accept(Boolean internet); }
+
+    public  InternetCheck(Consumer consumer) { mConsumer = consumer; execute(); }
+
+    @Override protected Boolean doInBackground(Void... voids) { try {
+        Socket sock = new Socket();
+        sock.connect(new InetSocketAddress(&quot;8.8.8.8&quot;, 53), 1500);
+        sock.close();
+        return true;
+    } catch (IOException e) { return false; } }
+
+    @Override protected void onPostExecute(Boolean internet) { mConsumer.accept(internet); }
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+// Usage
+
+    new InternetCheck(internet -&gt; { /* do something with boolean response */ });
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/04/28/how-to-check-internet-access-on-android-inetaddress-never-times-out/" data-title="如何检查Android的互联网访问？ InetAddress永远不会超时 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/29/detect-encoding-and-make-everything-utf-8/" title="检测编码，并使所有的UTF-8">
+  <strong>上一篇：</strong><br/>
+  <span>
+  检测编码，并使所有的UTF-8</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/28/assigning-default-values-to-shell-variables-with-a-single-command-in-bash/"  title="使用bash中的单个命令将默认值分配给shell变量">
+ <strong>下一篇：</strong><br/> 
+ <span>使用bash中的单个命令将默认值分配给shell变量
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Network connection / Internet access</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text">A) Ping a Server (easy)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text">B) Connect to a Socket on the Internet (advanced)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.3.</span> <span class="toc-text">Possible Questions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.4.</span> <span class="toc-text">Extra: One-shot AsyncTask Example</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

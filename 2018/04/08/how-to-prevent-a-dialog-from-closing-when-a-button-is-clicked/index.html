@@ -1,0 +1,706 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何防止单击按钮时关闭对话框 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个用于输入的EditText的对话框。当我点击对话框上的“是”按钮，它将验证输入，然后关闭对话框。但是，如果输入错误，我想保留在同一个对话框中。每次不管输入什么，当我点击“否”按钮时，对话框应该自动关闭。我怎样才能禁用这个？顺便说一句，我用PositiveButton和NegativeButton作为对话框上的按钮。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何防止单击按钮时关闭对话框">
+<meta property="og:url" content="https://www.tracholar.top/2018/04/08/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个用于输入的EditText的对话框。当我点击对话框上的“是”按钮，它将验证输入，然后关闭对话框。但是，如果输入错误，我想保留在同一个对话框中。每次不管输入什么，当我点击“否”按钮时，对话框应该自动关闭。我怎样才能禁用这个？顺便说一句，我用PositiveButton和NegativeButton作为对话框上的按钮。">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何防止单击按钮时关闭对话框">
+<meta name="twitter:description" content="我有一个用于输入的EditText的对话框。当我点击对话框上的“是”按钮，它将验证输入，然后关闭对话框。但是，如果输入错误，我想保留在同一个对话框中。每次不管输入什么，当我点击“否”按钮时，对话框应该自动关闭。我怎样才能禁用这个？顺便说一句，我用PositiveButton和NegativeButton作为对话框上的按钮。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/08/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked/" title="如何防止单击按钮时关闭对话框" itemprop="url">如何防止单击按钮时关闭对话框</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-08T02:33:15.000Z" itemprop="datePublished"> Published 2018-04-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">AlertDialog.Builder - Change default button handler immediately after</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">DialogFragment - override onResume()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">DialogPreference - override showDialog()</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个用于输入的<code>EditText</code>的对话框。当我点击对话框上的“是”按钮，它将验证输入，然后关闭对话框。但是，如果输入错误，我想保留在同一个对话框中。每次不管输入什么，当我点击“否”按钮时，对话框应该自动关闭。我怎样才能禁用这个？顺便说一句，我用PositiveButton和NegativeButton作为对话框上的按钮。</p>
+<a id="more"></a>
+<p><strong>编辑：</strong> 这仅适用于API 8+，正如某些评论所指出的那样。</p>
+<p>这是一个迟到的答案，但是你可以添加一个onShowListener到AlertDialog，然后你可以覆盖按钮的onClickListener。</p>
+<pre><code>final AlertDialog dialog = new AlertDialog.Builder(context)
+        .setView(v)
+        .setTitle(R.string.my_title)
+        .setPositiveButton(android.R.string.ok, null) //Set to null. We override the onclick
+        .setNegativeButton(android.R.string.cancel, null)
+        .create();
+
+dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+    @Override
+    public void onShow(DialogInterface dialogInterface) {
+
+        Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                // TODO Do something
+
+                //Dismiss once everything is OK.
+                dialog.dismiss();
+            }
+        });
+    }
+});
+dialog.show();
+</code></pre><p>这里有一些针对所有类型的对话的解决方案，包括AlertDialog.Builder的解决方案，可以在所有的API级别工作（在API<br>8下工作，其他答案在这里没有）。有AlertDialogs使用AlertDialog.Builder，DialogFragment和DialogPreference解决方案。</p>
+<p>下面是代码示例，展示了如何覆盖默认的常用按钮处理程序，并阻止对话框关闭这些不同形式的对话框。所有示例都显示了如何防止肯定按钮关闭对话框。</p>
+<p><em> </em> <em> </em> <em> </em> <em> </em> <em> </em> /强&gt;</p>
+<hr>
+<h2><span id="alertdialogbuilder-change-default-button-handler-immediately-after">AlertDialog.Builder - Change default button handler immediately after</span></h2><p>show()</p>
+<pre><code>AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+builder.setMessage(&quot;Test for preventing dialog close&quot;);
+builder.setPositiveButton(&quot;Test&quot;, 
+        new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                //Do nothing here because we override this button later to change the close behaviour. 
+                //However, we still need this because on older versions of Android unless we 
+                //pass a handler the button doesn&apos;t get instantiated
+            }
+        });
+final AlertDialog dialog = builder.create();
+dialog.show();
+//Overriding the handler immediately after show is probably a better approach than OnShowListener as described below
+dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+      {            
+          @Override
+          public void onClick(View v)
+          {
+              Boolean wantToCloseDialog = false;
+              //Do stuff, possibly set wantToCloseDialog to true then...
+              if(wantToCloseDialog)
+                  dialog.dismiss();
+              //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
+          }
+      });
+</code></pre><hr>
+<h2><span id="dialogfragment-override-onresume">DialogFragment - override onResume()</span></h2><pre><code>@Override
+public Dialog onCreateDialog(Bundle savedInstanceState)
+{
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    builder.setMessage(&quot;Test for preventing dialog close&quot;);
+    builder.setPositiveButton(&quot;Test&quot;, 
+        new DialogInterface.OnClickListener()
+        {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                //Do nothing here because we override this button later to change the close behaviour. 
+                //However, we still need this because on older versions of Android unless we 
+                //pass a handler the button doesn&apos;t get instantiated
+            }
+        });
+    return builder.create();
+}
+
+//onStart() is where dialog.show() is actually called on 
+//the underlying dialog, so we have to do it there or 
+//later in the lifecycle.
+//Doing it in onResume() makes sure that even if there is a config change 
+//environment that skips onStart then the dialog will still be functioning
+//properly after a rotation.
+@Override
+public void onResume()
+{
+    super.onResume();    
+    final AlertDialog d = (AlertDialog)getDialog();
+    if(d != null)
+    {
+        Button positiveButton = (Button) d.getButton(Dialog.BUTTON_POSITIVE);
+        positiveButton.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Boolean wantToCloseDialog = false;
+                        //Do stuff, possibly set wantToCloseDialog to true then...
+                        if(wantToCloseDialog)
+                            d.dismiss();
+                        //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
+                    }
+                });
+    }
+}
+</code></pre><hr>
+<h2><span id="dialogpreference-override-showdialog">DialogPreference - override showDialog()</span></h2><pre><code>@Override
+protected void onPrepareDialogBuilder(Builder builder)
+{
+    super.onPrepareDialogBuilder(builder);
+    builder.setPositiveButton(&quot;Test&quot;, this);   //Set the button here so it gets created
+}
+
+@Override
+protected void showDialog(Bundle state)
+{       
+    super.showDialog(state);    //Call show on default first so we can override the handlers
+
+    final AlertDialog d = (AlertDialog) getDialog();
+    d.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+            {            
+                @Override
+                public void onClick(View v)
+                {
+                    Boolean wantToCloseDialog = false;
+                    //Do stuff, possibly set wantToCloseDialog to true then...
+                    if(wantToCloseDialog)
+                        d.dismiss();
+                    //else dialog stays open. Make sure you have an obvious way to close the dialog especially if you set cancellable to false.
+                }
+            });
+}
+</code></pre><p>方法的解释：</p>
+<blockquote>
+<p>Looking through Android source code the AlertDialog default implementation<br>works by registering a common button handler to all the actual buttons in<br>OnCreate(). When a button is clicked the common button handler forwards the<br>click event to whatever handler you passed in setButton() then calls dismisses<br>the dialog.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>If you wish to prevent a dialog box from closing when one of these buttons<br>is pressed you must replace the common button handler for the actual view of<br>the button. Because it is assigned in OnCreate(), you must replace it after<br>the default OnCreate() implementation is called. OnCreate is called in the<br>process of the show() method. You could create a custom Dialog class and<br>override OnCreate() to call the super.OnCreate() then override the button<br>handlers, but if you make a custom dialog you don’t get the Builder for free,<br>in which case what is the point?</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>So, in using a dialog the way it is designed but with controlling when it is<br>dismissed, one approach is to call dialog.Show() first, then obtain a<br>reference to the button using dialog.getButton() to override the click<br>handler. Another approach is to use setOnShowListener() and implement finding<br>the button view and replacing the handler in the OnShowListener. The<br>functional difference between the two is ‘almost’ nill, depending on what<br>thread originally creates the dialog instance. Looking through the source<br>code, the onShowListener gets called by a message posted to a handler running<br>on the thread that created that dialog. So, since your OnShowListener is<br>called by a message posted on the message queue it is technically possible<br>that calling your listener is delayed some time after show completes.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Therefore, I believe the safest approach is the first: to call<br>show.Dialog(), then immediately in the same execution path replace the button<br>handlers. Since your code that calls show() will be operating on the main GUI<br>thread, it means whatever code you follow show() with will be executed before<br>any other code on that thread, whereas the timing of the OnShowListener method<br>is at the mercy of the message queue.</p>
+</blockquote>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/04/08/how-to-prevent-a-dialog-from-closing-when-a-button-is-clicked/" data-title="如何防止单击按钮时关闭对话框 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/09/where-does-php-store-the-error-log-php5-apache-fastcgi-cpanel/" title="PHP在哪里存储错误日志？ （php5，apache，fastcgi，cpanel）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  PHP在哪里存储错误日志？ （php5，apache，fastcgi，cpanel）</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/08/sudo-echo-something-etc-privilegedfile-doesnt-work-is-there-an-alterna/"  title="sudo echo“something” / etc / privilegedFile不起作用   有没有其他的选择？">
+ <strong>下一篇：</strong><br/> 
+ <span>sudo echo“something” / etc / privilegedFile不起作用   有没有其他的选择？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">AlertDialog.Builder - Change default button handler immediately after</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">DialogFragment - override onResume()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">DialogPreference - override showDialog()</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

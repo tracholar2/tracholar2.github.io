@@ -1,0 +1,624 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>本地存储vs饼干 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我想通过将所有的cookie移动到本地存储来减少我的网站上的加载时间，因为它们似乎具有相同的功能。除了显而易见的兼容性问题之外，使用本地存储替换cookie功能有没有优点/缺点（尤其是性能方面）？">
+<meta name="keywords" content="html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本地存储vs饼干">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/15/local-storage-vs-cookies/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我想通过将所有的cookie移动到本地存储来减少我的网站上的加载时间，因为它们似乎具有相同的功能。除了显而易见的兼容性问题之外，使用本地存储替换cookie功能有没有优点/缺点（尤其是性能方面）？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="本地存储vs饼干">
+<meta name="twitter:description" content="我想通过将所有的cookie移动到本地存储来减少我的网站上的加载时间，因为它们似乎具有相同的功能。除了显而易见的兼容性问题之外，使用本地存储替换cookie功能有没有优点/缺点（尤其是性能方面）？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/local-storage-vs-cookies/" title="本地存储vs饼干" itemprop="url">本地存储vs饼干</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Local Storage</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Cookies</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我想通过将所有的cookie移动到本地存储来减少我的网站上的加载时间，因为它们似乎具有相同的功能。除了显而易见的兼容性问题之外，使用本地存储替换cookie功能有没有优点/缺点（尤其是性能方面）？</p>
+<p><a id="more"></a> Cookie和本地存储有不同的用途。 Cookies主要用于阅读 <strong>服务器端</strong> ，本地存储只能由 <strong>客户端</strong><br>阅读。所以问题是，在您的应用程序中，谁需要这些数据 - 客户端或服务器？</p>
+<p>如果这是你的客户端（你的JavaScript），那么通过一切手段切换。您通过发送每个HTTP标头中的所有数据来浪费带宽。</p>
+<p>如果是你的服务器，本地存储并不是那么有用，因为你必须以某种方式转发数据（使用Ajax或隐藏的表单字段或其他）。如果服务器只需要每个请求的总数据的一小部分，这可能是好的。</p>
+<p>_ <strong> </strong> <strong> </strong> <strong> </strong> ** 根据技术的不同，以及我的理解：</p>
+<p>除了保存数据的旧方法之外，Cookies还会为您提供每个Cookie的&lt;4096个字符（实际上为4095个字符）的限制。本地存储大小为每个域&lt;5MB <strong><br>- </strong><a href="https://stackoverflow.com/questions/2989284/max-size-of-
+localstorage-values" target="_blank" rel="noopener"> SO问题</a> ** 也提到它</p>
+<ul>
+<li><code>localStorage</code>是<code>Storage</code>接口的一个实现。它使用 <strong>无过期日期</strong> 存储数据，并且只通过JavaScript清除 <em>**</em> ，或者清除浏览器缓存/本地存储的数据 - 与Cookie过期不同。</li>
+</ul>
+<p>在JWT的情况下，Stormpath写了一篇相当有用的文章，概述了存储这些方法的可能方法，以及与每种方法相关的（优点）优势。</p>
+<p>它还简要概述了XSS和CSRF攻击，以及如何对付它们。</p>
+<p>我附上了以下文章的一些简短摘要，以防他们的文章脱机/他们的网站崩溃。</p>
+<h1><span id="local-storage">Local Storage</span></h1><p>&lt;强&gt;问题：</p>
+<blockquote>
+<p>Web Storage (localStorage/sessionStorage) is accessible through JavaScript<br>on the same domain. This means that any JavaScript running on your site will<br>have access to web storage, and because of this can be vulnerable to cross-<br>site scripting (XSS) attacks. XSS in a nutshell is a type of vulnerability<br>where an attacker can inject JavaScript that will run on your page. Basic XSS<br>attacks attempt to inject JavaScript through form inputs, where the attacker<br>puts alert(‘You are Hacked’); into a form to see if it is run by the browser<br>and can be viewed by other users.</p>
+</blockquote>
+<p>&lt;强&gt;预防：</p>
+<blockquote>
+<p>To prevent XSS, the common response is to escape and encode all untrusted<br>data. But this is far from the full story. In 2015, modern web apps use<br>JavaScript hosted on CDNs or outside infrastructure. Modern web apps include<br>3rd party JavaScript libraries for A/B testing, funnel/market analysis, and<br>ads. We use package managers like Bower to import other peoplesa code into<br>our apps.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>What if only one of the scripts you use is compromised? Malicious JavaScript<br>can be embedded on the page, and Web Storage is compromised. These types of<br>XSS attacks can get everyoneas Web Storage that visits your site, without<br>their knowledge. This is probably why a bunch of organizations advise not to<br>store anything of value or trust any information in web storage. This includes<br>session identifiers and tokens.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>As a storage mechanism, Web Storage does not enforce any secure standards<br>during transfer. Whoever reads Web Storage and uses it must do their due<br>diligence to ensure they always send the JWT over HTTPS and never HTTP.</p>
+</blockquote>
+<h1><span id="cookies">Cookies</span></h1><p>&lt;强&gt;问题：</p>
+<blockquote>
+<p>Cookies, when used with the HttpOnly cookie flag, are not accessible through<br>JavaScript, and are immune to XSS. You can also set the Secure cookie flag to<br>guarantee the cookie is only sent over HTTPS. This is one of the main reasons<br>that cookies have been leveraged in the past to store tokens or session data.<br>Modern developers are hesitant to use cookies because they traditionally<br>required state to be stored on the server, thus breaking RESTful best<br>practices. Cookies as a storage mechanism do not require state to be stored on<br>the server if you are storing a JWT in the cookie. This is because the JWT<br>encapsulates everything the server needs to serve the request.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>However, cookies are vulnerable to a different type of attack: cross-site<br>request forgery (CSRF). A CSRF attack is a type of attack that occurs when a<br>malicious web site, email, or blog causes a useras web browser to perform an<br>unwanted action on a trusted site on which the user is currently<br>authenticated. This is an exploit of how the browser handles cookies. A cookie<br>can only be sent to the domains in which it is allowed. By default, this is<br>the domain that originally set the cookie. The cookie will be sent for a<br>request regardless of whether you are on galaxies.com or hahagonnahackyou.com.</p>
+</blockquote>
+<p>&lt;强&gt;预防：</p>
+<blockquote>
+<p>CSRF can be prevented by using synchronized token patterns. This sounds<br>complicated, but all modern web frameworks have support for this.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>For example, AngularJS has a solution to validate that the cookie is<br>accessible by only your domain. Straight from AngularJS docs:</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>When performing XHR requests, the $http service reads a token from a cookie<br>(by default, XSRF-TOKEN) and sets it as an HTTP header (X-XSRF-TOKEN). Since<br>only JavaScript that runs on your domain can read the cookie, your server can<br>be assured that the XHR came from JavaScript running on your domain. You can<br>make this CSRF protection stateless by including a <code>xsrfToken</code> JWT claim:</p>
+<pre><code>{
+
+  &quot;iss&quot;: &quot;http://galaxies.com&quot;,
+
+  &quot;exp&quot;: 1300819380,
+
+  &quot;scopes&quot;: [&quot;explorer&quot;, &quot;solar-harvester&quot;, &quot;seller&quot;],
+
+  &quot;sub&quot;: &quot;tom@andromeda.com&quot;,
+
+  &quot;xsrfToken&quot;: &quot;d9b9714c-7ac0-42e0-8696-2dae95dbc33e&quot;
+
+}
+</code></pre><p>Leveraging your web app frameworkas CSRF protection makes cookies rock<br>solid for storing a JWT. CSRF can also be partially prevented by checking the<br>HTTP Referer and Origin header from your API. CSRF attacks will have Referer<br>and Origin headers that are unrelated to your application.</p>
+</blockquote>
+<p>完整的文章可以在这里找到： <a href="https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-
+html5-web-storage/" target="_blank" rel="noopener"> https://stormpath.com/blog/where-to -store-您-jwts饼干-VS-<br>HTML5的网络的存储/ </a></p>
+<p>他们也有一个关于如何最好地设计和实现JWT的有用的文章，关于令牌本身的结构： <a href="https://stormpath.com/blog/jwt-the-right-way/" target="_blank" rel="noopener"> https://stormpath.com/blog/jwt-the-<br>right-way/ </a></p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/15/local-storage-vs-cookies/" data-title="本地存储vs饼干 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/15/can-we-have-multiple-tbody-in-same-table/" title="我们可以在同一个table中有多个tbody吗？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  我们可以在同一个table中有多个tbody吗？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/15/set-the-table-column-width-constant-regardless-of-the-amount-of-text-in-its-cell/"  title="无论单元格中文本的数量如何，表格列的宽度是不变的？">
+ <strong>下一篇：</strong><br/> 
+ <span>无论单元格中文本的数量如何，表格列的宽度是不变的？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Local Storage</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Cookies</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

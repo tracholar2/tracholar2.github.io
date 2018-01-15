@@ -1,0 +1,592 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何通过TCP连接到使用ADB的Android？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我尝试在摩托罗拉Droid上调试应用程序，但是我遇到了一些困难通过USB连接到设备。我的开发服务器是在Hyper-V 上运行的Windows 764位VM，我无法通过客户端或主机上的USB直接连接。 我安装了几种不同的USB-over-TCP解决方案，但自[亚行监测报告“设备监测器无法开始监测”。有没有一种方法可以直接从开发机器上的客户端连接到使用网络而不是USB连接的设备上的守护进程，或者可能有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何通过TCP连接到使用ADB的Android？">
+<meta property="og:url" content="https://www.tracholar.top/2018/03/16/how-can-i-connect-to-android-with-adb-over-tcp/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我尝试在摩托罗拉Droid上调试应用程序，但是我遇到了一些困难通过USB连接到设备。我的开发服务器是在Hyper-V 上运行的Windows 764位VM，我无法通过客户端或主机上的USB直接连接。 我安装了几种不同的USB-over-TCP解决方案，但自[亚行监测报告“设备监测器无法开始监测”。有没有一种方法可以直接从开发机器上的客户端连接到使用网络而不是USB连接的设备上的守护进程，或者可能有">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何通过TCP连接到使用ADB的Android？">
+<meta name="twitter:description" content="我尝试在摩托罗拉Droid上调试应用程序，但是我遇到了一些困难通过USB连接到设备。我的开发服务器是在Hyper-V 上运行的Windows 764位VM，我无法通过客户端或主机上的USB直接连接。 我安装了几种不同的USB-over-TCP解决方案，但自[亚行监测报告“设备监测器无法开始监测”。有没有一种方法可以直接从开发机器上的客户端连接到使用网络而不是USB连接的设备上的守护进程，或者可能有">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/16/how-can-i-connect-to-android-with-adb-over-tcp/" title="如何通过TCP连接到使用ADB的Android？" itemprop="url">如何通过TCP连接到使用ADB的Android？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-03-16T02:29:35.000Z" itemprop="datePublished"> Published 2018-03-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Manual Process</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">From your device, if it is rooted</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">From a computer, if you have USB access already (no root required)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Apps to automate the process</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我尝试在<a href="https://en.wikipedia.org/wiki/Motorola_Droid" target="_blank" rel="noopener">摩托罗拉Droid</a>上调试应用程序，但是我遇到了一些困难通过USB连接到设备。我的开发服务器是在<a href="http://en.wikipedia.org/wiki/Hyper-V" target="_blank" rel="noopener">Hyper-V </a>上运行的Windows 7<br>64位VM，我无法通过客户端或主机上的USB直接连接。</p>
+<p>我安装了几种不同的USB-over-<br>TCP解决方案，但自[亚行监测报告“设备监测器无法开始监测”。有没有一种方法可以直接从开发机器上的客户端连接到使用网络而不是USB连接的设备上的守护进程，或者可能有其他可行的选项？</p>
+<a id="more"></a>
+<h2><span id="manual-process">Manual Process</span></h2><h3><span id="from-your-device-if-it-is-rooted">From your device, if it is rooted</span></h3><p>根据<a href="http://forum.xda-developers.com/showthread.php?t=623828&amp;page=3" target="_blank" rel="noopener"> xda开发者的帖子</a><br>，您可以使用以下命令通过Wi-Fi从设备启用ADB：</p>
+<pre><code>su
+setprop service.adb.tcp.port 5555
+stop adbd
+start adbd
+</code></pre><p>您可以禁用它，并返回ADB以使用</p>
+<p>监听USB</p>
+<pre><code>setprop service.adb.tcp.port -1
+stop adbd
+start adbd
+</code></pre><h3><span id="from-a-computer-if-you-have-usb-access-already-no-root-required">From a computer, if you have USB access already (no root required)</span></h3><p>如果您已经有USB，那么切换到使用Wi-Fi更为容易。从通过USB连接设备的计算机上的命令行发出命令</p>
+<pre><code>adb tcpip 5555
+adb connect 192.168.0.101:5555
+</code></pre><p>确保使用实际分配给您设备的IP地址替换<code>192.168.0.101</code>。</p>
+<p>您可以通过两种方式找到平板电脑的IP地址：</p>
+<p>手动IP发现：_</p>
+<p>进入Android的WiFi设置，点击操作栏中的菜单按钮（垂直省略号），按 <em>高级</em> ，然后在屏幕底部查看IP地址。</p>
+<p><em>使用ADB发现IP：</em></p>
+<p>通过adb执行以下命令：</p>
+<pre><code>adb shell ip -f inet addr show wlan0
+</code></pre><p>告诉ADB守护进程返回通过USB侦听</p>
+<pre><code>adb usb
+</code></pre><h2><span id="apps-to-automate-the-process">Apps to automate the process</span></h2><p>Google Play上还有几个应用程序可以自动执行此过程。快速搜索建议<a href="http://en.wikipedia.org/wiki/Android_Debug_Bridge" target="_blank" rel="noopener"> adbWireless](https://play.google.com/store/apps/details?id=siir.es.adbWireless&amp;hl=en)，<br>WiFi亚行</a>和<a href="“https://play.google.com/store/apps/details?id=com.ttxapps.wifiadb&amp;hl=en”rel">https://play.google.com/store/apps/details?id=com.ryosoftware.adbw&amp;hl=en“rel<br>=”noreferrer“&gt;亚行WiFi</a>。所有这些都需要root权限，但是需要更少的权限。</p>
+<p>如果您的手机已经扎根，这非常简单。</p>
+<p>从<a href="https://en.wikipedia.org/wiki/Google_Play" target="_blank" rel="noopener"> Google Play </a>下载终端模拟器（有很多免费的<br>）。确保您的Android设备已连接至您的Wi-Fi，并获取 <strong>Wi-Fi</strong> IP地址。打开终端程序并键入：</p>
+<pre><code>su
+setprop service.adb.tcp.port 5555
+stop adbd
+start adbd
+</code></pre><p>现在进入你的电脑（假设你正在使用Windows），并在桌面上为“cmd.exe”（没有引号）创建一个快捷方式。</p>
+<p>右键单击cmd快捷方式并选择<code>“以管理员身份运行”</code><br>转到您的<code>android-sdk-windows \ tools</code>文件夹</p>
+<p>&lt;强&gt;类型：</p>
+<pre><code>adb connect ***wifi.ip.address***:5555
+
+(example: adb connect 192.168.0.105:5555)
+</code></pre><p>现在adb应该说你已经连接了。</p>
+<p><strong>注意：</strong> 如果您的连接命令太快，可能会失败。因此，在你说这不起作用之前，请至少尝试两次五秒。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/03/16/how-can-i-connect-to-android-with-adb-over-tcp/" data-title="如何通过TCP连接到使用ADB的Android？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/17/how-to-secure-database-passwords-in-php/" title="如何在PHP中保护数据库密码？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何在PHP中保护数据库密码？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/03/16/how-to-do-a-recursive-find-replace-of-a-string-with-awk-of-sed/"  title="如何做一个字符串的awk sed的递归查找/替换？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何做一个字符串的awk sed的递归查找/替换？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Manual Process</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">From your device, if it is rooted</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">From a computer, if you have USB access already (no root required)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Apps to automate the process</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

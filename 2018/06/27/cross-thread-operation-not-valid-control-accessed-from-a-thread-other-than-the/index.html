@@ -1,0 +1,681 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>跨线程操作无效：从其创建的线程以外的线程访问控制 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个场景。 （Windows Forms，C＃，.NET）  有一个主要的窗体来托管一些用户控件。 用户控件执行一些繁重的数据操作，因此如果我直接调用UserControl_Load方法，UI在执行加载方法的持续时间内将无响应。 为了克服这个问题，我在不同的线程上加载数据（试图尽可能少地改变现有的代码） 我使用了一个后台工作线程来加载数据，完成后会通知应用程序它已经完成了工作。  现在出现了一">
+<meta name="keywords" content="c-sharp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨线程操作无效：从其创建的线程以外的线程访问控制">
+<meta property="og:url" content="https://www.tracholar.top/2018/06/27/cross-thread-operation-not-valid-control-accessed-from-a-thread-other-than-the/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个场景。 （Windows Forms，C＃，.NET）  有一个主要的窗体来托管一些用户控件。 用户控件执行一些繁重的数据操作，因此如果我直接调用UserControl_Load方法，UI在执行加载方法的持续时间内将无响应。 为了克服这个问题，我在不同的线程上加载数据（试图尽可能少地改变现有的代码） 我使用了一个后台工作线程来加载数据，完成后会通知应用程序它已经完成了工作。  现在出现了一">
+<meta property="og:image" content="https://www.tracholar.top/2018/06/27/cross-thread-operation-not-valid-control-accessed-from-a-thread-other-than-the/“https://i.stack.imgur.com/6MtB3.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/06/27/cross-thread-operation-not-valid-control-accessed-from-a-thread-other-than-the/“https://i.stack.imgur.com/WQPOJ.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/06/27/cross-thread-operation-not-valid-control-accessed-from-a-thread-other-than-the/“https://i.stack.imgur.com/UfBqr.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/06/27/cross-thread-operation-not-valid-control-accessed-from-a-thread-other-than-the/“https://i.stack.imgur.com/XmFJu.png”alt">
+<meta property="og:image" content="https://www.tracholar.top/2018/06/27/cross-thread-operation-not-valid-control-accessed-from-a-thread-other-than-the/“https://i.stack.imgur.com/8k5kn.png”alt">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跨线程操作无效：从其创建的线程以外的线程访问控制">
+<meta name="twitter:description" content="我有一个场景。 （Windows Forms，C＃，.NET）  有一个主要的窗体来托管一些用户控件。 用户控件执行一些繁重的数据操作，因此如果我直接调用UserControl_Load方法，UI在执行加载方法的持续时间内将无响应。 为了克服这个问题，我在不同的线程上加载数据（试图尽可能少地改变现有的代码） 我使用了一个后台工作线程来加载数据，完成后会通知应用程序它已经完成了工作。  现在出现了一">
+<meta name="twitter:image" content="https://www.tracholar.top/2018/06/27/cross-thread-operation-not-valid-control-accessed-from-a-thread-other-than-the/“https://i.stack.imgur.com/6MtB3.png”alt">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/06/27/cross-thread-operation-not-valid-control-accessed-from-a-thread-other-than-the/" title="跨线程操作无效：从其创建的线程以外的线程访问控制" itemprop="url">跨线程操作无效：从其创建的线程以外的线程访问控制</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-06-27T01:49:01.000Z" itemprop="datePublished"> Published 2018-06-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Threading Model in UI</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">The UI Thread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">BeginInvoke and Invoke methods</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">Invoke</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">BeginInvoke</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Code solution</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个场景。 （Windows Forms，C＃，.NET）</p>
+<ul>
+<li>有一个主要的窗体来托管一些用户控件。</li>
+<li>用户控件执行一些繁重的数据操作，因此如果我直接调用<code>UserControl_Load</code>方法，UI在执行加载方法的持续时间内将无响应。</li>
+<li>为了克服这个问题，我在不同的线程上加载数据（试图尽可能少地改变现有的代码）</li>
+<li>我使用了一个后台工作线程来加载数据，完成后会通知应用程序它已经完成了工作。 </li>
+<li>现在出现了一个真正的问题。所有的UI（主表单及其子用户控件）都是在主主线程上创建的。在usercontrol的LOAD方法中，我基于userControl上的某些控件（如文本框）的值来获取数据。 </li>
+</ul>
+<p>伪代码看起来像这样：</p>
+<p><strong>代码1</strong></p>
+<pre><code>UserContrl1_LoadDataMethod()
+{
+    if (textbox1.text == &quot;MyName&quot;) // This gives exception
+    {
+        //Load data corresponding to &quot;MyName&quot;.
+        //Populate a globale variable List&lt;string&gt; which will be binded to grid at some later stage.
+    }
+}
+</code></pre><p>它提供的例外是</p>
+<blockquote>
+<p>Cross-thread operation not valid: Control accessed from a thread other than<br>the thread it was created on.</p>
+</blockquote>
+<p>为了更多地了解这一点，我做了一些Google搜索，并提出了一些建议，如使用下面的代码</p>
+<p><strong>CODE 2</strong></p>
+<pre><code>UserContrl1_LoadDataMethod()
+{
+    if (InvokeRequired) // Line #1
+    {
+        this.Invoke(new MethodInvoker(UserContrl1_LoadDataMethod));
+        return;
+    }
+
+    if (textbox1.text == &quot;MyName&quot;) // Now it wont give an exception
+    {
+    //Load data correspondin to &quot;MyName&quot;
+        //Populate a globale variable List&lt;string&gt; which will be binded to grid at some later stage
+    }
+}
+</code></pre><p>但是，但是，似乎我已经回到原点了。再次申请 变得没有反应。这似乎是由于执行＃1行的条件。加载任务再次由父线程完成，而不是我产生的第三个。</p>
+<p>我不知道我是否察觉到这个对或错。我是线程新手。</p>
+<p>我该如何解决这个问题，以及第一行的执行效果如何？</p>
+<p><strong>情况是这样</strong> ：我想根据控件的值将数据加载到全局变量中。我不想从子线程更改控件的值。我不会从一个子线程做到这一点。</p>
+<p>所以只能访问这个值，以便相应的数据可以从数据库中获取。</p>
+<a id="more"></a>
+<p>根据<a href="“https://stackoverflow.com/questions/142003/cross-thread-
+operation-not-valid-control-accessed-from-a-thread-other-than-
+the#142108”"> Prera​​k K的更新评论</a>（自删除）：</p>
+<blockquote>
+<p>I guess I have not presented the question properly.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Situation is this: I want to load data into a global variable based on the<br>value of a control. I don’t want to change the value of a control from the<br>child thread. I’m not going to do it ever from a child thread.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>So only accessing the value so that corresponding data can be fetched from<br>the database.</p>
+</blockquote>
+<p>你想要的解决方案应该如下所示：</p>
+<pre><code>UserContrl1_LOadDataMethod()
+{
+    string name = &quot;&quot;;
+    if(textbox1.InvokeRequired)
+    {
+        textbox1.Invoke(new MethodInvoker(delegate { name = textbox1.text; }));
+    }
+    if(name == &quot;MyName&quot;)
+    {
+        // do whatever
+    }
+}
+</code></pre><p>在你尝试切换回控制线程之前，在你的单独线程 _之前进行严肃的处理。例如：</p>
+<pre><code>UserContrl1_LOadDataMethod()
+{
+    if(textbox1.text==&quot;MyName&quot;) //&lt;&lt;======Now it wont give exception**
+    {
+        //Load data correspondin to &quot;MyName&quot;
+        //Populate a globale variable List&lt;string&gt; which will be
+        //bound to grid at some later stage
+        if(InvokeRequired)
+        {
+            // after we&apos;ve done all the processing, 
+            this.Invoke(new MethodInvoker(delegate {
+                // load the control with the appropriate data
+            }));
+            return;
+        }
+    }
+}
+</code></pre><h1><span id="threading-model-in-ui">Threading Model in UI</span></h1><p>请阅读 _<a href="https://msdn.microsoft.com/library/ms741870\(v=vs.100\" target="_blank" rel="noopener">线程模型</a>.aspx) &lt; /<br>em&gt;在UI应用程序中了解基本概念。链接导航到描述WPF线程模型的页面。但是，Windows Forms使用相同的想法。</p>
+<h2><span id="the-ui-thread">The UI Thread</span></h2><ul>
+<li>只有一个线程（UI线程），允许访问<a href="“http://msdn.microsoft.com/en-us/library/System.Windows.Forms.Control.aspx”rel"> System.Windows.Forms.Control </a>及其子类成员。</li>
+<li>尝试访问<a href="http://msdn.microsoft.com/en-us/library/System.Windows.Forms.Control.aspx" target="_blank" rel="noopener"> System.Windows.Forms .Control </a>来自不同线程的UI线程会造成跨线程异常。</li>
+<li>由于只有一个线程，因此所有的UI操作都作为工作项排入该线程：</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/6MtB3.png”alt" alt=""></p>
+<ul>
+<li>如果UI线程没有工作，那么有空闲的空白可以被非UI相关的计算使用。</li>
+<li>为了使用上述的间隙，请使用<a href="http://msdn.microsoft.com/en-us/library/System.Windows.Forms.Control.Invoke.aspx" target="_blank" rel="noopener"> System .Windows.Forms.Control.Invoke </a>或<a href="“http://msdn.microsoft.com/en-us/library/system.windows.forms.control.begininvoke.aspx”rel"> System.Windows.Forms.Control.BeginInvoke </a>方法：</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/WQPOJ.png”alt" alt=""></p>
+<h2><span id="begininvoke-and-invoke-methods">BeginInvoke and Invoke methods</span></h2><ul>
+<li>被调用的方法的计算开销应该小，并且计算事件处理程序方法的开销，因为在那里使用了UI线程 - 负责处理用户输入。无论这是<a href="http://msdn.microsoft.com/en-us/library/System.Windows.Forms.Control.Invoke.aspx" target="_blank" rel="noopener"> System.Windows.Forms.Control .Invoke </a>或<a href="http://msdn.microsoft.com/en-us/library/system.windows.forms.control.begininvoke.aspx" target="_blank" rel="noopener"> System.Windows。 Forms.Control.BeginInvoke </a>。</li>
+<li>要执行计算昂贵的操作，总是使用单独的线程。由于.NET 2.0 <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.backgroundworker.aspx" target="_blank" rel="noopener"> BackgroundWorker </a>致力于执行计算昂贵Windows窗体中的操作。但是，在新的解决方案中，您应该使用<a href="https://stackoverflow.com/a/18033198/2042090" target="_blank" rel="noopener">此处</a>所述的异步等待模式。</li>
+<li>使用<a href="http://msdn.microsoft.com/en-us/library/System.Windows.Forms.Control.Invoke.aspx" target="_blank" rel="noopener"> System.Windows.Forms.Control .Invoke </a>或<a href="http://msdn.microsoft.com/en-us/library/system.windows.forms.control.begininvoke.aspx" target="_blank" rel="noopener"> System.Windows。 Forms.Control.BeginInvoke </a>方法来更新用户界面。如果您使用它们进行繁重的计算，您的应用程序将会阻止：</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/UfBqr.png”alt" alt=""></p>
+<h3><span id="invoke">Invoke</span></h3><ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/System.Windows.Forms.Control.Invoke.aspx" target="_blank" rel="noopener"> System.Windows.Forms.Control。调用</a>会导致单独的线程等待被调用的方法完成：</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/XmFJu.png”alt" alt=""></p>
+<h3><span id="begininvoke">BeginInvoke</span></h3><ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/system.windows.forms.control.begininvoke.aspx" target="_blank" rel="noopener"> System.Windows.Forms.Control。 BeginInvoke </a>不会导致单独的线程等待被调用的方法完成：</li>
+</ul>
+<p><img src="“https://i.stack.imgur.com/8k5kn.png”alt" alt=""></p>
+<h2><span id="code-solution">Code solution</span></h2><p>阅读关于问题的答案<a href="https://stackoverflow.com/questions/661561/how-
+to-update-the-gui-from-another-thread-in-c" target="_blank" rel="noopener">如何更新GUI从C＃中的另一个线程？</a>。 对于C＃5.0和.NET<br>4.5，推荐的解决方案是<a href="https://stackoverflow.com/a/18033198/2042090" target="_blank" rel="noopener">此处</a>。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/06/27/cross-thread-operation-not-valid-control-accessed-from-a-thread-other-than-the/" data-title="跨线程操作无效：从其创建的线程以外的线程访问控制 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/06/27/comparing-numbers-in-bash/" title="比较Bash中的数字">
+  <strong>上一篇：</strong><br/>
+  <span>
+  比较Bash中的数字</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/06/26/android-go-back-to-previous-activity/"  title="Android：返回上一个活动">
+ <strong>下一篇：</strong><br/> 
+ <span>Android：返回上一个活动
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Threading Model in UI</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">The UI Thread</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">BeginInvoke and Invoke methods</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">Invoke</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">BeginInvoke</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Code solution</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

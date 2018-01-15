@@ -1,0 +1,703 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Android上的SQLite的最佳做法是什么？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="当在Android应用程序中执行对SQLite数据库的查询时，会考虑哪些最佳实践？ 从AsyncTask的doInBackground运行插入，删除和选择查询是否安全？或者我应该使用UI线程？我想数据库查询可以是“沉重的”，不应该使用UI线程，因为它可以锁定应用程序-导致一个应用程序没有响应（ANR）。 如果我有几个AsyncTasks，他们应该共享一个连接还是应该打开一个连接？ 有没有这些情况下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android上的SQLite的最佳做法是什么？">
+<meta property="og:url" content="https://www.tracholar.top/2018/03/28/what-are-the-best-practices-for-sqlite-on-android/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="当在Android应用程序中执行对SQLite数据库的查询时，会考虑哪些最佳实践？ 从AsyncTask的doInBackground运行插入，删除和选择查询是否安全？或者我应该使用UI线程？我想数据库查询可以是“沉重的”，不应该使用UI线程，因为它可以锁定应用程序-导致一个应用程序没有响应（ANR）。 如果我有几个AsyncTasks，他们应该共享一个连接还是应该打开一个连接？ 有没有这些情况下">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android上的SQLite的最佳做法是什么？">
+<meta name="twitter:description" content="当在Android应用程序中执行对SQLite数据库的查询时，会考虑哪些最佳实践？ 从AsyncTask的doInBackground运行插入，删除和选择查询是否安全？或者我应该使用UI线程？我想数据库查询可以是“沉重的”，不应该使用UI线程，因为它可以锁定应用程序-导致一个应用程序没有响应（ANR）。 如果我有几个AsyncTasks，他们应该共享一个连接还是应该打开一个连接？ 有没有这些情况下">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/03/28/what-are-the-best-practices-for-sqlite-on-android/" title="Android上的SQLite的最佳做法是什么？" itemprop="url">Android上的SQLite的最佳做法是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-03-28T02:30:57.000Z" itemprop="datePublished"> Published 2018-03-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Concurrent Database Access</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Working sample</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>当在Android应用程序中执行对SQLite数据库的查询时，会考虑哪些最佳实践？</p>
+<p>从AsyncTask的doInBackground运行插入，删除和选择查询是否安全？或者我应该使用UI线程？我想数据库查询可以是“沉重的”，不应该使用UI线程，因为它可以锁定应用程序<br>-<br>导致一个<a href="“https://developer.android.com/intl/in/training/articles">应用程序没有响应</a>（ANR）。</p>
+<p>如果我有几个AsyncTasks，他们应该共享一个连接还是应该打开一个连接？</p>
+<p>有没有这些情况下的最佳做法？</p>
+<a id="more"></a>
+<p>插入，更新，删除和读取通常可以从多个线程，但布拉德的<a href="https://stackoverflow.com/a/2493839/2759862" target="_blank" rel="noopener">答案</a>是不正确的。您必须小心如何创建连接并使用它们。有些情况下，即使数据库没有损坏，更新调用也会失败。</p>
+<p>基本的答案。**</p>
+<p>SqliteOpenHelper对象拥有一个数据库连接。它似乎为您提供了一个读写连接，但它确实没有。调用只读，你会得到写数据库连接无论如何。</p>
+<p>那么，一个辅助实例，一个db连接。即使你从多个线程使用它，一次一个连接。<br>SqliteDatabase对象使用java锁来保持访问序列化。所以，如果100个线程有一个数据库实例，那么调用实际的磁盘数据库就会被序列化。</p>
+<p>所以，一个助手，一个数据库连接，这是在java代码序列化。一个线程，1000个线程，如果你使用它们之间共享的一个助手实例，你所有的数据库访问代码是串行的。生活是好的（ish）。</p>
+<p>如果您尝试同时从实际不同的连接写入数据库，则会失败。它不会等到第一个完成，然后写。它不会写你的改变。更糟糕的是，如果你不在SQLiteDatabase上调用正确版本的insert<br>/ update，你就不会得到异常。你只需要在你的LogCat中得到一个消息，就是这样。</p>
+<p>那么，多线程？使用一个帮手。期。如果你知道只有一个线程将被写入，你可能会使用多个连接，你的读取会更快，但买方要小心。我还没有测试过。</p>
+<p>这里有一个更详细的博客文章和一个示例应用程序。</p>
+<ul>
+<li><a href="http://touchlabblog.tumblr.com/post/24474398246/android-sqlite-locking" target="_blank" rel="noopener"> Android Sqlite锁定</a>（更新链接6/18/2012） </li>
+<li><a href="https://github.com/touchlab/Android-Database-Locking-Collisions-Example" target="_blank" rel="noopener"> Android-Database-Locking-Collisions-example by touchlab </a> GitHub的</li>
+</ul>
+<p>Gray和我实际上正在包装一个基于Ormlite的ORM工具，该工具本身与Android数据库实现一起工作，并遵循我在博客文章中描述的安全创建/调用结构。这应该很快出来。看看。</p>
+<hr>
+<p>同时，还有一个后续的博客文章：</p>
+<ul>
+<li><a href="http://touchlabblog.tumblr.com/post/24474750219/single-sqlite-connection" target="_blank" rel="noopener">单个SQLite连接</a></li>
+</ul>
+<p>还可以通过前面提到的锁定示例的 <em>2point0</em> 检出分支：</p>
+<ul>
+<li><a href="https://github.com/2point0/Android-Database-Locking-Collisions-Example" target="_blank" rel="noopener"> Android-Database-Locking-Collisions-Example by 2point0 </a> on GitHub的</li>
+</ul>
+<h2><span id="concurrent-database-access">Concurrent Database Access</span></h2><p><a href="http://www.dmytrodanylyk.com/concurrent-database-
+access" target="_blank" rel="noopener">我的博客上的相同文章（我喜欢格式化更多）</a></p>
+<p>_</p>
+<p>我写了一篇小文章，介绍如何使你的android数据库线程安全访问。</p>
+<hr>
+<p>假设您有自己的 <strong>SQLiteOpenHelper</strong> 。</p>
+<pre><code>public class DatabaseHelper extends SQLiteOpenHelper { ... }
+</code></pre><p>现在你想在不同的线程中将数据写入数据库。</p>
+<pre><code>// Thread 1
+Context context = getApplicationContext();
+DatabaseHelper helper = new DatabaseHelper(context);
+SQLiteDatabase database = helper.getWritableDatabase();
+database.insert(a¦);
+database.close();
+
+// Thread 2
+Context context = getApplicationContext();
+DatabaseHelper helper = new DatabaseHelper(context);
+SQLiteDatabase database = helper.getWritableDatabase();
+database.insert(a¦);
+database.close();
+</code></pre><p>您将在logcat中获得以下消息，并且您的更改将不会被写入。</p>
+<pre><code>android.database.sqlite.SQLiteDatabaseLockedException: database is locked (code 5)
+</code></pre><p>这是因为每当你创建新的SQLiteOpenHelper对象时，你实际上正在创建新的数据库连接。如果您尝试从实际不同的连接同时写入数据库，则会失败。<br>（从上面的答案）</p>
+<p>为了在多线程中使用数据库，我们需要确保我们使用的是一个数据库连接。</p>
+<p>让我们创建一个单独的类 <em>数据库管理器</em> ，它将保存并返回单个 <em>SQLiteOpenHelper</em> 对象。</p>
+<pre><code>public class DatabaseManager {
+
+    private static DatabaseManager instance;
+    private static SQLiteOpenHelper mDatabaseHelper;
+
+    public static synchronized void initializeInstance(SQLiteOpenHelper helper) {
+        if (instance == null) {
+            instance = new DatabaseManager();
+            mDatabaseHelper = helper;
+        }
+    }
+
+    public static synchronized DatabaseManager getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException(DatabaseManager.class.getSimpleName() +
+                    &quot; is not initialized, call initialize(..) method first.&quot;);
+        }
+
+        return instance;
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return new mDatabaseHelper.getWritableDatabase();
+    }
+
+}
+</code></pre><p>在单独的线程中将数据写入数据库的更新代码将如下所示。</p>
+<pre><code>// In your application class
+DatabaseManager.initializeInstance(new MySQLiteOpenHelper());
+// Thread 1
+DatabaseManager manager = DatabaseManager.getInstance();
+SQLiteDatabase database = manager.getDatabase()
+database.insert(a¦);
+database.close();
+
+// Thread 2
+DatabaseManager manager = DatabaseManager.getInstance();
+SQLiteDatabase database = manager.getDatabase()
+database.insert(a¦);
+database.close();
+</code></pre><p>这会给你带来另一次崩溃。</p>
+<pre><code>java.lang.IllegalStateException: attempt to re-open an already-closed object: SQLiteDatabase
+</code></pre><p>因为我们只使用一个数据库连接，所以方法 <em>getDatabase（）</em> 为 <em>Thread1</em> 和 _Thread2返回 <em>SQLiteDatabase</em><br><em> 。发生了什么情况，Thread1 </em>可能会关闭数据库，而 _仍在使用它。这就是为什么我们有 <em>IllegalStateException</em> 崩溃的原因。</p>
+<p>我们需要确保没有人使用数据库，只有关闭它。 stackoveflow上的一些人建议不要关闭你的 <em>SQLiteDatabase</em><br>。它不仅听起来很愚蠢，而且还以下面的logcat信息向您致敬。</p>
+<pre><code>Leak found
+Caused by: java.lang.IllegalStateException: SQLiteDatabase created and never closed
+</code></pre><h2><span id="working-sample">Working sample</span></h2><pre><code>public class DatabaseManager {
+
+    private int mOpenCounter;
+
+    private static DatabaseManager instance;
+    private static SQLiteOpenHelper mDatabaseHelper;
+    private SQLiteDatabase mDatabase;
+
+    public static synchronized void initializeInstance(SQLiteOpenHelper helper) {
+        if (instance == null) {
+            instance = new DatabaseManager();
+            mDatabaseHelper = helper;
+        }
+    }
+
+    public static synchronized DatabaseManager getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException(DatabaseManager.class.getSimpleName() +
+                    &quot; is not initialized, call initializeInstance(..) method first.&quot;);
+        }
+
+        return instance;
+    }
+
+    public synchronized SQLiteDatabase openDatabase() {
+        mOpenCounter++;
+        if(mOpenCounter == 1) {
+            // Opening new database
+            mDatabase = mDatabaseHelper.getWritableDatabase();
+        }
+        return mDatabase;
+    }
+
+    public synchronized void closeDatabase() {
+        mOpenCounter--;
+        if(mOpenCounter == 0) {
+            // Closing database
+            mDatabase.close();
+
+        }
+    }
+
+}
+</code></pre><p>按照如下方式使用它。</p>
+<pre><code>SQLiteDatabase database = DatabaseManager.getInstance().openDatabase();
+database.insert(...);
+// database.close(); Don&apos;t close it directly!
+DatabaseManager.getInstance().closeDatabase(); // correct way
+</code></pre><p>每当你需要数据库时，你都应该调用DatabaseManager的openDatabase（）方法。 __<br>在这个方法里面，我们有一个计数器，表示数据库打开了多少次。如果它等于1，则表示我们需要创建新的数据库连接，如果不是，则数据库连接已经创建。</p>
+<p><em>closeDatabase（）</em> 方法也是如此。每次我们调用这个方法时，计数器都会减少，每当它变为零时，我们就关闭数据库连接。</p>
+<hr>
+<p>现在你应该可以使用你的数据库，并确保它是线程安全的。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/03/28/what-are-the-best-practices-for-sqlite-on-android/" data-title="Android上的SQLite的最佳做法是什么？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/03/29/date-it-is-not-safe-to-rely-on-the-systems-timezone-settings/" title="“date（）：依靠系统的时区设置是不安全的   ”">
+  <strong>上一篇：</strong><br/>
+  <span>
+  “date（）：依靠系统的时区设置是不安全的   ”</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/03/28/read-a-file-line-by-line-assigning-the-value-to-a-variable/"  title="逐行读取文件，将该值分配给变量">
+ <strong>下一篇：</strong><br/> 
+ <span>逐行读取文件，将该值分配给变量
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Concurrent Database Access</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Working sample</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

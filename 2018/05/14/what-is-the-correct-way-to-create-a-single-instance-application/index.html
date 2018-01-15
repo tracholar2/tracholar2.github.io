@@ -1,0 +1,765 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>什么是创建单实例应用程序的正确方法？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在.NET（而不是 Windows Forms或控制台）下使用C＃和WPF，什么是创建只能作为单个实例运行的应用程序的正确方法？ 我知道这与一个叫做互斥体的神秘事物有关，很少有人能找到一个麻烦停下来解释它们是什么的人。 代码还需要通知已经运行的实例，用户试图启动第二个实例，也许还会传递任何命令行参数（如果有的话）。">
+<meta name="keywords" content="c-sharp,dot-net">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是创建单实例应用程序的正确方法？">
+<meta property="og:url" content="https://www.tracholar.top/2018/05/14/what-is-the-correct-way-to-create-a-single-instance-application/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在.NET（而不是 Windows Forms或控制台）下使用C＃和WPF，什么是创建只能作为单个实例运行的应用程序的正确方法？ 我知道这与一个叫做互斥体的神秘事物有关，很少有人能找到一个麻烦停下来解释它们是什么的人。 代码还需要通知已经运行的实例，用户试图启动第二个实例，也许还会传递任何命令行参数（如果有的话）。">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="什么是创建单实例应用程序的正确方法？">
+<meta name="twitter:description" content="在.NET（而不是 Windows Forms或控制台）下使用C＃和WPF，什么是创建只能作为单个实例运行的应用程序的正确方法？ 我知道这与一个叫做互斥体的神秘事物有关，很少有人能找到一个麻烦停下来解释它们是什么的人。 代码还需要通知已经运行的实例，用户试图启动第二个实例，也许还会传递任何命令行参数（如果有的话）。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/14/what-is-the-correct-way-to-create-a-single-instance-application/" title="什么是创建单实例应用程序的正确方法？" itemprop="url">什么是创建单实例应用程序的正确方法？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-14T01:42:22.000Z" itemprop="datePublished"> Published 2018-05-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">UPDATE</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在.NET（而不是<a href="http://en.wikipedia.org/wiki/Windows_Forms" target="_blank" rel="noopener"> Windows Forms</a>或控制台）下使用C＃和WPF，什么是创建只能作为单个实例运行的应用程序的正确方法？</p>
+<p>我知道这与一个叫做互斥体的神秘事物有关，很少有人能找到一个麻烦停下来解释它们是什么的人。</p>
+<p>代码还需要通知已经运行的实例，用户试图启动第二个实例，也许还会传递任何命令行参数（如果有的话）。</p>
+<p><a id="more"></a> 这是一个很好的关于互斥解决方案的<a href="http://sanity-
+free.org/143/csharp_dotnet_single_instance_application.html" target="_blank" rel="noopener">文章</a>。这篇文章描述的方法有两个原因是有利的。</p>
+<p>首先，它不需要依赖Microsoft.VisualBasic程序集。如果我的项目已经依赖于该程序集，我可能会主张使用接受答案中显示的方法。但事实上，我不使用Microsoft.VisualBasic程序集，我宁愿不添加一个不必要的依赖项到我的项目中。</p>
+<p>其次，文章展示了当用户尝试启动另一个实例时，如何将应用程序的现有实例置于前台。这是一个非常好的触摸，这里描述的其他Mutex解决方案不解决。</p>
+<hr>
+<h3><span id="update">UPDATE</span></h3><p>截至2014年8月1日，我上面链接的文章仍然活跃，但博客一段时间没有更新。这让我担心，最终可能会消失，并由此提出主张的解决方案。我在这里为后人重现了这篇文章的内容。这些词语完全属于<a href="http://sanity-free.org/" target="_blank" rel="noopener">Sanity Free Coding </a>的博客所有者。</p>
+<blockquote>
+<p>Today I wanted to refactor some code that prohibited my application from<br>running multiple instances of itself.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Previously I had use <a href="http://msdn.microsoft.com
+/en-us/library/system.diagnostics.process\(v=vs.110\" target="_blank" rel="noopener">System.Diagnostics.Process</a>.aspx) to search for an<br>instance of my myapp.exe in the process list. While this works, it brings on a<br>lot of overhead, and I wanted something cleaner.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Knowing that I could use a mutex for this (but never having done it before)<br>I set out to cut down my code and simplify my life.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>In the class of my application main I created a static named<br><a href="http://msdn.microsoft.com/en-
+us/library/system.threading.mutex\(v=vs.110\" target="_blank" rel="noopener">Mutex</a>.aspx):</p>
+</blockquote>
+<pre><code>static class Program
+{
+    static Mutex mutex = new Mutex(true, &quot;{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}&quot;);
+    [STAThread]
+    ...
+}
+</code></pre><blockquote>
+<p>Having a named mutex allows us to stack synchronization across multiple<br>threads and processes which is just the magic I’m looking for.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><a href="http://msdn.microsoft.com/en-
+us/library/58195swd\(v=vs.110\" target="_blank" rel="noopener">Mutex.WaitOne</a>.aspx) has an overload that specifies an amount<br>of time for us to wait. Since we’re not actually wanting to synchronizing our<br>code (more just check if it is currently in use) we use the overload with two<br>parameters: <a href="http://msdn.microsoft.com/en-
+us/library/85bbbxt9\(v=vs.110\" target="_blank" rel="noopener">Mutex.WaitOne(Timespan timeout, bool<br>exitContext)</a>.aspx). Wait one returns true if it is able to<br>enter, and false if it wasn’t. In this case, we don’t want to wait at all; If<br>our mutex is being used, skip it, and move on, so we pass in TimeSpan.Zero<br>(wait 0 milliseconds), and set the exitContext to true so we can exit the<br>synchronization context before we try to aquire a lock on it. Using this, we<br>wrap our Application.Run code inside something like this:</p>
+</blockquote>
+<pre><code>static class Program
+{
+    static Mutex mutex = new Mutex(true, &quot;{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}&quot;);
+    [STAThread]
+    static void Main() {
+        if(mutex.WaitOne(TimeSpan.Zero, true)) {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
+            mutex.ReleaseMutex();
+        } else {
+            MessageBox.Show(&quot;only one instance at a time&quot;);
+        }
+    }
+}
+</code></pre><blockquote>
+<p>So, if our app is running, WaitOne will return false, and we’ll get a<br>message box.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Instead of showing a message box, I opted to utilize a little Win32 to<br>notify my running instance that someone forgot that it was already running (by<br>bringing itself to the top of all the other windows). To achieve this I used<br><a href="http://msdn.microsoft.com/en-
+us/library/windows/desktop/ms644944\(v=vs.85\" target="_blank" rel="noopener">PostMessage</a>.aspx) to broadcast a custom<br>message to every window (the custom message was registered with<br><a href="http://msdn.microsoft.com/en-
+us/library/windows/desktop/ms644947\(v=vs.85\" target="_blank" rel="noopener">RegisterWindowMessage</a>.aspx) by my running<br>application, which means only my application knows what it is) then my second<br>instance exits. The running application instance would receive that<br>notification and process it. In order to do that, I overrode<br><a href="http://msdn.microsoft.com/en-
+us/library/system.windows.forms.form.wndproc\(v=vs.110\" target="_blank" rel="noopener">WndProc</a>.aspx) in my main form<br>and listened for my custom notification. When I received that notification I<br>set the form’s TopMost property to true to bring it up on top.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Here is what I ended up with:</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li>Program.cs</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<pre><code>static class Program
+{
+    static Mutex mutex = new Mutex(true, &quot;{8F6F0AC4-B9A1-45fd-A8CF-72F04E6BDE8F}&quot;);
+    [STAThread]
+    static void Main() {
+        if(mutex.WaitOne(TimeSpan.Zero, true)) {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
+            mutex.ReleaseMutex();
+        } else {
+            // send our Win32 message to make the currently running instance
+            // jump on top of all the other windows
+            NativeMethods.PostMessage(
+                (IntPtr)NativeMethods.HWND_BROADCAST,
+                NativeMethods.WM_SHOWME,
+                IntPtr.Zero,
+                IntPtr.Zero);
+        }
+    }
+}
+</code></pre><blockquote>
+<ul>
+<li>NativeMethods.cs</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<pre><code>// this class just wraps some Win32 stuff that we&apos;re going to use
+internal class NativeMethods
+{
+    public const int HWND_BROADCAST = 0xffff;
+    public static readonly int WM_SHOWME = RegisterWindowMessage(&quot;WM_SHOWME&quot;);
+    [DllImport(&quot;user32&quot;)]
+    public static extern bool PostMessage(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam);
+    [DllImport(&quot;user32&quot;)]
+    public static extern int RegisterWindowMessage(string message);
+}
+</code></pre><blockquote>
+<ul>
+<li>Form1.cs (front side partial)</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<pre><code>public partial class Form1 : Form
+{
+    public Form1()
+    {
+        InitializeComponent();
+    }
+    protected override void WndProc(ref Message m)
+    {
+        if(m.Msg == NativeMethods.WM_SHOWME) {
+            ShowMe();
+        }
+        base.WndProc(ref m);
+    }
+    private void ShowMe()
+    {
+        if(WindowState == FormWindowState.Minimized) {
+            WindowState = FormWindowState.Normal;
+        }
+        // get our current &quot;TopMost&quot; value (ours will always be false though)
+        bool top = TopMost;
+        // make our form jump to the top of everything
+        TopMost = true;
+        // set it back to whatever it was
+        TopMost = top;
+    }
+}
+</code></pre><p>你可以使用Mutex类，但你很快就会发现你将需要实现代码来传递参数等等。那么，当我阅读<a href="http://www.sellsbrothers.com/writing/wfbook/" target="_blank" rel="noopener">克里斯·塞尔的书</a>时，我在WinForms编程中学到了一招。这个技巧使用框架中已经提供给我们的逻辑。我不了解你，但是当我了解可以在框架中重复使用的东西时，通常是我所采取的路线，而不是重新发明轮子。除非当然，它不会做我想要的一切。</p>
+<p>当我进入WPF时，我想出了一种使用相同代码的方式，但是在WPF应用程序中。这个解决方案应该根据您的问题来满足您的需求。</p>
+<p>首先，我们需要创建我们的应用程序类。在这个类中，我们将覆盖OnStartup事件并创建一个名为Activate的方法，稍后将会使用它。</p>
+<pre><code>public class SingleInstanceApplication : System.Windows.Application
+{
+    protected override void OnStartup(System.Windows.StartupEventArgs e)
+    {
+        // Call the OnStartup event on our base class
+        base.OnStartup(e);
+
+        // Create our MainWindow and show it
+        MainWindow window = new MainWindow();
+        window.Show();
+    }
+
+    public void Activate()
+    {
+        // Reactivate the main window
+        MainWindow.Activate();
+    }
+}
+</code></pre><p>其次，我们需要创建一个可以管理我们实例的类。在我们完成之前，我们实际上将重用Microsoft.VisualBasic程序集中的一些代码。因为我在这个例子中使用了C＃，所以我不得不引用这个程序集。如果你使用VB.NET，你不需要做任何事情。我们要使用的类是WindowsFormsApplicationBase，并继承我们的实例管理器，然后利用属性和事件来处理单个实例。</p>
+<pre><code>public class SingleInstanceManager : Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase
+{
+    private SingleInstanceApplication _application;
+    private System.Collections.ObjectModel.ReadOnlyCollection&lt;string&gt; _commandLine;
+
+    public SingleInstanceManager()
+    {
+        IsSingleInstance = true;
+    }
+
+    protected override bool OnStartup(Microsoft.VisualBasic.ApplicationServices.StartupEventArgs eventArgs)
+    {
+        // First time _application is launched
+        _commandLine = eventArgs.CommandLine;
+        _application = new SingleInstanceApplication();
+        _application.Run();
+        return false;
+    }
+
+    protected override void OnStartupNextInstance(StartupNextInstanceEventArgs eventArgs)
+    {
+        // Subsequent launches
+        base.OnStartupNextInstance(eventArgs);
+        _commandLine = eventArgs.CommandLine;
+        _application.Activate();
+    }
+}
+</code></pre><p>基本上，我们使用VB位来检测单个实例并相应地进行处理。<br>OnStartup将在第一个实例加载时触发。应用程序再次重新运行时，会触发OnStartupNextInstance。正如你所看到的，我可以通过事件参数得到命令行上传递的内容。我将该值设置为实例字段。您可以在这里解析命令行，或者您可以通过构造函数和对Activate方法的调用将它传递给您的应用程序。</p>
+<p>第三，现在是创建我们的入口点的时候了。我们将利用我们的SingleInstanceManager，而不是像通常那样新建应用程序。</p>
+<pre><code>public class EntryPoint
+{
+    [STAThread]
+    public static void Main(string[] args)
+    {
+        SingleInstanceManager manager = new SingleInstanceManager();
+        manager.Run(args);
+    }
+}
+</code></pre><p>那么，我希望你能够遵循一切，并且能够使用这个实现，并把它变成你自己的。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/05/14/what-is-the-correct-way-to-create-a-single-instance-application/" data-title="什么是创建单实例应用程序的正确方法？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/14/how-do-i-remove-the-file-suffix-and-path-portion-from-a-path-string-in-bash/" title="如何从Bash中的路径字符串中删除文件后缀和路径部分？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何从Bash中的路径字符串中删除文件后缀和路径部分？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/05/14/download-file-to-server-from-url/"  title="从URL下载文件到服务器">
+ <strong>下一篇：</strong><br/> 
+ <span>从URL下载文件到服务器
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">UPDATE</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

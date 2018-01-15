@@ -1,0 +1,602 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>sh和bash之间的区别 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="编写shell程序时，经常使用/ bin / sh和/ bin / bash。我通常使用bash，但我不知道它们之间有什么区别。 和sh之间的主要区别是什么？ 在bash和sh中进行编程时，我们需要注意什么？">
+<meta name="keywords" content="shell,bash,unix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sh和bash之间的区别">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/05/difference-between-sh-and-bash/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="编写shell程序时，经常使用/ bin / sh和/ bin / bash。我通常使用bash，但我不知道它们之间有什么区别。 和sh之间的主要区别是什么？ 在bash和sh中进行编程时，我们需要注意什么？">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sh和bash之间的区别">
+<meta name="twitter:description" content="编写shell程序时，经常使用/ bin / sh和/ bin / bash。我通常使用bash，但我不知道它们之间有什么区别。 和sh之间的主要区别是什么？ 在bash和sh中进行编程时，我们需要注意什么？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/05/difference-between-sh-and-bash/" title="sh和bash之间的区别" itemprop="url">sh和bash之间的区别</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-05T01:57:22.000Z" itemprop="datePublished"> Published 2018-02-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">What is sh</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">What is bash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">sh = bash?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Shebang line</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Which one to use</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>编写shell程序时，经常使用<code>/ bin / sh</code>和<code>/ bin / bash</code>。我通常使用<code>bash</code>，但我不知道它们之间有什么区别。</p>
+<p>和<code>sh</code>之间的主要区别是什么？</p>
+<p>在<code>bash</code>和<code>sh</code>中进行编程时，我们需要注意什么？</p>
+<a id="more"></a>
+<h1><span id="what-is-sh">What is sh</span></h1><p>sh <code>（或者Shell命令语言）是由[ POSIX
+标准](“http://pubs.opengroup.org/onlinepubs/009695399/utilities/xcu_chap02.html”描述的编程语言，的rel)。
+它有许多实现（</code> ksh88 <code>，</code> dash <code>，...）。也可以是</code> 考虑了<code>sh</code>（见下文）的实现。</p>
+<p>因为<code>sh</code>是一个规范，而不是一个实现，所以<code>/ bin / sh</code>是一个符号链接 （或硬链接）在大多数POSIX系统上的实际实现。</p>
+<h1><span id="what-is-bash">What is bash</span></h1><p>bash <code>作为一个</code> sh<br>`兼容的实现来启动（虽然它早于POSIX标准几年），但是随着时间的推移，它已经获得了许多扩展。许多这样的扩展可能会改变有效的POSIX<br>shell脚本的行为，所以它本身并不是一个有效的POSIX shell。相反，它是POSIX shell语言的一种方言。</p>
+<p>bash <code>支持一个</code> - posix <code>开关，这使得它更符合POSIX标准。如果以</code> sh `的形式调用，它也试图模仿POSIX。</p>
+<h1><span id="sh-bash">sh = bash?</span></h1><p>长期以来，在大多数GNU / Linux系统上，<code>/ bin / sh</code>用于指向<code>/ bin / bash</code>。结果，忽略两者之间的差异几乎变得安全了。但最近开始发生变化。</p>
+<p><code>/ bin / sh</code>不指向<code>/ bin / bash</code>（以及其中一些<code>/ bin / bash</code>代码&gt;可能不存在）：</p>
+<ul>
+<li>现代Debian和Ubuntu系统，默认情况下将<code>sh</code>链接到<code>dash</code>; </li>
+<li><a href="https://en.wikipedia.org/wiki/BusyBox" target="_blank" rel="noopener"> Busybox </a>，通常在Linux系统启动时运行，作为<code>initramfs的。它使用</code> ash ` shell实现。</li>
+<li>BSD，以及一般的非Linux系统。 OpenBSD使用<code>pdksh</code>，它是Korn shell的后代。 FreeBSD的<code>sh</code>是最初的UNIX Bourne shell的后代。 Solaris有自己的<code>sh</code>，很长一段时间不符合POSIX标准;免费实施可从<a href="http://heirloom.sourceforge.net/sh.html" target="_blank" rel="noopener">传家宝项目</a>获得。</li>
+</ul>
+<p>你怎么知道你的系统上的<code>/ bin / sh</code>指向了什么？</p>
+<p>复杂的是<code>/ bin / sh</code>可能是一个符号链接或一个硬链接。<br>如果是符号链接，则可以使用<a href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/file.html" target="_blank" rel="noopener">便携式</a>解决方法：&lt;<br>/ p&gt;</p>
+<pre><code>% file -h /bin/sh
+/bin/sh: symbolic link to bash
+</code></pre><p>如果是硬链接，请尝试</p>
+<pre><code>% find -L /bin -samefile /bin/sh
+/bin/sh
+/bin/bash
+</code></pre><p>实际上，<code>-L</code>标志覆盖了符号链接和硬链接， 但这种方法的缺点是它不是便携式的 - POSIX<br><a href="http://pubs.opengroup.org/onlinepubs/9699919799/utilities/find.html" target="_blank" rel="noopener">不要求</a> <code>find</code>来支持<code>-samefile</code>选项， 虽然<a href="https://www.gnu.org/software/findutils/manual/html_mono/find.html#Hard-
+Links" target="_blank" rel="noopener">GNU查找</a>和<a href="“https://www.freebsd.org/cgi/man.cgi?find\(1）”rel"> FreeBSD发现</a>支持它。</p>
+<h1><span id="shebang-line">Shebang line</span></h1><p>最终，由你来决定使用哪一个，通过编写“shebang”这一行。</p>
+<p>E.g。</p>
+<pre><code>#!/bin/sh
+</code></pre><p>将使用<code>sh</code>（以及发生的任何指向），</p>
+<pre><code>#!/bin/bash
+</code></pre><p>如果可用，</p>
+<p>将使用<code>/ bin / bash</code>（如果不是，则会失败并显示错误消息）。当然，你也可以指定另一个实现，例如</p>
+<pre><code>#!/bin/dash
+</code></pre><h1><span id="which-one-to-use">Which one to use</span></h1><p>对于我自己的脚本，我更喜欢<code>sh</code>，原因如下：</p>
+<ul>
+<li>标准化</li>
+<li>学习起来要简单得多</li>
+<li>它可以跨POSIX系统移植 - 即使它们碰巧没有<code>bash</code>，它们也必须有<code>sh</code><br>使用<code>bash</code>也有好处。其特点使得编程更加方便和类似于其他现代编程语言的编程。这些包括像范围局部变量和数组。 Plain <code>sh</code>是一种非常简约的编程语言。</li>
+</ul>
+<p>sh：<a href="http://man.cx/sh" target="_blank" rel="noopener"> http://man.cx/sh </a> bash：<a href="http://man.cx/bash" target="_blank" rel="noopener"> http://man.cx/bash</a></p>
+<p>TL; DR **：bash是sh的超集，具有更优雅的语法和更多的功能。几乎在所有情况下使用bash<br>shebang线是安全的，因为它在现代平台上是无处不在的。</p>
+<p>注意：在某些环境中，sh _是 **bash。检查<code>sh --version</code>。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a><a href="/tags/unix/">unix</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/05/difference-between-sh-and-bash/" data-title="sh和bash之间的区别 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/05/is-quitting-an-application-frowned-upon/" title="正在放弃申请吗？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  正在放弃申请吗？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/05/what-do-two-question-marks-together-mean-in-c/"  title="在C＃中，两个问号在一起意味着什么？">
+ <strong>下一篇：</strong><br/> 
+ <span>在C＃中，两个问号在一起意味着什么？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">What is sh</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">What is bash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">sh = bash?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Shebang line</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Which one to use</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

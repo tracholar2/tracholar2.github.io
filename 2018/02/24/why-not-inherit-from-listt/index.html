@@ -1,0 +1,646 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为什么不从List T继承？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在规划我的计划时，我经常从一个如此的思路开始：  A football team is just a list of football players. Therefore, I shouldrepresent it with: var football_team = new List&amp;lt;FootballPlayer&amp;gt;(); The ordering of this list repre">
+<meta name="keywords" content="c-sharp,dot-net">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为什么不从List T继承？">
+<meta property="og:url" content="https://www.tracholar.top/2018/02/24/why-not-inherit-from-listt/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在规划我的计划时，我经常从一个如此的思路开始：  A football team is just a list of football players. Therefore, I shouldrepresent it with: var football_team = new List&amp;lt;FootballPlayer&amp;gt;(); The ordering of this list repre">
+<meta property="og:updated_time" content="2018-01-15T04:09:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为什么不从List T继承？">
+<meta name="twitter:description" content="在规划我的计划时，我经常从一个如此的思路开始：  A football team is just a list of football players. Therefore, I shouldrepresent it with: var football_team = new List&amp;lt;FootballPlayer&amp;gt;(); The ordering of this list repre">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/02/24/why-not-inherit-from-listt/" title="为什么不从List T继承？" itemprop="url">为什么不从List T继承？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-02-24T01:31:06.000Z" itemprop="datePublished"> Published 2018-02-24</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Why not?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">What else am I supposed to use?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">My question (summarized)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">UPDATE</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在规划我的计划时，我经常从一个如此的思路开始：</p>
+<blockquote>
+<p>A football team is just a list of football players. Therefore, I should<br>represent it with:</p>
+<pre><code>var football_team = new List&lt;FootballPlayer&gt;();
+</code></pre><p>The ordering of this list represent the order in which the players are<br>listed in the roster.</p>
+</blockquote>
+<p>但是我后来意识到，除了单纯的球员名单之外，球队还有其他属性，必须记录下来。例如，本赛季得分总数，当前预算，统一颜色，表示球队名称的<code>string</code>等等。</p>
+<p>那么我想：</p>
+<blockquote>
+<p>Okay, a football team is just like a list of players, but additionally, it<br>has a name (a <code>string</code>) and a running total of scores (an <code>int</code>). .NET does<br>not provide a class for storing football teams, so I will make my own class.<br>The most similar and relevant existing structure is <code>List&lt;FootballPlayer&gt;</code>, so<br>I will inherit from it:</p>
+<pre><code>class FootballTeam : List&lt;FootballPlayer&gt;
+
+{
+
+    public string TeamName;
+
+    public int RunningTotal
+
+}
+</code></pre></blockquote>
+<p>但事实证明，[指南说，你不应该继承<code>List＆lt; T＆gt;</code> 。我在这方面完全被两方面弄糊涂了。</p>
+<h2><span id="why-not">Why not?</span></h2><p>很显然，<a href="https://stackoverflow.com/a/5376358/1042555" target="_blank" rel="noopener"> <code>List</code>是为了性能而优化的</a>。怎么会这样？如果扩展<code>List</code>，会导致哪些性能问题？什么会打破？</p>
+<p>我见过的另外一个原因是，<code>List</code>是由微软提供的，我无法控制它，所以[。但我很难理解这一点。什么是公共API，我为什么要关心？如果我目前的项目没有，也不可能拥有这个公共API，我可以放心地忽略这个指南吗？如果我从<code>List</code> <em>和</em> 继承，事实证明我需要一个公共API，那么我会遇到什么困难？</p>
+<p>为什么它甚至重要？列表是一个列表。什么可能改变？我可能想要改变什么？</p>
+<p>最后，如果微软不希望我从<code>List</code>继承，为什么他们没有把<code>类封装成</code>？</p>
+<h2><span id="what-else-am-i-supposed-to-use">What else am I supposed to use?</span></h2><p>显然，对于自定义集合，Microsoft提供了一个<code>Collection</code>类，应该扩展而不是<code>List</code>。但是这个类是非常光鲜的，并没有很多有用的东西，比如<code>AddRange</code> &lt;<a href="https://stackoverflow.com/questions/1474863/addrange-to-a-collection" target="_blank" rel="noopener"> &gt;</a>，例如。 <a href="https://stackoverflow.com/a/12039943/1042555" target="_blank" rel="noopener">jvitor83的答案</a>提供了该特定方法的性能基本原理，但是如何缓慢<code>AddRange</code>不是更好比没有<code>AddRange</code>？</p>
+<p>继承自<code>Collection</code>比从<code>List</code>继承更有效，我看不出有什么好处。毫无疑问，微软不会让我无缘无故地做额外的工作，所以我不禁感觉到我在某种程度上误解了某些东西，继承<code>Collection</code>其实并不是我的问题的正确解决方案。 / p&gt;</p>
+<p>我见过一些建议，比如实现<code>IList</code>。就是不行。这是几十行样板代码，没有任何收获。</p>
+<p>最后，有人建议将<code>List</code>包装在</p>
+<p>中</p>
+<pre><code>class FootballTeam 
+{ 
+    public List&lt;FootballPlayer&gt; Players; 
+}
+</code></pre><p>这有两个问题：</p>
+<ul>
+<li><p>它使我的代码不必要地冗长。我现在必须调用<code>my_team.Players.Count</code>而不是<code>my_team.Count</code>。谢天谢地，用C＃我可以定义索引器来使索引透明，并且转发内部的<code>List</code>的所有方法…但是这是很多代码！我为什么得到这些工作？</p>
+</li>
+<li><p>这显然没有任何意义。足球队没有“拥有”球员名单。它是_球员的名单。你不会说“John McFootballer加入了SomeTeam的球员”。你说“John加入了SomeTeam”。您不要将字母添加到“字符串的字符”，您将字母添加到字符串。你不会把一本书添加到图书馆的书籍中，而是将一本书添加到一个图书馆。</p>
+</li>
+</ul>
+<p>我意识到，“引擎盖下”发生的事情可以被认为是“把X添加到Y的内部列表”，但这似乎是一种非常直观的思考世界的方式。</p>
+<h2><span id="my-question-summarized">My question (summarized)</span></h2><p>代表一个数据结构的正确的C＃方式是什么？“逻辑上”（也就是说，“对于人类的思维”）只是<code>things</code>的<code>list</code> / code&gt;几个花里胡哨的？</p>
+<p>从<code>List＆lt; T＆gt;继承</code>永远不可接受？什么时候可以接受？为什么/为什么不呢？程序员在决定是否从<code>List＆lt; T＆gt;</code>继承时，必须考虑什么？</p>
+<p><a id="more"></a> 这里有一些很好的答案。我会给他们添加以下几点。</p>
+<blockquote>
+<p>What is the correct C# way of representing a data structure, which,<br>“logically” (that is to say, “to the human mind”) is just a list of things<br>with a few bells and whistles?</p>
+</blockquote>
+<p>问任何十位熟悉足球存在的非计算机程序员的人填补空白：</p>
+<pre><code>A football team is a particular kind of _____
+</code></pre><p><em>
+</em>是否说了一些“花哨的足球运动员名单”，还是都说“运动队”或“俱乐部”或“组织”？你的观点是，一个足球队是一种特殊的球员列表_是在你的人的头脑和你的人的头脑中。</p>
+<p><code>List＆lt; T＆gt;</code>是一个 <em>机制</em> 。足球队是一个 <em>业务对象</em> - 也就是表示某个概念的对象，该概念位于程序的 <em>业务域</em><br>中。不要混合这些！一支足球队是一种团队，它有一个<em>花名册，一个花名册 </em>是一个球员列表<em> 。名册不是一个特殊类型的球员列表</em>。名册 <em>是</em><br>球员列表。因此，创建一个名为<code>Roster</code>的<code>List＆lt; Player＆gt;</code>属性。除非你相信每个了解足球队的人都会从队伍中删除球员，否则你可以在<code>ReadOnlyList＆lt; Player＆gt;</code></p>
+<blockquote>
+<p>Is inheriting from <code>List&lt;T&gt;</code> always unacceptable?</p>
+</blockquote>
+<p>谁不能接受？我？否。</p>
+<blockquote>
+<p>When is it acceptable?</p>
+</blockquote>
+<p>在构建 <em>扩展<code>List＆lt; T＆gt;</code>机制</em> 的机制时。</p>
+<blockquote>
+<p>What must a programmer consider, when deciding whether to inherit from<br><code>List&lt;T&gt;</code> or not?</p>
+</blockquote>
+<p>我是建立一个 <em>机制</em> 还是一个 <em>业务对象</em> ？</p>
+<blockquote>
+<p>But that’s a lot of code! What do I get for all that work?</p>
+</blockquote>
+<p>你花了更多的时间来输入你的问题，它会让你为<code>List＆lt; T＆gt;</code>的相关成员编写50次转发方法。你显然不怕冗长，我们在这里只是谈论很少的代码。这是几分钟的工作。</p>
+<h2><span id="update">UPDATE</span></h2><p>我给了它更多的思考，还有一个原因，就是不能把一个足球队列为一个球员列表。事实上，把一个足球队建模成拥有一个队员名单也许是个不错的主意。一个球队的问题在于你所拥有的是一个<br><em>快照</em> 的团队 <em>在某个时刻</em><br>。我不知道你们这个班的商业案例是什么，但是如果我有一个代表一个足球队的课，我想问一个问题，比如“2003年到2013年有多少海鹰队员因伤缺席比赛？或者“之前效力于另外一支球队的丹佛球员的年增长率是多少？”或“<a href="http://theoatmeal.com/comics/working_home" target="_blank" rel="noopener">猪人今年一路走来？</a>”</p>
+<p>也就是说，足球队在我看来很好的模仿了一系列历史事实，比如当一名球员被招募，受伤，退役等等。显然目前的球员名册是一个重要的事实，可能应该是前面和中心，但是可能还有其他有趣的事情，你想要做这个对象，需要更多的历史观点。</p>
+<blockquote>
+<p>Lastly, some suggest wrapping the List in something:</p>
+</blockquote>
+<p>这是正确的方法。 “不必要的罗嗦”是看这个不好的方法。当你编写<code>my_team.Players.Count</code>时，它有明确的含义。你想统计玩家。</p>
+<pre><code>my_team.Count
+</code></pre><p>意味着什么。算什么？</p>
+<p>一个球队不是一个名单 - 不仅仅是一个球员名单。一个球队拥有球员，所以球员应该是其中的一员（一名成员）。</p>
+<p>如果你真的担心它过于冗长，你可以随时暴露团队的属性：</p>
+<pre><code>public int PlayerCount {
+    get {
+        return Players.Count;
+    }
+}
+</code></pre><p>..变成：</p>
+<pre><code>my_team.PlayerCount
+</code></pre><p>现在这有意义，并遵守<a href="http://en.wikipedia.org/wiki/Law_of_Demeter" target="_blank" rel="noopener">德米特法则</a>。</p>
+<p>您还应该考虑遵守<a href="http://en.wikipedia.org/wiki/Composition_over_inheritance" target="_blank" rel="noopener">复合重用原则</a>。通过继承<code>List＆lt; T＆gt;</code>，你就是说一个团队 **是一个玩家列表，并且暴露出不必要的方法。这是不正确的 -<br>正如你所说，一个团队不仅仅是一个球员名单：它有一个名字，经理，董事会成员，培训师，医务人员，工资帽等等。通过让你的团队类别包含一个球员名单，你“一个队伍有一个队员名单”，但也可以有其他的一些东西。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/02/24/why-not-inherit-from-listt/" data-title="为什么不从List T继承？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/02/24/passing-parameters-to-a-bash-function/" title="将参数传递给Bash函数">
+  <strong>上一篇：</strong><br/>
+  <span>
+  将参数传递给Bash函数</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/02/23/findviewbyid-in-fragment/"  title="在片段中找到ViewById">
+ <strong>下一篇：</strong><br/> 
+ <span>在片段中找到ViewById
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Why not?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">What else am I supposed to use?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">My question (summarized)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">UPDATE</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
