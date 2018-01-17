@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,79 +112,30 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/iterating-through-a-collection-avoiding-concurrentmodificationexception-when-re/" title="迭代集合，避免在循环中移除时出现ConcurrentModificationException异常" itemprop="url">迭代集合，避免在循环中移除时出现ConcurrentModificationException异常</a>
+      <a href="/2018/01/14/how-do-i-add-a-class-to-a-given-element/" title="如何将一个类添加到给定的元素？" itemprop="url">如何将一个类添加到给定的元素？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我们都知道你不能这样做：</p>
-<pre><code>for (Object i : l) {
-    if (condition(i)) {
-        l.remove(i);
-    }
-}
-</code></pre><p>ConcurrentModificationException `等…这显然有效，但并不总是。以下是一些特定的代码：</p>
-<pre><code>public static void main(String[] args) {
-    Collection&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
-
-    for (int i=0; i &lt; 10; ++i) {
-        l.add(new Integer(4));
-        l.add(new Integer(5));
-        l.add(new Integer(6));
-    }
-
-    for (Integer i : l) {
-        if (i.intValue() == 5) {
-            l.remove(i);
-        }
-    }
-
-    System.out.println(l);
-}
-</code></pre><p>这当然会导致：</p>
-<pre><code>Exception in thread &quot;main&quot; java.util.ConcurrentModificationException
-</code></pre><p>即使多个线程没有这样做……无论如何。</p>
-<p>这个问题最好的解决办法是什么？我怎样才能从循环中删除一个项目而不会抛出这个异常？</p>
-<p>我也在这里使用一个任意的<code>Collection</code>，不一定是一个<code>ArrayList</code>，所以你不能依赖<code>get</code>。<code>p&gt; &lt;!-- more --&gt;
-Iterator.remove（）</code>是安全的，你可以像这样使用它：</p>
-<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
-
-// This is a clever way to create the iterator and call iterator.hasNext() like
-// you would do in a while-loop. It would be the same as doing:
-//     Iterator&lt;String&gt; iterator = list.iterator();
-//     while (iterator.hasNext()) {
-for (Iterator&lt;String&gt; iterator = list.iterator(); iterator.hasNext();) {
-    String string = iterator.next();
-    if (string.isEmpty()) {
-        // Remove the current element from the iterator and the list.
-        iterator.remove();
-    }
-}
-</code></pre><p>请注意，<code>Iterator.remove</code>是在迭代过程中修改集合的唯一安全方法。如果在迭代过程中以其他方式修改了底层集合，则行为是未指定的。</p>
-<p>来源：</p>
-<p><a href="http://docs.oracle.com/javase/tutorial/collections/interfaces/collection.html" target="_blank" rel="noopener"> http://docs.oracle.com/javase/tutorial/集合/接口/ collection.html</a></p>
-<hr>
-<p>同样，如果你有一个<code>ListIterator</code>并且想要添加_项，你可以使用<a href="“http://docs.oracle.com/javase"> <code>ListIterator＃add</code></a>，出于同样的原因，您可以使用<code>Iterator＃remove</code> - 它被设计为允许它。</p>
-<p>愚蠢的我：</p>
-<pre><code>Iterator&lt;Integer&gt; iter = l.iterator();
-while (iter.hasNext()) {
-    if (iter.next().intValue() == 5) {
-        iter.remove();
-    }
-}
-</code></pre><p>我认为，由于foreach循环是用于迭代的语法糖，所以使用迭代器将无济于事……但它为您提供了<code>.remove（）</code>功能。</p>
-
+        <p>我有一个已经有了类的元素：</p>
+<pre><code>&lt;div class=&quot;someclass&quot;&gt;
+    &lt;img ... id=&quot;image1&quot; name=&quot;image1&quot; /&gt;
+&lt;/div&gt;
+</code></pre><p>现在我想要创建一个Javascript函数，它将添加一个类到<code>div</code>（不是替换，而是添加）。</p>
+<p>我该怎么做？</p>
         
         
         <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-do-i-add-a-class-to-a-given-element/#more">Read More</a>
           
        </p>
     </div>
@@ -194,7 +145,7 @@ while (iter.hasNext()) {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -234,29 +185,63 @@ while (iter.hasNext()) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-3-dots-in-parameters/" title="Java，参数中有3个点" itemprop="url">Java，参数中有3个点</a>
+      <a href="/2018/01/14/why-does-this-go-into-an-infinite-loop/" title="为什么这会陷入无限循环？" itemprop="url">为什么这会陷入无限循环？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>以下方法中的3个点是什么意思？</p>
-<pre><code>public void myMethod(String... strings){
-    // method body
+        <p>我有以下代码：</p>
+<pre><code>public class Tests {
+    public static void main(String[] args) throws Exception {
+        int x = 0;
+        while(x&lt;3) {
+            x = x++;
+            System.out.println(x);
+        }
+    }
 }
-</code></pre><p>
+</code></pre><p>我们知道他应该只写<code>x ++</code>或<code>x = x + 1</code>，但是在<code>x = x ++</code> &gt; x <code>自己，然后增加它。为什么</code> x <code>继续使用</code> 0<br>`作为值？</p>
+<p>&lt;强&gt; - 更新</p>
+<p>这是字节码：</p>
+<pre><code>public class Tests extends java.lang.Object{
+public Tests();
+  Code:
+   0:   aload_0
+   1:   invokespecial   #1; //Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V
+   4:   return
+
+public static void main(java.lang.String[])   throws java.lang.Exception;
+  Code:
+   0:   iconst_0
+   1:   istore_1
+   2:   iload_1
+   3:   iconst_3
+   4:   if_icmpge   22
+   7:   iload_1
+   8:   iinc    1, 1
+   11:  istore_1
+   12:  getstatic   #2; //Field java/lang/System.out:Ljava/io/PrintStream;
+   15:  iload_1
+   16:  invokevirtual   #3; //Method java/io/PrintStream.println:(I)V
+   19:  goto    2
+   22:  return
+
+}
+</code></pre><p>我会阅读有关<a href="http://en.wikipedia.org/wiki/Java_bytecode_instruction_listings" target="_blank" rel="noopener">说明</a>以了解…</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-3-dots-in-parameters/#more">Read More</a>
+            <a href="/2018/01/14/why-does-this-go-into-an-infinite-loop/#more">Read More</a>
           
        </p>
     </div>
@@ -295,49 +280,51 @@ while (iter.hasNext()) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-8-listv-into-mapk-v/" title="Java 8列表V到地图K，V中" itemprop="url">Java 8列表V到地图K，V中</a>
+      <a href="/2018/01/14/how-to-upload-files-to-server-using-jsp-servlet/" title="如何使用JSP / Servlet将文件上传到服务器？" itemprop="url">如何使用JSP / Servlet将文件上传到服务器？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想使用Java 8的流和lambdas将对象列表翻译成Map。</p>
-<p>这是我在Java 7及以下版本中编写的。</p>
-<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
-        final Map&lt;String, Choice&gt; hashMap = new HashMap&lt;&gt;();
-        for (final Choice choice : choices) {
-            hashMap.put(choice.getName(), choice);
-        }
-        return hashMap;
-}
-</code></pre><p>使用Java 8和Guava我可以轻松完成这个任务，但是我想知道如何在没有Guava的情况下做到这一点。</p>
-<p>在番石榴：</p>
-<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
-    return Maps.uniqueIndex(choices, new Function&lt;Choice, String&gt;() {
-
-        @Override
-        public String apply(final Choice input) {
-            return input.getName();
-        }
-    });
-}
-</code></pre><p>用Java 8 lambda表达番石榴。</p>
-<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
-    return Maps.uniqueIndex(choices, c -&gt; c.getName());
-}
+        <p>如何使用JSP / Servlet将文件上传到服务器？我试过这个：</p>
+<pre><code>&lt;form action=&quot;upload&quot; method=&quot;post&quot;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;description&quot; /&gt;
+    &lt;input type=&quot;file&quot; name=&quot;file&quot; /&gt;
+    &lt;input type=&quot;submit&quot; /&gt;
+&lt;/form&gt;
+</code></pre><p>不过，我只获取文件名，而不是文件内容。当我将<code>enctype =“multipart / form-data”</code>添加到<code>＆lt; form＆gt;</code>时，request.getParameter（）<code>返回</code>空。</p>
+<p>在研究中，我偶然发现了<a href="http://commons.apache.org/fileupload" target="_blank" rel="noopener"> Apache Common FileUpload</a>。我试过这个：</p>
+<pre><code>FileItemFactory factory = new DiskFileItemFactory();
+ServletFileUpload upload = new ServletFileUpload(factory);
+List items = upload.parseRequest(request); // This line is where it died.
+</code></pre><p>不幸的是，这个servlet抛出一个没有明确信息和原因的异常。这里是stacktrace：</p>
+<pre><code>SEVERE: Servlet.service() for servlet UploadServlet threw exception
+javax.servlet.ServletException: Servlet execution threw an exception
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:313)
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+    at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+    at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+    at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+    at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+    at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+    at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+    at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+    at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+    at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+    at java.lang.Thread.run(Thread.java:637)
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-8-listv-into-mapk-v/#more">Read More</a>
+            <a href="/2018/01/14/how-to-upload-files-to-server-using-jsp-servlet/#more">Read More</a>
           
        </p>
     </div>
@@ -376,69 +363,121 @@ while (iter.hasNext()) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/" title="Java：检查与未经检查的异常说明" itemprop="url">Java：检查与未经检查的异常说明</a>
+      <a href="/2018/01/14/how-do-i-address-unchecked-cast-warnings/" title="我如何解决未经检查的投射警告？" itemprop="url">我如何解决未经检查的投射警告？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我已经阅读StackOverFlow有关检查与未经检查的异常多个职位。我老实说还不太清楚如何正确使用它们。</p>
-<p>Joshua Bloch在“ <em>Effective Java</em> ”中表示，</p>
+        <p>Eclipse给了我一个警告：</p>
 <blockquote>
-<p>Use checked exceptions for recoverable conditions and runtime exceptions for<br>programming errors (Item 58 in 2nd edition)</p>
+<p>Type safety: Unchecked cast from Object to HashMap</p>
 </blockquote>
-<p>让我们看看我是否正确理解这一点。</p>
-<p>这里是我对被检查的异常的理解：</p>
-<pre><code>try{
-    String userInput = //read in user input
-    Long id = Long.parseLong(userInput);
-}catch(NumberFormatException e){
-    id = 0; //recover the situation by setting the id to 0
+<p>这是从一个API的调用，我无法控制哪个返回对象：</p>
+<pre><code>HashMap&lt;String, String&gt; getItems(javax.servlet.http.HttpSession session) {
+  HashMap&lt;String, String&gt; theHash = (HashMap&lt;String, String&gt;)session.getAttribute(&quot;attributeKey&quot;);
+  return theHash;
 }
-</code></pre><p>&lt;强&gt; 1。上面是否考虑过检查异常？**</p>
-<p>&lt;强&gt; 2。 RuntimeException是一个未经检查的异常吗？**</p>
-<p>以下是我对非检查异常的理解：</p>
-<pre><code>try{
-    File file = new File(&quot;my/file/path&quot;);
-    FileInputStream fis = new FileInputStream(file);   
-}catch(FileNotFoundException e){
+</code></pre><p>如果可能的话，我想避免Eclipse警告，因为理论上它们至少表示一个潜在的代码问题。尽管如此，我还没有找到消除这个问题的好方法。我可以将涉及到的单行提取到一个方法本身，并向该方法添加<code>@SuppressWarnings（“unchecked”）</code>，从而限制了代码块在忽略警告的情况下的影响。有更好的选择吗？我不想在Eclipse中关闭这些警告。</p>
+<p>在我看到代码之前，它更简单一些，但仍然引发了警告：</p>
+<pre><code>HashMap getItems(javax.servlet.http.HttpSession session) {
+  HashMap theHash = (HashMap)session.getAttribute(&quot;attributeKey&quot;);
+  return theHash;
+}
+</code></pre><p>问题出现在你试图使用散列的地方，你会得到警告：</p>
+<pre><code>HashMap items = getItems(session);
+items.put(&quot;this&quot;, &quot;that&quot;);
 
-//3. What should I do here?
-    //Should I &quot;throw new FileNotFoundException(&quot;File not found&quot;);&quot;?
-    //Should I log?
-    //Or should I System.exit(0);?
-}
-</code></pre><p>&lt;强&gt; 4。现在，不能上面的代码也是一个检查异常？我可以尝试恢复这种情况？我可以吗？**（注意：我的第三个问题在上面的<code>catch</code>里面）</p>
-<pre><code>try{
-    String filePath = //read in from user input file path
-    File file = new File(filePath);
-    FileInputStream fis = new FileInputStream(file);   
-}catch(FileNotFoundException e){
-    //Kindly prompt the user an error message
-    //Somehow ask the user to re-enter the file path.
-}
-</code></pre><p>&lt;强&gt; 5。为什么人们这样做？**</p>
-<pre><code>public void someMethod throws Exception{
+Type safety: The method put(Object, Object) belongs to the raw type HashMap.  References to generic type HashMap&lt;K,V&gt; should be parameterized.
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-do-i-address-unchecked-cast-warnings/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-the-best-way-to-add-options-to-a-select-from-as-a-js-object-with-jquery/" title="使用jQuery将选项添加到JS对象的最佳方法是什么？" itemprop="url">使用jQuery将选项添加到JS对象的最佳方法是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>使用jQuery从JavaScript对象向<code>＆lt; select＆gt;</code>添加选项的最佳方法是什么？</p>
+<p>我正在寻找一些我不需要插件的东西，但是我也会对这些插件感兴趣。</p>
+<p>这就是我所做的：</p>
+<pre><code>selectValues = { &quot;1&quot;: &quot;test 1&quot;, &quot;2&quot;: &quot;test 2&quot; };
+
+for (key in selectValues) {
+  if (typeof (selectValues[key] == &apos;string&apos;) {
+    $(&apos;#mySelect&apos;).append(&apos;&lt;option value=&quot;&apos; + key + &apos;&quot;&gt;&apos; + selectValues[key] + &apos;&lt;/option&gt;&apos;);
+  }
 }
-</code></pre><p>他们为什么让这个例外冒出来呢？没有更好地处理错误？为什么泡起来？</p>
-<p>编辑：我应该冒出确切的异常或使用异常屏蔽它？**</p>
-<p><strong>以下是我的读物</strong></p>
-<p>[<br><a href="https://stackoverflow.com/questions/27578/when-to-choose-
-checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已检查和未检查的例外情况</a></p>
+</code></pre><p>简洁的解决方案：**</p>
+<p>这是一个清理和简化<a href="“https://stackoverflow.com/questions/170986/what-is-
+the-best-way-to-add-options-to-a-select-from">版本的matdumsa的</a>：</p>
+<pre><code>$.each(selectValues, function(key, value) {
+     $(&apos;#mySelect&apos;)
+          .append($(&apos;&lt;option&gt;&apos;, { value : key })
+          .text(value));
+});
+</code></pre><p>matdumsa的变化：（1）删除append（）和（2）中选项的close标签，将属性/属性作为append（）的第二个参数移动到map中。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/#more">Read More</a>
+            <a href="/2018/01/14/what-is-the-best-way-to-add-options-to-a-select-from-as-a-js-object-with-jquery/#more">Read More</a>
           
        </p>
     </div>
@@ -448,7 +487,7 @@ checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
   </div>
 
 </div>
@@ -477,203 +516,153 @@ checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/generate-random-number-between-two-numbers-in-javascript/" title="在JavaScript中生成两个数字之间的随机数" itemprop="url">在JavaScript中生成两个数字之间的随机数</a>
+      <a href="/2018/01/14/what-is-the-best-project-structure-for-a-python-application/" title="Python应用程序的最佳项目结构是什么？ [关闭]" itemprop="url">Python应用程序的最佳项目结构是什么？ [关闭]</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>有没有一种方法可以在JavaScript中的指定范围（例如从1到6：1,2,3,4,5或6）中生成随机数字？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/generate-random-number-between-two-numbers-in-javascript/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/java-inner-class-and-static-nested-class/" title="Java内部类和静态嵌套类" itemprop="url">Java内部类和静态嵌套类</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Java中的内部类和静态嵌套类之间的主要区别是什么？设计/实现在选择其中一个方面起作用吗？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/java-inner-class-and-static-nested-class/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/java-optional-parameters/" title="Java可选参数" itemprop="url">Java可选参数</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何在Java中使用可选参数？什么规范支持可选参数？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/java-optional-parameters/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/java-string-to-date-conversion/" title="Java字符串到日期的转换" itemprop="url">Java字符串到日期的转换</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>有人可以推荐最好的方式来转换格式’2010年1月2日’的字符串在Java中的日期？最终，我想把整个月份，每一天，每一年都分解为整数，以便我可以使用：</p>
-<pre><code>Date date = new Date();
-date.setMonth()..
-date.setYear()..
-date.setDay()..
-date.setlong currentTime = date.getTime();
-</code></pre><p>将日期转换成时间。</p>
+        <p>假设你想用Python开发一个不重要的终端用户桌面（而不是web）应用程序。构建项目文件夹层次结构的最佳方式是什么？</p>
+<p>理想的功能是易于维护，易于使用的IDE，源代码控制分支/合并的适用性，以及易于生成安装包。</p>
+<p>特别是：</p>
+<ul>
+<li>你把源代码放在哪里？</li>
+<li>你在哪里放置应用程序启动脚本？</li>
+<li>你把IDE项目放在哪里？</li>
+<li>您在哪里进行单元/验收测试？</li>
+<li>你在哪里放置非Python数据，如配置文件？</li>
+<li>在哪里放置非Python源代码，例如用于pyd / so二进制扩展模块的C ++？</li>
+</ul>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-string-to-date-conversion/#more">Read More</a>
+            <a href="/2018/01/14/what-is-the-best-project-structure-for-a-python-application/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-use-threading-in-python/" title="如何在Python中使用线程？" itemprop="url">如何在Python中使用线程？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我试图理解Python中的线程。我已经看了文档和例子，但坦率地说，很多例子都非常复杂，而且我很难理解它们。</p>
+<p>你如何清楚地显示被划分为多线程的任务？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-to-use-threading-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-i-call-one-constructor-from-another-in-java/" title="我如何在Java中调用另一个构造函数？" itemprop="url">我如何在Java中调用另一个构造函数？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>是否有可能从另一个（在同一个类中，而不是从一个子类）调用构造函数？如果是的话如何？调用另一个构造函数的最好方法是什么（如果有几种方法可以这样做的话）？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-do-i-call-one-constructor-from-another-in-java/#more">Read More</a>
           
        </p>
     </div>
@@ -712,33 +701,26 @@ date.setlong currentTime = date.getTime();
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-url-encoding-of-query-string-parameters/" title="查询字符串参数的Java URL编码" itemprop="url">查询字符串参数的Java URL编码</a>
+      <a href="/2018/01/14/difference-between-str-and-repr-in-python/" title="Python中__str__和__repr__的区别" itemprop="url">Python中__str__和__repr__的区别</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>假设我有一个网址</p>
-<pre><code>http://example.com/query?q=
-</code></pre><p>我有一个用户输入的查询，如：</p>
-<blockquote>
-<p>random word Â£500 bank $</p>
-</blockquote>
-<p>我希望结果是一个正确编码的网址：</p>
-<pre><code>http://example.com/query?q=random%20word%20%A3500%20bank%20%24
-</code></pre><p>实现这个目标的最好方法是什么？我尝试了<code>URLEncoder</code>并创建了URI / URL对象，但是没有一个出来很正确。</p>
+        <p><code></code> Python中的<code>__ str __</code>和<code>__ repr __</code>有什么区别？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-url-encoding-of-query-string-parameters/#more">Read More</a>
+            <a href="/2018/01/14/difference-between-str-and-repr-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -748,7 +730,7 @@ date.setlong currentTime = date.getTime();
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/http/">http</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -777,25 +759,27 @@ date.setlong currentTime = date.getTime();
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-util-date-to-xmlgregoriancalendar/" title="java util Date到XMLGregorianCalendar" itemprop="url">java util Date到XMLGregorianCalendar</a>
+      <a href="/2018/01/14/what-is-reflection-and-why-is-it-useful/" title="什么是反思，为什么它有用？" itemprop="url">什么是反思，为什么它有用？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>没有从java.util.Date到XMLGregorianCalendar的简便方法吗？</p>
+        <p>什么是反射，为什么它有用？</p>
+<p>我对Java特别感兴趣，但我认为任何语言的原则都是一样的。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-util-date-to-xmlgregoriancalendar/#more">Read More</a>
+            <a href="/2018/01/14/what-is-reflection-and-why-is-it-useful/#more">Read More</a>
           
        </p>
     </div>
@@ -805,7 +789,7 @@ date.setlong currentTime = date.getTime();
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a><a href="/tags/xml/">xml</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -835,10 +819,10 @@ date.setlong currentTime = date.getTime();
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -857,7 +841,7 @@ date.setlong currentTime = date.getTime();
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -928,18 +912,12 @@ date.setlong currentTime = date.getTime();
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -952,7 +930,7 @@ date.setlong currentTime = date.getTime();
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -1087,7 +1065,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -1095,6 +1073,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

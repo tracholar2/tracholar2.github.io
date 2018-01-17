@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,30 +112,48 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-add-a-class-to-a-given-element/" title="如何将一个类添加到给定的元素？" itemprop="url">如何将一个类添加到给定的元素？</a>
+      <a href="/2018/01/14/dealing-with-xerces-hell-in-java-maven/" title="在Java / Maven中处理“Xerces hell”？" itemprop="url">在Java / Maven中处理“Xerces hell”？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个已经有了类的元素：</p>
-<pre><code>&lt;div class=&quot;someclass&quot;&gt;
-    &lt;img ... id=&quot;image1&quot; name=&quot;image1&quot; /&gt;
-&lt;/div&gt;
-</code></pre><p>现在我想要创建一个Javascript函数，它将添加一个类到<code>div</code>（不是替换，而是添加）。</p>
-<p>我该怎么做？</p>
+        <p>在我的办公室里，只要提到Xerces这个词就足以煽动开发商的杀气。粗略地看一下其他Xerces上的SO问题似乎表明，几乎所有的Maven用户都被这个问题“触动”了一些。不幸的是，理解这个问题需要对Xerces的历史有一些了解…</p>
+<h1 id="History"><a href="#History" class="headerlink" title="History"></a>History</h1><p>Xerces是Java生态系统中使用最广泛的XML解析器。几乎每个使用Java编写的库或框架都以某种身份使用Xerces（即使不是直接传递）。</p>
+<p>包含在<a href="http://xerces.apache.org/mirrors.cgi#binary" target="_blank" rel="noopener">官方二进制文件</a>中的Xerces<br>jars到今天为止，没有版本。例如，Xerces 2.11.0实现jar命名为<code>xercesImpl.jar</code>，而不是<code>xercesImpl-2.11.0.jar</code>。</p>
+<p>Xerces团队<a href="“https://issues.apache.org/jira/browse/XERCESJ-1454?focusedCommentId=12881865&amp;page=com.atlassian.jira.plugin.system.issuetabpanels：">不使用Maven</a>，这意味着它们不会<br>将正式版本上传到<a href="http://search.maven.org/" target="_blank" rel="noopener"> Maven Central </a>。</p>
+<p>Xerces曾经是<a href="http://xerces.apache.org/xerces2-j/faq-
+general.html#faq-3" target="_blank" rel="noopener">作为一个单独的jar发布</a>（<code>xerces.jar</code>），但被分成两个jar包，一个包含API（<code>xml-apis.jar</code>），另一个包含这些API的实现（&lt;码&gt; xercesImpl.jar ）。许多较老的Maven POM仍然声明对<code>xerces.jar</code>的依赖。在过去的某个时候，Xerces也以<code>xmlParserAPIs.jar</code>的形式发布，一些较老的POM也依赖于它。</p>
+<ul>
+<li>那些将jar部署到Maven仓库的人所分配的xml-apis和xercesImpl jar版本通常是不同的。例如，xml-apis可能会被赋予1.3.03版本，而xercesImpl可能会被赋予2.8.0版本，即使两者都来自Xerces 2.8.0。这是因为人们经常使用它实现的规范版本来标记xml-apis jar。这里<a href="http://swordsystems.com/2011/06/29/xerces-and-xml-api-dependency-hell/" target="_blank" rel="noopener">这里有一个非常好的，但不完整的细分</a>。</li>
+</ul>
+<p>复杂的是，Xerces是JRE中包含的用于XML处理的Java API的参考实现（JAXP）中使用的XML解析器。实现类在<code>com.sun。*</code>命名空间下重新打包，这使得直接访问它们是危险的，因为它们可能在某些JRE中不可用。但是，并不是所有的Xerces功能都通过<code>java。*</code>和<code>javax。*</code> API公开。例如，没有暴露Xerces序列化的API。</p>
+<p>添加到混乱的混乱中，几乎所有的servlet容器（JBoss，Jetty，Glassfish，Tomcat等）都在Xerces的一个或多个<code>/ lib</code>文件夹中提供。 / p&gt;</p>
+<h1 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h1><h3 id="Conflict-Resolution"><a href="#Conflict-Resolution" class="headerlink" title="Conflict Resolution"></a>Conflict Resolution</h3><p>对于上述原因中的一些或者全部原因，很多 组织发布和使用Xerces的定制版本 多金属氧酸盐。如果你有一个小应用程序并且只使用Maven<br>Central，那么这不是一个真正的问题，但是它很快就会成为Artifactory或者Nexus代理多个仓库（JBoss，Hibernate等）的企业软件的一个问题：<br><img src="“https://i.stack.imgur.com/Fe9Xa.png”alt" alt=""></p>
+<p>例如，组织A可能会将xml-apis发布为：</p>
+<p>&lt;代码&gt;＆LT;＆的groupId GT; org.apache.xerces＆LT; /＆的groupId GT; 结果 &lt;代码&gt;＆LT;<br>artifactId的＆GT; XML的API＆LT; / artifactId的＆GT; 结果 &lt;代码&gt;＆LT;版本＆GT; 2.9.1＆LT;<br>/版本＆GT;</p>
+<p>同时，组织B可能会发布相同的jar：</p>
+<p>&lt;代码&gt;＆LT;＆的groupId GT; XML的API＆LT; /＆的groupId GT; 结果 &lt;代码&gt;＆LT; artifactId的＆GT;<br>XML的API＆LT; / artifactId的＆GT; 结果 &lt;代码&gt;＆LT;版本＆GT; 04年3月1日和LT; /版本＆GT;</p>
+<p>虽然B的jar比A的jar版本更低，但是Maven并不知道 他们是相同的神器，因为他们有不同的 &lt;代码&gt;的groupId 秒。因此，它不能执行冲突解决和两者<br>jar将被包含为已解决的依赖项：</p>
+<p><img src="“https://i.stack.imgur.com/4X1ts.png”alt" alt=""></p>
+<h3 id="Classloader-Hell"><a href="#Classloader-Hell" class="headerlink" title="Classloader Hell"></a>Classloader Hell</h3><p>如上所述，JRE在JAXP RI中与Xerces一起发货。尽管将所有Xerces Maven依赖项标记为<code>＆lt; exclusion＆gt;</code>或<code>＆lt; provided＆gt;</code>会很好，但您所依赖的第三方代码可能会也可能不会使用您正在使用的JDK的JAXP中提供的版本。另外，你的servlet容器中有Xerces罐子可以与之抗衡。这给你留下了许多选择：你是否删除了servlet版本，并希望你的容器在JAXP版本上运行？离开servlet版本更好吗，并希望您的应用程序框架在servlet版本上运行？如果上面列出的一个或两个未解决的冲突导致您的产品陷入困境（容易在大型组织中发生），那么您很快就会发现自己处于classloader地狱，想知道classloader在运行时选择哪个版本的Xerces，以及是否它会在Windows和Linux中选择相同的jar（可能不是）。</p>
+<h1 id="Solutions"><a href="#Solutions" class="headerlink" title="Solutions?"></a>Solutions?</h1><p>我们已经尝试将所有的Xerces Maven依赖关系标记为<code>＆lt; provided＆gt;</code>或<code>＆lt; exclusion＆gt;</code>，但这很难实施（特别是对于大团队），因为工件有这么多的别名（xml-<br>apis，xerces，xercesImpl，xmlParserAPI等）。此外，我们的第三方库/框架可能不能运行在JAXP版本或由servlet容器提供的版本上。</p>
+<p>Maven如何最好地解决这个问题？我们是否必须对依赖关系进行细粒度的控制，然后依靠分层的类加载？是否有某种方法可以全局排除所有的Xerces依赖关系，并强制所有的框架/库使用JAXP版本？**</p>
+<hr>
+<p>更新**：Joshua Spiewak已经将修补版本的Xerces构建脚本上传到<a href="“https://issues.apache.org/jira/browse/XERCESJ-1454”rel"> XERCESJ-1454</a>，允许上传到Maven<br>Central。投票/看/造成这个问题，让我们一劳永逸解决这个问题。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-add-a-class-to-a-given-element/#more">Read More</a>
+            <a href="/2018/01/14/dealing-with-xerces-hell-in-java-maven/#more">Read More</a>
           
        </p>
     </div>
@@ -145,7 +163,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -185,45 +203,40 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-address-unchecked-cast-warnings/" title="我如何解决未经检查的投射警告？" itemprop="url">我如何解决未经检查的投射警告？</a>
+      <a href="/2018/01/14/why-use-redux-over-facebook-flux/" title="为什么在Facebook上使用Redux？" itemprop="url">为什么在Facebook上使用Redux？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>Eclipse给了我一个警告：</p>
-<blockquote>
-<p>Type safety: Unchecked cast from Object to HashMap</p>
-</blockquote>
-<p>这是从一个API的调用，我无法控制哪个返回对象：</p>
-<pre><code>HashMap&lt;String, String&gt; getItems(javax.servlet.http.HttpSession session) {
-  HashMap&lt;String, String&gt; theHash = (HashMap&lt;String, String&gt;)session.getAttribute(&quot;attributeKey&quot;);
-  return theHash;
-}
-</code></pre><p>如果可能的话，我想避免Eclipse警告，因为理论上它们至少表示一个潜在的代码问题。尽管如此，我还没有找到消除这个问题的好方法。我可以将涉及到的单行提取到一个方法本身，并向该方法添加<code>@SuppressWarnings（“unchecked”）</code>，从而限制了代码块在忽略警告的情况下的影响。有更好的选择吗？我不想在Eclipse中关闭这些警告。</p>
-<p>在我看到代码之前，它更简单一些，但仍然引发了警告：</p>
-<pre><code>HashMap getItems(javax.servlet.http.HttpSession session) {
-  HashMap theHash = (HashMap)session.getAttribute(&quot;attributeKey&quot;);
-  return theHash;
-}
-</code></pre><p>问题出现在你试图使用散列的地方，你会得到警告：</p>
-<pre><code>HashMap items = getItems(session);
-items.put(&quot;this&quot;, &quot;that&quot;);
-
-Type safety: The method put(Object, Object) belongs to the raw type HashMap.  References to generic type HashMap&lt;K,V&gt; should be parameterized.
-</code></pre><p>
+        <p>我已阅读[此答案&lt; /<br>a&gt;，<a href="http://redux.js.org/docs/recipes/ReducingBoilerplate.html" target="_blank" rel="noopener">减少样板</a>，看了几个GitHub的例子，甚至尝试了一下一点点（todo应用程序）。</p>
+<p>据我所知，<a href="http://redux.js.org/docs/introduction/Motivation.html" target="_blank" rel="noopener">官方的redux文档动机</a>提供了优于传统的MVC架构。但是它没有提供一个问题的答案：</p>
+<p>为什么你应该使用Facebook上的Flux的Redux？**</p>
+<p>这只是一个编程风格的问题：功能与非功能？或者问题是在redux方法中的能力/开发工具？也许缩放？或测试？_</p>
+<p><em>我是否正确，如果我说，redux对于来自功能语言的人来说是一种流量？</em></p>
+<p><strong>为了回答这个问题，你可以比较实现redux在flux和redux上的动机点的复杂性。</strong></p>
+<p>以下是来自<a href="http://redux.js.org/docs/introduction/Motivation.html" target="_blank" rel="noopener">官方文档动机</a>的动机要点：</p>
+<ul>
+<li>处理乐观的更新（据我所知，它几乎不取决于第五点，难以在fb flux中实现）_</li>
+<li>在服务器上进行渲染（ <em>fb flux也可以做到这一点，与redux相比有什么好处？</em> ）</li>
+<li>在执行路由转换之前获取数据（ <em>为什么无法在fb flux中实现？有什么好处？</em> ）</li>
+<li>重新加载（ <em><a href="http://gaearon.github.io/react-hot-loader/" target="_blank" rel="noopener"> React Hot Reload </a>）。为什么我们需要减少？</em> ）</li>
+<li>撤销/重做功能</li>
+<li>其他要点？像持续状态… </li>
+</ul>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-address-unchecked-cast-warnings/#more">Read More</a>
+            <a href="/2018/01/14/why-use-redux-over-facebook-flux/#more">Read More</a>
           
        </p>
     </div>
@@ -233,7 +246,7 @@ Type safety: The method put(Object, Object) belongs to the raw type HashMap.  Re
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -262,38 +275,31 @@ Type safety: The method put(Object, Object) belongs to the raw type HashMap.  Re
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-make-ipython-notebook-matplotlib-plot-inline/" title="如何使IPython笔记本matplotlib图内联" itemprop="url">如何使IPython笔记本matplotlib图内联</a>
+      <a href="/2018/01/14/trimming-a-string-in-python/" title="在Python中修剪一个字符串" itemprop="url">在Python中修剪一个字符串</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我试图在Python 2.7.2和IPython 1.1.0的MacOS X上使用IPython笔记本。</p>
-<p>我无法将matplotlib图形显示为内联。</p>
-<pre><code>import matplotlib
-import numpy as np
-import matplotlib.pyplot as plt
-%matplotlib inline  
-</code></pre><p>我也尝试了<code>％pylab inline</code>和ipython命令行参数<code>- pylab = inline</code>，但这没什么区别。</p>
-<pre><code>x = np.linspace(0, 3*np.pi, 500)
-plt.plot(x, np.sin(x**2))
-plt.title(&apos;A simple chirp&apos;)
-plt.show()
-</code></pre><p>而不是内联图形，我得到这个：</p>
-<pre><code>&lt;matplotlib.figure.Figure at 0x110b9c450&gt;
-</code></pre><p>和<code>matplotlib.get_backend（）</code>显示我有<code>&#39;module：//IPython.kernel.zmq.pylab.backend_inline&#39;</code>后端。</p>
+        <p>如何从Python中的字符串中删除前导和后缀的空白？</p>
+<p>例如：</p>
+<pre><code>&quot; Hello &quot; --&gt; &quot;Hello&quot;
+&quot; Hello&quot;  --&gt; &quot;Hello&quot;
+&quot;Hello &quot;  --&gt; &quot;Hello&quot;
+&quot;Bob has a cat&quot; --&gt; &quot;Bob has a cat&quot;
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-make-ipython-notebook-matplotlib-plot-inline/#more">Read More</a>
+            <a href="/2018/01/14/trimming-a-string-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -332,120 +338,26 @@ plt.show()
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-make-mock-to-void-methods-with-mockito/" title="如何使模拟无效方法与mockito" itemprop="url">如何使模拟无效方法与mockito</a>
+      <a href="/2018/01/14/trim-string-in-javascript/" title="在JavaScript中修剪字符串？" itemprop="url">在JavaScript中修剪字符串？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何用void返回类型来模拟方法？</p>
-<p>我实现了Observer模式，但我不能用Mockito来嘲笑它，因为我不知道如何。</p>
-<p>我试图在互联网上找到一个例子，但没有成功。</p>
-<p>我的课程看起来像</p>
-<pre><code>public class World {
-
-    List&lt;Listener&gt; listeners;
-
-    void addListener(Listener item) {
-        listeners.add(item);
-    }
-
-    void doAction(Action goal,Object obj) {
-        setState(&quot;i received&quot;);
-        goal.doAction(obj);
-        setState(&quot;i finished&quot;);
-    }
-
-    private string state;
-    //setter getter state
-} 
-
-public class WorldTest implements Listener {
-
-    @Test public void word{
-    World  w= mock(World.class);
-    w.addListener(this);
-    ...
-    ...
-
-    }
-}
-
-interface Listener {
-    void doAction();
-}
-</code></pre><p>系统不是用模拟触发的。 =（ 我想显示上面提到的系统状态。并根据他们断言。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-to-make-mock-to-void-methods-with-mockito/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/are-there-constants-in-javascript/" title="JavaScript中有常量吗？" itemprop="url">JavaScript中有常量吗？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>有没有一种方法可以在JavaScript中使用常量？</p>
-<p>如果没有，指定用作常量的变量的常用做法是什么？</p>
+        <p>如何在JavaScript中修剪字符串？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/are-there-constants-in-javascript/#more">Read More</a>
+            <a href="/2018/01/14/trim-string-in-javascript/#more">Read More</a>
           
        </p>
     </div>
@@ -484,26 +396,26 @@ interface Listener {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-manage-a-redirect-request-after-a-jquery-ajax-call/" title="如何在jQuery Ajax调用之后管理重定向请求" itemprop="url">如何在jQuery Ajax调用之后管理重定向请求</a>
+      <a href="/2018/01/14/getting-the-last-element-of-a-list-in-python/" title="在Python中获取列表的最后一个元素" itemprop="url">在Python中获取列表的最后一个元素</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我使用<code>$。post（）</code>来调用使用Ajax的servlet，然后使用生成的HTML片段替换用户当前页面中的<code>div</code>元素。但是，如果会话超时，服务器将发送重定向指令以将用户发送到登录页面。在这种情况下，jQuery正在用登录页面的内容替换<code>div</code>元素，迫使用户的眼睛看到一个罕见的场景。</p>
-<p>如何使用jQuery 1.2.6从Ajax调用中管理重定向指令？</p>
+        <p>在Python中，如何得到列表的最后一个元素？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-manage-a-redirect-request-after-a-jquery-ajax-call/#more">Read More</a>
+            <a href="/2018/01/14/getting-the-last-element-of-a-list-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -513,7 +425,7 @@ interface Listener {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -542,30 +454,109 @@ interface Listener {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/dealing-with-java-lang-outofmemoryerror-permgen-space-error/" title="处理“java lang OutOfMemoryError：PermGen空间”错误" itemprop="url">处理“java lang OutOfMemoryError：PermGen空间”错误</a>
+      <a href="/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/" title="为什么处理排序后的数组比未排序的数组更快？" itemprop="url">为什么处理排序后的数组比未排序的数组更快？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>最近我在我的web应用程序中遇到了这个错误：</p>
-<blockquote>
-<p>java.lang.OutOfMemoryError: PermGen space</p>
-</blockquote>
-<p>这是一个在Tomcat 6和JDK 1.6上运行的典型的Hibernate / JPA + IceFaces / JSF应用程序。<br>显然这可能会在重新部署应用程序几次之后发生。</p>
-<p>是什么原因造成的？为了避免这种情况，可以做些什么？ 我该如何解决这个问题？</p>
+        <p>这是一个C ++代码，看起来很奇特。出于一些奇怪的原因，对数据进行奇迹排序使得代码几乎快了六倍。</p>
+<pre><code>#include &lt;algorithm&gt;
+#include &lt;ctime&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    // Generate data
+    const unsigned arraySize = 32768;
+    int data[arraySize];
+
+    for (unsigned c = 0; c &lt; arraySize; ++c)
+        data[c] = std::rand() % 256;
+
+    // !!! With this, the next loop runs faster
+    std::sort(data, data + arraySize);
+
+    // Test
+    clock_t start = clock();
+    long long sum = 0;
+
+    for (unsigned i = 0; i &lt; 100000; ++i)
+    {
+        // Primary loop
+        for (unsigned c = 0; c &lt; arraySize; ++c)
+        {
+            if (data[c] &gt;= 128)
+                sum += data[c];
+        }
+    }
+
+    double elapsedTime = static_cast&lt;double&gt;(clock() - start) / CLOCKS_PER_SEC;
+
+    std::cout &lt;&lt; elapsedTime &lt;&lt; std::endl;
+    std::cout &lt;&lt; &quot;sum = &quot; &lt;&lt; sum &lt;&lt; std::endl;
+}
+</code></pre><ul>
+<li>如果没有<code>std :: sort（data，data + arraySize）;</code>，代码会在11.54秒内运行。</li>
+<li>使用排序后的数据，代码在1.93秒内运行。</li>
+</ul>
+<p>最初，我认为这可能只是一种语言或编译器异常。所以我尝试了Java。</p>
+<pre><code>import java.util.Arrays;
+import java.util.Random;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+        // Generate data
+        int arraySize = 32768;
+        int data[] = new int[arraySize];
+
+        Random rnd = new Random(0);
+        for (int c = 0; c &lt; arraySize; ++c)
+            data[c] = rnd.nextInt() % 256;
+
+        // !!! With this, the next loop runs faster
+        Arrays.sort(data);
+
+        // Test
+        long start = System.nanoTime();
+        long sum = 0;
+
+        for (int i = 0; i &lt; 100000; ++i)
+        {
+            // Primary loop
+            for (int c = 0; c &lt; arraySize; ++c)
+            {
+                if (data[c] &gt;= 128)
+                    sum += data[c];
+            }
+        }
+
+        System.out.println((System.nanoTime() - start) / 1000000000.0);
+        System.out.println(&quot;sum = &quot; + sum);
+    }
+}
+</code></pre><p>有点类似但不太极端的结果。</p>
+<hr>
+<p>我首先想到的是，排序将数据带入缓存，但后来我觉得这是因为数组刚刚生成而变得非常愚蠢。</p>
+<ul>
+<li>发生了什么事情？</li>
+<li>为什么处理有序数组比没有排序的数组更快？</li>
+<li>代码总结了一些独立的术语，顺序应该不重要。</li>
+</ul>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/dealing-with-java-lang-outofmemoryerror-permgen-space-error/#more">Read More</a>
+            <a href="/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/#more">Read More</a>
           
        </p>
     </div>
@@ -604,26 +595,26 @@ interface Listener {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-call-one-constructor-from-another-in-java/" title="我如何在Java中调用另一个构造函数？" itemprop="url">我如何在Java中调用另一个构造函数？</a>
+      <a href="/2018/01/14/what-is-the-java-equivalent-for-linq/" title="什么是LINQ的Java等价物？ [关闭]" itemprop="url">什么是LINQ的Java等价物？ [关闭]</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>是否有可能从另一个（在同一个类中，而不是从一个子类）调用构造函数？如果是的话如何？调用另一个构造函数的最好方法是什么（如果有几种方法可以这样做的话）？</p>
+        <p>什么是Java相当于LINQ？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-call-one-constructor-from-another-in-java/#more">Read More</a>
+            <a href="/2018/01/14/what-is-the-java-equivalent-for-linq/#more">Read More</a>
           
        </p>
     </div>
@@ -662,32 +653,95 @@ interface Listener {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-merge-two-arrays-in-javascript-and-de-duplicate-items/" title="如何在JavaScript中合并两个数组并重复删除项目" itemprop="url">如何在JavaScript中合并两个数组并重复删除项目</a>
+      <a href="/2018/01/14/getting-the-current-working-directory-in-java/" title="在Java中获取当前工作目录" itemprop="url">在Java中获取当前工作目录</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有两个JavaScript数组：</p>
-<pre><code>var array1 = [&quot;Vijendra&quot;,&quot;Singh&quot;];
-var array2 = [&quot;Singh&quot;, &quot;Shakya&quot;];
-</code></pre><p>我希望输出是：</p>
-<pre><code>var array3 = [&quot;Vijendra&quot;,&quot;Singh&quot;,&quot;Shakya&quot;];
-</code></pre><p>输出数组应该重复删除单词。</p>
-<p>如何在JavaScript中合并两个数组，以便按照插入原始数组的相同顺序从每个数组中获取唯一项？</p>
+        <p>我想使用</p>
+<p>访问我目前的工作目录</p>
+<pre><code>String current = new java.io.File( &quot;.&quot; ).getCanonicalPath();
+       System.out.println(&quot;Current dir:&quot;+current);
+String currentDir = System.getProperty(&quot;user.dir&quot;);
+       System.out.println(&quot;Current dir using System:&quot; +currentDir);
+</code></pre><p>OutPut：</p>
+<pre><code>Current dir: C:\WINDOWS\system32
+Current dir using System: C:\WINDOWS\system32
+</code></pre><p>我的输出不正确，因为C盘不是我的当前目录。 在这方面需要帮助。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/getting-the-current-working-directory-in-java/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-efficiently-count-the-number-of-keys-properties-of-an-object-in-javascrip/" title="如何有效地计算一个对象在JavaScript中的键/属性的数量？" itemprop="url">如何有效地计算一个对象在JavaScript中的键/属性的数量？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>计算对象的键/属性数的最快方法是什么？它可以做到这一点，而不是迭代对象？即不做</p>
+<pre><code>var count = 0;
+for (k in myobj) if (myobj.hasOwnProperty(k)) count++;
+</code></pre><p>（火狐确实提供了一个神奇的<code>__ count __</code>属性，但是这个属性在版本4的某个地方被删除了。）</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-merge-two-arrays-in-javascript-and-de-duplicate-items/#more">Read More</a>
+            <a href="/2018/01/14/how-to-efficiently-count-the-number-of-keys-properties-of-an-object-in-javascrip/#more">Read More</a>
           
        </p>
     </div>
@@ -726,34 +780,26 @@ var array2 = [&quot;Singh&quot;, &quot;Shakya&quot;];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-merge-two-dictionaries-in-a-single-expression/" title="如何在一个表达式中合并两个字典？" itemprop="url">如何在一个表达式中合并两个字典？</a>
+      <a href="/2018/01/14/getting-the-class-name-of-an-instance-in-python/" title="在Python中获取实例的类名" itemprop="url">在Python中获取实例的类名</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有两个Python字典，我想写一个表达式，返回这两个字典，合并。 <code>update（）</code>方法是我所需要的，如果它返回的结果，而不是就地修改字典。</p>
-<pre><code>&gt;&gt;&gt; x = {&apos;a&apos;:1, &apos;b&apos;: 2}
-&gt;&gt;&gt; y = {&apos;b&apos;:10, &apos;c&apos;: 11}
-&gt;&gt;&gt; z = x.update(y)
-&gt;&gt;&gt; print(z)
-None
-&gt;&gt;&gt; x
-{&apos;a&apos;: 1, &apos;b&apos;: 10, &apos;c&apos;: 11}
-</code></pre><p>如何在<code>z</code>中获得最终的合并字典，而不是<code>x</code>？</p>
-<p>（更加清楚的是，<code>dict.update（）</code>的最后一次冲突处理也是我正在寻找的。）</p>
+        <p>我如何找到一个在Python中创建了一个对象实例的类的名字，如果我这样做的函数是这个实例的类的派生类的基类？</p>
+<p>正在考虑也许<a href="https://docs.python.org/2/library/inspect.html" title="inspect" target="_blank" rel="noopener">检查活物</a>检查模块&lt; /<br>a&gt;可能帮助我在这里，但它似乎并没有给我我想要的。而且，对<code>__ class __</code>成员解析不够，我不确定如何获取这些信息。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-merge-two-dictionaries-in-a-single-expression/#more">Read More</a>
+            <a href="/2018/01/14/getting-the-class-name-of-an-instance-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -793,10 +839,10 @@ None
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -815,7 +861,7 @@ None
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -886,18 +932,12 @@ None
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -910,7 +950,7 @@ None
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -1045,7 +1085,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -1053,6 +1093,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

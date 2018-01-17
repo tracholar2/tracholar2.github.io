@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,45 +112,33 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/understanding-python-super-with-init-methods/" title="用__init __（）方法理解Python super（）方法[duplicate]" itemprop="url">用__init __（）方法理解Python super（）方法[duplicate]</a>
+      <a href="/2018/01/14/how-do-i-read-a-text-file-into-a-string-variable-in-python/" title="如何在Python中将文本文件读入字符串变量" itemprop="url">如何在Python中将文本文件读入字符串变量</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/222877/what-does-super-do-in-python">What does ‘super’ do in Python?</a> 5 answers </li>
-</ul>
-<p>我试图理解<code>super（）</code>的用法。从外观上看，这两个子类都可以创建，就好了。</p>
-<p>我很想知道以下两个子类的实际区别。</p>
-<pre><code>class Base(object):
-    def __init__(self):
-        print &quot;Base created&quot;
-
-class ChildA(Base):
-    def __init__(self):
-        Base.__init__(self)
-
-class ChildB(Base):
-    def __init__(self):
-        super(ChildB, self).__init__()
-
-ChildA() 
-ChildB()
-</code></pre>
+        <p>我使用下面的代码段来读取python中的文件</p>
+<pre><code>with open (&quot;data.txt&quot;, &quot;r&quot;) as myfile:
+    data=myfile.readlines()
+</code></pre><p>输入文件是</p>
+<pre><code>LLKKKKKKKKMMMMMMMMNNNNNNNNNNNNN
+GGGGGGGGGHHHHHHHHHHHHHHHHHHHHEEEEEEEE
+</code></pre><p>当我打印数据时，我得到</p>
+<pre><code>[&apos;LLKKKKKKKKMMMMMMMMNNNNNNNNNNNNN\n&apos;, &apos;GGGGGGGGGHHHHHHHHHHHHHHHHHHHHEEEEEEEE&apos;]
+</code></pre><p>正如我所看到的数据是列表形式。我如何使它字符串。而且我该如何从中删除“\ n”，“[”和“]”字符？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/understanding-python-super-with-init-methods/#more">Read More</a>
+            <a href="/2018/01/14/how-do-i-read-a-text-file-into-a-string-variable-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -200,40 +188,27 @@ ChildB()
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-pythons-super-work-with-multiple-inheritance/" title="Python的super（）如何处理多重继承？" itemprop="url">Python的super（）如何处理多重继承？</a>
+      <a href="/2018/01/14/behaviour-of-increment-and-decrement-operators-in-python/" title="Python中增量和减量运算符的行为" itemprop="url">Python中增量和减量运算符的行为</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在Python面向对象的编程中，我非常新，而且我遇到了麻烦 理解<code>super（）</code>函数（新样式类），特别是在涉及多重继承的时候。</p>
-<p>例如，如果你有类似的东西：</p>
-<pre><code>class First(object):
-    def __init__(self):
-        print &quot;first&quot;
-
-class Second(object):
-    def __init__(self):
-        print &quot;second&quot;
-
-class Third(First, Second):
-    def __init__(self):
-        super(Third, self).__init__()
-        print &quot;that&apos;s it&quot;
-</code></pre><p>我不明白的是：<code>Third（）</code>类会继承两个构造方法吗？如果是，那么将使用super（）运行哪一个？为什么？</p>
-<p>如果你想运行另一个呢？我知道这与Python方法解析顺序有关（<a href="http://en.wikipedia.org/wiki/C3_linearization" target="_blank" rel="noopener"> MRO</a>）。</p>
+        <p>我注意到一个预先增加/减少的操作符可以应用于一个变量（如<code>++ count</code>）。它编译，但它并没有真正改变变量的值！</p>
+<p>Python中预增/减运算符（++ / - ）的行为是什么？</p>
+<p>为什么Python偏离了在C / C ++中看到的这些运算符的行为？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-pythons-super-work-with-multiple-inheritance/#more">Read More</a>
+            <a href="/2018/01/14/behaviour-of-increment-and-decrement-operators-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -272,89 +247,145 @@ class Third(First, Second):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/remove-element-by-id/" title="通过ID删除元素" itemprop="url">通过ID删除元素</a>
+      <a href="/2018/01/14/mkdir-p-functionality-in-python/" title="Python中的mkdir -p功能[复制]" itemprop="url">Python中的mkdir -p功能[复制]</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>使用标准JavaScript去除元素时，必须首先转到其父元素：</p>
-<pre><code>var element = document.getElementById(&quot;element-id&quot;);
-element.parentNode.removeChild(element);
-</code></pre><p>首先到父节点看起来有点奇怪，是否有这样一个原因JavaScript的作品呢？</p>
+        <p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist">How can I create a directory if it does not exist?</a> 24 answers </li>
+</ul>
+<p>有没有一种方法可以从Python中获得类似于<code>mkdir -p</code>的shell的功能。我正在寻找一个解决方案，而不是系统调用。我相信代码少于20行，我想知道是否有人已经写了它？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/mkdir-p-functionality-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/add-new-keys-to-a-dictionary/" title="将新密钥添加到字典中？" itemprop="url">将新密钥添加到字典中？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>是否可以在创建Python字典后添加一个键？它似乎没有<code>.add（）</code>方法。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/add-new-keys-to-a-dictionary/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/whats-the-difference-between-lists-and-tuples/" title="列表和元组有什么区别？" itemprop="url">列表和元组有什么区别？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有什么区别？</p>
+<p>元组/列表有哪些优点/缺点？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/remove-element-by-id/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/understanding-kwargs-in-python/" title="在Python中理解kwargs" itemprop="url">在Python中理解kwargs</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Python中<code>** kwargs</code>有什么用途？</p>
-<p>我知道你可以在表上做一个<code>objects.filter</code>，并传入一个<code>** kwargs</code>参数。</p>
-<p>我也可以这样做来指定time deltas，即<code>timedelta（hours = time1）</code>？</p>
-<p>它究竟如何工作？它是类作为“拆包”？像<code>a，b = 1,2</code>？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/understanding-kwargs-in-python/#more">Read More</a>
+            <a href="/2018/01/14/whats-the-difference-between-lists-and-tuples/#more">Read More</a>
           
        </p>
     </div>
@@ -393,89 +424,31 @@ element.parentNode.removeChild(element);
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/differences-between-hashmap-and-hashtable/" title="HashMap和Hashtable的区别？" itemprop="url">HashMap和Hashtable的区别？</a>
+      <a href="/2018/01/14/renaming-columns-in-pandas/" title="重命名熊猫列" itemprop="url">重命名熊猫列</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><a href="http://docs.oracle.com/javase/8/docs/api/index.html?java/util/HashMap.html" target="_blank" rel="noopener">有什么区别<code>HashMap</code></a>和<a href="“http://docs.oracle.com/javase/8/docs/api/index.html?java/util/Hashtable.html”rel"><code>Hashtable</code></a>在Java？</p>
-<p>中</p>
-<p>对于非线程应用程序更有效率</p>
+        <p>我有一个使用熊猫和列标签的DataFrame，我需要编辑来替换原始的列标签。</p>
+<p>我想更改DataFrame <code>A</code>中原始列名称的列名：</p>
+<pre><code>[&apos;$a&apos;, &apos;$b&apos;, &apos;$c&apos;, &apos;$d&apos;, &apos;$e&apos;] 
+</code></pre><p>到</p>
+<pre><code>[&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos;].
+</code></pre><p>我将编辑过的列名存储在列表中，但是我不知道如何替换列名。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/differences-between-hashmap-and-hashtable/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/remove-items-from-a-list-while-iterating/" title="迭代时从列表中删除项目" itemprop="url">迭代时从列表中删除项目</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我正在遍历Python中的元组列表，并试图在符合特定条件时将其删除。</p>
-<pre><code>for tup in somelist:
-    if determine(tup):
-         code_to_remove_tup
-</code></pre><p>我应该用什么来代替<code>code_to_remove_tup</code>？我不知道如何以这种方式删除项目。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/remove-items-from-a-list-while-iterating/#more">Read More</a>
+            <a href="/2018/01/14/renaming-columns-in-pandas/#more">Read More</a>
           
        </p>
     </div>
@@ -514,93 +487,27 @@ element.parentNode.removeChild(element);
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/uncatchable-chucknorrisexception/" title="不可捕捉的ChuckNorrisException" itemprop="url">不可捕捉的ChuckNorrisException</a>
+      <a href="/2018/01/14/whats-the-difference-between-component-repository-service-annotations-in/" title="Spring中的@Component，@Repository和@Service注释有什么区别？" itemprop="url">Spring中的@Component，@Repository和@Service注释有什么区别？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>是否可以在<a href="http://en.wikipedia.org/wiki/Java_%28programming_language%29" target="_blank" rel="noopener"> Java</a>中构建一段代码，这会构成一个假设的<code>java.lang.ChuckNorrisException</code>不可捕捉？</p>
-<p>想到的想法是使用拦截器或<a href="http://en.wikipedia.org/wiki/Aspect-
-oriented_programming" target="_blank" rel="noopener">面向方面的编程</a>。</p>
+        <p>在Spring中可以交换使用<code>@Component</code>，<code>@Repository</code>和<code>@Service</code>注释，还是提供任何特殊的功能符号设备？</p>
+<p>换句话说，如果我有一个Service类，并且将注解从<code>@Service</code>更改为<code>@Component</code>，它是否仍然表现相同？</p>
+<p>或者注解是否也会影响类的行为和功能？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/uncatchable-chucknorrisexception/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-does-the-java-for-each-loop-work/" title="Java为每个循环如何工作？" itemprop="url">Java为每个循环如何工作？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>考虑：</p>
-<pre><code>List&lt;String&gt; someList = new ArrayList&lt;String&gt;();
-// add &quot;monkey&quot;, &quot;donkey&quot;, &quot;skeleton key&quot; to someList
-
-
-
-for (String item : someList) {
-    System.out.println(item);
-}
-</code></pre><p>为什么对于<code>循环，等价的</code>看起来像不用每个<em>语法的 </em>？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-does-the-java-for-each-loop-work/#more">Read More</a>
+            <a href="/2018/01/14/whats-the-difference-between-component-repository-service-annotations-in/#more">Read More</a>
           
        </p>
     </div>
@@ -646,7 +553,7 @@ for (String item : someList) {
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
@@ -703,30 +610,29 @@ for (String item : someList) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/removing-whitespace-from-strings-in-java/" title="在Java中删除字符串中的空格" itemprop="url">在Java中删除字符串中的空格</a>
+      <a href="/2018/01/14/remove-element-by-id/" title="通过ID删除元素" itemprop="url">通过ID删除元素</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有这样的字符串：</p>
-<pre><code>mysz = &quot;name=john age=13 year=2001&quot;;
-</code></pre><p>我想删除字符串中的空格。我试过<code>trim（）</code>，但是这样只删除整个字符串前后的空格。我也尝试了<code>replaceAll（“\\ W”，“”）</code>，但是<code>=</code>也被移除了。</p>
-<p>我怎样才能得到一个字符串：</p>
-<pre><code>mysz2 = &quot;name=johnage=13year=2001&quot;
-</code></pre><p>
+        <p>使用标准JavaScript去除元素时，必须首先转到其父元素：</p>
+<pre><code>var element = document.getElementById(&quot;element-id&quot;);
+element.parentNode.removeChild(element);
+</code></pre><p>首先到父节点看起来有点奇怪，是否有这样一个原因JavaScript的作品呢？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/removing-whitespace-from-strings-in-java/#more">Read More</a>
+            <a href="/2018/01/14/remove-element-by-id/#more">Read More</a>
           
        </p>
     </div>
@@ -736,7 +642,65 @@ for (String item : someList) {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-does-javascriptvoid0-mean/" title="“javascript：void（0）”是什么意思？" itemprop="url">“javascript：void（0）”是什么意思？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><a href="javascript:void(0)" id="loginlink" target="_blank" rel="noopener">login</a></p>
+<p>我曾多次见过这样的<code>href</code>，但是我不知道这意味着什么。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/what-does-javascriptvoid0-mean/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -766,10 +730,10 @@ for (String item : someList) {
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -788,7 +752,7 @@ for (String item : someList) {
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -859,18 +823,12 @@ for (String item : someList) {
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -883,7 +841,7 @@ for (String item : someList) {
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -1018,7 +976,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -1026,6 +984,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

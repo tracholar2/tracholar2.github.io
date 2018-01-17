@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -119,7 +119,7 @@ var _hmt = _hmt || [];
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2017-12-20T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-20</time>
+    <time datetime="2017-12-20T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-20</time>
     
   </p>
 </header>
@@ -199,26 +199,170 @@ targetSdkVersion 19
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/12/20/what-are-the-differences-in-die-and-exit-in-php/" title="PHP中的die（）和exit（）有什么区别？" itemprop="url">PHP中的die（）和exit（）有什么区别？</a>
+      <a href="/2017/12/20/is-there-a-reason-for-cs-reuse-of-the-variable-in-a-foreach/" title="是否有一个C＃在foreach中重用该变量的原因？" itemprop="url">是否有一个C＃在foreach中重用该变量的原因？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2017-12-20T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-20</time>
+    <time datetime="2017-12-20T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-20</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><code>die()</code>和<code>exit()</code>函数在<code>PHP</code>中有什么区别？</p>
-<p>我认为两者都具有相同的功能，但是我怀疑这两者有什么不同…这是什么？</p>
+        <p>在C＃中使用lambda表达式或匿名方法时，我们必须警惕修改的闭包陷阱。例如：</p>
+<pre><code>foreach (var s in strings)
+{
+   query = query.Where(i =&gt; i.Prop == s); // access to modified closure
+   ...
+}
+</code></pre><p>由于修改后的关闭，上面的代码将导致查询中的所有<code>Where</code>子句基于最终值<code>s</code>。</p>
+<p>正如在这里所解释的，这是因为上面的<code>s</code>循环中声明的<code>foreach</code>变量在编译器中被这样翻译：</p>
+<pre><code>string s;
+while (enumerator.MoveNext())
+{
+   s = enumerator.Current;
+   ...
+}
+</code></pre><p>而不是像这样：</p>
+<pre><code>while (enumerator.MoveNext())
+{
+   string s;
+   s = enumerator.Current;
+   ...
+}
+</code></pre><p>正如这里指出的那样，在循环之外声明一个变量没有任何性能优势，在正常情况下，我可以考虑的唯一原因是如果你打算在循环范围之外使用变量：</p>
+<pre><code>string s;
+while (enumerator.MoveNext())
+{
+   s = enumerator.Current;
+   ...
+}
+var finalString = s;
+</code></pre><p>但是，<code>foreach</code>循环中定义的变量不能在循环外部使用：</p>
+<pre><code>foreach(string s in strings)
+{
+}
+var finalString = s; // won&apos;t work: you&apos;re outside the scope.
+</code></pre><p>所以编译器以这样的方式声明变量，使得它很容易出错，而这个错误通常很难被发现和调试，而没有产生明显的好处。</p>
+<p>有没有什么你可以用<code>foreach</code>循环这样做，你不能这样做，如果他们用内部范围的变量编译，或者这只是一个任意的选择之前，匿名方法和lambda表达式是可用或共同的，哪些从那以后还没有被修改过？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/12/20/what-are-the-differences-in-die-and-exit-in-php/#more">Read More</a>
+            <a href="/2017/12/20/is-there-a-reason-for-cs-reuse-of-the-variable-in-a-foreach/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/19/how-do-i-round-a-decimal-value-to-2-decimal-places-for-output-on-a-page/" title="如何将十进制值舍入到2个小数位（用于页面上的输出）" itemprop="url">如何将十进制值舍入到2个小数位（用于页面上的输出）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-19</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>当显示<code>.ToString()</code>的小数值时，精确到15位小数，因为我用它来表示美元和美分，所以我只希望输出是2位小数。</p>
+<p>我是否使用<code>.ToString()</code>的变体？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/12/19/how-do-i-round-a-decimal-value-to-2-decimal-places-for-output-on-a-page/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/19/html-5-is-it-br-br-or-br/" title="HTML 5：它是br，还是br /？" itemprop="url">HTML 5：它是br，还是br /？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-19</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我试着检查其他答案，但我仍然感到困惑 - 尤其是在看到W3schools的HTML 5参考后。</p>
+<p>我以为HTML 4.01应该“允许”单标签只是<code>&lt;img&gt;</code>和<code>&lt;br&gt;</code>。然后，XHTML与<code>&lt;img /&gt;</code>和<code>&lt;br
+/&gt;</code>一起（有人说，那里的空间是旧的浏览器）。</p>
+<p>现在我想知道如何在练习HTML 5时对代码进行格式化。</p>
+<pre><code>&lt;!DOCTYPE HTML&gt;
+</code></pre><p>是<code>&lt;br&gt;</code>，<code>&lt;br/&gt;</code>还是<code>&lt;br /&gt;</code>？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/12/19/html-5-is-it-br-br-or-br/#more">Read More</a>
           
        </p>
     </div>
@@ -228,7 +372,7 @@ targetSdkVersion 19
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/html5/">html5</a>
   </div>
 
 </div>
@@ -264,7 +408,7 @@ targetSdkVersion 19
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-19</time>
+    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-19</time>
     
   </p>
 </header>
@@ -343,7 +487,7 @@ targetSdkVersion 19
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-19</time>
+    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-19</time>
     
   </p>
 </header>
@@ -418,121 +562,6 @@ targetSdkVersion 19
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/12/19/html-5-is-it-br-br-or-br/" title="HTML 5：它是br，还是br /？" itemprop="url">HTML 5：它是br，还是br /？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我试着检查其他答案，但我仍然感到困惑 - 尤其是在看到W3schools的HTML 5参考后。</p>
-<p>我以为HTML 4.01应该“允许”单标签只是<code>&lt;img&gt;</code>和<code>&lt;br&gt;</code>。然后，XHTML与<code>&lt;img /&gt;</code>和<code>&lt;br
-/&gt;</code>一起（有人说，那里的空间是旧的浏览器）。</p>
-<p>现在我想知道如何在练习HTML 5时对代码进行格式化。</p>
-<pre><code>&lt;!DOCTYPE HTML&gt;
-</code></pre><p>是<code>&lt;br&gt;</code>，<code>&lt;br/&gt;</code>还是<code>&lt;br /&gt;</code>？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/12/19/html-5-is-it-br-br-or-br/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/html5/">html5</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/12/19/how-do-i-round-a-decimal-value-to-2-decimal-places-for-output-on-a-page/" title="如何将十进制值舍入到2个小数位（用于页面上的输出）" itemprop="url">如何将十进制值舍入到2个小数位（用于页面上的输出）</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>当显示<code>.ToString()</code>的小数值时，精确到15位小数，因为我用它来表示美元和美分，所以我只希望输出是2位小数。</p>
-<p>我是否使用<code>.ToString()</code>的变体？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/12/19/how-do-i-round-a-decimal-value-to-2-decimal-places-for-output-on-a-page/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
       <a href="/2017/12/19/programmatic-equivalent-of-defaulttype/" title="程序化等效的默认（Type）" itemprop="url">程序化等效的默认（Type）</a>
   </h1>
   <p class="article-author">By
@@ -540,7 +569,7 @@ targetSdkVersion 19
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-19</time>
+    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-19</time>
     
   </p>
 </header>
@@ -585,27 +614,26 @@ targetSdkVersion 19
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/12/18/converting-pixels-to-dp/" title="将像素转换为dp" itemprop="url">将像素转换为dp</a>
+      <a href="/2017/12/18/how-can-i-connect-to-android-with-adb-over-tcp/" title="如何通过TCP连接到使用ADB的Android？" itemprop="url">如何通过TCP连接到使用ADB的Android？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2017-12-18T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-18</time>
+    <time datetime="2017-12-18T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-18</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我已经创建了我的应用程序，其高分辨率为480x800，Pantech设备的像素为高。</p>
-<p>我需要为G1设备转换高度和宽度。我认为把它转换成DP将解决这个问题，并为两个设备提供相同的解决方案。</p>
-<p>有没有简单的方法将像素转换为DP？有什么建议么？</p>
+        <p>我试图调试一个摩托罗拉Droid的应用程序，但我有一些困难通过USB连接到设备。我的开发服务器是在Hyper-V中运行的Windows 7<br>64位虚拟机，因此无法通过USB或guest虚拟机直接连接。</p>
+<p>我安装了几种不同的USB-over-<br>TCP解决方案，但是由于ADB监视器反复报告“设备监视器无法开始监视”，连接似乎有问题。有没有一种方法可以直接从开发机器上的客户端连接到使用网络而不是USB连接的设备上的守护进程，或者可能有其他可行的选项？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2017/12/18/converting-pixels-to-dp/#more">Read More</a>
+            <a href="/2017/12/18/how-can-i-connect-to-android-with-adb-over-tcp/#more">Read More</a>
           
        </p>
     </div>
@@ -646,7 +674,7 @@ targetSdkVersion 19
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2017-12-18T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-18</time>
+    <time datetime="2017-12-18T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-18</time>
     
   </p>
 </header>
@@ -703,7 +731,7 @@ targetSdkVersion 19
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2017-12-18T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-18</time>
+    <time datetime="2017-12-18T02:00:00.000Z" itemprop="datePublished"> 发表于 2017-12-18</time>
     
   </p>
 </header>
@@ -759,10 +787,10 @@ targetSdkVersion 19
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -781,7 +809,7 @@ targetSdkVersion 19
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -852,18 +880,12 @@ targetSdkVersion 19
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -876,7 +898,7 @@ targetSdkVersion 19
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -1011,7 +1033,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -1019,6 +1041,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

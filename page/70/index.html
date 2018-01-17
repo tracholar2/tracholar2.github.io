@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,25 +112,62 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-generate-a-random-alpha-numeric-string/" title="如何生成一个随机的字母数字字符串？" itemprop="url">如何生成一个随机的字母数字字符串？</a>
+      <a href="/2018/01/14/why-is-printing-b-dramatically-slower-than-printing/" title="为什么打印“B”比打印“＃”慢得多？" itemprop="url">为什么打印“B”比打印“＃”慢得多？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我一直在寻找简单的Java算法来生成一个伪随机字母数字字符串。在我的情况下，它将被用作一个独特的会话/密钥标识符，“可能”在50万代以上是唯一的（我的需求并不需要任何更复杂的东西）。理想情况下，我将能够根据我的独特需要指定长度。例如，生成的长度为12的字符串可能类似于<code>“AEYGF7K0DM1X”</code>。</p>
+        <p>我生成了两个<code>1000</code> x <code>1000</code>的矩阵：</p>
+<p>First Matrix：<code>O</code>和<code>＃</code> 第二矩阵：<code>O</code>和<code>B</code>。</p>
+<p>使用以下代码，第一个矩阵需要8.52秒才能完成：</p>
+<pre><code>Random r = new Random();
+for (int i = 0; i &lt; 1000; i++) {
+    for (int j = 0; j &lt; 1000; j++) {
+        if(r.nextInt(4) == 0) {
+            System.out.print(&quot;O&quot;);
+        } else {
+            System.out.print(&quot;#&quot;);
+        }
+    }
+
+   System.out.println(&quot;&quot;);
+ }
+</code></pre><p>用这个代码，第二个矩阵需要259.152秒才能完成：</p>
+<pre><code>Random r = new Random();
+for (int i = 0; i &lt; 1000; i++) {
+    for (int j = 0; j &lt; 1000; j++) {
+        if(r.nextInt(4) == 0) {
+            System.out.print(&quot;O&quot;);
+        } else {
+            System.out.print(&quot;B&quot;); //only line changed
+        }
+    }
+
+    System.out.println(&quot;&quot;);
+}
+</code></pre><p>运行时间显着不同的原因是什么？</p>
+<hr>
+<p>正如在注释中所建议的那样，只打印<code>System.out.print（“＃”）;</code>需要7.8871秒的时间，而<code>System.out.print
+“B”）;</code>使<code>仍在打印...</code>。</p>
+<p>正如其他人指出，它正常工作，我尝试了<a href="http://ideone.com" target="_blank" rel="noopener"> Ideone.com </a>，例如，两件代码以相同的速度执行。</p>
+<p>测试条件：</p>
+<ul>
+<li>我从 <em>Netbeans 7.2</em> 运行这个测试，输出到控制台</li>
+<li>我使用<code>System.nanoTime（）</code>进行度量</li>
+</ul>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-generate-a-random-alpha-numeric-string/#more">Read More</a>
+            <a href="/2018/01/14/why-is-printing-b-dramatically-slower-than-printing/#more">Read More</a>
           
        </p>
     </div>
@@ -180,27 +217,25 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-get-a-class-instance-of-generics-type-t/" title="如何获得泛型类型T的类实例" itemprop="url">如何获得泛型类型T的类实例</a>
+      <a href="/2018/01/14/how-to-check-if-a-string-is-numeric-in-java/" title="如何在Java中检查字符串是否为数字" itemprop="url">如何在Java中检查字符串是否为数字</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个泛型类，<code>Foo＆lt; T＆gt;</code>。在<code>Foo</code>的方法中，我想获得类型T的类实例，但是我不能调用<code>T.class</code>。</p>
-<p>使用<code>T.class</code>？</p>
-<p>解决它的首选方法是什么？
+        <p>在解析它之前，如何检查String是否是一个数字？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-get-a-class-instance-of-generics-type-t/#more">Read More</a>
+            <a href="/2018/01/14/how-to-check-if-a-string-is-numeric-in-java/#more">Read More</a>
           
        </p>
     </div>
@@ -239,141 +274,43 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-can-i-pretty-print-json-using-javascript/" title="我怎样才能漂亮的打印使用JavaScript的JSON？" itemprop="url">我怎样才能漂亮的打印使用JavaScript的JSON？</a>
+      <a href="/2018/01/14/get-an-outputstream-into-a-string/" title="获取一个OutputStream成一个字符串" itemprop="url">获取一个OutputStream成一个字符串</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何以易于阅读的格式（针对读者）显示JSON？我主要看缩进和空白，甚至可能是颜色/字体样式/等。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-can-i-pretty-print-json-using-javascript/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
+        <p>将输出从java.io.OutputStream传递给Java中的String的最佳方法是什么？</p>
+<p>说我有方法：</p>
+<pre><code>writeToStream(Object o, OutputStream out)
+</code></pre><p>将某些数据从对象写入给定的流。但是，我想尽可能轻松地将此输出转换为字符串。</p>
+<p>我正在考虑写一个这样的类（未经测试）：</p>
+<pre><code>class StringOutputStream extends OutputStream {
 
+  StringBuilder mBuf;
 
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
+  public void write(int byte) throws IOException {
+    mBuf.append((char) byte);
+  }
 
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-to-get-current-time-in-python/" title="如何在Python中获取当前时间？" itemprop="url">如何在Python中获取当前时间？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>用于获取当前时间的模块/方法是什么？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-to-get-current-time-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-to-get-file-creation-modification-date-times-in-python/" title="如何在Python中获取文件创建和修改日期/时间？" itemprop="url">如何在Python中获取文件创建和修改日期/时间？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有一个脚本，需要做一些基于文件创建＆amp;修改日期，但必须在Linux上运行。视窗。</p>
-<p>什么是最好的 <strong>跨平台</strong> 的方式来获得文件创建＆amp;修改Python中的日期/时间？</p>
+  public String getString() {
+    return mBuf.toString();
+  }
+}
+</code></pre><p>但有没有更好的办法？我只想运行测试！</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-get-file-creation-modification-date-times-in-python/#more">Read More</a>
+            <a href="/2018/01/14/get-an-outputstream-into-a-string/#more">Read More</a>
           
        </p>
     </div>
@@ -383,7 +320,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -412,214 +349,28 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/creating-multiline-strings-in-javascript/" title="在JavaScript中创建多行字符串" itemprop="url">在JavaScript中创建多行字符串</a>
+      <a href="/2018/01/14/access-restriction-on-class-due-to-restriction-on-required-library-rt-jar/" title="由于对所需库rt jar的限制而对类进行访问限制？" itemprop="url">由于对所需库rt jar的限制而对类进行访问限制？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在Ruby中我有下面的代码。我想把这个代码转换成JavaScript。 JS中的等效代码是什么？</p>
-<pre><code>text = &lt;&lt;&quot;HERE&quot;
-This
-Is
-A
-Multiline
-String
-HERE
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/creating-multiline-strings-in-javascript/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-to-get-line-count-cheaply-in-python/" title="如何在Python中便宜地计算行数？" itemprop="url">如何在Python中便宜地计算行数？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我需要在python中获得一个大文件（数十万行）的行数。什么是记忆和时间最有效的方法？</p>
-<p>目前我这样做：</p>
-<pre><code>def file_len(fname):
-    with open(fname) as f:
-        for i, l in enumerate(f):
-            pass
-    return i + 1
-</code></pre><p>有没有可能做得更好？</p>
+        <p>我试图在Java5上编译由IBM的WSDL2Java创建的Java<br>1.4代码，而不重新创建存根，并在Eclipse中看到这个错误。我假设创建的存根应该只要运行时罐子可用（它们就是）就可以编译。</p>
+<p>访问限制：QName类型由于对所需库的限制而不可访问：C：\ Program Files \ Java \ jdk1.5.0_16 \ jre \ lib<br>\ rt.jar <code>完整的类名是</code> javax.xml.namespace.QName `<br>这到底是怎么回事？</p>
+<p>这是我试图从香肠重构猪的情况吗？我最好重新创建存根吗？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-get-line-count-cheaply-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-can-i-print-literal-curly-brace-characters-in-python-string-and-also-use-fo/" title="我怎样才能打印文字大括号字符在python字符串，也使用 format呢？" itemprop="url">我怎样才能打印文字大括号字符在python字符串，也使用 format呢？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>x = “ { Hello } {0} “<br>    print x.format(42)</p>
-<p>给我：<code>关键错误：Hello \\</code><br>我想打印输出：<code>{你好} 42</code><br>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-can-i-print-literal-curly-brace-characters-in-python-string-and-also-use-fo/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/when-and-how-should-i-use-a-threadlocal-variable/" title="何时以及如何使用ThreadLocal变量？" itemprop="url">何时以及如何使用ThreadLocal变量？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>什么时候应该使用<code>ThreadLocal</code>变量？</p>
-<p>它是如何使用的？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/when-and-how-should-i-use-a-threadlocal-variable/#more">Read More</a>
+            <a href="/2018/01/14/access-restriction-on-class-due-to-restriction-on-required-library-rt-jar/#more">Read More</a>
           
        </p>
     </div>
@@ -658,37 +409,27 @@ HERE
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/whats-the-simplest-way-to-print-a-java-array/" title="打印Java数组最简单的方法是什么？" itemprop="url">打印Java数组最简单的方法是什么？</a>
+      <a href="/2018/01/14/get-current-stack-trace-in-java/" title="在Java中获取当前堆栈跟踪" itemprop="url">在Java中获取当前堆栈跟踪</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在Java中，数组不重写<code>toString（）</code>，所以如果你直接打印一个，你会得到className + @ + [Object.toString（）<code>定义的数组的/en.wikipedia.org/wiki/Java_hashCode（）“rel
-=”noreferrer“&gt;</code> hashCode ` ：</p>
-<pre><code>int[] intArray = new int[] {1, 2, 3, 4, 5};
-System.out.println(intArray);     // prints something like &apos;[I@3343c8b3&apos;
-</code></pre><p>但通常我们实际上需要更多像<code>[1，2，3，4，5]</code>的东西。什么是最简单的方法呢？以下是一些示例输入和输出：</p>
-<pre><code>// array of primitives:
-int[] intArray = new int[] {1, 2, 3, 4, 5};
-//output: [1, 2, 3, 4, 5]
-
-// array of object references:
-String[] strArray = new String[] {&quot;John&quot;, &quot;Mary&quot;, &quot;Bob&quot;};
-//output: [John, Mary, Bob]
-</code></pre>
+        <p>如何获得Java中的当前堆栈跟踪，如<a href="http://en.wikipedia.org/wiki/.NET_Framework" target="_blank" rel="noopener"> .NET </a>可以做<a href="http://msdn.microsoft.com/en-
+us/library/system.environment.stacktrace.aspx?ppud=4" target="_blank" rel="noopener"> <code>Environment.StackTrace</code> </a>？</p>
+<p>BTW，<code>Thread.dumpStack（）</code>不是我想要的 -<br>我想获取<a href="“http://en.wikipedia.org/wiki/Stack_trace”rel">堆栈跟踪</a>，不打印出来。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/whats-the-simplest-way-to-print-a-java-array/#more">Read More</a>
+            <a href="/2018/01/14/get-current-stack-trace-in-java/#more">Read More</a>
           
        </p>
     </div>
@@ -699,6 +440,316 @@ String[] strArray = new String[] {&quot;John&quot;, &quot;Mary&quot;, &quot;Bob&
   <div class="article-tags">
   
   <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/cant-execute-jar-file-no-main-manifest-attribute/" title="无法执行jar文件：“无主清单属性”" itemprop="url">无法执行jar文件：“无主清单属性”</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我已经安装了一个应用程序，当我尝试运行它时（它是一个可执行的jar）没有任何反应。当我从命令行运行它时：</p>
+<blockquote>
+<p>java -jar “app.jar”</p>
+</blockquote>
+<p>我收到以下消息：</p>
+<blockquote>
+<p>no main manifest attribute, in “app.jar”</p>
+</blockquote>
+<p>通常，如果我自己创建了这个程序，我会在清单文件中添加一个主类属性。但在这种情况下，由于该文件来自一个应用程序，我不能这样做。我也尝试提取jar来看看我能不能找到主类，但是有很多类，并且没有一个名字中包含“main”这个词。必须有办法解决这个问题，因为程序在其他系统上运行良好。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/cant-execute-jar-file-no-main-manifest-attribute/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/get-current-url-in-javascript/" title="在JavaScript中获取当前网址？" itemprop="url">在JavaScript中获取当前网址？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我正在使用jQuery。如何获取当前URL的路径并将其分配给变量？</p>
+<p>示例网址：</p>
+<pre><code>http://localhost/menuname.de?foo=bar&amp;amp;number=0
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/get-current-url-in-javascript/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/creating-a-memory-leak-with-java/" title="用Java创建内存泄漏" itemprop="url">用Java创建内存泄漏</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我刚刚接受了一次采访，并被要求用Java创建内存泄漏。 毋庸置疑，我对于如何开始创建一个产品毫无头绪</p>
+<p>一个例子是什么？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/creating-a-memory-leak-with-java/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-clone-or-copy-a-list/" title="如何克隆或复制列表？" itemprop="url">如何克隆或复制列表？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在Python中克隆或复制列表的选项有哪些？</p>
+<p>每当<code>my_list</code>发生变化时，使用<code>new_list = my_list</code>修改<code>new_list</code>。 这是为什么？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-to-clone-or-copy-a-list/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-the-purpose-of-self/" title="自我的目的是什么？" itemprop="url">自我的目的是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Python中<code>self</code>单词的用途是什么？我知道它是指从该类创建的特定对象，但我不明白为什么它明确需要作为参数添加到每个函数。为了说明，在Ruby中我可以这样做：</p>
+<pre><code>class myClass
+    def myFunc(name)
+        @name = name
+    end
+end
+</code></pre><p>我很明白，这很容易。然而在Python中，我需要包含<code>self</code>：</p>
+<pre><code>class myClass:
+    def myFunc(self, name):
+        self.name = name
+</code></pre><p>任何人都可以通过这个说话吗？这不是我在我的（当然是有限的）经验中遇到的。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/what-is-the-purpose-of-self/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -728,10 +779,10 @@ String[] strArray = new String[] {&quot;John&quot;, &quot;Mary&quot;, &quot;Bob&
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -750,7 +801,7 @@ String[] strArray = new String[] {&quot;John&quot;, &quot;Mary&quot;, &quot;Bob&
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -821,18 +872,12 @@ String[] strArray = new String[] {&quot;John&quot;, &quot;Mary&quot;, &quot;Bob&
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -845,7 +890,7 @@ String[] strArray = new String[] {&quot;John&quot;, &quot;Mary&quot;, &quot;Bob&
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -980,7 +1025,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -988,6 +1033,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

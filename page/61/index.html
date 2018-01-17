@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,45 +112,40 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/how-do-i-give-text-or-an-image-a-transparent-background-using-css/" title="我如何使用CSS给文本或图像一个透明的背景？" itemprop="url">我如何使用CSS给文本或图像一个透明的背景？</a>
+      <a href="/2018/01/15/adding-html-entities-using-css-content/" title="使用CSS内容添加HTML实体" itemprop="url">使用CSS内容添加HTML实体</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>是否有可能仅使用CSS来使元素的<code>background</code>半透明，但是元素的内容（文本和图像）是不透明的？</p>
-<p>我想在不将文本和背景作为两个单独元素的情况下完成此任务。</p>
-<p>尝试时：</p>
-<pre><code>p {
-  position: absolute;
-  background-color: green;
-  filter: alpha(opacity=60);
-  opacity: 0.6;
+        <p>你如何使用CSS <code>content</code>属性添加html实体？</p>
+<p>我有许多链接，通过在每个链接之前添加一个箭头，将其制作成面包屑样式列表。</p>
+<pre><code>&lt;div class=&quot;breadcrumbs&quot;&gt;
+    &lt;a&gt;One&lt;/a&gt;
+    &lt;a&gt;Two&lt;/a&gt;
+    &lt;a&gt;Three&lt;/a&gt;
+&lt;/div&gt;
+</code></pre><p>具有以下风格：</p>
+<pre><code>.breadcrumbs a:before {
+    content: &apos;&gt; &apos;;
 }
-
-span {
-  color: white;
-  filter: alpha(opacity=100);
-  opacity: 1;
+</code></pre><p>问题是当面包屑列表变长并换行到下一行时，箭头留在前面的行。显而易见的解决方案是将空间更改为不间断的空间，但这不起作用：</p>
+<pre><code>.breadcrumbs a:before {
+    content: &apos;&gt;&amp;nbsp;&apos;;
 }
-
-
-&lt;p&gt;
-  &lt;span&gt;Hello world&lt;/span&gt;
-&lt;/p&gt;
-</code></pre><p>它看起来像子元素受到其父母的不透明性，所以<code>opacity：1</code>与parent的<code>opacity：0.6</code>是相对的。</p>
+</code></pre><p>它实际上输出<code>＆amp; nbsp;</code>到屏幕上。我通过直接粘贴字符来解决其他奇怪的字符（如»），但是如何粘贴<code>＆amp; nbsp;</code>？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/how-do-i-give-text-or-an-image-a-transparent-background-using-css/#more">Read More</a>
+            <a href="/2018/01/15/adding-html-entities-using-css-content/#more">Read More</a>
           
        </p>
     </div>
@@ -200,38 +195,93 @@ span {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/angularjs-ngclass-conditional/" title="AngularJS ngClass条件" itemprop="url">AngularJS ngClass条件</a>
+      <a href="/2018/01/15/embedding-base64-images/" title="嵌入Base64图像" itemprop="url">嵌入Base64图像</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>有什么办法可以让一个像ngClass这样的表达式成为一个条件表达式。例如，我已经尝试了以下内容：</p>
-<pre><code>&lt;span ng-class=&quot;{test: &apos;obj.value1 == \&apos;someothervalue\&apos;&apos;}&quot;&gt;test&lt;/span&gt;
-</code></pre><p>这个代码的问题是，不管obj.value1是什么，类测试总是被应用到元素。这样做：</p>
-<pre><code>&lt;span ng-class=&quot;{test: obj.value2}&quot;&gt;test&lt;/span&gt;
-</code></pre><p>只要obj.value2不等于真值，这个类就不会被应用。现在我可以在第一个例子中解决这个问题了：</p>
-<pre><code>&lt;span ng-class=&quot;{test: checkValue1()}&quot;&gt;test&lt;/span&gt;
-</code></pre><p>其中checkValue1函数如下所示：</p>
-<pre><code>$scope.checkValue1 = function() {
-  return $scope.obj.value === &apos;somevalue&apos;;
+        <p>纯粹出于好奇，Base64图像嵌入工作在哪些浏览器？我指的是<a href="http://www.greywyvern.com/code/php/binary2base64" target="_blank" rel="noopener">这个</a>。</p>
+<p>我意识到这通常不是一个很好的解决办法，因为它大大增加了页面大小 - 我只是好奇而已。</p>
+<p><strong>一些例子：</strong></p>
+<p><em>HTML：</em></p>
+<pre><code>&lt;img alt=&quot;Embedded Image&quot; src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIA...&quot; /&gt;
+</code></pre><p><em>CSS：</em></p>
+<pre><code>div.image {
+  width:100px;
+  height:100px;
+  background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIA...);
 }
-</code></pre><p>我只是想知道这是不是ngClass应该如何工作。我也正在建立一个自定义指令，我想要做类似的事情。然而，我找不到一种方法来观看表达式（也许这是不可能的，也是这样的原因）。</p>
-<p>这是一个显示我意思的plnkr：</p>
-<p><a href="http://plnkr.co/edit/iSh0t8swDEyGbh7ylZg2?p=preview" target="_blank" rel="noopener"> http://plnkr.co/edit/iSh0t8swDEyGbh7ylZg2?p=preview</a></p>
-<p>
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/angularjs-ngclass-conditional/#more">Read More</a>
+            <a href="/2018/01/15/embedding-base64-images/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/how-do-i-wrap-text-in-a-pre-tag/" title="如何在预标签中包装文本？" itemprop="url">如何在预标签中包装文本？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>pre `标记对于HTML中的代码块是非常有用的，并且在编写脚本时用于调试输出，但是如何使文本自动换行而不是打印出长长的行呢？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/how-do-i-wrap-text-in-a-pre-tag/#more">Read More</a>
           
        </p>
     </div>
@@ -270,101 +320,26 @@ span {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/why-do-browsers-match-css-selectors-from-right-to-left/" title="为什么浏览器从右到左匹配CSS选择器？" itemprop="url">为什么浏览器从右到左匹配CSS选择器？</a>
+      <a href="/2018/01/15/how-to-dynamically-change-a-web-pages-title/" title="如何动态更改网页的标题？" itemprop="url">如何动态更改网页的标题？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>CSS选择器由右到左的浏览器引擎进行匹配。所以他们首先找到孩子，然后检查他们的父母，看他们是否符合规则的其余部分。</p>
-<ul>
-<li>这是为什么？</li>
-<li>仅仅是因为规范说明了吗？</li>
-<li>如果从左到右进行评估，是否会影响最终版式？</li>
-</ul>
-<p>对我来说，最简单的方法是使用元素数最少的选择器。所以ID首先（因为他们应该只返回1元素）。然后可能是类或节点数最少的元素 -<br>例如在页面上可能只有一个跨度，因此可以使用任何引用跨度的规则直接进入该节点。</p>
-<p>以下是一些支持我的声明的链接</p>
-<ul>
-<li><a href="http://code.google.com/speed/page-speed/docs/rendering.html" target="_blank" rel="noopener"> http://code.google.com/speed/page-速度/文档/ rendering.html </a></li>
-<li><a href="https://developer.mozilla.org/en/Writing_Efficient_CSS" target="_blank" rel="noopener"> https://developer.mozilla.org/zh/Writing_Efficient_CSS </a></li>
-</ul>
-<hr>
-<p>听起来好像是这样做的，以避免必须查看所有的父母的孩子（可能是很多），而不是所有的孩子的父母必须是一个。即使DOM很深，它也只能在RTL匹配中查看每个级别的一个节点，而不是多个节点。<br><a href="https://stackoverflow.com/questions/4130045/is-it-
-easier-faster-to-parse-css-selectors-ltr-or-rtl" target="_blank" rel="noopener">评估CSS选择器LTR更容易/更快或RTL？</a></p>
+        <p>我有一个网页，实现了一组标签，每个标签显示不同的内容。标签点击不会刷新页面，而是隐藏/取消隐藏客户端的内容。</p>
+<p>现在需要根据页面上选择的标签更改页面标题（针对SEO的原因）。这可能吗？有人可以建议一个解决方案，通过javascript动态改变页面标题，而无需重新加载页面？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/why-do-browsers-match-css-selectors-from-right-to-left/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/why-dont-self-closing-script-tags-work/" title="为什么不能自动关闭脚本标签？" itemprop="url">为什么不能自动关闭脚本标签？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>浏览器不能正确识别的原因是：</p>
-<pre><code>&lt;script src=&quot;foobar.js&quot; /&gt; &lt;!-- self-closing script tag --&gt;
-</code></pre><p>只有这个被认可：</p>
-<pre><code>&lt;script src=&quot;foobar.js&quot;&gt;&lt;/script&gt;
-</code></pre><p>这是否打破了XHTML支持的概念？</p>
-<p>注意：至少对于所有的IE（6-8 beta 2）这个说法是正确的。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/why-dont-self-closing-script-tags-work/#more">Read More</a>
+            <a href="/2018/01/15/how-to-dynamically-change-a-web-pages-title/#more">Read More</a>
           
        </p>
     </div>
@@ -403,28 +378,28 @@ easier-faster-to-parse-css-selectors-ltr-or-rtl" target="_blank" rel="noopener">
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/invoking-javascript-code-in-an-iframe-from-the-parent-page/" title="在父页面的iframe中调用JavaScript代码" itemprop="url">在父页面的iframe中调用JavaScript代码</a>
+      <a href="/2018/01/15/how-to-display-html-in-textview/" title="如何在TextView中显示HTML？" itemprop="url">如何在TextView中显示HTML？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>基本上，我有一个嵌入在页面中的iframe，iframe有一些<a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank" rel="noopener"> JavaScript</a>例程需要从父页面调用。</p>
-<p>现在，相反很简单，因为你只需要调用<code>parent.functionName（）</code>，但不幸的是我需要完全相反的。</p>
-<p>请注意，我的问题并未改变iframe的来源<a href="http://en.wikipedia.org/wiki/Uniform_Resource_Locator" target="_blank" rel="noopener">网址</a>，而是调用函数在iframe中定义。</p>
-<p>
+        <p>我有简单的 <strong>HTML</strong> ：</p>
+<pre><code>&lt;h2&gt;Title&lt;/h2&gt;&lt;br&gt;
+&lt;p&gt;description here&lt;/p&gt;
+</code></pre><p>我想在<code>TextView</code>中显示HTML样式的文本。如何做到这一点？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/invoking-javascript-code-in-an-iframe-from-the-parent-page/#more">Read More</a>
+            <a href="/2018/01/15/how-to-display-html-in-textview/#more">Read More</a>
           
        </p>
     </div>
@@ -434,7 +409,7 @@ easier-faster-to-parse-css-selectors-ltr-or-rtl" target="_blank" rel="noopener">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
+  <span></span> <a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -463,26 +438,26 @@ easier-faster-to-parse-css-selectors-ltr-or-rtl" target="_blank" rel="noopener">
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/set-the-table-column-width-constant-regardless-of-the-amount-of-text-in-its-cell/" title="无论单元格中文本的数量如何，表格列的宽度是不变的？" itemprop="url">无论单元格中文本的数量如何，表格列的宽度是不变的？</a>
+      <a href="/2018/01/15/how-to-use-html-agility-pack/" title="如何使用HTML敏捷包" itemprop="url">如何使用HTML敏捷包</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在我的表中，我将列中第一个单元格的宽度设置为<code>100px</code>。<br>但是，如果此列中某个单元格中的文本太长，则列的宽度将超过<code>100px</code>。我怎么能禁用这个扩展？</p>
-<p>
+        <p>如何使用<a href="http://html-agility-pack.net/?z=codeplex" target="_blank" rel="noopener"> HTML敏捷学习包</a>？</p>
+<p>我的XHTML文档不完全有效。这就是为什么我想要使用它。我如何在我的项目中使用它？我的项目是用C＃。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/set-the-table-column-width-constant-regardless-of-the-amount-of-text-in-its-cell/#more">Read More</a>
+            <a href="/2018/01/15/how-to-use-html-agility-pack/#more">Read More</a>
           
        </p>
     </div>
@@ -492,7 +467,7 @@ easier-faster-to-parse-css-selectors-ltr-or-rtl" target="_blank" rel="noopener">
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  <span></span> <a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -521,113 +496,42 @@ easier-faster-to-parse-css-selectors-ltr-or-rtl" target="_blank" rel="noopener">
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/why-not-use-tables-for-layout-in-html/" title="为什么不在HTML中使用表格进行布局？ [关闭]" itemprop="url">为什么不在HTML中使用表格进行布局？ [关闭]</a>
+      <a href="/2018/01/15/how-can-i-use-a-notfirst-child-selector/" title="我怎样才能使用一个不是：第一个孩子的选择器？" itemprop="url">我怎样才能使用一个不是：第一个孩子的选择器？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>这似乎是[一般意见</p>
-<p>a&gt;表格不应该用于HTML中的布局。</p>
-<p>为什么？</p>
-<p>我从来没有（或很少说实话）看到这个好的论点。通常的答案是：</p>
-<ul>
-<li>这是很好的<a href="https://stackoverflow.com/questions/82391/should-tables-be-avoided-in-html-at-any-cost#82422" target="_blank" rel="noopener">单独的内容布局</a><br>但这是一个错误的论点; <a href="http://www.don-lindsay-
-archive.org/skeptic/arguments.html#cliche" target="_blank" rel="noopener"> Cliche Thinking </a>。我想这是真的，使用表格元素的布局与表格数据很少。所以呢？我的老板照顾吗？我的用户关心吗？  </li>
-</ul>
-<p>也许我或我的开发人员必须维护一个网页关心…是不是一个表维护？我认为使用表比<a href="https://stackoverflow.com/questions/82391
-/should-tables-be-avoided-in-html-at-any-
-cost#82571" target="_blank" rel="noopener">更容易</a>使用div和CSS。顺便说一句…为什么要使用div或跨度很好的分离内容从布局和表格不是？只有div才能获得良好的布局，往往需要大量的嵌套div。</p>
-<ul>
-<li>代码的可读性 - 我认为这是相反的方式。大多数人理解HTML，很少理解CSS。</li>
-<li><p>SEO最好不要使用表格<br>为什么？有人可以证明这是一个证据吗？或者谷歌的声明表示，从SEO的角度来看是不鼓励的？</p>
-</li>
-<li><p>表格较慢。<br>必须插入一个额外的tbody元素。这是现代网页浏览器的花生。给我看一些使用表格显着减慢页面速度的基准。</p>
-</li>
-<li><p>如果没有表格，布局检查更容易，请参阅<a href="http://csszengarden.com/" target="_blank" rel="noopener"> css Zen Garden </a>。<br>大多数网站需要升级需要新的内容（HTML）。新版本的网站只需要一个新的CSS文件的情况不太可能。禅园是一个不错的网站，但有点理论。更不用说它的[滥用CSS了。</p>
-</li>
-</ul>
-<p>我对使用div + CSS而不是表格的好理由感兴趣。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/why-not-use-tables-for-layout-in-html/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/why-does-css-work-with-fake-elements/" title="为什么CSS使用假元素？" itemprop="url">为什么CSS使用假元素？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在我的课堂上，我在玩耍，发现CSS使用了构成元素</p>
-<p>示例：</p>
-<pre><code>imsocool {
-    color:blue;
+        <p>我有<code>包含多个</code> ul <code>标签的div</code>标签。</p>
+<p>如果我只为第一个<code>ul</code>标记设置CSS属性，并且此代码有效：</p>
+<pre><code>div ul:first-child {
+    background-color: #900;
 }
-
-
-&lt;imsocool&gt;HELLO&lt;/imsocool&gt;
-</code></pre><p>当我的教授第一次看到我使用这个，他有点惊讶，化妆元素的工作，并建议我只是改变我所有的元素编号段的ID。</p>
-<p>为什么我的教授不想让我使用化妆元素？他们有效地工作。</p>
-<p>另外，为什么他不知道构成元素存在和使用CSS。他们是不是很普遍？</p>
+</code></pre><p>当我想为每个<code>ul</code>标签设置除第一个之外的CSS属性时，我试过了这个：</p>
+<pre><code>div ul:not:first-child {
+    background-color: #900;
+}
+</code></pre><p>还有这个：</p>
+<pre><code>div ul:not(:first-child) {
+    background-color: #900;
+}
+</code></pre><p>和这个：</p>
+<pre><code>div ul:first-child:after {
+    background-color: #900;
+}
+</code></pre><p>但是没有效果。我怎么一定要用CSS写“每一个元素，除了第一个”？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/why-does-css-work-with-fake-elements/#more">Read More</a>
+            <a href="/2018/01/15/how-can-i-use-a-notfirst-child-selector/#more">Read More</a>
           
        </p>
     </div>
@@ -638,6 +542,138 @@ cost#82571" target="_blank" rel="noopener">更容易</a>使用div和CSS。顺便
   <div class="article-tags">
   
   <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/should-i-use-i-tag-for-icons-instead-of-span/" title="我应该使用i标签来代替span图标吗？ [关闭]" itemprop="url">我应该使用i标签来代替span图标吗？ [关闭]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我研究了Facebook的来源，他们使用<code>＆lt; i＆gt;</code>标签来显示图标。</p>
+<p>另外，今天我看了一下Twitter的Bootstrap。它还使用<code>＆lt; i＆gt;</code>标签显示图标。</p>
+<p>但是，</p>
+<p>来自<a href="http://www.w3.org/International/questions/qa-b-and-I-tags/" target="_blank" rel="noopener"> HTML5规范</a>：</p>
+<blockquote>
+<p>The I element represents a span of text in an alternate voice or mood, or<br>otherwise offset from the normal prose, such as a taxonomic designation, a<br>technical term, an idiomatic phrase from another language, a thought, a ship<br>name, or some other prose whose typical typographic presentation is<br>italicized.</p>
+</blockquote>
+<p>为什么他们使用<code>＆lt; i＆gt;</code>标签来显示图标？</p>
+<p>这不是一个坏习惯吗？</p>
+<p>或者我在这里错过了什么？</p>
+<p>我正在使用<code>span</code>来显示图标，直到现在它似乎都在为我工作。</p>
+<p>&lt;强&gt;更新</p>
+<p>Bootstrap 3现在使用<code>span</code>来显示图标。 <a href="http://getbootstrap.com/components
+/#glyphicons-how-to-use" target="_blank" rel="noopener">官方文档</a></p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/should-i-use-i-tag-for-icons-instead-of-span/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/html5/">html5</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/html-anchors-with-name-or-id/" title="具有“名称”或“ID”的HTML锚点？" itemprop="url">具有“名称”或“ID”的HTML锚点？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>当使用“<code>http://example.com/#foo</code>”方法引用某个网页的某个部分时，是否应该使用</p>
+<pre><code>&lt;h1&gt;&lt;a name=&quot;foo&quot;/&gt;Foo Title&lt;/h1&gt;
+</code></pre><p>或</p>
+<pre><code>&lt;h1 id=&quot;foo&quot;&gt;Foo Title&lt;/h1&gt;
+</code></pre><p>他们都工作，但他们是平等的，还是有语义上的差异？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/html-anchors-with-name-or-id/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/html5/">html5</a>
   </div>
 
 </div>
@@ -673,7 +709,7 @@ cost#82571" target="_blank" rel="noopener">更容易</a>使用div和CSS。顺便
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-15</time>
     
   </p>
 </header>
@@ -725,72 +761,6 @@ cost#82571" target="_blank" rel="noopener">更容易</a>使用div和CSS。顺便
 
   
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/is-it-possible-to-set-the-equivalent-of-a-src-attribute-of-an-img-tag-in-css/" title="有没有可能在CSS中设置一个img标签的src属性的等价物？" itemprop="url">有没有可能在CSS中设置一个img标签的src属性的等价物？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>是否可以在CSS中设置<code>src</code>属性值？目前，我正在做的是：</p>
-<pre><code>&lt;img src=&quot;pathTo/myImage.jpg&quot;/&gt;
-</code></pre><p>我希望它是这样的</p>
-<pre><code>&lt;img class=&quot;myClass&quot; /&gt;
-
-
-
-.myClass {
-    some-src-property: url(&quot;pathTo/myImage.jpg&quot;);
-</code></pre><p>我想在CSS中使用<code>background</code>或<code>background-image：</code>属性来执行 <em>**</em> 。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/is-it-possible-to-set-the-equivalent-of-a-src-attribute-of-an-img-tag-in-css/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/60/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/59/">59</a><a class="page-number" href="/page/60/">60</a><span class="page-number current">61</span><a class="page-number" href="/page/62/">62</a><a class="page-number" href="/page/63/">63</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/62/">Next<span></span></a>
@@ -798,10 +768,10 @@ cost#82571" target="_blank" rel="noopener">更容易</a>使用div和CSS。顺便
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -820,7 +790,7 @@ cost#82571" target="_blank" rel="noopener">更容易</a>使用div和CSS。顺便
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -891,18 +861,12 @@ cost#82571" target="_blank" rel="noopener">更容易</a>使用div和CSS。顺便
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -915,7 +879,7 @@ cost#82571" target="_blank" rel="noopener">更容易</a>使用div和CSS。顺便
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -1050,7 +1014,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -1058,6 +1022,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

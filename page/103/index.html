@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,109 +112,53 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/" title="为什么处理排序后的数组比未排序的数组更快？" itemprop="url">为什么处理排序后的数组比未排序的数组更快？</a>
+      <a href="/2018/01/14/large-data-work-flows-using-pandas/" title="“大数据”使用大熊猫的工作流程" itemprop="url">“大数据”使用大熊猫的工作流程</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>这是一个C ++代码，看起来很奇特。出于一些奇怪的原因，对数据进行奇迹排序使得代码几乎快了六倍。</p>
-<pre><code>#include &lt;algorithm&gt;
-#include &lt;ctime&gt;
-#include &lt;iostream&gt;
-
-int main()
-{
-    // Generate data
-    const unsigned arraySize = 32768;
-    int data[arraySize];
-
-    for (unsigned c = 0; c &lt; arraySize; ++c)
-        data[c] = std::rand() % 256;
-
-    // !!! With this, the next loop runs faster
-    std::sort(data, data + arraySize);
-
-    // Test
-    clock_t start = clock();
-    long long sum = 0;
-
-    for (unsigned i = 0; i &lt; 100000; ++i)
-    {
-        // Primary loop
-        for (unsigned c = 0; c &lt; arraySize; ++c)
-        {
-            if (data[c] &gt;= 128)
-                sum += data[c];
-        }
-    }
-
-    double elapsedTime = static_cast&lt;double&gt;(clock() - start) / CLOCKS_PER_SEC;
-
-    std::cout &lt;&lt; elapsedTime &lt;&lt; std::endl;
-    std::cout &lt;&lt; &quot;sum = &quot; &lt;&lt; sum &lt;&lt; std::endl;
-}
-</code></pre><ul>
-<li>如果没有<code>std :: sort（data，data + arraySize）;</code>，代码会在11.54秒内运行。</li>
-<li>使用排序后的数据，代码在1.93秒内运行。</li>
-</ul>
-<p>最初，我认为这可能只是一种语言或编译器异常。所以我尝试了Java。</p>
-<pre><code>import java.util.Arrays;
-import java.util.Random;
-
-public class Main
-{
-    public static void main(String[] args)
-    {
-        // Generate data
-        int arraySize = 32768;
-        int data[] = new int[arraySize];
-
-        Random rnd = new Random(0);
-        for (int c = 0; c &lt; arraySize; ++c)
-            data[c] = rnd.nextInt() % 256;
-
-        // !!! With this, the next loop runs faster
-        Arrays.sort(data);
-
-        // Test
-        long start = System.nanoTime();
-        long sum = 0;
-
-        for (int i = 0; i &lt; 100000; ++i)
-        {
-            // Primary loop
-            for (int c = 0; c &lt; arraySize; ++c)
-            {
-                if (data[c] &gt;= 128)
-                    sum += data[c];
-            }
-        }
-
-        System.out.println((System.nanoTime() - start) / 1000000000.0);
-        System.out.println(&quot;sum = &quot; + sum);
-    }
-}
-</code></pre><p>有点类似但不太极端的结果。</p>
-<hr>
-<p>我首先想到的是，排序将数据带入缓存，但后来我觉得这是因为数组刚刚生成而变得非常愚蠢。</p>
+        <p>在学习熊猫的过程中，我试图解答这个问题好几个月。我使用SAS进行日常工作，这对我们来说是非常棒的支持。但是，由于其他原因，SAS作为软件是非常糟糕的。</p>
+<p>有一天，我希望用python和pandas取代我使用SAS，但是我目前缺乏大型数据集的核心外工作流程。我不是在谈论需要分布式网络的“大数据”，而是文件太大而不适合内存，但又足够小以适应硬盘驱动器。</p>
+<p>我的第一个想法是使用<code>HDFStore</code>在磁盘上保存大数据集，并只将需要的部分拖放到数据框中进行分析。其他人提到MongoDB是一个更易于使用的替代方案。我的问题是这样的：</p>
+<p>有哪些最佳实践工作流程可以完成以下工作：</p>
 <ul>
-<li>发生了什么事情？</li>
-<li>为什么处理有序数组比没有排序的数组更快？</li>
-<li>代码总结了一些独立的术语，顺序应该不重要。</li>
+<li>将平面文件加载到永久的磁盘上数据库结构</li>
+<li>查询该数据库以检索要送入熊猫数据结构的数据</li>
+<li>在pandas中处理作品之后更新数据库</li>
 </ul>
+<p>真实世界的例子会受到大家的赞赏，尤其是那些使用“大数据”熊猫的人。</p>
+<p>编辑 - 我想如何工作的例子：</p>
+<ul>
+<li>迭代地导入一个大的平面文件并将其存储在一个永久性的磁盘数据库结构中。这些文件通常太大而不适合内存。</li>
+<li>为了使用“熊猫”，我想读取这些数据的子集（通常只是一些列），可以放在内存中。</li>
+<li>我会通过对所选列进行各种操作来创建新列。</li>
+<li>然后，我必须将这些新列添加到数据库结构中。</li>
+</ul>
+<p>我试图找到一个执行这些步骤的最佳实践方式。阅读关于熊猫和pytables的链接，似乎添加一个新列可能是一个问题。</p>
+<p>编辑 - 特别回应杰夫的问题：</p>
+<ul>
+<li>我正在建立消费者信用风险模型。数据种类包括电话，SSN和地址特征;财产价值;像犯罪记录，破产等贬义的信息……我每天使用的数据集平均有近1000到2000个混合数据类型的字段：数字和字符数据的连续变量，名义变量和有序变量。我很少追加行，但是我执行许多操作来创建新的列。</li>
+<li><p>典型的操作涉及将使用条件逻辑的多个列组合成新的复合列。例如，<code>if var1＆gt; 2 then newvar =&#39;A&#39;elif var2 = 4 then newvar =&#39;B&#39;</code>。这些操作的结果是我数据集中每个记录的新列。<br>最后，我想将这些新列添加到磁盘数据结构中。我会重复第2步，使用交叉表和描述性统计数据来探索数据，试图找到有趣，直观的模型关系。</p>
+</li>
+<li><p>一个典型的项目文件通常大约是1GB。文件被组织成一行，其中包含消费者数据的记录。每行记录的每一行都有相同的列数。这总是如此。</p>
+</li>
+<li>在创建新列时，我将按行逐个分组，这是非常罕见的。但是，创建报告或生成描述性统计信息时，对行进行子集的处理是非常常见的。例如，我可能想为特定的业务线创建一个简单的频率，比如零售信用卡。要做到这一点，我只会选择那些业务线=零售的记录，除了我想报告的任何一列。但是，在创建新列时，我会提取所有数据行，并只提取操作所需的列。<br>建模过程要求我分析每一列，查找与某个结果变量有趣的关系，并创建描述这些关系的新复合列。我探索的专栏通常以小集合完成。例如，我将重点讨论一组刚刚处理财产价值的20列，并观察它们与贷款违约的关系。一旦探索了这些内容，并创建了新的专栏，那么我就转到另一组专栏，说大学教育，重复这个过程。我正在做的是创建候选变量来解释我的数据和一些结果之间的关系。在这个过程的最后，我应用了一些学习技巧，从这些复合列中创建一个等式。</li>
+</ul>
+<p>我很少会将行添加到数据集中。我将几乎总是创建新的列（统计/机器学习说法中的变量或功能）。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-is-it-faster-to-process-a-sorted-array-than-an-unsorted-array/#more">Read More</a>
+            <a href="/2018/01/14/large-data-work-flows-using-pandas/#more">Read More</a>
           
        </p>
     </div>
@@ -224,7 +168,7 @@ public class Main
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -264,25 +208,193 @@ public class Main
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/get-the-current-url-with-javascript/" title="用JavaScript获取当前的URL？" itemprop="url">用JavaScript获取当前的URL？</a>
+      <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/" title="“最小的惊讶”和可变的默认论据" itemprop="url">“最小的惊讶”和可变的默认论据</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我只想得到网站的网址。不是从链接中获取的网址。在页面加载，我需要能够抓住网站的完整，当前的网址，并将其设置为一个变量做我喜欢。</p>
+        <p>任何人用Python来修补已经被下面的问题困住了（或撕碎）：</p>
+<pre><code>def foo(a=[]):
+    a.append(5)
+    return a
+</code></pre><p>Python新手会期望这个函数总是返回一个只有一个元素的列表：<code>[5]</code>。结果是非常不同的，而且非常惊人（对于新手来说）：</p>
+<pre><code>&gt;&gt;&gt; foo()
+[5]
+&gt;&gt;&gt; foo()
+[5, 5]
+&gt;&gt;&gt; foo()
+[5, 5, 5]
+&gt;&gt;&gt; foo()
+[5, 5, 5, 5]
+&gt;&gt;&gt; foo()
+</code></pre><p>我的一位经理曾经第一次遇到这个功能，并称这是一个“戏剧性的设计缺陷”。我回答说，这个行为有一个基本的解释，如果你不了解内部，那确实是非常令人费解和意外的。然而，我无法回答（对我自己）以下问题：在函数定义处绑定默认参数的原因是什么，而不是在函数执行处？我怀疑经验丰富的行为是否有实际用途（谁真的在C中使用静态变量，而没有繁殖错误？）</p>
+<p><strong>编辑</strong> ：</p>
+<p>Baczek做了一个有趣的例子。再加上你的大部分意见和尤其是Utaal的意见，我进一步阐述了：</p>
+<pre><code>&gt;&gt;&gt; def a():
+...     print(&quot;a executed&quot;)
+...     return []
+... 
+&gt;&gt;&gt;            
+&gt;&gt;&gt; def b(x=a()):
+...     x.append(5)
+...     print(x)
+... 
+a executed
+&gt;&gt;&gt; b()
+[5]
+&gt;&gt;&gt; b()
+[5, 5]
+</code></pre><p>对我来说，这个设计的决定似乎是相对于把参数的范围放在哪里：在函数里面还是在一起呢？</p>
+<p>在函数内部进行绑定意味着<code>x</code>在函数被调用时被有效地绑定到指定的默认值，而不是被定义的，这会带来很深的缺陷：` def &lt; /<br>code&gt;行将是“混合”的，这意味着函数对象的绑定的一部分将在定义处发生，而在函数调用时则是部分（分配默认参数）。</p>
+<p>实际的行为更加一致：当行被执行时，该行的所有内容都被执行，这意味着函数定义。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/get-the-current-url-with-javascript/#more">Read More</a>
+            <a href="/2018/01/14/least-astonishment-and-the-mutable-default-argument/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/save-plot-to-image-file-instead-of-displaying-it-using-matplotlib/" title="保存绘图到图像文件，而不是使用Matplotlib显示它" itemprop="url">保存绘图到图像文件，而不是使用Matplotlib显示它</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我正在写一个快速而肮脏的脚本来即时生成剧情。我使用下面的代码（来自<a href="http://en.wikipedia.org/wiki/Matplotlib" target="_blank" rel="noopener"> Matplotlib</a>文档）作为起点：</p>
+<pre><code>from pylab import figure, axes, pie, title, show
+
+# Make a square figure and axes
+figure(1, figsize=(6, 6))
+ax = axes([0.1, 0.1, 0.8, 0.8])
+
+labels = &apos;Frogs&apos;, &apos;Hogs&apos;, &apos;Dogs&apos;, &apos;Logs&apos;
+fracs = [15, 30, 45, 10]
+
+explode = (0, 0.05, 0, 0)
+pie(fracs, explode=explode, labels=labels, autopct=&apos;%1.1f%%&apos;, shadow=True)
+title(&apos;Raining Hogs and Dogs&apos;, bbox={&apos;facecolor&apos;: &apos;0.8&apos;, &apos;pad&apos;: 5})
+
+show()  # Actually, don&apos;t show, just save to foo.png
+</code></pre><p>我不想在GUI上显示图表，而是将图表保存到一个文件（比如说foo.png）中，例如，它可以在批处理脚本中使用。我该怎么做？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/save-plot-to-image-file-instead-of-displaying-it-using-matplotlib/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/length-of-a-javascript-object/" title="JavaScript对象的长度" itemprop="url">JavaScript对象的长度</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如果我有一个JavaScript对象，请说</p>
+<pre><code>var myObject = new Object();
+myObject[&quot;firstname&quot;] = &quot;Gareth&quot;;
+myObject[&quot;lastname&quot;] = &quot;Simpson&quot;;
+myObject[&quot;age&quot;] = 21;
+</code></pre><p>有没有一个内置的或接受的最佳实践方式来获得这个对象的长度？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/length-of-a-javascript-object/#more">Read More</a>
           
        </p>
     </div>
@@ -321,26 +433,34 @@ public class Main
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/difference-between-super-t-and-extends-t-in-java/" title="区别？超级T和？在Java中扩展T" itemprop="url">区别？超级T和？在Java中扩展T</a>
+      <a href="/2018/01/14/running-shell-command-from-python-and-capturing-the-output/" title="从Python运行shell命令并捕获输出" itemprop="url">从Python运行shell命令并捕获输出</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><code>List &lt;？&gt;有什么区别？ super T＆gt;</code>和<code>List &lt;？扩展T＆gt;</code>？</p>
-<p>我曾经使用<code>List &lt;？&gt;扩展T＆gt;</code>，但它不允许我添加元素<code>list.add（e）</code>，而<code>List＆lt; super T＆gt;</code>。</p>
+        <p>我想编写一个函数来执行一个shell命令并返回它的输出 <strong>作为一个字符串</strong> ，不管它是一个错误还是成功的消息。我只想得到和命令行一样的结果。</p>
+<p>什么样的代码可以做这样的事情？</p>
+<p>例如：</p>
+<pre><code>def run_command(cmd):
+    # ??????
+
+print run_command(&apos;mysqladmin create test -uroot -pmysqladmin12&apos;)
+# Should output something like:
+# mysqladmin: CREATE DATABASE failed; error: &apos;Can&apos;t create database &apos;test&apos;; database exists&apos;
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/difference-between-super-t-and-extends-t-in-java/#more">Read More</a>
+            <a href="/2018/01/14/running-shell-command-from-python-and-capturing-the-output/#more">Read More</a>
           
        </p>
     </div>
@@ -350,7 +470,7 @@ public class Main
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -379,88 +499,30 @@ public class Main
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/preview-an-image-before-it-is-uploaded/" title="在上传之前预览图像" itemprop="url">在上传之前预览图像</a>
+      <a href="/2018/01/14/limiting-floats-to-two-decimal-points/" title="限制浮点数到两个小数点" itemprop="url">限制浮点数到两个小数点</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我希望能够在上传之前预览文件（图片）。预览操作应该全部在浏览器中执行，而不使用Ajax来上传图像。</p>
-<p>我该怎么做？</p>
+        <p>我希望<code>a</code>四舍五入为13.95 _。</p>
+<pre><code>&gt;&gt;&gt; a
+13.949999999999999
+&gt;&gt;&gt; round(a, 2)
+13.949999999999999
+</code></pre><p><a href="https://docs.python.org/2/library/functions.html#round" target="_blank" rel="noopener"> <code>round</code></a>函数不会以我期望的方式工作。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/preview-an-image-before-it-is-uploaded/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-is-faster-than-list/" title="为什么[]比list（）更快？" itemprop="url">为什么[]比list（）更快？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我最近比较了<code>[]</code>和<code>list（）</code>的处理速度，并惊讶地发现<code>[]</code>运行更多比<code>list（）</code>快三倍。我使用<code>{}</code>和<code>dict（）</code>运行了相同的测试，结果几乎相同：<code>[]</code> and <code>{}代码&gt;都需要大约0.128秒/百万个周期，而</code> list（）<code>和</code>dict（）<code>每个周期大概需要0.428秒/ 这是为什么？ （</code> [] <code>和</code> {} <code>（也可能是</code>（）<code>和</code>‘<code>）立即传回副本（</code> list（）<code>，</code>dict（）<code>，</code> tuple（）<code>，</code> str（） ）`）完全去创建一个对象，不管它们是否真的有元素？</p>
-<p>我不知道这两种方法有什么不同，但我很想知道。 我无法在文档或SO上找到答案，而搜索空括号的结果却比我预期的更成问题。</p>
-<p>通过调用<code>timeit.timeit（“[]”）</code>和<code>timeit.timeit（“list（）”）</code>和<code>timeit
-.timeit（“{}”）</code>和<code>timeit.timeit（“dict（）”）</code>，分别比较列表和字典。我正在运行Python 2.7.9。</p>
-<p>最近我发现了“为什么如果真的比1更慢呢？ “来比较<code>if True</code>与<code>if 1</code>的性能，并且似乎涉及类似的文字与全局方案;也许值得考虑。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/why-is-faster-than-list/#more">Read More</a>
+            <a href="/2018/01/14/limiting-floats-to-two-decimal-points/#more">Read More</a>
           
        </p>
     </div>
@@ -499,25 +561,27 @@ public class Main
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/print-in-terminal-with-colors/" title="在颜色的终端打印？" itemprop="url">在颜色的终端打印？</a>
+      <a href="/2018/01/14/how-do-i-install-pip-on-macos-or-os-x/" title="如何在macOS或OS X上安装点子？" itemprop="url">如何在macOS或OS X上安装点子？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何在Python中输出彩色文本到终端？ 代表固体块的最佳Unicode符号是什么？</p>
+        <p>我昨天大部分时间都在寻找安装<code>pip</code>（Python包管理器）的明确答案。我找不到一个好的解决方案。</p>
+<p>我该如何安装？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/print-in-terminal-with-colors/#more">Read More</a>
+            <a href="/2018/01/14/how-do-i-install-pip-on-macos-or-os-x/#more">Read More</a>
           
        </p>
     </div>
@@ -556,99 +620,41 @@ public class Main
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/difference-between-wait-and-sleep/" title="wait（）和sleep（）之间的区别" itemprop="url">wait（）和sleep（）之间的区别</a>
+      <a href="/2018/01/14/double-colon-operator-in-java-8/" title="::（双冒号）运算符在Java 8中" itemprop="url">::（双冒号）运算符在Java 8中</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>线程中的<code>wait（）</code>和<code>sleep（）</code>有什么区别？</p>
-<p>我的理解是，一个<code>wait（）</code> -ing线程仍处于运行模式并使用CPU周期，但是sleep（）`不消耗任何CPU周期正确的吗？</p>
-<p>为什么我们都有_ <code>wait（）</code>和<code>sleep（）</code>：它们的实现是如何在较低级别上变化的？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/difference-between-wait-and-sleep/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/why-is-executing-java-code-in-comments-with-certain-unicode-characters-allowed/" title="为什么在允许某些Unicode字符的注释中执行Java代码？" itemprop="url">为什么在允许某些Unicode字符的注释中执行Java代码？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>下面的代码产生输出“Hello World！” （没有，试试看）。</p>
-<pre><code>public static void main(String... args) {
-
-   // The comment below is not a typo.
-   // \u000d System.out.println(&quot;Hello World!&quot;);
+        <p>我正在研究Java 8源代码，发现这部分代码非常令人惊讶：</p>
+<pre><code>//defined in IntPipeline.java
+@Override
+public final OptionalInt reduce(IntBinaryOperator op) {
+    return evaluate(ReduceOps.makeInt(op));
 }
-</code></pre><p>原因在于Java编译器将Unicode字符<code>\ u000d</code>解析为新行，并转换为：</p>
-<pre><code>public static void main(String... args) {
 
-   // The comment below is not a typo.
-   //
-   System.out.println(&quot;Hello World!&quot;);
+@Override
+public final OptionalInt max() {
+    return reduce(Math::max); //this is the gotcha line
 }
-</code></pre><p>因此导致评论被“执行”。</p>
-<p>既然这可以用来“隐藏”恶意代码，或者一个邪恶的程序员能想象的东西， <strong>为什么它允许评论</strong> ？</p>
-<p>为什么Java规范允许这样做呢？</p>
+
+//defined in Math.java
+public static int max(int a, int b) {
+    return (a &gt;= b) ? a : b;
+}
+</code></pre><p>是<code>Math :: max</code>类似于方法指针吗？普通的<code>static</code>方法如何转换为<code>IntBinaryOperator</code>？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-is-executing-java-code-in-comments-with-certain-unicode-characters-allowed/#more">Read More</a>
+            <a href="/2018/01/14/double-colon-operator-in-java-8/#more">Read More</a>
           
        </p>
     </div>
@@ -687,26 +693,29 @@ public class Main
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/get-the-size-of-the-screen-current-web-page-and-browser-window/" title="获取屏幕的大小，当前网页和浏览器窗口" itemprop="url">获取屏幕的大小，当前网页和浏览器窗口</a>
+      <a href="/2018/01/14/linking-to-an-external-url-in-javadoc/" title="链接到Javadoc中的外部URL？" itemprop="url">链接到Javadoc中的外部URL？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何获得<code>windowWidth</code>，<code>windowHeight</code>，<code>pageWidth</code>，<code>pageHeight</code>，<code>screenWidth</code>，<code>screenHeight</code>，<code>pageX</code>，<code>pageY</code>，<code>screenX</code>，<code>screenY</code>所有主流浏览器？</p>
-<p><img src="“https://i.stack.imgur.com/6xPdH.png”alt" alt=""></p>
+        <p>类似于：</p>
+<pre><code>/**
+ * See {@linktourl http://google.com}
+ */
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/get-the-size-of-the-screen-current-web-page-and-browser-window/#more">Read More</a>
+            <a href="/2018/01/14/linking-to-an-external-url-in-javadoc/#more">Read More</a>
           
        </p>
     </div>
@@ -716,7 +725,7 @@ public class Main
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -745,27 +754,25 @@ public class Main
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/why-is-char-preferred-over-string-for-passwords/" title="为什么char []首选字符串密码？" itemprop="url">为什么char []首选字符串密码？</a>
+      <a href="/2018/01/14/how-do-i-install-pip-on-windows/" title="我如何在Windows上安装点子？" itemprop="url">我如何在Windows上安装点子？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在Swing中，密码字段有一个<code>getPassword（）</code>（返回<code>char []</code>）方法，而不是通常的<code>getText（）</code>。返回<code>String</code>）方法。同样，我遇到了一个建议，不要使用<code>String</code>来处理密码。</p>
-<p>为什么<code>String</code>在密码方面对安全构成威胁？ 使用<code>char []</code>感觉不方便。</p>
-<p>
+        <p><a href="https://pip.pypa.io/en/stable/" target="_blank" rel="noopener"> <code>pip</code> </a>是<a href="“的替代品”"> <code>easy_install</code></a>。但是，我应该在Windows上使用<code>easy_install</code>安装<code>pip</code>吗？有更好的方法吗？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-is-char-preferred-over-string-for-passwords/#more">Read More</a>
+            <a href="/2018/01/14/how-do-i-install-pip-on-windows/#more">Read More</a>
           
        </p>
     </div>
@@ -775,7 +782,7 @@ public class Main
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -805,10 +812,10 @@ public class Main
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -827,7 +834,7 @@ public class Main
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -898,18 +905,12 @@ public class Main
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -922,7 +923,7 @@ public class Main
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -1057,7 +1058,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -1065,6 +1066,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

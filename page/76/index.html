@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,25 +112,26 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/examples-of-gof-design-patterns-in-javas-core-libraries/" title="Java核心库中的GoF设计模式示例" itemprop="url">Java核心库中的GoF设计模式示例</a>
+      <a href="/2018/01/14/how-to-efficiently-iterate-over-each-entry-in-a-map/" title="如何有效地遍历Map中的每个条目？" itemprop="url">如何有效地遍历Map中的每个条目？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我正在学习GoF的Java设计模式，我想看看他们的一些真实生活的例子。 Java核心库中这些设计模式的一些很好的例子是什么？</p>
+        <p>如果我有一个在Java中实现<code>Map</code>接口的对象，并且我希望遍历其中包含的每一对，那么通过map最有效的方法是什么？</p>
+<p>元素的排序是否依赖于我为界面设计的特定映射实现？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/examples-of-gof-design-patterns-in-javas-core-libraries/#more">Read More</a>
+            <a href="/2018/01/14/how-to-efficiently-iterate-over-each-entry-in-a-map/#more">Read More</a>
           
        </p>
     </div>
@@ -180,179 +181,30 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/dealing-with-xerces-hell-in-java-maven/" title="在Java / Maven中处理“Xerces hell”？" itemprop="url">在Java / Maven中处理“Xerces hell”？</a>
+      <a href="/2018/01/14/why-is-faster-than-list/" title="为什么[]比list（）更快？" itemprop="url">为什么[]比list（）更快？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在我的办公室里，只要提到Xerces这个词就足以煽动开发商的杀气。粗略地看一下其他Xerces上的SO问题似乎表明，几乎所有的Maven用户都被这个问题“触动”了一些。不幸的是，理解这个问题需要对Xerces的历史有一些了解…</p>
-<h1 id="History"><a href="#History" class="headerlink" title="History"></a>History</h1><p>Xerces是Java生态系统中使用最广泛的XML解析器。几乎每个使用Java编写的库或框架都以某种身份使用Xerces（即使不是直接传递）。</p>
-<p>包含在<a href="http://xerces.apache.org/mirrors.cgi#binary" target="_blank" rel="noopener">官方二进制文件</a>中的Xerces<br>jars到今天为止，没有版本。例如，Xerces 2.11.0实现jar命名为<code>xercesImpl.jar</code>，而不是<code>xercesImpl-2.11.0.jar</code>。</p>
-<p>Xerces团队<a href="“https://issues.apache.org/jira/browse/XERCESJ-1454?focusedCommentId=12881865&amp;page=com.atlassian.jira.plugin.system.issuetabpanels：">不使用Maven</a>，这意味着它们不会<br>将正式版本上传到<a href="http://search.maven.org/" target="_blank" rel="noopener"> Maven Central </a>。</p>
-<p>Xerces曾经是<a href="http://xerces.apache.org/xerces2-j/faq-
-general.html#faq-3" target="_blank" rel="noopener">作为一个单独的jar发布</a>（<code>xerces.jar</code>），但被分成两个jar包，一个包含API（<code>xml-apis.jar</code>），另一个包含这些API的实现（&lt;码&gt; xercesImpl.jar ）。许多较老的Maven POM仍然声明对<code>xerces.jar</code>的依赖。在过去的某个时候，Xerces也以<code>xmlParserAPIs.jar</code>的形式发布，一些较老的POM也依赖于它。</p>
-<ul>
-<li>那些将jar部署到Maven仓库的人所分配的xml-apis和xercesImpl jar版本通常是不同的。例如，xml-apis可能会被赋予1.3.03版本，而xercesImpl可能会被赋予2.8.0版本，即使两者都来自Xerces 2.8.0。这是因为人们经常使用它实现的规范版本来标记xml-apis jar。这里<a href="http://swordsystems.com/2011/06/29/xerces-and-xml-api-dependency-hell/" target="_blank" rel="noopener">这里有一个非常好的，但不完整的细分</a>。</li>
-</ul>
-<p>复杂的是，Xerces是JRE中包含的用于XML处理的Java API的参考实现（JAXP）中使用的XML解析器。实现类在<code>com.sun。*</code>命名空间下重新打包，这使得直接访问它们是危险的，因为它们可能在某些JRE中不可用。但是，并不是所有的Xerces功能都通过<code>java。*</code>和<code>javax。*</code> API公开。例如，没有暴露Xerces序列化的API。</p>
-<p>添加到混乱的混乱中，几乎所有的servlet容器（JBoss，Jetty，Glassfish，Tomcat等）都在Xerces的一个或多个<code>/ lib</code>文件夹中提供。 / p&gt;</p>
-<h1 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h1><h3 id="Conflict-Resolution"><a href="#Conflict-Resolution" class="headerlink" title="Conflict Resolution"></a>Conflict Resolution</h3><p>对于上述原因中的一些或者全部原因，很多 组织发布和使用Xerces的定制版本 多金属氧酸盐。如果你有一个小应用程序并且只使用Maven<br>Central，那么这不是一个真正的问题，但是它很快就会成为Artifactory或者Nexus代理多个仓库（JBoss，Hibernate等）的企业软件的一个问题：<br><img src="“https://i.stack.imgur.com/Fe9Xa.png”alt" alt=""></p>
-<p>例如，组织A可能会将xml-apis发布为：</p>
-<p>&lt;代码&gt;＆LT;＆的groupId GT; org.apache.xerces＆LT; /＆的groupId GT; 结果 &lt;代码&gt;＆LT;<br>artifactId的＆GT; XML的API＆LT; / artifactId的＆GT; 结果 &lt;代码&gt;＆LT;版本＆GT; 2.9.1＆LT;<br>/版本＆GT;</p>
-<p>同时，组织B可能会发布相同的jar：</p>
-<p>&lt;代码&gt;＆LT;＆的groupId GT; XML的API＆LT; /＆的groupId GT; 结果 &lt;代码&gt;＆LT; artifactId的＆GT;<br>XML的API＆LT; / artifactId的＆GT; 结果 &lt;代码&gt;＆LT;版本＆GT; 04年3月1日和LT; /版本＆GT;</p>
-<p>虽然B的jar比A的jar版本更低，但是Maven并不知道 他们是相同的神器，因为他们有不同的 &lt;代码&gt;的groupId 秒。因此，它不能执行冲突解决和两者<br>jar将被包含为已解决的依赖项：</p>
-<p><img src="“https://i.stack.imgur.com/4X1ts.png”alt" alt=""></p>
-<h3 id="Classloader-Hell"><a href="#Classloader-Hell" class="headerlink" title="Classloader Hell"></a>Classloader Hell</h3><p>如上所述，JRE在JAXP RI中与Xerces一起发货。尽管将所有Xerces Maven依赖项标记为<code>＆lt; exclusion＆gt;</code>或<code>＆lt; provided＆gt;</code>会很好，但您所依赖的第三方代码可能会也可能不会使用您正在使用的JDK的JAXP中提供的版本。另外，你的servlet容器中有Xerces罐子可以与之抗衡。这给你留下了许多选择：你是否删除了servlet版本，并希望你的容器在JAXP版本上运行？离开servlet版本更好吗，并希望您的应用程序框架在servlet版本上运行？如果上面列出的一个或两个未解决的冲突导致您的产品陷入困境（容易在大型组织中发生），那么您很快就会发现自己处于classloader地狱，想知道classloader在运行时选择哪个版本的Xerces，以及是否它会在Windows和Linux中选择相同的jar（可能不是）。</p>
-<h1 id="Solutions"><a href="#Solutions" class="headerlink" title="Solutions?"></a>Solutions?</h1><p>我们已经尝试将所有的Xerces Maven依赖关系标记为<code>＆lt; provided＆gt;</code>或<code>＆lt; exclusion＆gt;</code>，但这很难实施（特别是对于大团队），因为工件有这么多的别名（xml-<br>apis，xerces，xercesImpl，xmlParserAPI等）。此外，我们的第三方库/框架可能不能运行在JAXP版本或由servlet容器提供的版本上。</p>
-<p>Maven如何最好地解决这个问题？我们是否必须对依赖关系进行细粒度的控制，然后依靠分层的类加载？是否有某种方法可以全局排除所有的Xerces依赖关系，并强制所有的框架/库使用JAXP版本？**</p>
-<hr>
-<p>更新**：Joshua Spiewak已经将修补版本的Xerces构建脚本上传到<a href="“https://issues.apache.org/jira/browse/XERCESJ-1454”rel"> XERCESJ-1454</a>，允许上传到Maven<br>Central。投票/看/造成这个问题，让我们一劳永逸解决这个问题。</p>
+        <p>我最近比较了<code>[]</code>和<code>list（）</code>的处理速度，并惊讶地发现<code>[]</code>运行更多比<code>list（）</code>快三倍。我使用<code>{}</code>和<code>dict（）</code>运行了相同的测试，结果几乎相同：<code>[]</code> and <code>{}代码&gt;都需要大约0.128秒/百万个周期，而</code> list（）<code>和</code>dict（）<code>每个周期大概需要0.428秒/ 这是为什么？ （</code> [] <code>和</code> {} <code>（也可能是</code>（）<code>和</code>‘<code>）立即传回副本（</code> list（）<code>，</code>dict（）<code>，</code> tuple（）<code>，</code> str（） ）`）完全去创建一个对象，不管它们是否真的有元素？</p>
+<p>我不知道这两种方法有什么不同，但我很想知道。 我无法在文档或SO上找到答案，而搜索空括号的结果却比我预期的更成问题。</p>
+<p>通过调用<code>timeit.timeit（“[]”）</code>和<code>timeit.timeit（“list（）”）</code>和<code>timeit
+.timeit（“{}”）</code>和<code>timeit.timeit（“dict（）”）</code>，分别比较列表和字典。我正在运行Python 2.7.9。</p>
+<p>最近我发现了“为什么如果真的比1更慢呢？ “来比较<code>if True</code>与<code>if 1</code>的性能，并且似乎涉及类似的文字与全局方案;也许值得考虑。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/dealing-with-xerces-hell-in-java-maven/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/what-is-typescript-and-why-would-i-use-it-in-place-of-javascript/" title="什么是TypeScript，为什么我会用它来代替JavaScript？ [关闭]" itemprop="url">什么是TypeScript，为什么我会用它来代替JavaScript？ [关闭]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>你能描述一下TypeScript语言吗？</p>
-<p>JavaScript或可用的库无法做到这一点，那会让我有理由去考虑它？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/what-is-typescript-and-why-would-i-use-it-in-place-of-javascript/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/args-and-kwargs/" title="args和 kwargs？" itemprop="url">args和 kwargs？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/36901/what-does-double-star-asterisk-and-star-asterisk-do-for-parameters">What does <em>* (double star/asterisk) and </em> (star/asterisk) do for parameters?</a> 15 answers </li>
-</ul>
-<p>所以我对于<em> args和*</em> kwargs的概念有困难。</p>
-<p>到目前为止，我已经了解到：</p>
-<ul>
-<li><code>* args</code> =参数列表 - 作为位置参数</li>
-<li><code>** kwargs</code> = dictionary - 其中的键变成单独的关键字参数，并且这些值成为这些参数的值。</li>
-</ul>
-<p>…</p>
-<p>说实话，我不明白这将有助于编程任务。</p>
-<p>也许：</p>
-<p>我想输入列表和字典作为函数的参数，同时作为通配符，所以我可以传递任何参数？</p>
-<p>有一个简单的例子来解释如何使用<code>* args</code>和<code>** kwargs</code>？</p>
-<p>另外我发现的教程只使用了“*”和一个变量名。</p>
-<p><code></code> <em> args <code>和</code> ** kwargs <code>只是一个占位符，或者您完全使用</code> </em> args <code>和</code> ** kwargs `代码&gt;在代码？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/args-and-kwargs/#more">Read More</a>
+            <a href="/2018/01/14/why-is-faster-than-list/#more">Read More</a>
           
        </p>
     </div>
@@ -391,28 +243,27 @@ general.html#faq-3" target="_blank" rel="noopener">作为一个单独的jar发�
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-check-if-a-file-exists-in-java/" title="如何检查Java中是否存在文件？" itemprop="url">如何检查Java中是否存在文件？</a>
+      <a href="/2018/01/14/getting-the-length-of-an-array-in-python/" title="在Python中获取数组的长度" itemprop="url">在Python中获取数组的长度</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在打开Java阅读器之前，如何检查文件是否存在？ （相当于Perl的<code>-e $ filename</code>）。</p>
-<p>唯一的<a href="https://stackoverflow.com/questions/1237235/check-file-exists-
-java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件，因此使用FileWriter这显然不适用于此。</p>
-<p>如果可能的话，我宁愿一个真正的API调用返回true /<br>false，而不是一些“调用API来打开一个文件，并捕获它引发一个异常，你检查文本中没有文件”，但我可以与后者住在一起。</p>
+        <p>在<a href="http://en.wikipedia.org/wiki/Python_%28programming_language%29" target="_blank" rel="noopener"> Python</a>中，下面的唯一方法就是获取数字元素？</p>
+<pre><code>arr.__len__()
+</code></pre><p>如果是这样，为什么奇怪的语法？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-check-if-a-file-exists-in-java/#more">Read More</a>
+            <a href="/2018/01/14/getting-the-length-of-an-array-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -422,7 +273,7 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -451,25 +302,29 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-parse-json-using-node-js/" title="如何使用Node js解析JSON？" itemprop="url">如何使用Node js解析JSON？</a>
+      <a href="/2018/01/14/trigger-a-button-click-with-javascript-on-the-enter-key-in-a-text-box/" title="用文本框中的Enter键触发一个按钮点击" itemprop="url">用文本框中的Enter键触发一个按钮点击</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何使用Node.js解析JSON？是否有一些模块会安全地验证和解析JSON？</p>
+        <p>我有一个文本输入和一个按钮（见下文）。如果在文本框内按下<code>Enter</code>键，如何使用JavaScript <strong>触发按钮的点击事件</strong> ？</p>
+<p>在我目前的页面上已经有了一个不同的提交按钮，所以我不能简单地将按钮设为提交按钮。而且，只有当<code>Enter</code>键在这个文本框内按下时才需要点击这个特定的按钮，否则就没有别的了。</p>
+<pre><code>&lt;input type=&quot;text&quot; id=&quot;txtSearch&quot; /&gt;
+&lt;input type=&quot;button&quot; id=&quot;btnSearch&quot; value=&quot;Search&quot; onclick=&quot;doSomething();&quot; /&gt;
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-parse-json-using-node-js/#more">Read More</a>
+            <a href="/2018/01/14/trigger-a-button-click-with-javascript-on-the-enter-key-in-a-text-box/#more">Read More</a>
           
        </p>
     </div>
@@ -508,44 +363,218 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-parse-json/" title="如何解析JSON" itemprop="url">如何解析JSON</a>
+      <a href="/2018/01/14/how-to-find-if-directory-exists-in-python/" title="如何查找Python中是否存在目录" itemprop="url">如何查找Python中是否存在目录</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有以下的JSON文本，我需要解析得到<code>pageName</code>，<code>pagePic</code>，<code>post_id</code>等。</p>
-<p>需要的代码是什么？</p>
-<pre><code>{
-   &quot;pageInfo&quot;: {
-         &quot;pageName&quot;: &quot;abc&quot;,
-         &quot;pagePic&quot;: &quot;http://example.com/content.jpg&quot;
-    }
-    &quot;posts&quot;: [             {
-              &quot;post_id&quot;: &quot;123456789012_123456789012&quot;,
-              &quot;actor_id&quot;: &quot;1234567890&quot;,
-              &quot;picOfPersonWhoPosted&quot;: &quot;http://example.com/photo.jpg&quot;,
-              &quot;nameOfPersonWhoPosted&quot;: &quot;Jane Doe&quot;,
-              &quot;message&quot;: &quot;Sounds cool. Can&apos;t wait to see it!&quot;,
-              &quot;likesCount&quot;: &quot;2&quot;,
-              &quot;comments&quot;: [],
-              &quot;timeOfPost&quot;: &quot;1234567890&quot;
-         }
-    ]
+        <p>在Python的<code>模块的</code>中，有没有办法找到一个目录是否存在，如：</p>
+<pre><code>&gt;&gt;&gt; os.direxists(os.path.join(os.getcwd()), &apos;new_folder&apos;)) # in pseudocode
+True/False
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-to-find-if-directory-exists-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-the-meaning-of-a-single-and-a-double-underscore-before-an-object-name/" title="对象名称之前的单下划线和双下划线的含义是什么？" itemprop="url">对象名称之前的单下划线和双下划线的含义是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想彻底澄清这一点。有人可以解释在Python中的对象的名称之前有下划线的确切含义吗？还要解释一个单独的和一个双重的下划线之间的区别。另外，不管对象是变量，函数，方法等，这个意义是否保持不变？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/what-is-the-meaning-of-a-single-and-a-double-underscore-before-an-object-name/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/when-to-use-linkedlist-over-arraylist/" title="何时通过ArrayList使用LinkedList？" itemprop="url">何时通过ArrayList使用LinkedList？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我一直只使用一个：</p>
+<pre><code>List&lt;String&gt; names = new ArrayList&lt;String&gt;();
+</code></pre><p>我使用接口作为 <em>portability</em> 的类型名称，所以当我提出这样的问题时，我可以重写我的代码。</p>
+<p>什么时候应该使用<code>链接列表</code>来覆盖<code>ArrayList</code>，反之亦然？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/when-to-use-linkedlist-over-arraylist/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-is-executing-java-code-in-comments-with-certain-unicode-characters-allowed/" title="为什么在允许某些Unicode字符的注释中执行Java代码？" itemprop="url">为什么在允许某些Unicode字符的注释中执行Java代码？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>下面的代码产生输出“Hello World！” （没有，试试看）。</p>
+<pre><code>public static void main(String... args) {
+
+   // The comment below is not a typo.
+   // \u000d System.out.println(&quot;Hello World!&quot;);
 }
-</code></pre>
+</code></pre><p>原因在于Java编译器将Unicode字符<code>\ u000d</code>解析为新行，并转换为：</p>
+<pre><code>public static void main(String... args) {
+
+   // The comment below is not a typo.
+   //
+   System.out.println(&quot;Hello World!&quot;);
+}
+</code></pre><p>因此导致评论被“执行”。</p>
+<p>既然这可以用来“隐藏”恶意代码，或者一个邪恶的程序员能想象的东西， <strong>为什么它允许评论</strong> ？</p>
+<p>为什么Java规范允许这样做呢？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-parse-json/#more">Read More</a>
+            <a href="/2018/01/14/why-is-executing-java-code-in-comments-with-certain-unicode-characters-allowed/#more">Read More</a>
           
        </p>
     </div>
@@ -584,93 +613,26 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-check-if-a-list-is-empty/" title="如何检查列表是否为空？" itemprop="url">如何检查列表是否为空？</a>
+      <a href="/2018/01/14/when-to-use-double-or-single-quotes-in-javascript/" title="什么时候在JavaScript中使用双引号或单引号？" itemprop="url">什么时候在JavaScript中使用双引号或单引号？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>例如，如果通过以下：</p>
-<pre><code>a = []
-</code></pre><p>如何检查<code>a</code>是否为空？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-check-if-a-list-is-empty/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/convert-arrayliststring-to-string-array/" title="将ArrayList String转换为String [] array [duplicate]" itemprop="url">将ArrayList String转换为String [] array [duplicate]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/4042434/converting-arrayliststring-to-string-in-java">Converting ‘ArrayList<string> to ‘String[]’ in Java</string></a> 12 answers </li>
-</ul>
-<p>我在android环境中工作，并尝试了下面的代码，但似乎没有工作。</p>
-<pre><code>String [] stockArr = (String[]) stock_list.toArray();
-</code></pre><p>如果我定义如下：</p>
-<pre><code>String [] stockArr = {&quot;hello&quot;, &quot;world&quot;};
-</code></pre><p>它的工作原理有什么我失踪？</p>
+        <p><code>console.log（“double”）;</code> vs <code>console.log（&#39;single&#39;）;</code><br>在处理字符串时，我看到越来越多的JavaScript库使用单引号。有什么理由相互使用呢？我以为他们几乎可以互换。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/convert-arrayliststring-to-string-array/#more">Read More</a>
+            <a href="/2018/01/14/when-to-use-double-or-single-quotes-in-javascript/#more">Read More</a>
           
        </p>
     </div>
@@ -680,7 +642,7 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -709,25 +671,26 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-issues-should-be-considered-when-overriding-equals-and-hashcode-in-java/" title="在Java中重写equals和hashCode时应该考虑什么问题？" itemprop="url">在Java中重写equals和hashCode时应该考虑什么问题？</a>
+      <a href="/2018/01/14/why-does-java-have-transient-fields/" title="为什么Java有瞬态字段？" itemprop="url">为什么Java有瞬态字段？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在覆盖<code>equals</code>和<code>hashCode</code>时，必须考虑哪些问题/陷阱？</p>
+        <p>为什么Java有 <strong>瞬态</strong> 字段？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-issues-should-be-considered-when-overriding-equals-and-hashcode-in-java/#more">Read More</a>
+            <a href="/2018/01/14/why-does-java-have-transient-fields/#more">Read More</a>
           
        </p>
     </div>
@@ -767,10 +730,10 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -789,7 +752,7 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -860,18 +823,12 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -884,7 +841,7 @@ java" target="_blank" rel="noopener"> SO上的类似问题</a>处理写入文件
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -1019,7 +976,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -1027,6 +984,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

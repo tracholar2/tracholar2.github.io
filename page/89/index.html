@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,29 +112,32 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/difference-between-and-in-javascript/" title="在JavaScript和=== ===之间的区别[复制]" itemprop="url">在JavaScript和=== ===之间的区别[复制]</a>
+      <a href="/2018/01/14/avoiding-null-statements/" title="避免！=空语句" itemprop="url">避免！=空语句</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <blockquote>
-<p><strong>Possible Duplicate:</strong><br> <a href="https://stackoverflow.com/questions/359494/javascript-vs-does-it-matter-
-which-equal-operator-i-use" target="_blank" rel="noopener">Javascript === vs == : Does it matter which “equal” operator I<br>use?</a></p>
-</blockquote>
-<p>JavaScript中的<code>==</code>和<code>===</code>有什么区别？我也看到了<code>！=</code>和<code>！==</code>运算符。还有更多这样的运营商吗？</p>
+        <p>在Java中编程时，我使用最多的惯例是在使用它之前测试<code>object！= null</code>。这是为了避免<a href="http://docs.oracle.com/javase/6/docs/api/index.html?java/lang/NullPointerException.html" target="_blank" rel="noopener"> NullPointerException</a>。我发现代码非常难看，而且变得不可读。</p>
+<p>有这个好的选择吗？</p>
+<p>我想解决测试每个对象的必要性，如果你想访问这个对象的字段或方法。</p>
+<p>例如：</p>
+<pre><code>if (someobject != null) {
+    someobject.doCalc();
+}
+</code></pre><p>在这种情况下，我将避免<code>NullPointerException</code>，并且我不知道对象是否是<code>null</code>。这些测试出现在我的代码中，作为结果。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/difference-between-and-in-javascript/#more">Read More</a>
+            <a href="/2018/01/14/avoiding-null-statements/#more">Read More</a>
           
        </p>
     </div>
@@ -144,7 +147,7 @@ which-equal-operator-i-use" target="_blank" rel="noopener">Javascript === vs == 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -184,32 +187,49 @@ which-equal-operator-i-use" target="_blank" rel="noopener">Javascript === vs == 
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-loop-through-or-enumerate-a-javascript-object/" title="如何循环或枚举JavaScript对象？" itemprop="url">如何循环或枚举JavaScript对象？</a>
+      <a href="/2018/01/14/difference-between-hashmap-linkedhashmap-and-treemap/" title="HashMap，LinkedHashMap和TreeMap之间的区别" itemprop="url">HashMap，LinkedHashMap和TreeMap之间的区别</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个JavaScript对象，如下所示：</p>
-<pre><code>var p = {
-    &quot;p1&quot;: &quot;value1&quot;,
-    &quot;p2&quot;: &quot;value2&quot;,
-    &quot;p3&quot;: &quot;value3&quot;
-};
-</code></pre><p>现在我想遍历所有的<code>p</code>元素（<code>p1</code>，<code>p2</code>，<code>p3</code> …）并获得他们的钥匙和价值观。我该怎么做？</p>
-<p>如果需要，我可以修改JavaScript对象。我的最终目标是循环访问一些关键值对，如果可能的话，我想避免使用<code>eval</code>。</p>
+        <p>Java中的<code>HashMap</code>，<code>LinkedHashMap</code>和<code>TreeMap</code>有什么不同？ 我没有看到任何输出差异，因为所有三个都有<code>keySet</code>和<code>values</code>。什么是<code>Hashtable</code>？</p>
+<pre><code>Map m1 = new HashMap();
+m1.put(&quot;map&quot;, &quot;HashMap&quot;);
+m1.put(&quot;schildt&quot;, &quot;java2&quot;);
+m1.put(&quot;mathew&quot;, &quot;Hyden&quot;);
+m1.put(&quot;schildt&quot;, &quot;java2s&quot;);
+print(m1.keySet()); 
+print(m1.values()); 
+
+SortedMap sm = new TreeMap();
+sm.put(&quot;map&quot;, &quot;TreeMap&quot;);
+sm.put(&quot;schildt&quot;, &quot;java2&quot;);
+sm.put(&quot;mathew&quot;, &quot;Hyden&quot;);
+sm.put(&quot;schildt&quot;, &quot;java2s&quot;);
+print(sm.keySet()); 
+print(sm.values());
+
+LinkedHashMap lm = new LinkedHashMap();
+lm.put(&quot;map&quot;, &quot;LinkedHashMap&quot;);
+lm.put(&quot;schildt&quot;, &quot;java2&quot;);
+lm.put(&quot;mathew&quot;, &quot;Hyden&quot;);
+lm.put(&quot;schildt&quot;, &quot;java2s&quot;);
+print(lm.keySet()); 
+print(lm.values());
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-loop-through-or-enumerate-a-javascript-object/#more">Read More</a>
+            <a href="/2018/01/14/difference-between-hashmap-linkedhashmap-and-treemap/#more">Read More</a>
           
        </p>
     </div>
@@ -219,7 +239,7 @@ which-equal-operator-i-use" target="_blank" rel="noopener">Javascript === vs == 
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -248,25 +268,329 @@ which-equal-operator-i-use" target="_blank" rel="noopener">Javascript === vs == 
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/difference-between-append-vs-extend-list-methods-in-python/" title="Python中append和extend列表方法的区别" itemprop="url">Python中append和extend列表方法的区别</a>
+      <a href="/2018/01/14/why-is-char-preferred-over-string-for-passwords/" title="为什么char []首选字符串密码？" itemprop="url">为什么char []首选字符串密码？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>列表方法和<code>extend（）</code>之间有什么区别？</p>
+        <p>在Swing中，密码字段有一个<code>getPassword（）</code>（返回<code>char []</code>）方法，而不是通常的<code>getText（）</code>。返回<code>String</code>）方法。同样，我遇到了一个建议，不要使用<code>String</code>来处理密码。</p>
+<p>为什么<code>String</code>在密码方面对安全构成威胁？ 使用<code>char []</code>感觉不方便。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/difference-between-append-vs-extend-list-methods-in-python/#more">Read More</a>
+            <a href="/2018/01/14/why-is-char-preferred-over-string-for-passwords/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/single-quotes-vs-double-quotes-in-python/" title="单引号与Python中的双引号[closed]" itemprop="url">单引号与Python中的双引号[closed]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>根据文件，他们几乎可以互换。是否有一个风格的理由来使用一个在另一个？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/single-quotes-vs-double-quotes-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-the-best-way-to-detect-a-mobile-device-in-jquery/" title="在jQuery中检测移动设备的最佳方法是什么？" itemprop="url">在jQuery中检测移动设备的最佳方法是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有没有一种可靠的方法来检测用户是否在jQuery中使用移动设备？类似于CSS @media属性的东西？如果浏览器位于手持设备上，我希望运行其他脚本。</p>
+<p>jQuery <code>$。browser</code>函数不是我正在寻找的。
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/what-is-the-best-way-to-detect-a-mobile-device-in-jquery/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-can-you-profile-a-script/" title="你怎么能描述一个脚本？" itemprop="url">你怎么能描述一个脚本？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>欧拉计划和其他编码竞赛往往有最大的时间来运行，或者人们吹嘘自己的解决方案运行得有多快。对于python，有时候这些方法有点奇怪 - 即将计时代码添加到<code>__main__</code>。</p>
+<p>剖析Python程序运行多久的好方法是什么？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-can-you-profile-a-script/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-tell-jackson-to-ignore-a-field-during-serialization-if-its-value-is-null/" title="如果杰克逊在序列化过程中忽略某个字段的值是否为空，该怎么办？" itemprop="url">如果杰克逊在序列化过程中忽略某个字段的值是否为空，该怎么办？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>杰克逊如何配置为在序列化期间忽略字段值，如果该字段的值为空。</p>
+<p>例如：</p>
+<pre><code>public class SomeClass {
+   // what jackson annotation causes jackson to skip over this value if it is null but will 
+   // serialize it otherwise 
+   private String someValue; 
+}
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-to-tell-jackson-to-ignore-a-field-during-serialization-if-its-value-is-null/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-use-pip-over-easy-install/" title="为什么使用易于安装的点子？ [关闭]" itemprop="url">为什么使用易于安装的点子？ [关闭]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><a href="http://twitter.com/jperras/statuses/18160589493" target="_blank" rel="noopener">鸣叫</a>：</p>
+<blockquote>
+<p>Don’t use easy_install, unless you like stabbing yourself in the face. Use<br>pip.</p>
+</blockquote>
+<p>为什么使用pip over easy_install？ PyPI和软件包作者大部分都不是<a href="http://mail.python.org/pipermail/catalog-
+sig/2010-June/002985.html" target="_blank" rel="noopener"></a>？如果作者上传垃圾源tarball（例如：缺少文件，没有setup.py）到PyPI，那么pip和easy_install都将失败。除了表面上的差异之外，为什么Python人（比如上面的tweet）似乎强烈地赞成通过easy_install进行点击？</p>
+<p>（假设我们正在讨论由社区维护的Distribute包中的easy_install）</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/why-use-pip-over-easy-install/#more">Read More</a>
           
        </p>
     </div>
@@ -312,7 +636,7 @@ which-equal-operator-i-use" target="_blank" rel="noopener">Javascript === vs == 
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
@@ -363,266 +687,30 @@ which-equal-operator-i-use" target="_blank" rel="noopener">Javascript === vs == 
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/is-there-a-way-to-substring-a-string-in-python/" title="有没有办法在Python中对字符串进行子串处理？" itemprop="url">有没有办法在Python中对字符串进行子串处理？</a>
+      <a href="/2018/01/14/whats-the-difference-between-tilde-and-caret-in-package-json/" title="package json中的tilde（〜）和caret（^）有什么区别？" itemprop="url">package json中的tilde（〜）和caret（^）有什么区别？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>有没有一种方法来在Python中对字符串进行子串处理，从第三个字符到字符串的末尾获取一个新的字符串？</p>
-<p>也许像<code>myString [2：end]</code>？</p>
-<p>如果离开第二部分意味着’直到结束’，如果离开第一部分，它是从一开始就开始吗？</p>
+        <p>在升级到最新的<code>node</code>和<code>npm</code>之后，我尝试了<code>npm install moment --save</code>。它使用<code>caret（^）</code>前缀将条目保存在<code>package.json</code>中。以前，这是一个<code>tilde（〜）</code>前缀。</p>
+<ul>
+<li>为什么在<code>npm</code>中进行这些更改？ </li>
+<li>代字号（〜）<code>和</code> caret（^）`有什么区别？</li>
+<li>有什么优势？</li>
+</ul>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/is-there-a-way-to-substring-a-string-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/generate-random-integers-between-0-and-9/" title="生成0到9之间的随机整数" itemprop="url">生成0到9之间的随机整数</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何在Python中产生0到9（含）之间的随机整数？</p>
-<p>即。 0 <code>，</code> 1 <code>，</code> 2 <code>，</code> 3 <code>，4</code> / code&gt;，<code>6</code>，<code>7</code>，<code>8</code>，<code>9</code><br>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/generate-random-integers-between-0-and-9/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/is-there-any-way-to-kill-a-thread-in-python/" title="有没有什么办法杀死Python中的线程？" itemprop="url">有没有什么办法杀死Python中的线程？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>是否可以终止正在运行的线程而不设置/检查任何标志/信号/等？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/is-there-any-way-to-kill-a-thread-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/iterate-through-a-hashmap/" title="迭代通过HashMap [复制]" itemprop="url">迭代通过HashMap [复制]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p><strong>Possible Duplicate:</strong><br> <a href="https://stackoverflow.com/questions/46898/how-do-i-iterate-over-each-
-entry-in-a-collection-map" target="_blank" rel="noopener">How do I iterate over each Entry in a Collection<br>Map?</a></p>
-</blockquote>
-<p>对<code>HashMap</code>中的项目进行迭代的最好方法是什么？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/iterate-through-a-hashmap/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/iterate-through-object-properties/" title="遍历对象属性" itemprop="url">遍历对象属性</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>var obj = {<br>        name: “Simon”,<br>        age: “20”,<br>        clothing: {<br>            style: “simple”,<br>            hipster: false<br>        }<br>    }</p>
-<pre><code>for(var propt in obj){
-    alert(propt + &apos;: &apos; + obj[propt]);
-}
-</code></pre><p>变量<code>propt</code>如何表示对象的属性？这不是一个内置的方法或属性。那么为什么它会提出对象中的每个属性？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/iterate-through-object-properties/#more">Read More</a>
+            <a href="/2018/01/14/whats-the-difference-between-tilde-and-caret-in-package-json/#more">Read More</a>
           
        </p>
     </div>
@@ -655,68 +743,6 @@ entry-in-a-collection-map" target="_blank" rel="noopener">How do I iterate over 
 
   
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/iterating-over-dictionaries-using-for-loops/" title="使用“for”循环遍历字典" itemprop="url">使用“for”循环遍历字典</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我对以下代码感到有点困惑：</p>
-<pre><code>d = {&apos;x&apos;: 1, &apos;y&apos;: 2, &apos;z&apos;: 3} 
-for key in d:
-    print key, &apos;corresponds to&apos;, d[key]
-</code></pre><p>我不明白的是<code>键</code>部分。 Python如何识别它只需要从字典中读取密钥？ <code>key</code>在Python中是一个特殊的词吗？或者它只是一个变量？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/iterating-over-dictionaries-using-for-loops/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/88/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/87/">87</a><a class="page-number" href="/page/88/">88</a><span class="page-number current">89</span><a class="page-number" href="/page/90/">90</a><a class="page-number" href="/page/91/">91</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/90/">Next<span></span></a>
@@ -724,10 +750,10 @@ for key in d:
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -746,7 +772,7 @@ for key in d:
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -817,18 +843,12 @@ for key in d:
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -841,7 +861,7 @@ for key in d:
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -976,7 +996,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -984,6 +1004,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

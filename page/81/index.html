@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,44 +112,43 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-create-a-java-string-from-the-contents-of-a-file/" title="如何从文件内容创建Java字符串？" itemprop="url">如何从文件内容创建Java字符串？</a>
+      <a href="/2018/01/14/how-can-i-create-a-directory-if-it-does-not-exist/" title="如何创建一个不存在的目录？" itemprop="url">如何创建一个不存在的目录？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>现在我已经用了一段时间以下的习语了。而且它似乎是最广泛的，至少在我访问过的网站上。</p>
-<p>有没有更好的/不同的方式来读取文件到Java中的字符串？</p>
-<pre><code>private String readFile(String file) throws IOException {
-    BufferedReader reader = new BufferedReader(new FileReader (file));
-    String         line = null;
-    StringBuilder  stringBuilder = new StringBuilder();
-    String         ls = System.getProperty(&quot;line.separator&quot;);
+        <p>检查文件目录是否被写入的最优雅的方法是什么？如果没有，使用Python创建目录？这是我试过的：</p>
+<pre><code>import os
 
-    try {
-        while((line = reader.readLine()) != null) {
-            stringBuilder.append(line);
-            stringBuilder.append(ls);
-        }
+file_path = &quot;/my/directory/filename.txt&quot;
+directory = os.path.dirname(file_path)
 
-        return stringBuilder.toString();
-    } finally {
-        reader.close();
-    }
-}
-</code></pre>
+try:
+    os.stat(directory)
+except:
+    os.mkdir(directory)       
+
+f = file(filename)
+</code></pre><p>不知何故，我错过了<code>os.path.exists</code>（感谢kanja，Blair和Douglas）。这是我现在拥有的：</p>
+<pre><code>def ensure_dir(file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+</code></pre><p>有没有一个标志为“开放”，这使得自动发生？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-create-a-java-string-from-the-contents-of-a-file/#more">Read More</a>
+            <a href="/2018/01/14/how-can-i-create-a-directory-if-it-does-not-exist/#more">Read More</a>
           
        </p>
     </div>
@@ -159,7 +158,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -199,25 +198,207 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-meaning-of-a-single-and-a-double-underscore-before-an-object-name/" title="对象名称之前的单下划线和双下划线的含义是什么？" itemprop="url">对象名称之前的单下划线和双下划线的含义是什么？</a>
+      <a href="/2018/01/14/how-can-i-create-a-two-dimensional-array-in-javascript/" title="我怎样才能在JavaScript中创建一个二维数组？" itemprop="url">我怎样才能在JavaScript中创建一个二维数组？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想彻底澄清这一点。有人可以解释在Python中的对象的名称之前有下划线的确切含义吗？还要解释一个单独的和一个双重的下划线之间的区别。另外，不管对象是变量，函数，方法等，这个意义是否保持不变？</p>
+        <p>我一直在网上阅读，有些地方说这是不可能的，有些人说是的，然后举一个例子，其他人反驳这个例子等等。</p>
+<ul>
+<li><p>我如何在JavaScript中声明2维数组？ （假设可能）</p>
+</li>
+<li><p>我如何访问其成员？ （<code>myArray [0] [1]</code>或<code>myArray [0,1]</code>？）</p>
+</li>
+</ul>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-is-the-meaning-of-a-single-and-a-double-underscore-before-an-object-name/#more">Read More</a>
+            <a href="/2018/01/14/how-can-i-create-a-two-dimensional-array-in-javascript/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-can-i-create-an-executable-jar-with-dependencies-using-maven/" title="我怎样才能创建一个使用Maven的依赖关系的可执行JAR？" itemprop="url">我怎样才能创建一个使用Maven的依赖关系的可执行JAR？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想将我的项目打包在单个可执行JAR中进行分发。</p>
+<p>如何让Maven将所有依赖JAR包装到JAR中？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-can-i-create-an-executable-jar-with-dependencies-using-maven/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-can-i-display-a-javascript-object/" title="我怎样才能显示一个JavaScript对象？" itemprop="url">我怎样才能显示一个JavaScript对象？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何以字符串格式显示JavaScript对象的内容，就像<code>alert</code>变量一样？</p>
+<p>我想要显示一个对象的格式相同。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-can-i-display-a-javascript-object/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-can-i-force-division-to-be-floating-point-division-keeps-rounding-down-to-0/" title="我怎样才能迫使部门浮动？司保持四舍五入到零" itemprop="url">我怎样才能迫使部门浮动？司保持四舍五入到零</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有两个整数值<code>a</code>和<code>b</code>，但是我需要它们的浮点数。我知道<code>a＆lt; b</code>，我想计算<code>a / b</code>，所以如果我使用整数除法，我总是会得到0，余下的` a &lt; /代码&gt;</p>
+<p>在Python中，如何强制<code>c</code>成为浮点数？</p>
+<pre><code>c = a / b
+</code></pre>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-can-i-force-division-to-be-floating-point-division-keeps-rounding-down-to-0/#more">Read More</a>
           
        </p>
     </div>
@@ -256,29 +437,37 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-debug-node-js-applications/" title="我如何调试Node js应用程序？" itemprop="url">我如何调试Node js应用程序？</a>
+      <a href="/2018/01/14/how-to-loop-through-plain-javascript-object-with-objects-as-members/" title="如何通过普通的JavaScript对象与对象作为成员循环？" itemprop="url">如何通过普通的JavaScript对象与对象作为成员循环？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何调试Node.js服务器应用程序？</p>
-<p>现在我主要使用 <em>alert调试</em> 打印语句，如下所示：</p>
-<pre><code>sys.puts(sys.inspect(someVariable));
-</code></pre><p>必须有更好的调试方法。我知道<a href="http://en.wikipedia.org/wiki/Google_Chrome" target="_blank" rel="noopener"> Google Chrome</a>有一个命令行调试器。这个调试器是否也可用于Node.js？</p>
-<p>
+        <p>如何循环遍历JavaScript对象中的所有成员，包括作为对象的值。</p>
+<p>例如，我怎样才能循环访问（每个访问“your_name”和“your_message”）？</p>
+<pre><code>var validation_messages = {
+    &quot;key_1&quot;: {
+        &quot;your_name&quot;: &quot;jimmy&quot;,
+        &quot;your_msg&quot;: &quot;hello world&quot;
+    },
+    &quot;key_2&quot;: {
+        &quot;your_name&quot;: &quot;billy&quot;,
+        &quot;your_msg&quot;: &quot;foo equals bar&quot;
+    }
+}
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-debug-node-js-applications/#more">Read More</a>
+            <a href="/2018/01/14/how-to-loop-through-plain-javascript-object-with-objects-as-members/#more">Read More</a>
           
        </p>
     </div>
@@ -317,28 +506,33 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-declare-a-namespace-in-javascript/" title="我如何在JavaScript中声明一个名称空间？" itemprop="url">我如何在JavaScript中声明一个名称空间？</a>
+      <a href="/2018/01/14/how-to-know-if-an-object-has-an-attribute-in-python/" title="如何知道一个对象是否在Python中有一个属性" itemprop="url">如何知道一个对象是否在Python中有一个属性</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何在JavaScript中创建名称空间，以便我的对象和函数不被其他同名对象和函数覆盖？我已经使用了以下内容：</p>
-<pre><code>if (Foo == null || typeof(Foo) != &quot;object&quot;) { var Foo = new Object();}
-</code></pre><p>有没有更优雅或简洁的方式呢？</p>
+        <p>Python有没有一种方法来确定一个对象是否有一些属性？例如：</p>
+<pre><code>&gt;&gt;&gt; a = SomeClass()
+&gt;&gt;&gt; a.someProperty = value
+&gt;&gt;&gt; a.property
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+AttributeError: SomeClass instance has no attribute &apos;property&apos;
+</code></pre><p>在使用它之前，如何知道<code>a</code>是否具有属性<code>property</code>？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-declare-a-namespace-in-javascript/#more">Read More</a>
+            <a href="/2018/01/14/how-to-know-if-an-object-has-an-attribute-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -348,7 +542,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -377,26 +571,92 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-declare-and-initialize-an-array-in-java/" title="如何在Java中声明和初始化一个数组？" itemprop="url">如何在Java中声明和初始化一个数组？</a>
+      <a href="/2018/01/14/how-to-leave-exit-deactivate-a-python-virtualenv/" title="如何离开/退出/停用python virtualenv？" itemprop="url">如何离开/退出/停用python virtualenv？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我如何在Java中声明和初始化一个数组？</p>
+        <p>我使用的是virtualenv和virtualenvwrapper。我可以使用workon命令在virtualenv之间切换。</p>
+<pre><code>me@mymachine:~$ workon env1
+(env1)me@mymachine:~$ workon env2
+(env2)me@mymachine:~$ workon env1
+(env1)me@mymachine:~$ 
+</code></pre><p>但是，如何退出所有虚拟机并重新在真机上工作？现在，我只能回到</p>
+<p>了</p>
+<pre><code>me@mymachine:~$ 
+</code></pre><p>是退出shell并启动一个新的。这有点烦人。有没有一个“没有”的命令，如果是的话，那是什么？如果这样的命令不存在，我将如何去创建它？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-declare-and-initialize-an-array-in-java/#more">Read More</a>
+            <a href="/2018/01/14/how-to-leave-exit-deactivate-a-python-virtualenv/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/when-and-how-should-i-use-a-threadlocal-variable/" title="何时以及如何使用ThreadLocal变量？" itemprop="url">何时以及如何使用ThreadLocal变量？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>什么时候应该使用<code>ThreadLocal</code>变量？</p>
+<p>它是如何使用的？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/when-and-how-should-i-use-a-threadlocal-variable/#more">Read More</a>
           
        </p>
     </div>
@@ -435,98 +695,31 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-the-javascript-version-of-sleep/" title="什么是sleep（）的JavaScript版本？" itemprop="url">什么是sleep（）的JavaScript版本？</a>
+      <a href="/2018/01/14/how-can-i-do-a-line-break-line-continuation-in-python/" title="我如何在Python中进行换行（续行）？" itemprop="url">我如何在Python中进行换行（续行）？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>有没有更好的方法来设计JavaScript中的<code>sleep</code>，比下面的<code>pausecomp</code>函数（<a href="“http://www.sean.co.uk">取自这里</a>）？</p>
-<pre><code>function pausecomp(millis)
-{
-    var date = new Date();
-    var curDate = null;
-    do { curDate = new Date(); }
-    while(curDate-date &lt; millis);
-}
-</code></pre><p>这不是<a href="https://stackoverflow.com/questions/758688
-/sleep-in-javascript" target="_blank" rel="noopener"> Javascript中的睡眠 - 动作之间的延迟</a>;我想要一个真正的睡眠_在一个函数的中间，而不是一段代码执行之前的延迟。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/what-is-the-javascript-version-of-sleep/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-to-tell-jackson-to-ignore-a-field-during-serialization-if-its-value-is-null/" title="如果杰克逊在序列化过程中忽略某个字段的值是否为空，该怎么办？" itemprop="url">如果杰克逊在序列化过程中忽略某个字段的值是否为空，该怎么办？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>杰克逊如何配置为在序列化期间忽略字段值，如果该字段的值为空。</p>
-<p>例如：</p>
-<pre><code>public class SomeClass {
-   // what jackson annotation causes jackson to skip over this value if it is null but will 
-   // serialize it otherwise 
-   private String someValue; 
-}
+        <p>我有很长的一行代码，我想在多行中分手。我使用什么语法？</p>
+<p>例如，添加一堆字符串，</p>
+<pre><code>e = &apos;a&apos; + &apos;b&apos; + &apos;c&apos; + &apos;d&apos;
+</code></pre><p>把它分成两行：</p>
+<pre><code>e = &apos;a&apos; + &apos;b&apos; +
+    &apos;c&apos; + &apos;d&apos;
 </code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-tell-jackson-to-ignore-a-field-during-serialization-if-its-value-is-null/#more">Read More</a>
+            <a href="/2018/01/14/how-can-i-do-a-line-break-line-continuation-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -536,182 +729,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-do-i-decompile-java-class-files/" title="如何“反编译”Java类文件？ [关闭]" itemprop="url">如何“反编译”Java类文件？ [关闭]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我可以用什么程序来反编译一个类文件？我真的会得到Java代码，还是只是JVM汇编代码？</p>
-<p>在本站点的Java性能问题上，我经常看到“反编译”Java类文件的人的反应，看看编译器如何优化某些东西。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-decompile-java-class-files/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/what-is-the-java-equivalent-for-linq/" title="什么是LINQ的Java等价物？ [关闭]" itemprop="url">什么是LINQ的Java等价物？ [关闭]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>什么是Java相当于LINQ？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/what-is-the-java-equivalent-for-linq/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/what-is-the-equivalent-of-the-c-pairl-r-in-java/" title="Java中的C ++ Pair L，R等价于什么？" itemprop="url">Java中的C ++ Pair L，R等价于什么？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在Java中没有<code>Pair＆lt; L，R＆gt;</code>是否有很好的理由？这个C ++构造的等价物是什么？我宁愿避免重新实现自己的。</p>
-<p>看来 <strong>1.6</strong> 提供了类似的东西（<code>AbstractMap.SimpleEntry＆lt; K，V＆gt;</code>），但看起来相当复杂。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/what-is-the-equivalent-of-the-c-pairl-r-in-java/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -741,10 +759,10 @@ var _hmt = _hmt || [];
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -763,7 +781,7 @@ var _hmt = _hmt || [];
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -834,18 +852,12 @@ var _hmt = _hmt || [];
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -858,7 +870,7 @@ var _hmt = _hmt || [];
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -993,7 +1005,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -1001,6 +1013,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->

@@ -77,7 +77,7 @@ var _hmt = _hmt || [];
 				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
 				<h2 class="blog-motto">智子之家</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
 						<input type="hidden" name="q" value="site:www.tracholar.top">
 					</form>
 					
@@ -112,29 +112,120 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/meaning-of-classmethod-and-staticmethod-for-beginner/" title="classmethod和staticmethod对初学者的意义？" itemprop="url">classmethod和staticmethod对初学者的意义？</a>
+      <a href="/2018/01/14/is-the-recommendation-to-include-css-before-javascript-invalid/" title="建议在JavaScript无效之前包含CSS吗？" itemprop="url">建议在JavaScript无效之前包含CSS吗？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>有人可以向我解释在python中<code>@classmethod</code>和<code>@staticmethod</code>的含义吗？我需要知道其中的差异和意义。</p>
-<p>就我所知，<code>@classmethod</code>告诉一个类，它是一个应该被继承到子类或者…东西的方法。但是，这是什么意思？为什么不在不添加<code>@classmethod</code>或<code>@staticmethod</code>或任何<code>@</code>定义的情况下定义类方法？</p>
-<p>我应该如何使用它们，为什么<em>我应该使用它们，而 </em>应该如何使用 _<em> ？</em>我使用它们？</p>
-<p>我很高级的C ++，所以使用更高级的编程概念不应该是一个问题。如果可能，请随意给我一个相应的C ++示例。</p>
+        <p>在网上的无数地方，我已经看到了在JavaScript之前包含CSS的建议。推理一般来说，<a href="https://stackoverflow.com/questions/6005827/what-c​​an-i
+-do-to-decrease-load-times-of-html-pages/6005832#6005832" target="_blank" rel="noopener">这个表格</a>：</p>
+<blockquote>
+<p>When it comes to ordering your CSS and JavaScript, you want your CSS to come<br>first. The reason is that the rendering thread has all the style information<br>it needs to render the page. If the JavaScript includes come first, the<br>JavaScript engine has to parse it all before continuing on to the next set of<br>resources. This means the rendering thread can’t completely show the page,<br>since it doesn’t have all the styles it needs.</p>
+</blockquote>
+<p>我的实际测试揭示了一些完全不同的东西：</p>
+<h3 id="My-test-harness"><a href="#My-test-harness" class="headerlink" title="My test harness"></a>My test harness</h3><p>我使用下面的Ruby脚本为各种资源生成特定的延迟：</p>
+<pre><code>require &apos;rubygems&apos;
+require &apos;eventmachine&apos;
+require &apos;evma_httpserver&apos;
+require &apos;date&apos;
+
+class Handler  &lt; EventMachine::Connection
+  include EventMachine::HttpServer
+
+  def process_http_request
+    resp = EventMachine::DelegatedHttpResponse.new( self )
+
+    return unless @http_query_string
+
+    path = @http_path_info
+    array = @http_query_string.split(&quot;&amp;&quot;).map{|s| s.split(&quot;=&quot;)}.flatten
+    parsed = Hash[*array]
+
+    delay = parsed[&quot;delay&quot;].to_i / 1000.0
+    jsdelay = parsed[&quot;jsdelay&quot;].to_i
+
+    delay = 5 if (delay &gt; 5)
+    jsdelay = 5000 if (jsdelay &gt; 5000)
+
+    delay = 0 if (delay &lt; 0) 
+    jsdelay = 0 if (jsdelay &lt; 0)
+
+    # Block which fulfills the request
+    operation = proc do
+      sleep delay 
+
+      if path.match(/.js$/)
+        resp.status = 200
+        resp.headers[&quot;Content-Type&quot;] = &quot;text/javascript&quot;
+        resp.content = &quot;(function(){
+            var start = new Date();
+            while(new Date() - start &lt; #{jsdelay}){}
+          })();&quot;
+      end
+      if path.match(/.css$/)
+        resp.status = 200
+        resp.headers[&quot;Content-Type&quot;] = &quot;text/css&quot;
+        resp.content = &quot;body {font-size: 50px;}&quot;
+      end
+    end
+
+    # Callback block to execute once the request is fulfilled
+    callback = proc do |res|
+        resp.send_response
+    end
+
+    # Let the thread pool (20 Ruby threads) handle request
+    EM.defer(operation, callback)
+  end
+end
+
+EventMachine::run {
+  EventMachine::start_server(&quot;0.0.0.0&quot;, 8081, Handler)
+  puts &quot;Listening...&quot;
+}
+</code></pre><p>上面的迷你服务器允许我为JavaScript文件（包括服务器和客户端）和任意的CSS延迟设置任意延迟。例如，<code>http://10.0.0.50:8081/test.css?delay=500</code>给了我一个500毫秒的延迟传输CSS。</p>
+<p>我使用以下页面进行测试。</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+      &lt;title&gt;test&lt;/title&gt;
+      &lt;script type=&apos;text/javascript&apos;&gt;
+          var startTime = new Date();
+      &lt;/script&gt;
+      &lt;link href=&quot;http://10.0.0.50:8081/test.css?delay=500&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;&gt;
+      &lt;script type=&quot;text/javascript&quot; src=&quot;http://10.0.0.50:8081/test2.js?delay=400&amp;amp;jsdelay=1000&quot;&gt;&lt;/script&gt; 
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      Elapsed time is: 
+      &lt;script type=&apos;text/javascript&apos;&gt;
+        document.write(new Date() - startTime);
+      &lt;/script&gt;
+    &lt;/p&gt;    
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>当我首先包含CSS时，页面需要1.5秒才能呈现：</p>
+<p><img src="“https://i.stack.imgur.com/ZDgrs.png”alt" alt=""></p>
+<p>当我首先包含JavaScript时，该页面需要1.4秒来渲染：</p>
+<p><img src="“https://i.stack.imgur.com/5o5SG.png”alt" alt=""></p>
+<p>在Chrome，Firefox和Internet Explorer中获得类似的结果。然而在Opera中，排序并不重要。</p>
+<p>看来正在发生的事情是JavaScript解释器拒绝启动，直到所有的CSS被下载。所以，当JavaScript线程获得更多的运行时间时，似乎首先包含JavaScript是更高效的。</p>
+<p>我是否遗漏了一些东西，建议放置CSS包括之前的JavaScript包含不正确的东西？</p>
+<p>很明显，我们可以添加异步或使用setTimeout来释放渲染线程或将JavaScript代码放在页脚中，或使用JavaScript加载器。这里的要点是关于头部的基本JavaScript位和CSS位的排序。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/meaning-of-classmethod-and-staticmethod-for-beginner/#more">Read More</a>
+            <a href="/2018/01/14/is-the-recommendation-to-include-css-before-javascript-invalid/#more">Read More</a>
           
        </p>
     </div>
@@ -144,7 +235,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -184,25 +275,341 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-set-unset-cookie-with-jquery/" title="如何设置/取消cookie的jQuery？" itemprop="url">如何设置/取消cookie的jQuery？</a>
+      <a href="/2018/01/14/is-there-a-built-in-function-to-print-all-the-current-properties-and-values-of-a/" title="是否有一个内置函数来打印一个对象的所有当前属性和值？" itemprop="url">是否有一个内置函数来打印一个对象的所有当前属性和值？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何使用jQuery设置和取消设置cookie，例如创建一个名为<code>test</code>的cookie，并将值设置为<code>1</code>？</p>
+        <p>所以我在这里寻找的东西就像PHP的<a href="http://us2.php.net/print_r" target="_blank" rel="noopener"> print_r</a>函数。这样我就可以通过查看对象的状态来调试我的脚本。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-set-unset-cookie-with-jquery/#more">Read More</a>
+            <a href="/2018/01/14/is-there-a-built-in-function-to-print-all-the-current-properties-and-values-of-a/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/why-does-return-the-string-10/" title="为什么++ [[]] [+ []] + [+ []]返回字符串“10”？" itemprop="url">为什么++ [[]] [+ []] + [+ []]返回字符串“10”？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这是有效的，并在JavaScript中返回字符串<code>“10”</code>（<a href="“http://sla.ckers.org/forum/read.php?24,33349,33405”">更多示例</a>）：</p>
+<pre><code>++[[]][+[]]+[+[]]
+</code></pre><p>为什么呢？这里发生了什么？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/why-does-return-the-string-10/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/is-there-a-null-coalescing-operator-in-javascript/" title="JavaScript中是否存在“null coalescing”操作符？" itemprop="url">JavaScript中是否存在“null coalescing”操作符？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在Javascript中是否有一个空合并运算符？</p>
+<p>例如，在C＃中，我可以这样做：</p>
+<pre><code>String someString = null;
+var whatIWant = someString ?? &quot;Cookies!&quot;;
+</code></pre><p>我能找到的最好的近似值是使用条件运算符：</p>
+<pre><code>var someString = null;
+var whatIWant = someString ? someString : &apos;Cookies!&apos;;
+</code></pre><p>这是一个不舒服的恕我直言。我能做得更好吗？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/is-there-a-null-coalescing-operator-in-javascript/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-i-download-a-file-over-http-using-python/" title="如何使用Python通过HTTP下载文件？" itemprop="url">如何使用Python通过HTTP下载文件？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有一个小工具，用来从网站上下载一个MP3，然后建立/更新一个播客XML文件，我明明已经加入了iTunes。</p>
+<p>创建/更新XML文件的文本处理是用Python编写的。我在Windows <code>.bat</code>文件中使用wget来下载实际的MP3。我宁愿用Python编写整个实用程序。</p>
+<p>我努力找到一种方法来实际下载Python中的文件，为什么我使用<code>wget</code>。</p>
+<p>那么，如何使用Python下载文件？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-do-i-download-a-file-over-http-using-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/http/">http</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/is-there-a-simple-way-to-delete-a-list-element-by-value/" title="有一个简单的方法来删除列表元素的值？" itemprop="url">有一个简单的方法来删除列表元素的值？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>a=[1,2,3,4]<br>    b=a.index(6)<br>    del a[b]<br>    print a</p>
+<p>上面显示了以下错误：</p>
+<pre><code>Traceback (most recent call last):
+  File &quot;D:\zjm_code\a.py&quot;, line 6, in &lt;module&gt;
+    b=a.index(6)
+ValueError: list.index(x): x not in list
+</code></pre><p>所以我必须这样做：</p>
+<pre><code>a=[1,2,3,4]
+try:
+    b=a.index(6)
+    del a[b]
+except:
+    pass
+print a
+</code></pre><p>但是，有没有更简单的方法来做到这一点？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/is-there-a-simple-way-to-delete-a-list-element-by-value/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/abort-ajax-requests-using-jquery/" title="使用jQuery中止Ajax请求" itemprop="url">使用jQuery中止Ajax请求</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>使用jQuery，如何 <strong>取消/中止Ajax请求</strong> ，我还没有收到回应？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/abort-ajax-requests-using-jquery/#more">Read More</a>
           
        </p>
     </div>
@@ -241,90 +648,29 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-i-sort-a-dictionary-by-value/" title="如何按价值排序字典？" itemprop="url">如何按价值排序字典？</a>
+      <a href="/2018/01/14/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in/" title="有没有一个标准的函数来检查JavaScript中的空，未定义或空白变量？" itemprop="url">有没有一个标准的函数来检查JavaScript中的空，未定义或空白变量？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个从数据库中的两个字段读取的值的字典：一个字符串字段和一个数字字段。字符串字段是唯一的，所以这是字典的关键。</p>
-<p>我可以按键排序，但是如何根据值排序？</p>
-<p>注意：我已经阅读了堆栈溢出问题 _[如何根据Python中字典的值对字典列表进行排序？</p>
-<p>a&gt; _ ，并且可能会将我的代码更改为拥有一个字典列表，但是因为我不需要一个字典列表，所以我想知道是否有更简单的解决方案。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-sort-a-dictionary-by-value/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-do-i-sort-a-list-of-dictionaries-by-values-of-the-dictionary-in-python/" title="如何按照Python中字典的值对字典列表进行排序？" itemprop="url">如何按照Python中字典的值对字典列表进行排序？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我得到了一个字典列表，并希望按该字典的值进行排序。</p>
-<p>此</p>
-<pre><code>[{&apos;name&apos;:&apos;Homer&apos;, &apos;age&apos;:39}, {&apos;name&apos;:&apos;Bart&apos;, &apos;age&apos;:10}]
-</code></pre><p>按名称排序，应该成为</p>
-<pre><code>[{&apos;name&apos;:&apos;Bart&apos;, &apos;age&apos;:10}, {&apos;name&apos;:&apos;Homer&apos;, &apos;age&apos;:39}]
+        <p>是否有一个通用的JavaScript函数检查变量是否有值，并确保它不是<code>undefined</code>或<code>null</code>？我有这个代码，但我不确定它是否涵盖所有情况：</p>
+<pre><code>function isEmpty(val){
+    return (val === undefined || val == null || val.length &lt;= 0) ? true : false;
+}
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-i-sort-a-list-of-dictionaries-by-values-of-the-dictionary-in-python/#more">Read More</a>
+            <a href="/2018/01/14/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in/#more">Read More</a>
           
        </p>
     </div>
@@ -334,7 +680,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -363,34 +709,86 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/why-use-getters-and-setters-accessors/" title="为什么使用getter和setter / accessors？ [关闭]" itemprop="url">为什么使用getter和setter / accessors？ [关闭]</a>
+      <a href="/2018/01/14/how-do-i-find-out-which-dom-element-has-the-focus/" title="如何找出哪个DOM元素具有焦点？" itemprop="url">如何找出哪个DOM元素具有焦点？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>使用getter和setter的好处是 - 只能获取和设置 - 而不是简单地为这些变量使用公共字段？</p>
-<p>如果吸气人员和安装人员做的不仅仅是简单的get / set，我可以很快地把这个问题弄清楚，但是我不是100％清楚的：</p>
-<pre><code>public String foo;
-</code></pre><p>比：</p>
-<p>更糟糕</p>
-<pre><code>private String foo;
-public void setFoo(String foo) { this.foo = foo; }
-public String getFoo() { return foo; }
-</code></pre><p>而前者需要少量的样板代码。</p>
+        <p>我想在Javascript中找出哪个元素当前有焦点。我一直在浏览DOM，但还没有找到我所需要的。有没有办法做到这一点，以及如何？</p>
+<p>我正在寻找这个原因：</p>
+<p>我正在尝试使箭头之类的键和<code>输入</code>在输入元素表中导航。选项卡现在工作，但输入和箭头不默认它看起来。我已经设置了关键处理部分，但现在我需要弄清楚如何在事件处理函数中移动焦点。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-do-i-find-out-which-dom-element-has-the-focus/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/disable-same-origin-policy-in-chrome/" title="在Chrome中停用相同的原产地策略" itemprop="url">在Chrome中停用相同的原产地策略</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> 发表于 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有没有办法在Google的<a href="https://en.wikipedia.org/wiki/Same_origin_policy" target="_blank" rel="noopener">同源政策</a><br>：//en.wikipedia.org/wiki/Google_Chrome“rel =”noreferrer“&gt; Chrome浏览器？</p>
+<p>这是严格的开发，而不是生产，使用。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/why-use-getters-and-setters-accessors/#more">Read More</a>
+            <a href="/2018/01/14/disable-same-origin-policy-in-chrome/#more">Read More</a>
           
        </p>
     </div>
@@ -400,299 +798,7 @@ public String getFoo() { return foo; }
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/mkdir-p-functionality-in-python/" title="Python中的mkdir -p功能[复制]" itemprop="url">Python中的mkdir -p功能[复制]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/273192/how-can-i-create-a-directory-if-it-does-not-exist">How can I create a directory if it does not exist?</a> 24 answers </li>
-</ul>
-<p>有没有一种方法可以从Python中获得类似于<code>mkdir -p</code>的shell的功能。我正在寻找一个解决方案，而不是系统调用。我相信代码少于20行，我想知道是否有人已经写了它？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/mkdir-p-functionality-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/what-ide-to-use-for-python/" title="什么IDE用于Python？ [关闭]" itemprop="url">什么IDE用于Python？ [关闭]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>什么IDE（“图形用户界面/编辑器”）别人使用Python编码？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/what-ide-to-use-for-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/most-elegant-way-to-check-if-the-string-is-empty-in-python/" title="最优雅的方法来检查在Python中的字符串是否为空？" itemprop="url">最优雅的方法来检查在Python中的字符串是否为空？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Python是否具有类似于空字符串变量的地方？</p>
-<pre><code>if myString == string.empty:
-</code></pre><p>不管什么是检查空字符串值的最优雅的方法？我发现硬编码<code>“”</code>每次检查一个空字符串都不好。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/most-elegant-way-to-check-if-the-string-is-empty-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/what-exactly-is-spring-framework-for/" title="Spring框架到底是什么？" itemprop="url">Spring框架到底是什么？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我听到很多关于<a href="https://spring.io/" target="_blank" rel="noopener"> Spring </a>的消息，人们都在网络上说Spring是一个很好的web开发框架。<br>Spring框架到底是什么？我如何将它用于我的Web-Java应用程序开发？任何例子？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/what-exactly-is-spring-framework-for/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-do-i-split-a-string-with-any-whitespace-chars-as-delimiters/" title="如何将任何空格字符作为分隔符分割字符串？" itemprop="url">如何将任何空格字符作为分隔符分割字符串？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>正则表达式模式需要传递给<code>java.lang.String.split（）</code>方法来使用所有的空格字符（’’，’\ t ‘，’\ n’等）作为分隔符？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-do-i-split-a-string-with-any-whitespace-chars-as-delimiters/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -722,10 +828,10 @@ public String getFoo() { return foo; }
 
 </div>
 
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- side-bar-ad -->
@@ -744,7 +850,7 @@ public String getFoo() { return foo; }
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -815,18 +921,12 @@ public String getFoo() { return foo; }
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
 			
 		
-			
-		
-			
-		
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
           <li>
@@ -839,7 +939,7 @@ public String getFoo() { return foo; }
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
 </aside>
@@ -974,7 +1074,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
@@ -982,6 +1082,35 @@ $(document).ready(function(){
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->
