@@ -1,0 +1,636 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何声明和使用shell脚本中的布尔变量？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我尝试使用以下语法在shell脚本中声明一个布尔变量： variable=$false  variable=$true 它是否正确？另外，如果我想更新该变量，我会使用相同的语法？最后，使用布尔变量作为正确表达式的语法如下： if [ $variable ]  if [ !$variable ]">
+<meta name="keywords" content="bash,shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何声明和使用shell脚本中的布尔变量？">
+<meta property="og:url" content="https://www.tracholar.top/2017/11/29/how-to-declare-and-use-boolean-variables-in-shell-script/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我尝试使用以下语法在shell脚本中声明一个布尔变量： variable=$false  variable=$true 它是否正确？另外，如果我想更新该变量，我会使用相同的语法？最后，使用布尔变量作为正确表达式的语法如下： if [ $variable ]  if [ !$variable ]">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何声明和使用shell脚本中的布尔变量？">
+<meta name="twitter:description" content="我尝试使用以下语法在shell脚本中声明一个布尔变量： variable=$false  variable=$true 它是否正确？另外，如果我想更新该变量，我会使用相同的语法？最后，使用布尔变量作为正确表达式的语法如下： if [ $variable ]  if [ !$variable ]">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/11/29/how-to-declare-and-use-boolean-variables-in-shell-script/" title="如何声明和使用shell脚本中的布尔变量？" itemprop="url">如何声明和使用shell脚本中的布尔变量？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-11-29T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-29</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Issues with Miku’s</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Issues with Hbar’s answer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">What I DO recommend:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Footnotes</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我尝试使用以下语法在shell脚本中声明一个布尔变量：</p>
+<pre><code>variable=$false
+
+variable=$true
+</code></pre><p>它是否正确？另外，如果我想更新该变量，我会使用相同的语法？最后，使用布尔变量作为正确表达式的语法如下：</p>
+<pre><code>if [ $variable ]
+
+if [ !$variable ]
+</code></pre><a id="more"></a>
+<p>修订答案（2014年2月12日）</p>
+<pre><code>the_world_is_flat=true
+# ...do something interesting...
+if [ &quot;$the_world_is_flat&quot; = true ] ; then
+    echo &apos;Be careful not to fall off!&apos;
+fi
+</code></pre><hr>
+<p>原始答复</p>
+<p>注意事项：<a href="https://stackoverflow.com/a/21210966/89391" target="_blank" rel="noopener">https://stackoverflow.com/a/21210966/89391</a></p>
+<pre><code>the_world_is_flat=true
+# ...do something interesting...
+if $the_world_is_flat ; then
+    echo &apos;Be careful not to fall off!&apos;
+fi
+</code></pre><p>From：在Bash中使用布尔变量</p>
+<p>这里包括原始答案的原因是因为2014年2月12日修订前的评论仅与原始答案有关，许多评论在与修订后的答案相关时是错误的。例如，丹尼斯·威廉姆森在2010年6月2日发表的有关bash<br>builtin <code>true</code>的评论只适用于原始答案，而不是修订版。</p>
+<h2><span id="tldr">TL;DR</span></h2><pre><code>bool=true
+
+if [ &quot;$bool&quot; = true ]
+</code></pre><h2><span id="issues-with-mikus">Issues with Miku’s</span></h2><p>(<a href="https://stackoverflow.com/revisions/2953673/5" target="_blank" rel="noopener">original</a>) answer</p>
+<p>我不推荐接受的答案1。它的语法很漂亮，但有一些缺陷。</p>
+<p>假设我们有以下的条件。</p>
+<pre><code>if $var; then
+  echo &apos;Muahahaha!&apos;
+fi
+</code></pre><p>在以下情况2中，此条件将评估为true并执行嵌套命令。</p>
+<pre><code># Variable var not defined beforehand. Case 1
+var=&apos;&apos;  # Equivalent to var=&quot;&quot;.        Case 2
+var=    #                              Case 3
+unset var  #                           Case 4
+var=&apos;&lt;some valid command&gt;&apos;  #          Case 5
+</code></pre><p>通常，只有当您的“布尔”变量（本例中为<code>var</code>）显式设置为true时，才会将条件评估为true。所有其他案件都是危险的误导！</p>
+<p>最后一种情况（＃5）特别调皮，因为它将执行包含在变量中的命令（这就是为什么条件对于有效命令而言评估为真的原因3,4）。</p>
+<p>这是一个无害的例子：</p>
+<pre><code>var=&apos;echo this text will be displayed when the condition is evaluated&apos;
+if $var; then
+  echo &apos;Muahahaha!&apos;
+fi
+
+# Outputs:
+# this text will be displayed when the condition is evaluated
+# Muahahaha!
+</code></pre><p>引用你的变量比较安全，例如<code>if &quot;$var&quot;; then</code>。在上述情况下，您应该得到一个警告，说明找不到命令。但是我们仍然可以做得更好（参见我的建议）。</p>
+<p>另请参阅麦克·霍尔特（Mike Holt）对美九最初答案的解释。</p>
+<h2><span id="issues-with-hbars-answer">Issues with Hbar’s answer</span></h2><p>这种方法也有意想不到的行为。</p>
+<pre><code>var=false
+if [ $var ]; then
+  echo &quot;This won&apos;t print, var is false!&quot;
+fi
+
+# Outputs:
+# This won&apos;t print, var is false!
+</code></pre><p>您会期望上述条件评估为false，因此从不执行嵌套语句。惊喜！</p>
+<p>引用值（<code>&quot;false&quot;</code>），引用变量（<code>&quot;$var&quot;</code>），或使用<code>test</code>或<code>[[</code>而不是<code>[</code>，没有什么不同。</p>
+<h2><span id="what-i-do-recommend">What I DO recommend:</span></h2><p>以下是我建议你检查你的“布尔人”的方法。他们按预期工作。</p>
+<pre><code>bool=true
+
+if [ &quot;$bool&quot; = true ]; then
+if [ &quot;$bool&quot; = &quot;true&quot; ]; then
+
+if [[ &quot;$bool&quot; = true ]]; then
+if [[ &quot;$bool&quot; = &quot;true&quot; ]]; then
+if [[ &quot;$bool&quot; == true ]]; then
+if [[ &quot;$bool&quot; == &quot;true&quot; ]]; then
+
+if test &quot;$bool&quot; = true; then
+if test &quot;$bool&quot; = &quot;true&quot;; then
+</code></pre><p>他们都非常相当。您必须输入比其他答案中的方法更多的按键，但是您的代码将更具防御性。</p>
+<hr>
+<h3><span id="footnotes">Footnotes</span></h3><p>美库的答案已经被编辑，不再包含（已知）的缺陷。 不是一个详尽的清单。 在这种情况下有效的命令意味着一个存在的命令。命令使用是否正确无关紧要。例如。 <code>man
+woman</code>仍然被认为是一个有效的命令，即使没有这样的手册页存在。 对于无效的（不存在的）命令，Bash只会抱怨命令没有找到。<br>如果你在意长度，第一个建议是最短的。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a><a href="/tags/shell/">shell</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2017/11/29/how-to-declare-and-use-boolean-variables-in-shell-script/" data-title="如何声明和使用shell脚本中的布尔变量？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/11/30/how-to-get-the-client-ip-address-in-php/" title="如何在PHP中获取客户端IP地址？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何在PHP中获取客户端IP地址？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/11/28/detecting-request-type-in-php-get-post-put-or-delete/"  title="在PHP中检测请求类型（GET，POST，PUT或DELETE）">
+ <strong>下一篇：</strong><br/> 
+ <span>在PHP中检测请求类型（GET，POST，PUT或DELETE）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Issues with Miku’s</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Issues with Hbar’s answer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">What I DO recommend:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.1.</span> <span class="toc-text">Footnotes</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

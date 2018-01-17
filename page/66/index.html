@@ -112,46 +112,43 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/12/how-should-a-model-be-structured-in-mvc/" title="MVC中应该如何构建模型？" itemprop="url">MVC中应该如何构建模型？</a>
+      <a href="/2018/01/14/how-can-i-create-a-directory-if-it-does-not-exist/" title="如何创建一个不存在的目录？" itemprop="url">如何创建一个不存在的目录？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-12T01:03:17.000Z" itemprop="datePublished"> Published 2018-02-12</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我只是掌握了MVC框架，我经常想知道模型中应该有多少代码。我倾向于有一个像这样的方法的数据访问类：</p>
-<pre><code>public function CheckUsername($connection, $username)
-{
-    try
-    {
-        $data = array();
-        $data[&apos;Username&apos;] = $username;
+        <p>检查文件目录是否被写入的最优雅的方法是什么？如果没有，使用Python创建目录？这是我试过的：</p>
+<pre><code>import os
 
-        //// SQL
-        $sql = &quot;SELECT Username FROM&quot; . $this-&gt;usersTableName . &quot; WHERE Username = :Username&quot;;
+file_path = &quot;/my/directory/filename.txt&quot;
+directory = os.path.dirname(file_path)
 
-        //// Execute statement
-        return $this-&gt;ExecuteObject($connection, $sql, $data);
-    }
-    catch(Exception $e)
-    {
-        throw $e;
-    }
-}
-</code></pre><p>我的模型往往是映射到数据库表的实体类。</p>
-<p>模型对象应该具有所有的数据库映射属性以及上面的代码，还是可以将代码分离出来，实际上数据库是否工作？</p>
-<p>我最终会有四层吗？</p>
+try:
+    os.stat(directory)
+except:
+    os.mkdir(directory)       
+
+f = file(filename)
+</code></pre><p>不知何故，我错过了<code>os.path.exists</code>（感谢kanja，Blair和Douglas）。这是我现在拥有的：</p>
+<pre><code>def ensure_dir(file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+</code></pre><p>有没有一个标志为“开放”，这使得自动发生？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/12/how-should-a-model-be-structured-in-mvc/#more">Read More</a>
+            <a href="/2018/01/14/how-can-i-create-a-directory-if-it-does-not-exist/#more">Read More</a>
           
        </p>
     </div>
@@ -161,7 +158,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -201,228 +198,39 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/11/how-do-i-pass-data-between-activities-in-android-application/" title="如何在Android应用程序中的活动之间传递数据？" itemprop="url">如何在Android应用程序中的活动之间传递数据？</a>
+      <a href="/2018/01/14/where-can-i-find-documentation-on-formatting-a-date-in-javascript/" title="我在哪里可以找到有关在JavaScript中格式化日期的文档？" itemprop="url">我在哪里可以找到有关在JavaScript中格式化日期的文档？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-11T02:25:04.000Z" itemprop="datePublished"> Published 2018-02-11</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个场景，通过登录页面登录后，每个<code>activity</code>上都会有一个注销<code>按钮</code>。</p>
-<p>点击注销后，我将传递登录用户的<code>session id</code>以注销。任何人都可以指导我如何保持所有<code>活动</code>的<code>session id</code>？</p>
-<p>这种情况下的任何替代方法</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/02/11/how-do-i-pass-data-between-activities-in-android-application/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/02/11/echo-that-outputs-to-stderr/" title="回应输出到stderr" itemprop="url">回应输出到stderr</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-02-11T01:58:18.000Z" itemprop="datePublished"> Published 2018-02-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>有没有一个标准的Bash工具，行为像回声，但输出到标准错误而不是标准输出？</p>
-<p>我知道我可以做<code>echo foo 1＆gt;＆amp; 2</code>，但它有点难看，我怀疑是容易出错的（例如当事情改变时更容易被编辑错误）。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/02/11/echo-that-outputs-to-stderr/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/bash/">bash</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/02/11/why-is-it-important-to-override-gethashcode-when-equals-method-is-overridden/" title="当Equals方法被覆盖时，为什么重写GetHashCode非常重要？" itemprop="url">当Equals方法被覆盖时，为什么重写GetHashCode非常重要？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-02-11T01:28:58.000Z" itemprop="datePublished"> Published 2018-02-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>给定以下课程</p>
-<pre><code>public class Foo
-{
-    public int FooId { get; set; }
-    public string FooName { get; set; }
-
-    public override bool Equals(object obj)
-    {
-        Foo fooItem = obj as Foo;
-
-        return fooItem.FooId == this.FooId;
-    }
-
-    public override int GetHashCode()
-    {
-        // Which is preferred?
-
-        return base.GetHashCode();
-
-        //return this.FooId.GetHashCode();
-    }
-}
-</code></pre><p>我重写了<code>Equals</code>方法，因为<code>Foo</code>表示<code>Foo</code>表的一行。这是重写<code>GetHashCode</code>？</p>
-<p>的首选方法</p>
-<p>为什么重写<code>GetHashCode</code>？</p>
-<p>是很重要的
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/02/11/why-is-it-important-to-override-gethashcode-when-equals-method-is-overridden/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/02/11/how-can-i-capture-the-result-of-var-dump-to-a-string/" title="我怎样才能捕获到一个字符串var_dump的结果？" itemprop="url">我怎样才能捕获到一个字符串var_dump的结果？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-02-11T01:04:06.000Z" itemprop="datePublished"> Published 2018-02-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我想捕捉<a href="http://us3.php.net/manual/en/function.var-
-dump.php" target="_blank" rel="noopener"> ` var_dump &lt; / code&gt; </a>转换为字符串。</p>
-<p>PHP文档说：</p>
+        <p>我注意到，JavaScript的<code>new Date（）</code>函数在接受多种格式的日期方面非常聪明。</p>
+<pre><code>Xmas95 = new Date(&quot;25 Dec, 1995 23:15:00&quot;)
+Xmas95 = new Date(&quot;2009 06 12,12:52:39&quot;)
+Xmas95 = new Date(&quot;20 09 2006,12:52:39&quot;)
+</code></pre><p>在调用<code>new Date（）</code>函数时，我无法在任何地方找到显示所有有效字符串格式的文档。</p>
+<p>这是为了将字符串转换为日期。如果我们看另一面，即将日期对象转换为字符串，直到现在我还是觉得JavaScript没有内置API来将日期对象格式化为字符串。</p>
 <blockquote>
-<p>As with anything that outputs its result directly to the browser, the<br><a href="http://us3.php.net/manual/en/ref.outcontrol.php" target="_blank" rel="noopener">output-control functions</a><br>can be used to capture the output of this function, and save it in a string<br>(for example).</p>
+<p><strong>Editor’s note:</strong> The following approach is the asker’s attempt that worked<br>on a particular browser but does <em>not</em> work in general; <strong>see the answers on<br>this page</strong> to see some actual solutions.</p>
 </blockquote>
-<p>有人可以给我一个这样的例子吗？</p>
-<p>print_r（）`不是一个有效的可能性，因为它不会给我提供我需要的信息。</p>
+<p>今天，我在date对象上使用了<code>toString（）</code>方法，并且令人惊讶地发挥了将日期格式化为字符串的作用。</p>
+<pre><code>var d1 = new Date();
+d1.toString(&apos;yyyy-MM-dd&apos;);       //Returns &quot;2009-06-29&quot; in Internet Explorer, but not Firefox or Chrome
+d1.toString(&apos;dddd, MMMM ,yyyy&apos;)  //Returns &quot;Monday, June 29,2009&quot; in Internet Explorer, but not Firefox or Chrome
+</code></pre><p>另外在这里，我找不到任何有关我们可以将日期对象格式化为字符串的方法的文档。</p>
+<p>在哪里列出了<code>Date（）</code>对象支持的格式说明符？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/11/how-can-i-capture-the-result-of-var-dump-to-a-string/#more">Read More</a>
+            <a href="/2018/01/14/where-can-i-find-documentation-on-formatting-a-date-in-javascript/#more">Read More</a>
           
        </p>
     </div>
@@ -432,7 +240,7 @@ dump.php" target="_blank" rel="noopener"> ` var_dump &lt; / code&gt; </a>转换�
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -461,37 +269,207 @@ dump.php" target="_blank" rel="noopener"> ` var_dump &lt; / code&gt; </a>转换�
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/11/how-to-pass-variables-and-data-from-php-to-javascript/" title="如何将变量和数据从PHP传递到JavaScript？" itemprop="url">如何将变量和数据从PHP传递到JavaScript？</a>
+      <a href="/2018/01/14/how-can-i-create-an-executable-jar-with-dependencies-using-maven/" title="我怎样才能创建一个使用Maven的依赖关系的可执行JAR？" itemprop="url">我怎样才能创建一个使用Maven的依赖关系的可执行JAR？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-11T01:02:44.000Z" itemprop="datePublished"> Published 2018-02-11</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我在PHP中有一个变量，我需要它的值在我的JavaScript代码中。我怎样才能让我的变量从PHP到JavaScript？</p>
-<p>我的代码如下所示：</p>
-<pre><code>&lt;?php
-     ...
-     $val = $myService-&gt;getValue(); // makes an api and db call
-?&gt;
-</code></pre><p>我有需要<code>val</code>的JavaScript代码，并且看起来如下：</p>
-<pre><code>&lt;script&gt;
-    myPlugin.start($val); // tried this, didn&apos;t work
-    &lt;?php myPlugin.start($val); ?&gt; // this didn&apos;t work either
-    myPlugin.start(&lt;?=$val?&gt; // this works sometimes, but sometimes it fails
-&lt;/script&gt;
+        <p>我想将我的项目打包在单个可执行JAR中进行分发。</p>
+<p>如何让Maven将所有依赖JAR包装到JAR中？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-can-i-create-an-executable-jar-with-dependencies-using-maven/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-can-i-display-a-javascript-object/" title="我怎样才能显示一个JavaScript对象？" itemprop="url">我怎样才能显示一个JavaScript对象？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何以字符串格式显示JavaScript对象的内容，就像<code>alert</code>变量一样？</p>
+<p>我想要显示一个对象的格式相同。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-can-i-display-a-javascript-object/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-can-i-do-a-line-break-line-continuation-in-python/" title="我如何在Python中进行换行（续行）？" itemprop="url">我如何在Python中进行换行（续行）？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有很长的一行代码，我想在多行中分手。我使用什么语法？</p>
+<p>例如，添加一堆字符串，</p>
+<pre><code>e = &apos;a&apos; + &apos;b&apos; + &apos;c&apos; + &apos;d&apos;
+</code></pre><p>把它分成两行：</p>
+<pre><code>e = &apos;a&apos; + &apos;b&apos; +
+    &apos;c&apos; + &apos;d&apos;
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-can-i-do-a-line-break-line-continuation-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-can-i-force-division-to-be-floating-point-division-keeps-rounding-down-to-0/" title="我怎样才能迫使部门浮动？司保持四舍五入到零" itemprop="url">我怎样才能迫使部门浮动？司保持四舍五入到零</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有两个整数值<code>a</code>和<code>b</code>，但是我需要它们的浮点数。我知道<code>a＆lt; b</code>，我想计算<code>a / b</code>，所以如果我使用整数除法，我总是会得到0，余下的` a &lt; /代码&gt;</p>
+<p>在Python中，如何强制<code>c</code>成为浮点数？</p>
+<pre><code>c = a / b
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/11/how-to-pass-variables-and-data-from-php-to-javascript/#more">Read More</a>
+            <a href="/2018/01/14/how-can-i-force-division-to-be-floating-point-division-keeps-rounding-down-to-0/#more">Read More</a>
           
        </p>
     </div>
@@ -501,7 +479,7 @@ dump.php" target="_blank" rel="noopener"> ` var_dump &lt; / code&gt; </a>转换�
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -530,105 +508,25 @@ dump.php" target="_blank" rel="noopener"> ` var_dump &lt; / code&gt; </a>转换�
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/10/r-cannot-be-resolved-android-error/" title="R无法解决 -  Android错误" itemprop="url">R无法解决 -  Android错误</a>
+      <a href="/2018/01/14/how-to-delete-a-file-or-folder/" title="如何删除文件或文件夹？" itemprop="url">如何删除文件或文件夹？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-10T02:24:57.000Z" itemprop="datePublished"> Published 2018-02-10</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我刚刚下载并安装了新的Android SDK。我想创建一个简单的应用程序来测试它。</p>
-<p>向导创建了这个代码：</p>
-<pre><code>package eu.mauriziopz.gps;
-
-import android.app.Activity;
-import android.os.Bundle;
-
-public class ggps extends Activity {
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-    }
-}
-</code></pre><p>但<a href="http://en.wikipedia.org/wiki/Eclipse_%28software%29" target="_blank" rel="noopener"> Eclipse </a>给我的错误</p>
-<blockquote>
-<p>R cannot be resolved</p>
-</blockquote>
-<p>在线</p>
-<pre><code>setContentView(R.layout.main);
-</code></pre><p>为什么？</p>
-<p>PS：我在<code>res / layout /</code>下有一个名为<code>main.xml</code>的XML文件。</p>
-<p>
+        <p>如何在Python中删除文件或文件夹？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/10/r-cannot-be-resolved-android-error/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/02/10/how-to-pipe-stderr-and-not-stdout/" title="如何管道标准错误，而不是标准输出？" itemprop="url">如何管道标准错误，而不是标准输出？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-02-10T01:58:11.000Z" itemprop="datePublished"> Published 2018-02-10</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有一个将信息写入到<code>stdout</code>和<code>stderr</code>的程序，我需要通过，而忽略 <em>stdout</em> 。</p>
-<p>我当然可以分两步来做：</p>
-<pre><code>command &gt; /dev/null 2&gt; temp.file
-grep &apos;something&apos; temp.file
-</code></pre><p>但是我宁愿能够在没有临时文件的情况下做到这一点。有没有什么巧妙的管道技巧？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/02/10/how-to-pipe-stderr-and-not-stdout/#more">Read More</a>
+            <a href="/2018/01/14/how-to-delete-a-file-or-folder/#more">Read More</a>
           
        </p>
     </div>
@@ -638,7 +536,7 @@ grep &apos;something&apos; temp.file
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/bash/">bash</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -667,36 +565,26 @@ grep &apos;something&apos; temp.file
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/10/type-checking-typeof-gettype-or-is/" title="类型检查：typeof，GetType，或者是？" itemprop="url">类型检查：typeof，GetType，或者是？</a>
+      <a href="/2018/01/14/checking-whether-a-variable-is-an-integer-or-not/" title="检查一个变量是否是一个整数" itemprop="url">检查一个变量是否是一个整数</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-10T01:28:50.000Z" itemprop="datePublished"> Published 2018-02-10</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我见过很多人使用下面的代码：</p>
-<pre><code>Type t = typeof(obj1);
-if (t == typeof(int))
-    // Some code here
-</code></pre><p>但是我知道你也可以这样做：</p>
-<pre><code>if (obj1.GetType() == typeof(int))
-    // Some code here
-</code></pre><p>或者这个：</p>
-<pre><code>if (obj1 is int)
-    // Some code here
-</code></pre><p>就个人而言，我觉得最后一个是最干净的，但是有什么我失踪的？哪一个最好用，还是个人喜好？</p>
+        <p>如何检查一个变量是否是一个整数？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/10/type-checking-typeof-gettype-or-is/#more">Read More</a>
+            <a href="/2018/01/14/checking-whether-a-variable-is-an-integer-or-not/#more">Read More</a>
           
        </p>
     </div>
@@ -706,7 +594,7 @@ if (t == typeof(int))
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -735,82 +623,95 @@ if (t == typeof(int))
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/09/fling-gesture-detection-on-grid-layout/" title="在网格布局上进行手势检测" itemprop="url">在网格布局上进行手势检测</a>
+      <a href="/2018/01/14/how-can-i-generate-an-md5-hash/" title="我怎样才能生成一个MD5哈希？" itemprop="url">我怎样才能生成一个MD5哈希？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-09T02:24:39.000Z" itemprop="datePublished"> Published 2018-02-09</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想要在我的Android应用程序中使用<code>fling</code>手势检测功能。</p>
-<p>我所拥有的是一个包含9个<code>ImageView</code>的<code>GridLayout</code>。来源可以在这里找到：<a href="“https://github.com/selmanon/apps-for-
-android/blob/master/Photostream/src/com/google/android/photostream/GridLayout.java”rel"> Romain<br>Guys的网格布局</a>。</p>
-<p>我使用的文件来自Romain Guy的<a href="http://code.google.com/p/apps-for-
-android/" target="_blank" rel="noopener"> Photostream应用程序</a>，并且只有稍微适应了。</p>
-<p>对于简单的点击情况，我只需要为每个<code>ImageView</code>设置<code>onClickListener</code>，我将其添加为实现<code>View.OnClickListener 。实现识别</code> fling <code>的东西似乎是无限复杂的。我推测这是因为它可能跨越</code> views `？</p>
-<ul>
-<li>如果我的活动执行 <code>OnGestureListener</code>我不知道如何去做 设置为手势监听器 我的<code>Grid</code>或<code>Image</code>视图 添加。</li>
-</ul>
-<p>公共类SelectFilterActivity扩展了Activity实现    View.OnClickListener，OnGestureListener<br>{…</p>
-<ul>
-<li>如果我的活动执行 <code>OnTouchListener</code>然后我没有 <code>onFling</code>方法到<code>override</code>（它有 两个事件作为允许我的参数 以确定是否是一扔 值得注意的）。</li>
-</ul>
-<p>公共类SelectFilterActivity扩展了Activity实现     View.OnClickListener，OnTouchListener<br>{…</p>
-<ul>
-<li>如果我创建一个自定义的<code>View</code>，像扩展<code>ImageView</code>的<code>GestureImageView</code>，我不知道如何告诉活动一个<code>fling</code>已经从视图中出现了。无论如何，我尝试过这种方法，当我触摸屏幕时，方法不会被调用。</li>
-</ul>
-<p>我真的只是需要一个具体的例子，跨视图工作。什么，何时以及如何附加这个<code>listener</code>？我还需要能够检测到单击。</p>
-<pre><code>// Gesture detection
-mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        int dx = (int) (e2.getX() - e1.getX());
-        // don&apos;t accept the fling if it&apos;s too short
-        // as it may conflict with a button push
-        if (Math.abs(dx) &gt; MAJOR_MOVE &amp;&amp; Math.abs(velocityX) &gt; Math.absvelocityY)) {
-            if (velocityX &gt; 0) {
-                moveRight();
-            } else {
-                moveLeft();
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-});
-</code></pre><p>是否可以在屏幕上方放置一个透明视图来捕捉fl？？</p>
-<p>如果我选择不从<code>inflate</code>从XML读取子图像视图，我可以将<code>GestureDetector</code>作为构造函数参数传递给<code>ImageView</code>我创建？</p>
-<p>这是我试图让 fling `检测工作的非常简单的活动：<a href="“http://code.google.com/p/miffed/source">SelectFilterActivity（改编自照片流）</a>。</p>
-<p>我一直在看这些资源：</p>
-<ul>
-<li><p><a href="http://www.anddev.org/gesturedetector_and_gesturedetectorongesturelistener-t3204.html" target="_blank" rel="noopener">检测手势 - 教程</a></p>
-</li>
-<li><p><a href="http://developer.android.com/reference/android/view/GestureDetector.SimpleOnGestureListener.html" target="_blank" rel="noopener"> SDK文档</a></p>
-</li>
-</ul>
-<p>&lt; / LI&gt;</p>
-<ul>
-<li><a href="“http://www.google.co.in/codesearch/p?hl=en#RzGvLIykRFs/src/com/android/calculator2/PanelSwitcher.java&amp;q=android%20package">计算器代码</a></li>
-</ul>
-<p>到目前为止，没有任何东西可以用于我，我希望得到一些指示。</p>
+        <p>有什么方法可以在Java中生成一个字符串的MD5散列？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/09/fling-gesture-detection-on-grid-layout/#more">Read More</a>
+            <a href="/2018/01/14/how-can-i-generate-an-md5-hash/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-determine-a-python-variables-type/" title="如何确定一个Python变量的类型？" itemprop="url">如何确定一个Python变量的类型？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我如何看到一个变量的类型是否是无符号的32位，有符号的16位等？</p>
+<p>我如何查看它？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-to-determine-a-python-variables-type/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
 
 </div>
 
@@ -834,7 +735,7 @@ mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGesture
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/65/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="page-number" href="/page/65/">65</a><span class="page-number current">66</span><a class="page-number" href="/page/67/">67</a><a class="page-number" href="/page/68/">68</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/67/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/65/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/64/">64</a><a class="page-number" href="/page/65/">65</a><span class="page-number current">66</span><a class="page-number" href="/page/67/">67</a><a class="page-number" href="/page/68/">68</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/67/">Next<span></span></a>
   </nav>
 
 </div>
@@ -877,15 +778,11 @@ mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGesture
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -894,10 +791,6 @@ mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGesture
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -910,6 +803,10 @@ mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGesture
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -934,6 +831,8 @@ mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGesture
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

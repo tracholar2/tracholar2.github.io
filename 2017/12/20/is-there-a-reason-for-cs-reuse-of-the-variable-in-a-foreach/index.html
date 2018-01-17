@@ -1,0 +1,608 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>是否有一个C＃在foreach中重用该变量的原因？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在C＃中使用lambda表达式或匿名方法时，我们必须警惕修改的闭包陷阱。例如： foreach (var s in strings) {    query = query.Where(i =&amp;gt; i.Prop == s); // access to modified closure    ... } 由于修改后的关闭，上面的代码将导致查询中的所有Where子句基于最终值s。 正如在这里所解释的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="是否有一个C＃在foreach中重用该变量的原因？">
+<meta property="og:url" content="https://www.tracholar.top/2017/12/20/is-there-a-reason-for-cs-reuse-of-the-variable-in-a-foreach/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在C＃中使用lambda表达式或匿名方法时，我们必须警惕修改的闭包陷阱。例如： foreach (var s in strings) {    query = query.Where(i =&amp;gt; i.Prop == s); // access to modified closure    ... } 由于修改后的关闭，上面的代码将导致查询中的所有Where子句基于最终值s。 正如在这里所解释的">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="是否有一个C＃在foreach中重用该变量的原因？">
+<meta name="twitter:description" content="在C＃中使用lambda表达式或匿名方法时，我们必须警惕修改的闭包陷阱。例如： foreach (var s in strings) {    query = query.Where(i =&amp;gt; i.Prop == s); // access to modified closure    ... } 由于修改后的关闭，上面的代码将导致查询中的所有Where子句基于最终值s。 正如在这里所解释的">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/20/is-there-a-reason-for-cs-reuse-of-the-variable-in-a-foreach/" title="是否有一个C＃在foreach中重用该变量的原因？" itemprop="url">是否有一个C＃在foreach中重用该变量的原因？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-20T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>在C＃中使用lambda表达式或匿名方法时，我们必须警惕修改的闭包陷阱。例如：</p>
+<pre><code>foreach (var s in strings)
+{
+   query = query.Where(i =&gt; i.Prop == s); // access to modified closure
+   ...
+}
+</code></pre><p>由于修改后的关闭，上面的代码将导致查询中的所有<code>Where</code>子句基于最终值<code>s</code>。</p>
+<p>正如在这里所解释的，这是因为上面的<code>s</code>循环中声明的<code>foreach</code>变量在编译器中被这样翻译：</p>
+<pre><code>string s;
+while (enumerator.MoveNext())
+{
+   s = enumerator.Current;
+   ...
+}
+</code></pre><p>而不是像这样：</p>
+<pre><code>while (enumerator.MoveNext())
+{
+   string s;
+   s = enumerator.Current;
+   ...
+}
+</code></pre><p>正如这里指出的那样，在循环之外声明一个变量没有任何性能优势，在正常情况下，我可以考虑的唯一原因是如果你打算在循环范围之外使用变量：</p>
+<pre><code>string s;
+while (enumerator.MoveNext())
+{
+   s = enumerator.Current;
+   ...
+}
+var finalString = s;
+</code></pre><p>但是，<code>foreach</code>循环中定义的变量不能在循环外部使用：</p>
+<pre><code>foreach(string s in strings)
+{
+}
+var finalString = s; // won&apos;t work: you&apos;re outside the scope.
+</code></pre><p>所以编译器以这样的方式声明变量，使得它很容易出错，而这个错误通常很难被发现和调试，而没有产生明显的好处。</p>
+<p>有没有什么你可以用<code>foreach</code>循环这样做，你不能这样做，如果他们用内部范围的变量编译，或者这只是一个任意的选择之前，匿名方法和lambda表达式是可用或共同的，哪些从那以后还没有被修改过？</p>
+<a id="more"></a>
+<blockquote>
+<p>The compiler declares the variable in a way that makes it highly prone to an<br>error that is often difficult to find and debug, while producing no<br>perceivable benefits.</p>
+</blockquote>
+<p>你的批评是完全合理的。</p>
+<p>我在这里详细讨论这个问题：</p>
+<p>关闭循环变量被认为是有害的</p>
+<blockquote>
+<p>Is there something you can do with foreach loops this way that you couldn’t<br>if they were compiled with an inner-scoped variable? or is this just an<br>arbitrary choice that was made before anonymous methods and lambda expressions<br>were available or common, and which hasn’t been revised since then?</p>
+</blockquote>
+<p>后者。<br>C＃1.0规范实际上并没有说明循环变量是在循环体内部还是外部，因为它没有明显的区别。当在C＃2.0中引入闭包语义时，选择将循环变量放在循环之外，与“for”循环一致。</p>
+<p>我认为这是公平的说，所有的遗憾，决定。这是C＃中最糟糕的“陷阱”之一，我们将采取突破性的改变来解决它。在C＃5中，foreach循环变量将在逻辑上位于循环体内，因此每次都会得到新的副本。</p>
+<p><code>for</code>循环将不会更改，并且更改不会被“back ported”到以前版本的C＃。因此，在使用这个习语时，你应该小心谨慎。</p>
+<p>Eric Lippert在他的博客文章中关注了被认为有害的循环变量及其续集。</p>
+<p>对我来说，最令人信服的论点是每个迭代中都有一个新变量与<code>for(;;)</code>样式循环不一致。你会期望在<code>int i</code>的每个迭代中有一个新的<code>for (int i
+= 0; i &lt; 10; i++)</code>？</p>
+<p>这种行为最常见的问题是迭代变量的闭包，它有一个简单的解决方法：</p>
+<pre><code>foreach (var s in strings)
+{
+    var s_for_closure = s;
+    query = query.Where(i =&gt; i.Prop == s_for_closure); // access to modified closure
+</code></pre><p>我的博客文章关于这个问题：关闭在C＃中的foreach变量。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2017/12/20/is-there-a-reason-for-cs-reuse-of-the-variable-in-a-foreach/" data-title="是否有一个C＃在foreach中重用该变量的原因？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/12/20/how-to-avoid-reverse-engineering-of-an-apk-file/" title="如何避免反向工程的APK文件？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何避免反向工程的APK文件？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/12/20/you-need-to-use-a-theme-appcompat-theme-or-descendant-with-this-activity/"  title="您需要使用Theme AppCompat主题（或后代）与此活动">
+ <strong>下一篇：</strong><br/> 
+ <span>您需要使用Theme AppCompat主题（或后代）与此活动
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

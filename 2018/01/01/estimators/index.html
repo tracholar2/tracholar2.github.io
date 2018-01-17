@@ -1,0 +1,585 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>估计 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="估计本文介绍了Estimators - 高级TensorFlow API大大简化了机器学习编程。估算器封装 采取以下行动： 训练 评测 预测 出口服务 您可以使用我们提供的预先制作的估算器或者编写您的 自己的定制估算器。所有估算器 - 无论是预制还是定制 - 都是基于tf.estimator.Estimator等级的课程。 注意：TensorFlow还包括一个已弃用的Estimator类 tf.c">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="估计">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/estimators/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="估计本文介绍了Estimators - 高级TensorFlow API大大简化了机器学习编程。估算器封装 采取以下行动： 训练 评测 预测 出口服务 您可以使用我们提供的预先制作的估算器或者编写您的 自己的定制估算器。所有估算器 - 无论是预制还是定制 - 都是基于tf.estimator.Estimator等级的课程。 注意：TensorFlow还包括一个已弃用的Estimator类 tf.c">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="估计">
+<meta name="twitter:description" content="估计本文介绍了Estimators - 高级TensorFlow API大大简化了机器学习编程。估算器封装 采取以下行动： 训练 评测 预测 出口服务 您可以使用我们提供的预先制作的估算器或者编写您的 自己的定制估算器。所有估算器 - 无论是预制还是定制 - 都是基于tf.estimator.Estimator等级的课程。 注意：TensorFlow还包括一个已弃用的Estimator类 tf.c">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/estimators/" title="估计" itemprop="url">估计</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">估计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">估算的优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">预先估算的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">预先制定的估算人员计划的结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">预先估算的好处</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">自定义估算器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">推荐工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">从Keras模型创建估计量</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="估计">估计</span></h1><p>本文介绍了Estimators - 高级TensorFlow API大大简化了机器学习编程。估算器封装 采取以下行动：</p>
+<p>训练 评测 预测 出口服务</p>
+<p>您可以使用我们提供的预先制作的估算器或者编写您的 自己的定制估算器。所有估算器 - 无论是预制还是定制 - 都是<br>基于<code>tf.estimator.Estimator</code>等级的课程。</p>
+<p>注意：TensorFlow还包括一个已弃用的<code>Estimator</code>类 <code>tf.contrib.learn.Estimator</code>，你不应该使用。</p>
+<h2><span id="估算的优点">估算的优点</span></h2><p>估算人员提供以下好处：</p>
+<p>您可以在本地主机上运行基于估算器的模型     分布式多服务器环境而不改变你的模型。     此外，您可以在CPU，GPU和GPU上运行基于估算器的模型，<br>或TPU而无需重新编码模型。 估算器简化了模型开发人员之间的共享实现。 您可以使用高级直观的代码开发最先进的模型，<br>简而言之，用Estimators创建模型通常要容易得多     比使用低级别的TensorFlow API。 估算器本身是建立在tf.layers上的，<br>简化了定制。 估计者为你建立图表。换句话说，你不需要     建立图表。 估算人员提供一个安全的分布式培训循环，控制如何和     何时： 建立图表<br>初始化变量 开始排队 处理异常 创建检查点文件并从失败中恢复 保存TensorBoard的摘要</p>
+<p>用Estimators编写应用程序时，必须分开数据输入 从模型的管道。这种分离简化了实验 不同的数据集。</p>
+<h2><span id="预先估算的">预先估算的</span></h2><p>预制估算器使您能够在更高的概念层面上工作 比基本的TensorFlow APIs。你不必再担心创建 由Estimators处理所有的计算图或会话<br>“水暖”给你。也就是说，预先制定的估算人员可以创建和管理 <code>Graph</code>和<code>Session</code>物件。此外， 预先制作的估算器可以让你通过不同的模型架构进行实验<br>只做最小的代码更改。 <code>DNNClassifier</code>， 例如，是预先制作的Estimator类，其训练分类模型 通过密集的前馈神经网络。</p>
+<h3><span id="预先制定的估算人员计划的结构">预先制定的估算人员计划的结构</span></h3><p>一个依靠预先制定的估算器的TensorFlow程序通常包括 以下四个步骤：</p>
+<p>编写一个或多个数据集导入功能。例如，你可能会     创建一个功能导入训练集和另一个功能     导入测试集。每个数据集导入功能必须返回两个     对象：<br>一个字典，其中的键是功能名称和     值是包含相应的Tensors（或SparseTensors）     特征数据 包含一个或多个标签的张量<br>例如，以下代码说明了基本框架 一个输入功能： def input_fn（dataset）：    …＃操作数据集，提取功能名称和标签<br>返回feature_dict，标签 （有关完整的详细信息，请参阅导入数据。） 定义特征列。每个<code>tf.feature_column</code><br>标识功能名称，类型和任何输入预处理。     例如，以下片段创建三个功能     保存整数或浮点数据的列。前两个     特征列只是标识特征的名称和类型。该<br>第三个特性列还指定了程序将调用的lambda     调整原始数据： ＃定义三个数字特征列。 人口=<br>tf.feature_column.numeric_column（’人口’） crime_rate =<br>tf.feature_column.numeric_column（’crime_rate’） median_education =<br>tf.feature_column.numeric_column（’median_education’，<br>normalizer_fn =’lambda x：x - global_education_mean’） 实例化相关的预制估算器。例如，在这里<br>预先制作的估算器<code>LinearClassifier</code>的样品实例： ＃实例化一个估计器，传递特征列。 estimator =<br>tf.estimator.Estimator.LinearClassifier（     feature_columns =<br>[population，crime_rate，median_education]，     ） 调用培训，评估或推理方法。<br>例如，所有估算器都提供<code>train</code>方法，用于训练模型。 ＃my_training_set是在步骤1中创建的函数<br>estimator.train（input_fn = my_training_set，steps = 2000）</p>
+<h3><span id="预先估算的好处">预先估算的好处</span></h3><p>预制估算器编码最佳实践，提供以下好处：</p>
+<p>确定计算的不同部分的最佳实践     图应该运行，在一台机器上或者一台机器上实施策略     簇。 事件（摘要）写作的最佳实践和普遍有用的     摘要。</p>
+<p>如果您不使用预先制定的估算器，则必须执行上述操作 特点你自己。</p>
+<h2><span id="自定义估算器">自定义估算器</span></h2><p>每个估算器的核心 - 无论是预制还是定制 - 都是它的核心 模型函数，这是一种为训练建立图形的方法， 评估和预测。当您使用预先制作的估算器时，<br>其他人已经实现了模型功能。依靠时 在自定义的估算器上，您必须自己编写模型函数。一个 伴侣文件 解释如何编写模型函数。</p>
+<h2><span id="推荐工作流程">推荐工作流程</span></h2><p>我们推荐以下工作流程：</p>
+<p>假设存在合适的预制估算器，请使用它来构建您的估算器     第一个模型，并使用其结果来建立基线。 建立和测试你的整个管道，包括完整性和<br>用这个预先制作的估算器，您的数据的可靠性。 如果合适的替代预制估算器可用，则运行     实验来确定哪个预先制作的Estimator产生的<br>最好的结果。 可能通过构建您自己的自定义估算器来进一步改进您的模型。</p>
+<h2><span id="从keras模型创建估计量">从Keras模型创建估计量</span></h2><p>您可以将现有的Keras模型转换为Estimators。这样做可以使您的Keras 模型来访问Estimator的优势，如分布式培训。呼叫<br>如在<code>tf.keras.estimator.model_to_estimator</code>中 以下示例：</p>
+<pre><code># Instantiate a Keras inception v3 model.
+keras_inception_v3 = tf.keras.applications.inception_v3.InceptionV3(weights=None)
+# Compile model with the optimizer, loss, and metrics you&apos;d like to train with.
+keras_inception_v3.compile(optimizer=tf.keras.optimizers.SGD(lr=0.0001, momentum=0.9),
+                          loss=&apos;categorical_crossentropy&apos;,
+                          metric=&apos;accuracy&apos;)
+# Create an Estimator from the compiled Keras model.
+est_inception_v3 = tf.keras.estimator.model_to_estimator(keras_model=keras_inception_v3)
+# Treat the derived Estimator as you would any other Estimator. For example,
+# the following derived Estimator calls the train method:
+est_inception_v3.train(input_fn=my_training_set, steps=2000)
+</code></pre><p>有关更多详细信息，请参阅文档 <code>tf.keras.estimator.model_to_estimator</code>。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/estimators/" data-title="估计 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/faq/" title="经常问的问题">
+  <strong>上一篇：</strong><br/>
+  <span>
+  经常问的问题</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/estimator/"  title="tf.estimator快速入门">
+ <strong>下一篇：</strong><br/> 
+ <span>tf.estimator快速入门
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">估计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">估算的优点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">预先估算的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">预先制定的估算人员计划的结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">预先估算的好处</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">自定义估算器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">推荐工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">从Keras模型创建估计量</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

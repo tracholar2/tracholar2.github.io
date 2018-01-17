@@ -1,0 +1,608 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>检查是否需要在Git中拉 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何检查远程存储库是否已经更改，我需要拉？ 现在我使用这个简单的脚本： git pull --dry-run | grep -q -v &amp;apos;Already up-to-date.&amp;apos; &amp;amp;&amp;amp; changed=1 但是它相当重。 有没有更好的办法？理想的解决方案将检查所有远程分支，并返回更改分支的名称和每个新提交的数量。">
+<meta name="keywords" content="bash,shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="检查是否需要在Git中拉">
+<meta property="og:url" content="https://www.tracholar.top/2017/12/02/check-if-pull-needed-in-git/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何检查远程存储库是否已经更改，我需要拉？ 现在我使用这个简单的脚本： git pull --dry-run | grep -q -v &amp;apos;Already up-to-date.&amp;apos; &amp;amp;&amp;amp; changed=1 但是它相当重。 有没有更好的办法？理想的解决方案将检查所有远程分支，并返回更改分支的名称和每个新提交的数量。">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="检查是否需要在Git中拉">
+<meta name="twitter:description" content="如何检查远程存储库是否已经更改，我需要拉？ 现在我使用这个简单的脚本： git pull --dry-run | grep -q -v &amp;apos;Already up-to-date.&amp;apos; &amp;amp;&amp;amp; changed=1 但是它相当重。 有没有更好的办法？理想的解决方案将检查所有远程分支，并返回更改分支的名称和每个新提交的数量。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/02/check-if-pull-needed-in-git/" title="检查是否需要在Git中拉" itemprop="url">检查是否需要在Git中拉</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-02T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">If you have an upstream branch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">If you don’t have an upstream branch</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>如何检查远程存储库是否已经更改，我需要拉？</p>
+<p>现在我使用这个简单的脚本：</p>
+<pre><code>git pull --dry-run | grep -q -v &apos;Already up-to-date.&apos; &amp;&amp; changed=1
+</code></pre><p>但是它相当重。</p>
+<p>有没有更好的办法？理想的解决方案将检查所有远程分支，并返回更改分支的名称和每个新提交的数量。</p>
+<a id="more"></a>
+<p>首先使用<code>git remote update</code>，让您的遥控器更新。然后你可以做几件事情之一，比如：</p>
+<p><code>git status -uno</code>会告诉你你正在跟踪的分支是前进，后退还是分歧。如果什么都不说，本地和远程都是一样的。 <code>git show-branch
+*master</code>将向您显示所有名称以“主”（例如master和origin / master）结尾的分支的提交。</p>
+<p>如果你使用<code>-v</code>和<code>git remote update</code>（<code>git remote -v
+update</code>），你可以看到哪个分支被更新了，所以你不需要任何进一步的命令。</p>
+<p>但是，它看起来像你想要在脚本或程序中做到这一点，结束了一个真/假的价值。如果是这样，有办法检查您当前的HEAD提交和您正在跟踪的分支的头部之间的关系，但由于有四个可能的结果，您不能将其减少到是/否的答案。但是，如果你准备做一个<code>pull
+--rebase</code>那么你可以把“本地落后”和“本地分歧”看作“需要拉动”，而另外两个就是“不需要拉动”。</p>
+<p>您可以使用<code>git rev-parse &lt;ref&gt;</code>获得任何ref的提交ID，因此您可以为master和origin /<br>master进行比较。如果他们是平等的，分支是一样的。如果他们不平等，你想知道哪个领先于另一个。使用<code>git merge-base master
+origin/master</code>会告诉你两个分支的共同祖先，如果他们没有分歧，这将是相同的一个或另一个。如果你得到三个不同的ID，分支已经分歧。</p>
+<p>为了做到这一点，例如在脚本中，您需要能够引用当前分支以及它正在跟踪的远程分支。<br><code>/etc/bash_completion.d</code>中的bash提示设置功能有一些有用的获取分支名称的代码。但是，您可能实际上并不需要获取名称。<br>Git有一些简洁的指向分支和提交的简写（如<code>git rev-parse
+--help</code>所记录）。特别是，您可以使用<code>@</code>作为当前分支（假设您不处于分离头状态）和<code>@{u}</code>作为其上游分支（例如<code>origin/master</code>）。所以<code>git
+merge-base @ @{u}</code>将返回当前分支和其上游分支的提交（哈希），<code>git rev-parse @</code>和<code>git rev-parse
+@{u}</code>会给你两个提示的哈希。这可以概括为以下脚本：</p>
+<pre><code>#!/bin/sh
+
+UPSTREAM=${1:-&apos;@{u}&apos;}
+LOCAL=$(git rev-parse @)
+REMOTE=$(git rev-parse &quot;$UPSTREAM&quot;)
+BASE=$(git merge-base @ &quot;$UPSTREAM&quot;)
+
+if [ $LOCAL = $REMOTE ]; then
+    echo &quot;Up-to-date&quot;
+elif [ $LOCAL = $BASE ]; then
+    echo &quot;Need to pull&quot;
+elif [ $REMOTE = $BASE ]; then
+    echo &quot;Need to push&quot;
+else
+    echo &quot;Diverged&quot;
+fi
+</code></pre><p>注意：旧版本的git本身并不允许<code>@</code>，所以你可能不得不使用<code>@{0}</code>来代替。</p>
+<p>行<code>UPSTREAM=${1:-&#39;@{u}&#39;}</code>允许您有选择地显式传递一个上游分支，以防您想检查与为当前分支配置的远程分支不同的远程分支。这通常是remotename<br>/ branchname的形式。如果没有给出参数，则该值默认为<code>@{u}</code>。</p>
+<p>脚本假定您先完成了<code>git fetch</code>或<code>git remote
+update</code>，以使跟踪分支更新。我没有将它构建到脚本中，因为它能够以单独的操作执行抓取和比较更加灵活，例如，如果因为最近已经抓取而不想抓取进行比较。</p>
+<h2><span id="if-you-have-an-upstream-branch">If you have an upstream branch</span></h2><pre><code>git fetch &lt;remote&gt;
+git status
+</code></pre><h2><span id="if-you-dont-have-an-upstream-branch">If you don’t have an upstream branch</span></h2><p>比较两个分支：</p>
+<pre><code>git fetch &lt;remote&gt;
+git log &lt;local_branch_name&gt;..&lt;remote_branch_name&gt; --oneline
+</code></pre><p>例如：</p>
+<pre><code>git fetch origin
+
+# See if there are any incoming changes
+git log HEAD..origin/master --oneline
+</code></pre><p>（我假设<code>origin/master</code>是你的远程跟踪分支）</p>
+<p>如果在上面的输出中列出了任何提交，那么您有传入更改 - 您需要合并。如果没有任何提交被<code>git log</code>列出，则没有任何合并。</p>
+<p>请注意，即使你在一个功能分支上，这个功能也能工作，因为如果明确地指向<code>origin/master</code>，而不是隐式地使用Git记住的上游分支，</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a><a href="/tags/shell/">shell</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2017/12/02/check-if-pull-needed-in-git/" data-title="检查是否需要在Git中拉 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/12/03/getting-ssh-to-execute-a-command-in-the-background-on-target-machine/" title="让ssh在目标机器的后台执行一个命令">
+  <strong>上一篇：</strong><br/>
+  <span>
+  让ssh在目标机器的后台执行一个命令</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/12/02/how-to-horizontally-center-a-div-in-another-div/"  title="如何在另一个div中水平居中div？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何在另一个div中水平居中div？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">If you have an upstream branch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">If you don’t have an upstream branch</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

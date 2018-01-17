@@ -1,0 +1,680 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>TensorBoard：图形可视化 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="TensorBoard：图形可视化TensorFlow计算图功能强大但复杂。图表可视化可以帮助您理解和调试它们。这是一个可视化工作的例子。 可视化TensorFlow图形。 要查看您自己的图形，请运行TensorBoard将其指向作业的日志目录，单击顶部窗格上的图形选项卡，然后使用左上角的菜单选择适当的运行。有关如何运行TensorBoard并确保记录所有必要信息的深入信息，请参阅TensorBo">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorBoard：图形可视化">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/graph_viz/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="TensorBoard：图形可视化TensorFlow计算图功能强大但复杂。图表可视化可以帮助您理解和调试它们。这是一个可视化工作的例子。 可视化TensorFlow图形。 要查看您自己的图形，请运行TensorBoard将其指向作业的日志目录，单击顶部窗格上的图形选项卡，然后使用左上角的菜单选择适当的运行。有关如何运行TensorBoard并确保记录所有必要信息的深入信息，请参阅TensorBo">
+<meta property="og:image" content="https://www.tensorflow.org/images/graph_vis_animation.gif">
+<meta property="og:image" content="https://www.tensorflow.org/images/pool1_collapsed.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/pool1_expanded.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/conv_1.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/save.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/series.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/series_expanded.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/namespace_node.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/horizontal_stack.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/vertical_stack.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/op_node.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/constant.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/summary.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/dataflow_edge.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/control_edge.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/reference_edge.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/infocard.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/infocard_op.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/colorby_structure.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/colorby_device.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/colorby_compute_time.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/run_metadata_graph.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/run_metadata_infocard.png">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorBoard：图形可视化">
+<meta name="twitter:description" content="TensorBoard：图形可视化TensorFlow计算图功能强大但复杂。图表可视化可以帮助您理解和调试它们。这是一个可视化工作的例子。 可视化TensorFlow图形。 要查看您自己的图形，请运行TensorBoard将其指向作业的日志目录，单击顶部窗格上的图形选项卡，然后使用左上角的菜单选择适当的运行。有关如何运行TensorBoard并确保记录所有必要信息的深入信息，请参阅TensorBo">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/graph_vis_animation.gif">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/graph_viz/" title="TensorBoard：图形可视化" itemprop="url">TensorBoard：图形可视化</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TensorBoard：图形可视化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">命名范围和节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">相互作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">张量形状信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">information]()  </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">运行时统计</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="tensorboard图形可视化">TensorBoard：图形可视化</span></h1><p>TensorFlow计算图功能强大但复杂。图表可视化可以帮助您理解和调试它们。这是一个可视化工作的例子。</p>
+<p><img src="https://www.tensorflow.org/images/graph_vis_animation.gif" alt="Visualization of a TensorFlow
+graph"><br>可视化TensorFlow图形。</p>
+<p>要查看您自己的图形，请运行TensorBoard将其指向作业的日志目录，单击顶部窗格上的图形选项卡，然后使用左上角的菜单选择适当的运行。有关如何运行TensorBoard并确保记录所有必要信息的深入信息，请参阅TensorBoard：可视化学习。</p>
+<h2><span id="命名范围和节点">命名范围和节点</span></h2><p>典型的TensorFlow图可以有成千上万的节点 - 太多看不到 很容易一次，甚至使用标准的图形工具布局。为了简化，<br>变量名称可以被作用域，可视化使用这个信息 在图中的节点上定义一个层次结构。默认情况下，只有这个的顶部 显示层次结构。下面是一个定义三个操作的例子<br><code>hidden</code>名称范围使用 <code>tf.name_scope</code>：</p>
+<pre><code>import tensorflow as tf
+
+with tf.name_scope(&apos;hidden&apos;) as scope:
+  a = tf.constant(5, name=&apos;alpha&apos;)
+  W = tf.Variable(tf.random_uniform([1, 2], -1.0, 1.0), name=&apos;weights&apos;)
+  b = tf.Variable(tf.zeros([1]), name=&apos;biases&apos;)
+</code></pre><p>这导致了以下三个op名称：</p>
+<p><code>hidden/alpha</code> <code>hidden/weights</code> <code>hidden/biases</code></p>
+<p>默认情况下，可视化文件将全部折叠成标记为<code>hidden</code>的节点。 额外的细节不会丢失。您可以双击或单击 在<code>+</code>的橙色标志上右上角展开节点，然后你会看到<br><code>alpha</code>，<code>weights</code>和<code>biases</code>的三个子节点。</p>
+<p>这是一个更复杂的节点在其最初和最后一个真实的例子 扩大的国家。</p>
+<p><img src="https://www.tensorflow.org/images/pool1_collapsed.png" alt="Unexpanded name
+scope"> |  <img src="https://www.tensorflow.org/images/pool1_expanded.png" alt="Expanded
+name scope"><br>—|—<br>Initial view of top-level name scope <code>pool_1</code>. Clicking on the orange <code>+</code><br>button on the top right or double-clicking on the node itself will expand it.<br>|  Expanded view of <code>pool_1</code> name scope. Clicking on the orange <code>-</code> button on<br>the top right or double-clicking on the node itself will collapse the name<br>scope.  </p>
+<p>按名称范围对节点进行分组对于制作清晰的图形至关重要。如果你是 建立一个模型，名称范围让你控制生成的可视化。 你的名字范围越好，你的可视化就越好。</p>
+<p>上图说明了可视化的第二个方面。 TensorFlow 图有两种连接：数据依赖和控制 依赖。数据依赖性显示了两个操作符之间张量的流动<br>显示为实线箭头，而控制依赖关系使用虚线。在里面 展开视图（上图右侧）所有的连接都是数据 连接<code>CheckNumerics</code>的虚线除外<br>和<code>control_dependency</code>。</p>
+<p>还有一个简化布局的技巧。大多数TensorFlow图有一个 很少有多个连接到其他节点的节点。例如，许多节点可能<br>对初始化步骤具有控制依赖性。绘制之间的所有边缘 <code>init</code>节点及其依赖关系将创建一个非常混乱的视图。</p>
+<p>为了减少混乱，可视化将所有高度节点分离出来 在右边的辅助区域，并不画线来表示它们的边缘。 我们绘制小节点图标来代替连线。 分离出辅助节点通常不会消除关键<br>因为这些节点通常涉及簿记功能。 请参阅交互以了解如何在主图之间移动节点 和辅助区域。</p>
+<p><img src="https://www.tensorflow.org/images/conv_1.png" alt="conv_1 is part of the main
+graph"> |  <img src="https://www.tensorflow.org/images/save.png" alt="save is extracted as
+auxiliary node"><br>—|—<br>Node <code>conv_1</code> is connected to <code>save</code>. Note the little <code>save</code> node icon on its<br>right.  |  <code>save</code> has a high degree, and will appear as an auxiliary node. The<br>connection with <code>conv_1</code> is shown as a node icon on its left. To further<br>reduce clutter, since <code>save</code> has a lot of connections, we show the first 5 and<br>abbreviate the others as <code>... 12 more</code>.  </p>
+<p>最后一个结构简化是系列崩溃。顺序 图案 - 也就是说，名称相差数字的节点，并具有 同构结构 - 被折叠成一堆节点，如图所示<br>下面。对于长序列的网络，这大大简化了视图。如 通过分层节点，双击展开该系列。看到 互动如何禁用/启用系列崩溃的一个 特定的一组节点。</p>
+<p><img src="https://www.tensorflow.org/images/series.png" alt="Sequence of nodes"> |<br><img src="https://www.tensorflow.org/images/series_expanded.png" alt="Expanded sequence of
+nodes"><br>—|—<br>A collapsed view of a node sequence.  |  A small piece of the expanded view,<br>after double-click.  </p>
+<p>最后，作为易读性的最后一个助手，可视化使用特殊的图标 常量和汇总节点。总结一下，下面是一个节点符号表：</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="https://www.tensorflow.org/images/namespace_node.png" alt="Name scope"></td>
+<td>_High-</td>
+</tr>
+</tbody>
+</table>
+<p>level_ node representing a name scope. Double-click to expand a high-level<br>node.<br><img src="https://www.tensorflow.org/images/horizontal_stack.png" alt="Sequence of unconnected
+nodes"> |  Sequence of<br>numbered nodes that are not connected to each other.<br><img src="https://www.tensorflow.org/images/vertical_stack.png" alt="Sequence of connected
+nodes"> | Sequence of<br>numbered nodes that are connected to each other.<br><img src="https://www.tensorflow.org/images/op_node.png" alt="Operation node"> | An<br>individual operation node.<br><img src="https://www.tensorflow.org/images/constant.png" alt="Constant node"> | A constant.<br><img src="https://www.tensorflow.org/images/summary.png" alt="Summary node"> | A summary<br>node.<br><img src="https://www.tensorflow.org/images/dataflow_edge.png" alt="Data flow edge"> | Edge<br>showing the data flow between operations.<br><img src="https://www.tensorflow.org/images/control_edge.png" alt="Control dependency edge"><br>| Edge showing the control dependency between operations.<br><img src="https://www.tensorflow.org/images/reference_edge.png" alt="Reference edge"> | A<br>reference edge showing that the outgoing operation node can mutate the<br>incoming tensor.  </p>
+<h2><span id="相互作用">相互作用</span></h2><p>通过平移和缩放导航图形。点击并拖动以平移，然后使用 滚动手势进行缩放。双击一个节点，或点击其<code>+</code>按钮，即可 展开代表一组操作的名称范围。轻松保持<br>在缩放和平移时跟踪当前的视点，中有一个小地图 在右下角。</p>
+<p>要关闭打开的节点，请再次双击或单击<code>-</code>按钮。您可以 也点击一次选择一个节点。它会变成一个较暗的颜色，和细节 关于它和它连接的节点将出现在上面的信息卡中<br>可视化的右上角。</p>
+<p><img src="https://www.tensorflow.org/images/infocard.png" alt="Info card of a name scope"> |<br><img src="https://www.tensorflow.org/images/infocard_op.png" alt="Info card of operation
+node"><br>—|—<br>Info card showing detailed information for the <code>conv2</code> name scope. The inputs<br>and outputs are combined from the inputs and outputs of the operation nodes<br>inside the name scope. For name scopes no attributes are shown.  |  Info card<br>showing detailed information for the <code>DecodeRaw</code> operation node. In addition<br>to inputs and outputs, the card shows the device and the attributes associated<br>with the current operation.  </p>
+<p>TensorBoard提供了几种方法来改变图形的视觉布局。这个 不会改变图的计算语义，但它可以带来一些 网络结构清晰。通过右键单击节点或按<br>该节点信息卡底部的按钮，可以进行以下操作 改变其布局：</p>
+<p>节点可以在主图表和辅助区域之间移动。 可以将一系列节点取消分组，从而使得该系列节点不会 出现在一起。未分组的系列也可以重新组合。</p>
+<p>选择也可以帮助理解高度节点。选择任何 高度节点，以及其他连接的相应节点图标 也将被选中。例如，这可以很容易地看到哪些节点 正在被保存 - 而不是。</p>
+<p>点击信息卡中的节点名称将选择它。如果有必要的话 视点将自动平移，使节点可见。</p>
+<p>最后，您可以使用颜色菜单为图形选择两种配色方案 在传奇之上。默认的结构视图显示结构：当两个 高层节点具有相同的结构，它们出现在相同的颜色中<br>彩虹。结构独特的节点是灰色的。还有第二种看法，这表明 不同的操作在哪个设备上运行。名称范围是有颜色的 与其内部操作的设备比例成比例。</p>
+<p>下面的图片给出了一张真实生活图的插图。</p>
+<p><img src="https://www.tensorflow.org/images/colorby_structure.png" alt="Color by structure"><br>|  <img src="https://www.tensorflow.org/images/colorby_device.png" alt="Color by device"><br>—|—<br>Structure view: The gray nodes have unique structure. The orange <code>conv1</code> and<br><code>conv2</code> nodes have the same structure, and analogously for nodes with other<br>colors.  |  Device view: Name scopes are colored proportionally to the<br>fraction of devices of the operation nodes inside them. Here, purple means GPU<br>and the green is CPU.  </p>
+<h2><span id="张量形状信息">张量形状信息</span></h2><p>当序列化的<code>GraphDef</code>包含张量形状时，图形可视化器 用张量维度标注边缘，边缘厚度反映总张量<br>尺寸。要在<code>GraphDef</code>中包含张量形状，请传递实际图形对象 （如在<code>sess.graph</code>中）连接到<code>FileWriter</code>。<br>下面的图片显示了具有张量形状信息的CIFAR-10模型：</p>
+<p>![CIFAR-10 model with tensor shape</p>
+<h2><span id="informationhttpswwwtensorfloworgimagestensor_shapespng">information]()  </span></h2><p>CIFAR-10 model with tensor shape information.  </p>
+<h2><span id="运行时统计">运行时统计</span></h2><p>为运行收集运行时元数据（如总内存）通常很有用 使用情况，总计算时间和节点的张量形状。下面的代码示例 是从列车和测试部分的一个修改的片段<br>简单的MNIST教程， 其中我们记录了摘要和运行时统计信息。请参阅摘要教程 有关如何记录摘要的详细信息。 完整的源代码在这里。</p>
+<pre><code># Train the model, and also write summaries.
+# Every 10th step, measure test-set accuracy, and write test summaries
+# All other steps, run train_step on training data, &amp; add training summaries
+
+def feed_dict(train):
+  &quot;&quot;&quot;Make a TensorFlow feed_dict: maps data onto Tensor placeholders.&quot;&quot;&quot;
+  if train or FLAGS.fake_data:
+    xs, ys = mnist.train.next_batch(100, fake_data=FLAGS.fake_data)
+    k = FLAGS.dropout
+  else:
+    xs, ys = mnist.test.images, mnist.test.labels
+    k = 1.0
+  return {x: xs, y_: ys, keep_prob: k}
+
+for i in range(FLAGS.max_steps):
+  if i % 10 == 0:  # Record summaries and test-set accuracy
+    summary, acc = sess.run([merged, accuracy], feed_dict=feed_dict(False))
+    test_writer.add_summary(summary, i)
+    print(&apos;Accuracy at step %s: %s&apos; % (i, acc))
+  else:  # Record train set summaries, and train
+    if i % 100 == 99:  # Record execution stats
+      run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+      run_metadata = tf.RunMetadata()
+      summary, _ = sess.run([merged, train_step],
+                            feed_dict=feed_dict(True),
+                            options=run_options,
+                            run_metadata=run_metadata)
+      train_writer.add_run_metadata(run_metadata, &apos;step%d&apos; % i)
+      train_writer.add_summary(summary, i)
+      print(&apos;Adding run metadata for&apos;, i)
+    else:  # Record a summary
+      summary, _ = sess.run([merged, train_step], feed_dict=feed_dict(True))
+      train_writer.add_summary(summary, i)
+</code></pre><p>此代码将从步骤99开始每100步发出运行时统计信息。</p>
+<p>当您启动tensorboard并转到图表选项卡，您现在将看到选项 在“会话运行”下对应于添加运行元数据的步骤。 选择其中一个运行将显示网络的快照<br>一步，淡出未使用的节点。在左边的控件中，你会的 能够通过总内存或总计算时间对节点着色。另外， 点击一个节点将显示确切的总内存，计算时间和 张量输出大小。</p>
+<p><img src="https://www.tensorflow.org/images/colorby_compute_time.png" alt="Color by compute
+time"> |  <img src="https://www.tensorflow.org/images/run_metadata_graph.png" alt="Run
+metadata graph"> |<br><img src="https://www.tensorflow.org/images/run_metadata_infocard.png" alt="Run metadata info
+card"><br>—|—|—</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/graph_viz/" data-title="TensorBoard：图形可视化 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/graphs/" title="图表和会话">
+  <strong>上一篇：</strong><br/>
+  <span>
+  图表和会话</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/12/31/php-and-enumerations/"  title="PHP和枚举">
+ <strong>下一篇：</strong><br/> 
+ <span>PHP和枚举
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TensorBoard：图形可视化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">命名范围和节点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">相互作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">张量形状信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">information]()  </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">运行时统计</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

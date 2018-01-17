@@ -1,0 +1,749 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>图表和会话 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="图表和会话TensorFlow使用数据流图来表示您的计算 个别操作之间的依赖关系。这导致了一个低层次 编程模型，在其中您首先定义数据流图，然后创建一个TensorFlow会话跨部分图形运行一组本地和 远程设备。 如果您打算使用低级编程，本指南将非常有用 直接模型。更高级别的API，如tf.estimator.Estimator和Keras从最终用户隐藏图表和会话的细节，但本指南可能 如果你想了解这">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图表和会话">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/graphs/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="图表和会话TensorFlow使用数据流图来表示您的计算 个别操作之间的依赖关系。这导致了一个低层次 编程模型，在其中您首先定义数据流图，然后创建一个TensorFlow会话跨部分图形运行一组本地和 远程设备。 如果您打算使用低级编程，本指南将非常有用 直接模型。更高级别的API，如tf.estimator.Estimator和Keras从最终用户隐藏图表和会话的细节，但本指南可能 如果你想了解这">
+<meta property="og:image" content="https://www.tensorflow.org/images/tensors_flowing.gif">
+<meta property="og:image" content="https://www.tensorflow.org/images/mnist_deep.png">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图表和会话">
+<meta name="twitter:description" content="图表和会话TensorFlow使用数据流图来表示您的计算 个别操作之间的依赖关系。这导致了一个低层次 编程模型，在其中您首先定义数据流图，然后创建一个TensorFlow会话跨部分图形运行一组本地和 远程设备。 如果您打算使用低级编程，本指南将非常有用 直接模型。更高级别的API，如tf.estimator.Estimator和Keras从最终用户隐藏图表和会话的细节，但本指南可能 如果你想了解这">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/tensors_flowing.gif">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/graphs/" title="图表和会话" itemprop="url">图表和会话</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">图表和会话</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">为什么使用数据流图？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">什么是tf.Graph？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">建立一个tf.Graph</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">命名操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">将操作放置在不同的设备上</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">张量类物体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">执行tf.Session中的图表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.1.</span> <span class="toc-text">创建一个tf.Session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.2.</span> <span class="toc-text">使用tf.Session.run执行操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.8.</span> <span class="toc-text">可视化你的图形</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.9.</span> <span class="toc-text">用多个图表编程</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="图表和会话">图表和会话</span></h1><p>TensorFlow使用数据流图来表示您的计算 个别操作之间的依赖关系。这导致了一个低层次 编程模型，在其中您首先定义数据流图，然后创建一个<br>TensorFlow会话跨部分图形运行一组本地和 远程设备。</p>
+<p>如果您打算使用低级编程，本指南将非常有用 直接模型。更高级别的API，如<code>tf.estimator.Estimator</code>和Keras<br>从最终用户隐藏图表和会话的细节，但本指南可能 如果你想了解这些API是如何实现的，也是有用的。</p>
+<h2><span id="为什么使用数据流图">为什么使用数据流图？</span></h2><p><img src="https://www.tensorflow.org/images/tensors_flowing.gif" alt=""></p>
+<p>数据流是常见的 并行计算的编程模型。在数据流图中，节点 表示计算的单位，边表示消耗的数据<br>计算产生的。例如，在TensorFlow图中，<code>tf.matmul</code> 操作将对应于具有两个传入边的单个节点（ 矩阵相乘）和一个传出边缘（的结果 乘法）。</p>
+<p>数据流有几个优点，当执行你的TensorFlow时， 程式：</p>
+<p>并行。通过使用显式边来表示之间的依赖关系   操作，系统很容易识别可执行的操作   在平行下。 分布式执行。通过使用显式边来表示值<br>在操作之间流动，TensorFlow可能会分割你的   程序跨多个设备（CPU，GPU和TPU）附加到不同的   机器。<br>TensorFlow插入必要的沟通和协调   设备之间。 汇编。 TensorFlow的XLA编译器可以   使用数据流图中的信息来生成更快的代码<br>例如，通过融合相邻的操作。 可移植性。数据流图是一种与语言无关的表示   的模型中的代码。你可以用Python构建一个数据流图，存储它<br>在SavedModel中，并在C ++程序中恢复它   低延迟推断。</p>
+<h2><span id="什么是tfgraph">什么是<code>tf.Graph</code>？</span></h2><p><code>tf.Graph</code>包含两种相关的信息：</p>
+<p>图结构。图的节点和边，指示如何   个别的操作是组合在一起的，但没有规定它们如何   应该使用。图结构就像汇编代码：检查它可以<br>传达一些有用的信息，但并不包含所有有用的信息   源代码传达的上下文。 图表集合。 TensorFlow提供了一个通用的存储机制<br><code>tf.Graph</code>中的元数据集合。 <code>tf.add_to_collection</code>功能<br>使您可以将对象列表与一个键（其中<code>tf.GraphKeys</code>）关联   定义了一些标准键），<code>tf.get_collection</code>使您可以<br>查找与某个键关联的所有对象。 TensorFlow的很多部分   库使用这个工具：例如，当你创建一个<code>tf.Variable</code>，它<br>被默认添加到代表“全局变量”的集合中   “可训练变量”。当你以后来创建一个<code>tf.train.Saver</code>或者<br><code>tf.train.Optimizer</code>，这些集合中的变量被用作为   默认参数。</p>
+<h2><span id="建立一个tfgraph">建立一个<code>tf.Graph</code></span></h2><p>大多数TensorFlow程序从数据流图构建阶段开始。在这 阶段，您将调用构建新<code>tf.Operation</code>的TensorFlow API函数<br>（节点）和<code>tf.Tensor</code>（边缘）对象并将它们添加到<code>tf.Graph</code> 实例。 TensorFlow提供了一个默认图形，这是一个隐含的参数<br>到同一上下文中的所有API函数。例如：</p>
+<p>调用<code>tf.constant(42.0)</code>创建一个单一的<code>tf.Operation</code>生产<br>值<code>42.0</code>，将其添加到默认图形，并返回一个<code>tf.Tensor</code>   代表常数的值。 调用<code>tf.matmul(x,
+y)</code>将创建一个乘法的单个<code>tf.Operation</code>   将<code>tf.Tensor</code>对象<code>x</code>和<code>y</code>的值添加到默认图形中，<br>并返回表示乘法结果的<code>tf.Tensor</code>。 执行<code>v = tf.Variable(0)</code>增加了图表<code>tf.Operation</code>，将<br>存储在<code>tf.Session.run</code>呼叫之间持续的可写张量值。   <code>tf.Variable</code>对象包装了这个操作，可以像a一样使用<br>张量，它会读取当前的值   储值。 <code>tf.Variable</code>对象也有类似的方法   <code>assign</code>和<code>assign_add</code><br>创建<code>tf.Operation</code>对象，执行时更新存储的值。   （有关变量的更多信息，请参阅变量。）<br>调用<code>tf.train.Optimizer.minimize</code>将增加操作和张量   计算梯度的默认图表，并返回一个<code>tf.Operation</code>，<br>运行时，会将这些渐变应用于一组变量。</p>
+<p>大多数程序仅依赖于默认图形。然而， 有关更多信息，请参阅处理多个图表 高级用例。高级API，如<code>tf.estimator.Estimator</code> API<br>以您的名义管理默认图表，例如 - 可能会创建不同的图表 图表进行培训和评估。</p>
+<p>注意：调用TensorFlow API中的大部分函数只是添加操作 和张量到默认图形，但不执行实际<br>计算。相反，直到你有一个<code>tf.Tensor</code>，你才能完成这些功能 或代表整体计算的<code>tf.Operation</code>，如执行 一步梯度下降 -<br>然后将该物体传递给<code>tf.Session</code> 执行计算。请参阅“在<code>tf.Session</code>中执行图表” 更多细节。</p>
+<h2><span id="命名操作">命名操作</span></h2><p><code>tf.Graph</code>对象定义了<code>tf.Operation</code>对象的名称空间 包含的内容。 TensorFlow自动为每个操作选择一个唯一的名称<br>你的图形，但给操作描述性名称可以使你的程序更容易 读取和调试。 TensorFlow API提供了两种覆盖名称的方法 一个手术：</p>
+<p>每个创建新<code>tf.Operation</code>的API函数或返回一个新的   <code>tf.Tensor</code>接受可选的<code>name</code>参数。例如，<br><code>tf.constant(42.0, name=&quot;answer&quot;)</code>创建了一个新的<code>tf.Operation</code><br><code>&quot;answer&quot;</code>，并返回名为<code>tf.Tensor</code>的<code>&quot;answer:0&quot;</code>。如果默认图<br>已经包含了一个名为<code>&quot;answer&quot;</code>的操作，TensorFlow将被添加   <code>&quot;_1&quot;</code>，<code>&quot;_2&quot;</code>等名称，以使其独一无二。<br><code>tf.name_scope</code>功能可以添加名称范围前缀   到在特定环境中创建的所有操作。当前名称范围<br>前缀是<code>&quot;/&quot;</code>分隔的所有活动<code>tf.name_scope</code>名称列表   情境经理。如果名称范围已经在当前使用<br>上下文中，TensorFlow出现<code>&quot;_1&quot;</code>，<code>&quot;_2&quot;</code>等。例如：</p>
+<blockquote>
+<p>c_0 = tf.constant（0，name =“c”）＃=&gt;名为“c”的操作 ＃已经使用的名字将是“独一无二的”。 c_1 =<br>tf.constant（2，name =“c”）＃=&gt;名为“c_1”的操作 ＃名称作用域为在同一个上下文中创建的所有操作添加一个前缀。<br>与tf.name_scope（“外部”）：   c_2 = tf.constant（2，name =“c”）＃=&gt;操作名为“outer / c”<br>＃命名作用域在分层文件系统中像路径一样嵌套。   与tf.name_scope（“内部”）：     c_3 = tf.constant（3，name<br>=“c”）＃=&gt;名为“outer / inner / c”的操作   ＃退出名称范围上下文将返回到以前的前缀。   c_4 =<br>tf.constant（4，name =“c”）＃=&gt;操作名为“outer / c_1”   ＃已经使用的名称范围将是“独特的”。<br>与tf.name_scope（“内部”）：     c_5 = tf.constant（5，name =“c”）＃=&gt;名为“outer / inner_1<br>/ c”的操作</p>
+</blockquote>
+<p>图表可视化工具使用名称范围对操作进行分组并减少视觉效果 图的复杂性。请参阅可视化您的图表 更多信息。</p>
+<p>请注意，<code>tf.Tensor</code>对象以<code>tf.Operation</code> 产生张量作为输出。张量名称形式为<code>&quot;&lt;OP_NAME&gt;:&lt;i&gt;&quot;</code> 哪里：</p>
+<p><code>&quot;&lt;OP_NAME&gt;&quot;</code>是生成它的操作的名称。 <code>&quot;&lt;i&gt;&quot;</code>是表示该张量之间的索引的整数   操作的输出。</p>
+<h2><span id="将操作放置在不同的设备上">将操作放置在不同的设备上</span></h2><p>如果你想让你的TensorFlow程序使用多个不同的设备， <code>tf.device</code>功能提供了一种方便的方式来请求所有操作<br>创建在一个特定的上下文被放置在相同的设备（或类型） 设备）。</p>
+<p>设备规范具有以下形式：</p>
+<pre><code>/job:&lt;JOB_NAME&gt;/task:&lt;TASK_INDEX&gt;/device:&lt;DEVICE_TYPE&gt;:&lt;DEVICE_INDEX&gt;
+</code></pre><p>哪里：</p>
+<p><code>&lt;JOB_NAME&gt;</code>是一个不以数字开头的字母数字字符串。 <code>&lt;DEVICE_TYPE&gt;</code>是注册设备类型（如<code>GPU</code>或<code>CPU</code>）。<br><code>&lt;TASK_INDEX&gt;</code>是一个表示任务索引的非负整数<br>在名为<code>&lt;JOB_NAME&gt;</code>的作业中。有关说明，请参阅<code>tf.train.ClusterSpec</code>   的工作和任务。<br><code>&lt;DEVICE_INDEX&gt;</code>是一个非负整数，表示的索引   设备，例如，以区分不同的GPU设备中使用的   同样的过程。</p>
+<p>您不需要指定设备规范的每个部分。例如， 如果您正在单GPU配置的单机配置中运行，那么您 可能会使用<code>tf.device</code>将一些操作固定到CPU和GPU上：</p>
+<pre><code># Operations created outside either context will run on the &quot;best possible&quot;
+# device. For example, if you have a GPU and a CPU available, and the operation
+# has a GPU implementation, TensorFlow will choose the GPU.
+weights = tf.random_normal(...)
+
+with tf.device(&quot;/device:CPU:0&quot;):
+  # Operations created in this context will be pinned to the CPU.
+  img = tf.decode_jpeg(tf.read_file(&quot;img.jpg&quot;))
+
+with tf.device(&quot;/device:GPU:0&quot;):
+  # Operations created in this context will be pinned to the GPU.
+  result = tf.matmul(weights, img)
+</code></pre><p>如果您正在部署典型的分布式TensorFlow 配置，您可以指定作业名称和任务ID以放置变量 参数服务器作业（<code>&quot;/job:ps&quot;</code>）中的任务以及其他操作<br>工作任务（<code>&quot;/job:worker&quot;</code>）中的任务：</p>
+<pre><code>with tf.device(&quot;/job:ps/task:0&quot;):
+  weights_1 = tf.Variable(tf.truncated_normal([784, 100]))
+  biases_1 = tf.Variable(tf.zeroes([100]))
+
+with tf.device(&quot;/job:ps/task:1&quot;):
+  weights_2 = tf.Variable(tf.truncated_normal([100, 10]))
+  biases_2 = tf.Variable(tf.zeroes([10]))
+
+with tf.device(&quot;/job:worker&quot;):
+  layer_1 = tf.matmul(train_batch, weights_1) + biases_1
+  layer_2 = tf.matmul(train_batch, weights_2) + biases_2
+</code></pre><p><code>tf.device</code>为您提供了很大的灵活性，可以为个人选择展示位置 操作或TensorFlow图形的广泛区域。在很多情况下，有<br>简单的启发式运作良好。例如， <code>tf.train.replica_device_setter</code> API可与<code>tf.device</code>配合使用<br>数据并行分布式培训的操作。例如， 以下代码片段显示了<code>tf.train.replica_device_setter</code>的应用<br><code>tf.Variable</code>对象和其他操作的不同放置策略：</p>
+<pre><code>with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
+  # tf.Variable objects are, by default, placed on tasks in &quot;/job:ps&quot; in a
+  # round-robin fashion.
+  w_0 = tf.Variable(...)  # placed on &quot;/job:ps/task:0&quot;
+  b_0 = tf.Variable(...)  # placed on &quot;/job:ps/task:1&quot;
+  w_1 = tf.Variable(...)  # placed on &quot;/job:ps/task:2&quot;
+  b_1 = tf.Variable(...)  # placed on &quot;/job:ps/task:0&quot;
+
+  input_data = tf.placeholder(tf.float32)     # placed on &quot;/job:worker&quot;
+  layer_0 = tf.matmul(input_data, w_0) + b_0  # placed on &quot;/job:worker&quot;
+  layer_1 = tf.matmul(layer_0, w_1) + b_1     # placed on &quot;/job:worker&quot;
+</code></pre><h2><span id="张量类物体">张量类物体</span></h2><p>许多TensorFlow操作将一个或多个<code>tf.Tensor</code>对象作为参数。<br>例如，<code>tf.matmul</code>带有两个<code>tf.Tensor</code>物体，<code>tf.add_n</code>带 <code>n</code> <code>tf.Tensor</code>物品清单。为了方便，这些功能将被接受<br>一个张量样物体代替<code>tf.Tensor</code>，并将其隐式转换 到<code>tf.Tensor</code>使用<code>tf.convert_to_tensor</code>方法。张量类物体<br>包括以下类型的元素：</p>
+<p><code>tf.Tensor</code> <code>tf.Variable</code> <code>numpy.ndarray</code> <code>list</code>（以及张量状物体列表）<br>标量Python类型：<code>bool</code>，<code>float</code>，<code>int</code>，<code>str</code></p>
+<p>您可以使用注册额外张量类型 <code>tf.register_tensor_conversion_function</code>。</p>
+<p>注意：默认情况下，TensorFlow会在每次使用时创建一个新的<code>tf.Tensor</code> 相同的张量状物体。如果张量状物体很大（例如a<br><code>numpy.ndarray</code>包含一组训练实例），您可以多次使用它 次，你可能会用完内存。要避免这种情况，请手动调用<br><code>tf.convert_to_tensor</code>上的张量状物体一次并使用返回 <code>tf.Tensor</code>来代替。</p>
+<h2><span id="执行tfsession中的图表">执行<code>tf.Session</code>中的图表</span></h2><p>TensorFlow使用<code>tf.Session</code>类来表示连接 客户端程序—通常是一个Python程序，虽然有一个类似的界面 可用其他语言—和C<br>++运行库。一个<code>tf.Session</code>对象 提供对本地机器中的设备以及使用该设备的远程设备的访问 分布式TensorFlow运行时。它也缓存关于你的信息<br><code>tf.Graph</code>，以便您可以高效地运行相同的计算多次。</p>
+<h3><span id="创建一个tfsession">创建一个<code>tf.Session</code></span></h3><p>如果您使用低级别的TensorFlow API，则可以创建<code>tf.Session</code> 对于当前的默认图形如下：</p>
+<pre><code># Create a default in-process session.
+with tf.Session() as sess:
+  # ...
+
+# Create a remote session.
+with tf.Session(&quot;grpc://example.org:2222&quot;):
+  # ...
+</code></pre><p>由于<code>tf.Session</code>拥有物理资源（如GPU和GPU） 网络连接），通常用作上下文管理器（在<code>with</code>中） 块），当你退出块时自动关闭会话。它是<br>也可以在不使用<code>with</code>模块的情况下创建一个会话，但应该这样做 清楚地呼叫<code>tf.Session.close</code>时，请将其释放 资源。</p>
+<p>注：更高级的API，如<code>tf.train.MonitoredTrainingSession</code>或<br><code>tf.estimator.Estimator</code>将为您创建和管理<code>tf.Session</code>。这些<br>API接受可选的<code>target</code>和<code>config</code>参数（直接或者作为 <code>tf.estimator.RunConfig</code>物体的一部分），其含义与<br>如下面所描述的。</p>
+<p><code>tf.Session.__init__</code>接受三个可选参数：</p>
+<p><code>target</code>。如果这个参数是空的（默认），会话将会   只能在本地机器上使用设备。不过，你也可以指定一个   <code>grpc://</code><br>URL指定一个TensorFlow服务器的地址，它给出了   会话访问此服务器控制的机器上的所有设备。看到<br><code>tf.train.Server</code>了解如何创建TensorFlow的详细信息   服务器。例如，在常见的图形间复制中<br><code>tf.Session</code>与<code>tf.train.Server</code>相同   作为客户进行处理。分布式的TensorFlow   部署指南介绍了其他常见场景。<br><code>graph</code>。默认情况下，新的<code>tf.Session</code>将被绑定到—并且只能使用   在—当前的默认图中运行操作。如果你使用多个<br>在您的程序中的图形（请参阅多个编程   图表更多细节），你可以指定   一个显式的<code>tf.Graph</code>，当你构建会话。<br><code>config</code>。这个参数允许你指定一个<code>tf.ConfigProto</code>   控制会话的行为。例如，一些配置   选项包括：<br><code>allow_soft_placement</code>。将其设置为<code>True</code>以启用“软”设备     放置算法，忽略尝试的<code>tf.device</code>注释<br>将仅CPU操作放置在GPU设备上，并将其放置在CPU上     代替。 <code>cluster_def</code>。当使用分布式TensorFlow时，这个选项允许你<br>指定在计算中使用哪些机器，并提供映射     作业名称，任务索引和网络地址之间。看到<br><code>tf.train.ClusterSpec.as_cluster_def</code>的详细信息。<br><code>graph_options.optimizer_options</code>。提供对优化的控制     TensorFlow在执行之前在您的图表上执行。<br><code>gpu_options.allow_growth</code>。将其设置为<code>True</code>以更改GPU内存     分配器，以便逐渐增加分配的内存量，<br>而不是在启动时分配大部分内存。</p>
+<h3><span id="使用tfsessionrun执行操作">使用<code>tf.Session.run</code>执行操作</span></h3><p><code>tf.Session.run</code>方法是运行<code>tf.Operation</code>的主要机制<br>或评估<code>tf.Tensor</code>。您可以通过一个或多个<code>tf.Operation</code>或<br><code>tf.Tensor</code>对象到<code>tf.Session.run</code>，TensorFlow将执行 计算结果所需的操作。</p>
+<p><code>tf.Session.run</code>要求您指定一个确定的提取列表 返回值，可能是<code>tf.Operation</code>，<code>tf.Tensor</code>或<br>像<code>tf.Variable</code>那样的张量型。这些提取 确定整个<code>tf.Graph</code>的哪个子图必须执行 产生结果：这是包含所有名为in的操作的子图<br>读取列表以及所有其输出用于计算值的操作 的取货。例如，下面的代码片段显示了如何不同 <code>tf.Session.run</code>的参数会导致不同的子图被执行：</p>
+<pre><code>x = tf.constant([[37.0, -23.0], [1.0, 4.0]])
+w = tf.Variable(tf.random_uniform([2, 2]))
+y = tf.matmul(x, w)
+output = tf.nn.softmax(y)
+init_op = w.initializer
+
+with tf.Session() as sess:
+  # Run the initializer on `w`.
+  sess.run(init_op)
+
+  # Evaluate `output`. `sess.run(output)` will return a NumPy array containing
+  # the result of the computation.
+  print(sess.run(output))
+
+  # Evaluate `y` and `output`. Note that `y` will only be computed once, and its
+  # result used both to return `y_val` and as an input to the `tf.nn.softmax()`
+  # op. Both `y_val` and `output_val` will be NumPy arrays.
+  y_val, output_val = sess.run([y, output])
+</code></pre><p><code>tf.Session.run</code>也可以选择一个饲料字典，这是一个 从<code>tf.Tensor</code>物体（通常为<code>tf.placeholder</code>张量）映射到<br>值（通常是Python标量，列表或NumPy数组） 代替执行中的张量。例如：</p>
+<pre><code># Define a placeholder that expects a vector of three floating-point values,
+# and a computation that depends on it.
+x = tf.placeholder(tf.float32, shape=[3])
+y = tf.square(x)
+
+with tf.Session() as sess:
+  # Feeding a value changes the result that is returned when you evaluate `y`.
+  print(sess.run(y, {x: [1.0, 2.0, 3.0]})  # =&gt; &quot;[1.0, 4.0, 9.0]&quot;
+  print(sess.run(y, {x: [0.0, 0.0, 5.0]})  # =&gt; &quot;[0.0, 0.0, 25.0]&quot;
+
+  # Raises `tf.errors.InvalidArgumentError`, because you must feed a value for
+  # a `tf.placeholder()` when evaluating a tensor that depends on it.
+  sess.run(y)
+
+  # Raises `ValueError`, because the shape of `37.0` does not match the shape
+  # of placeholder `x`.
+  sess.run(y, {x: 37.0})
+</code></pre><p><code>tf.Session.run</code>也支持可选的<code>options</code>参数 指定关于呼叫的选项，以及可选的<code>run_metadata</code>参数<br>使您能够收集有关执行的元数据。例如，你可以使用 这些选项一起收集有关执行的跟踪信息：</p>
+<pre><code>y = tf.matmul([[37.0, -23.0], [1.0, 4.0]], tf.random_uniform([2, 2]))
+
+with tf.Session() as sess:
+  # Define options for the `sess.run()` call.
+  options = tf.RunOptions()
+  options.output_partition_graphs = True
+  options.trace_level = tf.RunOptions.FULL_TRACE
+
+  # Define a container for the returned metadata.
+  metadata = tf.RunMetadata()
+
+  sess.run(y, options=options, run_metadata=metadata)
+
+  # Print the subgraphs that executed on each device.
+  print(metadata.partition_graphs)
+
+  # Print the timings of each operation that executed.
+  print(metadata.step_stats)
+</code></pre><h2><span id="可视化你的图形">可视化你的图形</span></h2><p>TensorFlow包含的工具可以帮助您理解图表中的代码。 图表可视化器是TensorBoard的一个组件， 在浏览器中可视化结构。最简单的方法来创建一个<br>可视化是在创建<code>tf.Graph</code>时通过 <code>tf.summary.FileWriter</code>：</p>
+<pre><code># Build your graph.
+x = tf.constant([[37.0, -23.0], [1.0, 4.0]])
+w = tf.Variable(tf.random_uniform([2, 2]))
+y = tf.matmul(x, w)
+# ...
+loss = ...
+train_op = tf.train.AdagradOptimizer(0.01).minimize(loss)
+
+with tf.Session() as sess:
+  # `sess.graph` provides access to the graph used in a `tf.Session`.
+  writer = tf.summary.FileWriter(&quot;/tmp/log/...&quot;, sess.graph)
+
+  # Perform your computation...
+  for i in range(1000):
+    sess.run(train_op)
+    # ...
+
+  writer.close()
+</code></pre><p>注意：如果您使用<code>tf.estimator.Estimator</code>，图表（和任何 摘要）将自动记录到您指定的<code>model_dir</code> 当创建估计器。</p>
+<p>然后可以打开<code>tensorboard</code>中的日志，导航到“图形”选项卡，然后 看到图形结构的高级可视化。请注意，一个典型的 张量流图 -<br>特别是自动计算的训练图 渐变—有太多的节点，一次可视化。图形可视化工具 使用名称范围将相关操作分组为“超级”节点。您可以<br>点击这些超级节点上的橙色“+”按钮来展开 子图里面。</p>
+<p><img src="https://www.tensorflow.org/images/mnist_deep.png" alt=""></p>
+<p>有关使用TensorFlow应用程序可视化的更多信息 TensorBoard，请参阅TensorBoard教程。</p>
+<h2><span id="用多个图表编程">用多个图表编程</span></h2><p>注意：在训练模型时，组织代码的常用方法是使用一个 用于训练模型的图表，以及用于评估或执行的单独图形 推理与训练有素的模型。在许多情况下，推理图将是<br>与训练图不同：例如，丢失和丢失等技术 批量标准化在每种情况下使用不同的操作。而且，通过<br>如<code>tf.train.Saver</code>的默认实用程序使用<code>tf.Variable</code>对象的名称 （其名称基于<code>tf.Operation</code>）来识别每一个<br>在保存的检查点中变量。用这种方式编程时，可以使用 完全分离Python进程来构建和执行图，或者你可以 在同一个过程中使用多个图。本节介绍如何使用<br>在同一个过程中的多个图表。</p>
+<p>如上所述，TensorFlow提供了一个隐式传递的“默认图” 到同一上下文中的所有API函数。对于许多应用程序，一个图形<br>足够了。但是，TensorFlow也提供了操作的方法 默认图形，这在更高级的用例中可能是有用的。例如：</p>
+<p><code>tf.Graph</code>定义<code>tf.Operation</code>对象的名称空间：每个对象   在单个图表中操作必须具有唯一的名称。 TensorFlow将会<br>通过附加<code>&quot;_1&quot;</code>，<code>&quot;_2&quot;</code>等来“独立”操作的名称   他们的名字，如果请求的名字已经被采取。明确使用多个   创建的图表让您更多地控制给每个名称<br>操作。 默认图表存储有关<code>tf.Operation</code>和<code>tf.Tensor</code>的信息   <code>tf.Graph</code>曾被添加到它。如果你的程序创建一个大数字<br>没有连接的子图，使用不同的子图可能更有效率   <code>tf.Graph</code>构建每个子图，这样无关的状态可以被垃圾回收   集。</p>
+<p>您可以使用默认的图形安装不同的<code>tf.Graph.as_default</code> <code>tf.get_default_graph</code>上下文管理器：</p>
+<pre><code>g_1 = tf.Graph()
+with g_1.as_default():
+  # Operations created in this scope will be added to `g_1`.
+  c = tf.constant(&quot;Node in g_1&quot;)
+
+  # Sessions created in this scope will run operations from `g_1`.
+  sess_1 = tf.Session()
+
+g_2 = tf.Graph()
+with g_2.as_default():
+  # Operations created in this scope will be added to `g_2`.
+  d = tf.constant(&quot;Node in g_2&quot;)
+
+# Alternatively, you can pass a graph when constructing a `tf.Session`:
+# `sess_2` will run operations from `g_2`.
+sess_2 = tf.Session(graph=g_2)
+
+assert c.graph is g_1
+assert sess_1.graph is g_1
+
+assert d.graph is g_2
+assert sess_2.graph is g_2
+</code></pre><p>要检查当前的默认图形，请拨打<code>tf.Graph</code> 返回一个CXJ743-HDK-53L对象：</p>
+<pre><code># Print all of the operations in the default graph.
+g = tf.get_default_graph()
+print(g.get_operations())
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/graphs/" data-title="图表和会话 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/ios_build/" title="在iOS上构建TensorFlow">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在iOS上构建TensorFlow</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/graph_viz/"  title="TensorBoard：图形可视化">
+ <strong>下一篇：</strong><br/> 
+ <span>TensorBoard：图形可视化
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">图表和会话</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">为什么使用数据流图？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">什么是tf.Graph？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">建立一个tf.Graph</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">命名操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">将操作放置在不同的设备上</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">张量类物体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">执行tf.Session中的图表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.1.</span> <span class="toc-text">创建一个tf.Session</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.2.</span> <span class="toc-text">使用tf.Session.run执行操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.8.</span> <span class="toc-text">可视化你的图形</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.9.</span> <span class="toc-text">用多个图表编程</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

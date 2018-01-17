@@ -112,7 +112,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-8-listv-into-mapk-v/" title="Java 8列表V到地图K，V中" itemprop="url">Java 8列表V到地图K，V中</a>
+      <a href="/2018/01/14/read-environment-variables-in-node-js/" title="在Node js中读取环境变量" itemprop="url">在Node js中读取环境变量</a>
   </h1>
   <p class="article-author">By
        
@@ -125,36 +125,13 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>我想使用Java 8的流和lambdas将对象列表翻译成Map。</p>
-<p>这是我在Java 7及以下版本中编写的。</p>
-<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
-        final Map&lt;String, Choice&gt; hashMap = new HashMap&lt;&gt;();
-        for (final Choice choice : choices) {
-            hashMap.put(choice.getName(), choice);
-        }
-        return hashMap;
-}
-</code></pre><p>使用Java 8和Guava我可以轻松完成这个任务，但是我想知道如何在没有Guava的情况下做到这一点。</p>
-<p>在番石榴：</p>
-<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
-    return Maps.uniqueIndex(choices, new Function&lt;Choice, String&gt;() {
-
-        @Override
-        public String apply(final Choice input) {
-            return input.getName();
-        }
-    });
-}
-</code></pre><p>用Java 8 lambda表达番石榴。</p>
-<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
-    return Maps.uniqueIndex(choices, c -&gt; c.getName());
-}
-</code></pre>
+        <p>有没有一种方法可以读取Node.js代码中的环境变量？</p>
+<p>像例如Python的<code>os.environ [&#39;HOME&#39;]</code>。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-8-listv-into-mapk-v/#more">Read More</a>
+            <a href="/2018/01/14/read-environment-variables-in-node-js/#more">Read More</a>
           
        </p>
     </div>
@@ -164,7 +141,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -204,7 +181,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/java-3-dots-in-parameters/" title="Java，参数中有3个点" itemprop="url">Java，参数中有3个点</a>
+      <a href="/2018/01/14/reading-a-plain-text-file-in-java/" title="用Java读取纯文本文件" itemprop="url">用Java读取纯文本文件</a>
   </h1>
   <p class="article-author">By
        
@@ -217,16 +194,13 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>以下方法中的3个点是什么意思？</p>
-<pre><code>public void myMethod(String... strings){
-    // method body
-}
-</code></pre><p>
+        <p>看来有不同的方式来读取和写入Java文件的数据。</p>
+<p>我想从文件中读取ASCII数据。什么是可能的方式和它们的区别？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/java-3-dots-in-parameters/#more">Read More</a>
+            <a href="/2018/01/14/reading-a-plain-text-file-in-java/#more">Read More</a>
           
        </p>
     </div>
@@ -265,7 +239,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/iterating-through-a-collection-avoiding-concurrentmodificationexception-when-re/" title="迭代集合，避免在循环中移除时出现ConcurrentModificationException异常" itemprop="url">迭代集合，避免在循环中移除时出现ConcurrentModificationException异常</a>
+      <a href="/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/" title="为什么在Python 3中“1000000000000000（1000000000000001）”这么快？" itemprop="url">为什么在Python 3中“1000000000000000（1000000000000001）”这么快？</a>
   </h1>
   <p class="article-author">By
        
@@ -278,124 +252,30 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>我们都知道你不能这样做：</p>
-<pre><code>for (Object i : l) {
-    if (condition(i)) {
-        l.remove(i);
-    }
-}
-</code></pre><p>ConcurrentModificationException `等…这显然有效，但并不总是。以下是一些特定的代码：</p>
-<pre><code>public static void main(String[] args) {
-    Collection&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
-
-    for (int i=0; i &lt; 10; ++i) {
-        l.add(new Integer(4));
-        l.add(new Integer(5));
-        l.add(new Integer(6));
-    }
-
-    for (Integer i : l) {
-        if (i.intValue() == 5) {
-            l.remove(i);
-        }
-    }
-
-    System.out.println(l);
-}
-</code></pre><p>这当然会导致：</p>
-<pre><code>Exception in thread &quot;main&quot; java.util.ConcurrentModificationException
-</code></pre><p>即使多个线程没有这样做……无论如何。</p>
-<p>这个问题最好的解决办法是什么？我怎样才能从循环中删除一个项目而不会抛出这个异常？</p>
-<p>我也在这里使用一个任意的<code>Collection</code>，不一定是一个<code>ArrayList</code>，所以你不能依赖<code>get</code>。<code>p&gt; &lt;!-- more --&gt;
-Iterator.remove（）</code>是安全的，你可以像这样使用它：</p>
-<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
-
-// This is a clever way to create the iterator and call iterator.hasNext() like
-// you would do in a while-loop. It would be the same as doing:
-//     Iterator&lt;String&gt; iterator = list.iterator();
-//     while (iterator.hasNext()) {
-for (Iterator&lt;String&gt; iterator = list.iterator(); iterator.hasNext();) {
-    String string = iterator.next();
-    if (string.isEmpty()) {
-        // Remove the current element from the iterator and the list.
-        iterator.remove();
-    }
-}
-</code></pre><p>请注意，<code>Iterator.remove</code>是在迭代过程中修改集合的唯一安全方法。如果在迭代过程中以其他方式修改了底层集合，则行为是未指定的。</p>
-<p>来源：</p>
-<p><a href="http://docs.oracle.com/javase/tutorial/collections/interfaces/collection.html" target="_blank" rel="noopener"> http://docs.oracle.com/javase/tutorial/集合/接口/ collection.html</a></p>
+        <p>据我所知，<code>range（）</code>函数实际上是<a href="“https://docs.python.org/3/library/stdtypes.html#typesseq-
+range"> Python<br>3中的一个对象类型</a>，即时生成其内容，类似于生成器。</p>
+<p>如果是这样的话，我会预料到下面这一行会花费过多的时间，因为为了确定是否在这个范围内，需要生成一个四十亿个值：</p>
+<pre><code>1000000000000000 in range(1000000000000001)
+</code></pre><p>此外：似乎不管我添加了多少个零，计算或多或少需要相同的时间量（基本上是瞬时的）。</p>
+<p>我也尝试过这样的事情，但是计算仍然几乎是即时的：</p>
+<pre><code>1000000000000000000000 in range(0,1000000000000000000001,10) # count by tens
+</code></pre><p>如果我试图实现我自己的范围功能，结果是不是很好！</p>
+<pre><code>def my_crappy_range(N):
+    i = 0
+    while i &lt; N:
+        yield i
+        i += 1
+    return
+</code></pre><p><code></code> range（）`是什么使得它如此之快？</p>
 <hr>
-<p>同样，如果你有一个<code>ListIterator</code>并且想要添加_项，你可以使用<a href="“http://docs.oracle.com/javase"> <code>ListIterator＃add</code></a>，出于同样的原因，您可以使用<code>Iterator＃remove</code> - 它被设计为允许它。</p>
-<p>愚蠢的我：</p>
-<pre><code>Iterator&lt;Integer&gt; iter = l.iterator();
-while (iter.hasNext()) {
-    if (iter.next().intValue() == 5) {
-        iter.remove();
-    }
-}
-</code></pre><p>我认为，由于foreach循环是用于迭代的语法糖，所以使用迭代器将无济于事……但它为您提供了<code>.remove（）</code>功能。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/is-null-check-needed-before-calling-instanceof/" title="在调用instanceof之前是否需要空的检查？" itemprop="url">在调用instanceof之前是否需要空的检查？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>请问<code>null instanceof SomeClass</code>返回<code>false</code>或者抛出一个<code>NullPointerException</code>？</p>
+<p>编辑：事实证明，这是一个比我预想的更细致的话题 - 在<code>range（）</code>优化的背后似乎有点历史。</p>
+<p><a href="https://stackoverflow.com/a/30081318/2437514" target="_blank" rel="noopener"> Martijn<br>Pieters的答案</a>是因为它的完整性而被选中的，但也可以参考<a href="“https：//">abarnert的第一个答案</a>，以便很好地讨论在Python中<code>range</code>是一个完整的 <em>序列</em> 3，关于<code>__的潜在不一致性的一些信息/警告包含Python实现中的__</code>函数优化。 <a href="https://stackoverflow.com/a/30088140/2437514" target="_blank" rel="noopener">abarnert的其他答案</a>更详细一些，并提供了有关Python<br>3优化背后的历史感兴趣的链接（缺乏Python 2中<code>xrange</code>的优化）。<br><a href="https://stackoverflow.com/a/30081467/2437514" target="_blank" rel="noopener">通过戳</a>和<a href="https://stackoverflow.com/a/30081470/2437514" target="_blank" rel="noopener">通过wim</a>为有兴趣的人提供相关的C源代码和解释。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/is-null-check-needed-before-calling-instanceof/#more">Read More</a>
+            <a href="/2018/01/14/why-is-1000000000000000-in-range1000000000000001-so-fast-in-python-3/#more">Read More</a>
           
        </p>
     </div>
@@ -405,7 +285,7 @@ while (iter.hasNext()) {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -434,7 +314,7 @@ while (iter.hasNext()) {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/is-listdog-a-subclass-of-listanimal-why-are-java-generics-not-implicitly-po/" title="List Dog是List Animal的一个子类吗？为什么Java泛型不是隐含多态的？" itemprop="url">List Dog是List Animal的一个子类吗？为什么Java泛型不是隐含多态的？</a>
+      <a href="/2018/01/14/upgrading-all-packages-with-pip/" title="用pip升级所有的软件包" itemprop="url">用pip升级所有的软件包</a>
   </h1>
   <p class="article-author">By
        
@@ -447,18 +327,13 @@ while (iter.hasNext()) {
 </header>
     <div class="article-content">
         
-        <p>我对Java泛型如何处理继承/多态性有些困惑。</p>
-<p>假设有以下层次结构 -</p>
-<p><strong>动物</strong> （家长）</p>
-<p>狗<strong> - </strong>猫** （儿童）</p>
-<p>假设我有一个方法<code>doSomething（List＆lt; Animal＆gt; animals）</code>。根据所有继承和多态的规则，我假定<code>List＆lt;
-Dog＆gt;</code> <em>是<code>List＆lt; Animal＆gt;</code>列表＆lt; Cat＆gt; ` </em>是<code>List＆lt; Animal＆gt;</code>- 所以任何一个都可以传递给这个方法。不是这样。如果我想要实现这个行为，我必须明确地告诉方法通过说 doSomething（List  &lt;？extends<br>Animal＆gt; animals `）接受动物子集的列表。</p>
-<p>我明白这是Java的行为。我的问题是 <em>为什么</em> ？为什么多态一般是隐含的，但是当涉及泛型时，必须指定它？</p>
+        <p>是否可以使用 **<a href="https://pypi.python.org/pypi/pip" target="_blank" rel="noopener"> <code>pip</code>来升级所有Python软件包&gt; </a></p>
+<p>请注意，在官方问题跟踪器上有<a href="https://github.com/pypa/pip/issues/59" target="_blank" rel="noopener">功能请求</a>。 / p&gt;
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/is-listdog-a-subclass-of-listanimal-why-are-java-generics-not-implicitly-po/#more">Read More</a>
+            <a href="/2018/01/14/upgrading-all-packages-with-pip/#more">Read More</a>
           
        </p>
     </div>
@@ -468,7 +343,7 @@ Dog＆gt;</code> <em>是<code>List＆lt; Animal＆gt;</code>列表＆lt; Cat＆g
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -497,7 +372,7 @@ Dog＆gt;</code> <em>是<code>List＆lt; Animal＆gt;</code>列表＆lt; Cat＆g
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/interview-can-we-instantiate-abstract-class/" title="采访：我们可以实例化抽象类吗？" itemprop="url">采访：我们可以实例化抽象类吗？</a>
+      <a href="/2018/01/14/differences-between-distribute-distutils-setuptools-and-distutils2/" title="分发，distutils，setuptools和distutils2之间的区别？" itemprop="url">分发，distutils，setuptools和distutils2之间的区别？</a>
   </h1>
   <p class="article-author">By
        
@@ -510,26 +385,18 @@ Dog＆gt;</code> <em>是<code>List＆lt; Animal＆gt;</code>列表＆lt; Cat＆g
 </header>
     <div class="article-content">
         
-        <p>面试官问 - 我们可以实例化一个抽象类吗？我说，不，他告诉我 - 错了，我们可以。</p>
-<p>我在这方面辩论了一下。然后他让我在你家里试试这个。</p>
-<pre><code>abstract class my {
-    public void mymethod() {
-        System.out.print(&quot;Abstract&quot;);
-    }
-}
-
-class poly {
-    public static void main(String a[]) {
-        my m = new my() {};
-        m.mymethod();
-    }
-}
-</code></pre><p>在这里，我正在创建我的类的实例并调用抽象类的方法。任何人都可以向我解释这个吗？我在采访中是否真的错了？</p>
+        <h2 id="The-Situation"><a href="#The-Situation" class="headerlink" title="The Situation"></a>The Situation</h2><p>我正尝试将一个开源库移植到Python 3.（<a href="http://sympy.org/" target="_blank" rel="noopener"> SymPy </a>，如果有人想知道的话）</p>
+<p>因此，当为Python 3构建时，我需要自动运行<code>2to3</code>。为此，我需要使用<code>distribute</code>。因此，我需要移植当前的系统，其中（根据doctest）是<code>distutils</code>。</p>
+<p>结果</p>
+<h2 id="The-Problem"><a href="#The-Problem" class="headerlink" title="The Problem"></a>The Problem</h2><p>不幸的是，我不知道这些模块之间的区别是什么，distutils <code>distribution</code>，<code>setuptools</code>。文档最好是粗略的，因为它们似乎都是彼此的分支，旨在在大多数情况下（但实际上并非全部）兼容，等等。</p>
+<p>结果</p>
+<h2 id="The-Question"><a href="#The-Question" class="headerlink" title="The Question"></a>The Question</h2><p>有人能解释一下这个区别吗？**我应该用什么？什么是最现代化的解决方案？ （另外，我也很欣赏一些关于移植到<code>Distribute</code>的指南，但是这超出了问题的范围。）</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/interview-can-we-instantiate-abstract-class/#more">Read More</a>
+            <a href="/2018/01/14/differences-between-distribute-distutils-setuptools-and-distutils2/#more">Read More</a>
           
        </p>
     </div>
@@ -539,7 +406,7 @@ class poly {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -568,7 +435,7 @@ class poly {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/including-all-the-jars-in-a-directory-within-the-java-classpath/" title="将Java类路径中的所有jar包括在一个目录中" itemprop="url">将Java类路径中的所有jar包括在一个目录中</a>
+      <a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/" title="Facebook如何禁用浏览器的集成开发者工具？" itemprop="url">Facebook如何禁用浏览器的集成开发者工具？</a>
   </h1>
   <p class="article-author">By
        
@@ -581,13 +448,19 @@ class poly {
 </header>
     <div class="article-content">
         
-        <p>有没有一种方法可以将所有的jar文件包含在类路径的目录中？</p>
-<p>我正在尝试<code>java -classpath lib / *。jar :. my.package.Program</code>，它无法找到当然在这些罐子里的类文件。我是否需要将每个jar文件分别添加到类路径中？</p>
+        <p>显然，由于最近发生的诈骗事件，开发者工具被人们利用来发布垃圾邮件，甚至被用于“黑客”账户。 Facebook阻止了开发者工具，我甚至无法使用控制台。</p>
+<p><img src="“https://i.stack.imgur.com/Wiatp.png”alt" alt=""></p>
+<p>他们是怎么做到的？ <a href="https://stackoverflow.com/questions/7559409
+/disable-developer-tools" target="_blank" rel="noopener">一个堆栈溢出帖子声称这是不可能的</a>，但Facebook已经证明他们错了。</p>
+<p>只要进入Facebook并打开开发者工具，在控制台中输入一个字符，就会弹出这个警告。不管你输入什么，它都不会被执行。</p>
+<p>这怎么可能？</p>
+<p>他们甚至在控制台中阻止自动完成：</p>
+<p><img src="“https://i.stack.imgur.com/j0Zmx.png”alt" alt=""></p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/including-all-the-jars-in-a-directory-within-the-java-classpath/#more">Read More</a>
+            <a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/#more">Read More</a>
           
        </p>
     </div>
@@ -597,7 +470,7 @@ class poly {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -626,7 +499,7 @@ class poly {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/in-java-what-is-the-best-way-to-determine-the-size-of-an-object/" title="在Java中，确定对象大小的最佳方法是什么？" itemprop="url">在Java中，确定对象大小的最佳方法是什么？</a>
+      <a href="/2018/01/14/unicodeencodeerror-ascii-codec-cant-encode-character-u-xa0-in-position-20/" title="UnicodeEncodeError： ascii 编解码器不能编码字符u  xa0 在位置20：序号不在范围内（128）" itemprop="url">UnicodeEncodeError： ascii 编解码器不能编码字符u  xa0 在位置20：序号不在范围内（128）</a>
   </h1>
   <p class="article-author">By
        
@@ -639,13 +512,24 @@ class poly {
 </header>
     <div class="article-content">
         
-        <p>例如，假设我有一个应用程序可以读取一堆数据行的CSV文件。我根据数据类型给用户一个行数的总结，但是我想确保我不读入太多的数据行，并导致<code>OutOfMemoryError</code>。每一行都翻译成一个对象。有没有一种简单的方法来以编程方式找出该对象的大小？是否有一个引用来定义一个<code>VM</code>的大型基本类型和对象引用？</p>
-<p>现在，我拥有读取 <strong>32,000行</strong> 的代码，但是我还想让代码读取尽可能多的行，直到我使用 **32MB记忆。也许这是一个不同的问题，但我仍然想知道。</p>
+        <p>我在处理来自不同网页（位于不同网站）的文本中的Unicode字符时遇到问题。我正在使用BeautifulSoup。</p>
+<p>问题是这个错误并不总是可重现的。它有时可以和一些页面一起工作，有时也可以通过抛出一个<code>UnicodeEncodeError</code>来实现。我已经尝试过所有我能想到的事情，但是我还没有发现任何能够一致工作的东西，而没有抛出某种与Unicode相关的错误。</p>
+<p>导致问题的代码段之一如下所示：</p>
+<pre><code>agent_telno = agent.find(&apos;div&apos;, &apos;agent_contact_number&apos;)
+agent_telno = &apos;&apos; if agent_telno is None else agent_telno.contents[0]
+p.agent_info = str(agent_contact + &apos; &apos; + agent_telno).strip()
+</code></pre><p>这是上面的片段运行时在SOME字符串上生成的堆栈跟踪：</p>
+<pre><code>Traceback (most recent call last):
+  File &quot;foobar.py&quot;, line 792, in &lt;module&gt;
+    p.agent_info = str(agent_contact + &apos; &apos; + agent_telno).strip()
+UnicodeEncodeError: &apos;ascii&apos; codec can&apos;t encode character u&apos;\xa0&apos; in position 20: ordinal not in range(128)
+</code></pre><p>我怀疑这是因为某些网页（或更具体地说，来自某些网站的网页）可能会被编码，而其他网页可能未经编码。所有网站都设在英国，并提供英国消费的数据 -<br>所以不存在与内部化或处理用英文以外的其他文字相关的问题。</p>
+<p>有没有人有任何想法如何解决这个问题，我可以一致解决这个问题？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/in-java-what-is-the-best-way-to-determine-the-size-of-an-object/#more">Read More</a>
+            <a href="/2018/01/14/unicodeencodeerror-ascii-codec-cant-encode-character-u-xa0-in-position-20/#more">Read More</a>
           
        </p>
     </div>
@@ -655,7 +539,7 @@ class poly {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -684,7 +568,7 @@ class poly {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/implements-vs-extends-when-to-use-whats-the-difference/" title="实现vs扩展：何时使用？有什么不同？" itemprop="url">实现vs扩展：何时使用？有什么不同？</a>
+      <a href="/2018/01/14/how-does-data-binding-work-in-angularjs/" title="数据绑定在AngularJS中如何工作？" itemprop="url">数据绑定在AngularJS中如何工作？</a>
   </h1>
   <p class="article-author">By
        
@@ -697,12 +581,17 @@ class poly {
 </header>
     <div class="article-content">
         
-        <p>请用简单易懂的语言解释或链接到某篇文章。</p>
+        <p>数据绑定如何在<code>AngularJS</code>框架中工作</p>
+<p>我还没有在<a href="http://angularjs.org" target="_blank" rel="noopener">他们的网站</a>上找到技术细节。当数据从视图传播到模型时，它是如何工作的或多或少都很清楚。但是，AngularJS如何在没有setter和getters的情况下追踪模型属性的变化？</p>
+<p>我发现有可能做这项工作的<a href="https://stackoverflow.com/questions/1029241
+/javascript-object-watch-for-all-browsers" target="_blank" rel="noopener"> JavaScript观察者</a>。但是，它们不支持<a href="http://en.wikipedia.org/wiki/Internet_Explorer_6" target="_blank" rel="noopener"> Internet Explorer 6</a>和<a href="“http：//"> Internet Explorer 7</a>。那么，AngularJS如何知道我改变了以下内容，并在视图上反映了这种变化？</p>
+<pre><code>myobject.myproperty=&quot;new value&quot;;
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/implements-vs-extends-when-to-use-whats-the-difference/#more">Read More</a>
+            <a href="/2018/01/14/how-does-data-binding-work-in-angularjs/#more">Read More</a>
           
        </p>
     </div>
@@ -712,7 +601,7 @@ class poly {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -741,7 +630,7 @@ class poly {
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/illegalargumentexception-or-nullpointerexception-for-a-null-parameter/" title="对于null参数，IllegalArgumentException或NullPointerException？ [关闭]" itemprop="url">对于null参数，IllegalArgumentException或NullPointerException？ [关闭]</a>
+      <a href="/2018/01/14/how-does-javascript-prototype-work/" title="JavaScript  prototype如何工作？" itemprop="url">JavaScript  prototype如何工作？</a>
   </h1>
   <p class="article-author">By
        
@@ -754,12 +643,22 @@ class poly {
 </header>
     <div class="article-content">
         
-        <p>对于一个属性我有一个简单的setter方法，<code>null</code>不适合这个特定的属性。我一直在这种情况下被撕毁：我应该抛出一个<a href="http://docs.oracle.com/javase/7/docs/api/java/lang/IllegalArgumentException.html" target="_blank" rel="noopener"> <code>IllegalArgumentException</code></a>或者<a href="“http://docs.oracle.com/javase/7/docs/api/java/lang/NullPointerException.html”rel">&lt;代码&gt;的NullPointerException</a>？从javadocs，这两个看起来都合适。有一种被理解的标准吗？或者，这只是你应该做的任何事情之一，而且都是正确的？</p>
+        <p>我并不是那么喜欢动态编程语言，但是我已经写下了自己的JavaScript代码。我从来没有真正理解这个基于原型的编程，有没有人知道这是如何工作的？</p>
+<pre><code>var obj = new Object(); // not a functional object
+obj.prototype.test = function() { alert(&apos;Hello?&apos;); }; // this is wrong!
+
+function MyObject() {} // a first class functional object
+MyObject.prototype.test = function() { alert(&apos;OK&apos;); } // OK
+</code></pre><p>我记得曾经跟人们讨论过很多次（我不太确定自己在做什么），但据我所知，没有一个班级的概念。这只是一个对象，这些对象的实例是原始的克隆，对吧？</p>
+<p>但是，在JavaScript中这个<code>.prototype</code>属性的确切目的是什么呢？它与实例化对象有什么关系？</p>
+<hr>
+<h3 id="Edit"><a href="#Edit" class="headerlink" title="Edit"></a>Edit</h3><p>这些<a href="http://ejohn.org/apps/learn/#64" target="_blank" rel="noopener">幻灯片</a>的确帮助我们理解了这个话题。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/illegalargumentexception-or-nullpointerexception-for-a-null-parameter/#more">Read More</a>
+            <a href="/2018/01/14/how-does-javascript-prototype-work/#more">Read More</a>
           
        </p>
     </div>
@@ -769,7 +668,66 @@ class poly {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/understanding-pythons-slice-notation/" title="了解Python的切片符号" itemprop="url">了解Python的切片符号</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Python的切片符号需要一个很好的解释（引用是加号）。</p>
+<p>对我来说，这个表示法需要一点点的提高。</p>
+<p>它看起来非常强大，但是我还没有完全理解它。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/understanding-pythons-slice-notation/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -794,7 +752,7 @@ class poly {
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/105/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/104/">104</a><a class="page-number" href="/page/105/">105</a><span class="page-number current">106</span><a class="page-number" href="/page/107/">107</a><a class="page-number" href="/page/108/">108</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/107/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/105/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/104/">104</a><a class="page-number" href="/page/105/">105</a><span class="page-number current">106</span><a class="page-number" href="/page/107/">107</a><a class="page-number" href="/page/108/">108</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/107/">Next<span></span></a>
   </nav>
 
 </div>
@@ -837,15 +795,11 @@ class poly {
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -854,10 +808,6 @@ class poly {
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -870,6 +820,10 @@ class poly {
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -894,6 +848,8 @@ class poly {
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

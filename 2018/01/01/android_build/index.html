@@ -1,0 +1,586 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>在Android上构建TensorFlow | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="在Android上构建TensorFlow为了让您开始在Android上使用TensorFlow，我们将介绍两个 如何构建我们的TensorFlow移动演示并在Android上进行部署设备。首先是Android Studio，它可以让你在一个 IDE。第二个是与Bazel合作，并与ADB一起部署 线。 为什么要选择这些方法之一？ 在Android上使用TensorFlow最简单的方法就是使用And">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Android上构建TensorFlow">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/android_build/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="在Android上构建TensorFlow为了让您开始在Android上使用TensorFlow，我们将介绍两个 如何构建我们的TensorFlow移动演示并在Android上进行部署设备。首先是Android Studio，它可以让你在一个 IDE。第二个是与Bazel合作，并与ADB一起部署 线。 为什么要选择这些方法之一？ 在Android上使用TensorFlow最简单的方法就是使用And">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在Android上构建TensorFlow">
+<meta name="twitter:description" content="在Android上构建TensorFlow为了让您开始在Android上使用TensorFlow，我们将介绍两个 如何构建我们的TensorFlow移动演示并在Android上进行部署设备。首先是Android Studio，它可以让你在一个 IDE。第二个是与Bazel合作，并与ADB一起部署 线。 为什么要选择这些方法之一？ 在Android上使用TensorFlow最简单的方法就是使用And">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/android_build/" title="在Android上构建TensorFlow" itemprop="url">在Android上构建TensorFlow</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">在Android上构建TensorFlow</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">使用Android Studio构建演示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">使用Android Studio将TensorFlow添加到您的应用程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">使用Bazel构建演示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">Android示例应用程序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.1.</span> <span class="toc-text">Android推理库</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="在android上构建tensorflow">在Android上构建TensorFlow</span></h1><p>为了让您开始在Android上使用TensorFlow，我们将介绍两个 如何构建我们的TensorFlow移动演示并在Android上进行部署<br>设备。首先是Android Studio，它可以让你在一个 IDE。第二个是与Bazel合作，并与ADB一起部署 线。</p>
+<p>为什么要选择这些方法之一？</p>
+<p>在Android上使用TensorFlow最简单的方法就是使用Android Studio。如果你<br>不打算自定义您的TensorFlow构建，或者如果你想使用 Android Studio的编辑器和其他功能来构建一个应用程序，只是想添加<br>TensorFlow，我们推荐使用Android Studio。</p>
+<p>如果您正在使用自定义操作，或有其他原因来构建TensorFlow 从头开始，向下滚动并查看我们的说明 用于与Bazel一起构建演示。</p>
+<h2><span id="使用android-studio构建演示">使用Android Studio构建演示</span></h2><p>先决条件</p>
+<p>如果还没有，请做以下两件事：</p>
+<p>安装Android Studio，   遵循其网站上的指示。 从Github克隆TensorFlow存储库： git clone<br><a href="https://github.com/tensorflow/tensorflow" target="_blank" rel="noopener">https://github.com/tensorflow/tensorflow</a></p>
+<p>建造</p>
+<p>打开Android Studio，然后从欢迎屏幕中选择打开一个现有的    Android Studio项目。<br>在出现的打开文件或项目窗​​口中，导航至并选择     从克隆的<code>tensorflow/examples/android</code>目录     TensorFlow<br>Github回购。点击OK。 如果它要求您执行Gradle同步，请单击确定。 您可能还需要安装各种平台和工具<br>像“无法找到与哈希字符串’android-23’目标和类似的错误。 打开<code>build.gradle</code>文件（可以在侧面板中进入1：Project<br>并在Android下的Gradle Scripts zippy下找到它）。寻找<br><code>nativeBuildSystem</code>变量，如果它尚未设置为<code>none</code>： //设置为“bazel”，“cmake”，“makefile”，“none”<br>def nativeBuildSystem =’none’ 点击运行按钮（绿色箭头）或使用运行 - &gt;运行’android’从顶部菜单。<br>如果要求您使用“即时运行”，请单击“不进行即时运行”。 此外，你需要有一个Android设备插入开发人员选项 在此启用 点。看到这里<br>有关设置开发人员设备的更多细节。</p>
+<p>这会在您的手机上安装三个全部属于TensorFlow的应用程序 演示。有关更多信息，请参阅Android示例应用程序 他们。</p>
+<h2><span id="使用android-studio将tensorflow添加到您的应用程序">使用Android Studio将TensorFlow添加到您的应用程序</span></h2><p>要在您的Android上添加TensorFlow到您自己的应用程序，最简单的方法是添加 跟随你的Gradle构建文件的行：</p>
+<pre><code>allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+dependencies {
+    compile &apos;org.tensorflow:tensorflow-android:+&apos;
+}
+</code></pre><p>这会自动下载TensorFlow的最新稳定版本作为AAR 并将其安装到您的项目中。</p>
+<h2><span id="使用bazel构建演示">使用Bazel构建演示</span></h2><p>在Android上使用TensorFlow的另一种方法是构建一个APK 使用Bazel并将其加载到您的设备上 使用亚行。这个<br>需要一些构建系统和Android开发人员工具的知识，但我们会 引导你通过这里的基础知识。</p>
+<p>首先，按照我们的说明进行安装   源。这也将引导你通过安装Bazel和克隆   TensorFlow代码。 下载Android SDK<br>和NDK，如果你这样做   还没有他们。你至少需要版本12b的NDK，和23的   SDK。 在您的TensorFlow源的副本中，更新   工作区<br>文件与您的SDK和NDK的位置，它表示   和。 运行Bazel构建演示APK： bazel build -c opt // tensorflow /<br>examples / android：tensorflow_demo 用亚行来   将APK安装到您的设备上： adb install -r bazel-<br>bin / tensorflow / examples / android / tensorflow_demo.apk</p>
+<p>注意：一般来说，当您需要使用Bazel编译Android时 Bazel命令行上的<code>--config=android</code>，尽管在这种情况下是这样的<br>特别的例子是Android，所以你不需要它。</p>
+<p>这会在您的手机上安装三个全部属于TensorFlow的应用程序 演示。有关更多信息，请参阅Android示例应用程序 他们。</p>
+<h2><span id="android示例应用程序">Android示例应用程序</span></h2><p>该 Android示例代码是 一个项目，建立和安装三个示例应用程序，都使用 相同的底层代码。示例应用程序都从电话的视频输入 相机：</p>
+<p>TF Classify使用Inception v3模型来标记指向的对象   来自Imagenet的课程。 Imagenet只有1000个类别，<br>它错过了大多数的日常物品，包括很多你不太可能的东西   经常在现实生活中遇到，所以结果往往会相当有趣。对于<br>例如没有“人物”类别，相反，它会经常猜测它的事情   知道经常与人的照片，如安全带相关联   或氧气面罩。如果你想要自定义这个例子来识别<br>你关心的对象，你可以使用   该   TensorFlow for Poets codelab as   一个如何根据自己的数据来训练模型的例子。 TF<br>Detect使用一个多盒子模型试图绘制周围的边界框   人在摄像机的位置。这些框用注释   对每个检测结果都有信心。结果将不会完美，因为这一点<br>对象检测仍然是一个活跃的研究课题。演示也   包括光学追踪物体在帧之间移动的时间   比TensorFlow推断更频繁。这改善了用户<br>经验以来，表观帧率更快，但它也给了   能够估计哪些方框指的是帧之间的同一个对象，   对于随着时间的推移计数对象是重要 TF<br>Stylize在相机上实现实时样式的传输算法   饲料。您可以选择使用哪种样式，并使用它们在它们之间进行混合   在屏幕底部的调色板，也切换出的分辨率<br>处理去更高或更低雷斯。</p>
+<p>当您构建并安装演示程序时，您会在手机上看到三个应用程序图标， 每个演示一个。点击他们应该打开应用程序，让你<br>探索他们做什么。您可以通过点击在屏幕上启用分析统计 音量提高按钮，而他们正在运行。</p>
+<h3><span id="android推理库">Android推理库</span></h3><p>由于Android应用程序需要用Java编写，核心TensorFlow用C ++编写， TensorFlow有一个JNI库来连接两者。它的接口是针对的<br>只有在推理，所以它提供了加载图形，设置输入， 并运行模型来计算特定的输出。你可以看到满的 文档中的最小的一套方法<br>TensorFlowInferenceInterface.java</p>
+<p>演示应用程序使用这个接口，所以他们是一个好地方寻找 示例用法。您可以下载预先构建的二进制罐 在 ci.tensorflow.org。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/android_build/" data-title="在Android上构建TensorFlow | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/fling-gesture-detection-on-grid-layout/" title="在网格布局上进行手势检测">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在网格布局上进行手势检测</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/word2vec/"  title="词的矢量表示">
+ <strong>下一篇：</strong><br/> 
+ <span>词的矢量表示
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">在Android上构建TensorFlow</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">使用Android Studio构建演示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">使用Android Studio将TensorFlow添加到您的应用程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">使用Bazel构建演示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">Android示例应用程序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.1.</span> <span class="toc-text">Android推理库</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

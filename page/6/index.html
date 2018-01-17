@@ -112,44 +112,96 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/07/15/how-to-urlencode-data-for-curl-command/" title="如何为curl命令urlencode数据？" itemprop="url">如何为curl命令urlencode数据？</a>
+      <a href="/2018/07/06/mipmap-drawables-for-icons/" title="mipmap可绘制的图标" itemprop="url">mipmap可绘制的图标</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-07-15T02:18:20.000Z" itemprop="datePublished"> Published 2018-07-15</time>
+    <time datetime="2018-07-06T02:46:05.000Z" itemprop="datePublished"> Published 2018-07-06</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我正在尝试编写一个bash脚本进行测试，它需要一个参数并通过curl将其发送到网站。我需要URL的编码值，以确保特殊字符处理正确。做这个的最好方式是什么？</p>
-<p>到目前为止，这是我的基本脚本：</p>
-<pre><code>#!/bin/bash
-host=${1:?&apos;bad host&apos;}
-value=$2
-shift
-shift
-curl -v -d &quot;param=${value}&quot; http://${host}/somepath $@
-</code></pre>
+        <p>从Android 4.3开始，我们现在可以使用<code>res / mipmap</code>文件夹来存储“mipmap”图像。</p>
+<p>e.g。 Android版Chrome浏览器将其图标存储在这些文件夹中，而不是更常见的<code>res / drawable</code>文件夹。</p>
+<p><strong>这些mipmap图像如何与其他熟悉的可绘制图像不同？</strong></p>
+<p>我在清单中看到，我们使用<code>@mipmap /</code>限定符，而不是<code>@drawable /</code>，这对于资源文件夹名称是有意义的：</p>
+<pre><code>&lt;activity
+    android:name=&quot;.MipmapDemp&quot;
+    android:icon=&quot;@mipmap/ic_launcher&quot; /&gt;
+</code></pre><hr>
+<h2 id="References"><a href="#References" class="headerlink" title="References:"></a>References:</h2><p><a href="https://developer.android.com/about/versions/android-4.3.html" target="_blank" rel="noopener"> Android 4.3 API</a>文档具有以下内容：&lt; /<br>p&gt;</p>
+<blockquote>
+<p>Using a mipmap as the source for your bitmap or drawable is a simple way to<br>provide a quality image and various image scales, which can be particularly<br>useful if you expect your image to be scaled during an animation.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Android 4.2 (API level 17) added support for mipmaps in the Bitmap<br>classaAndroid swaps the mip images in your Bitmap when you’ve supplied a<br>mipmap source and have enabled setHasMipMap(). Now in Android 4.3, you can<br>enable mipmaps for a BitmapDrawable object as well, by providing a mipmap<br>asset and setting the android:mipMap attribute in a bitmap resource file or by<br>calling hasMipMap().</p>
+</blockquote>
+<p>我没有看到有什么能帮助我理解的东西？</p>
+<hr>
+<p><a href="http://developer.android.com/guide/topics/resources/drawable-
+resource.html#Bitmap" target="_blank" rel="noopener"> XML位图资源</a>有一个<code>android：mipMap</code>属性：</p>
+<blockquote>
+<p>Boolean. Enables or disables the mipmap hint. See setHasMipMap() for more<br>information. Default value is false.</p>
+</blockquote>
+<p>尽管我可以看到，但这并不适用于启动器图标。</p>
+<hr>
+<p>这个问题在Google网上论坛上提出（<a href="https://groups.google.com/forum/#!topic/android-
+developers/ZUyF0JEwibs" target="_blank" rel="noopener">资源名称的用途“ mipmap“?!</a>），Romain Guy回答说：</p>
+<blockquote>
+<p>It’s useful to provide an image at a larger resolution that would normally<br>be computed (for instance, on an mdpi device, Launcher might want the larger<br>hdpi icon to display large app shortcuts.)</p>
+</blockquote>
+<p>我觉得这几乎是有意义的，但不完全是。</p>
+<p>我仍然倾向于跟随着兰迪·苏比安诺（Randy Sugianto）的跟进：</p>
+<blockquote>
+<p>What are the advantages of this? Is there any guide how to use mipmaps,<br>probably for better launcher icons?</p>
+</blockquote>
+<hr>
+<p>当然，<a href="http://en.wikipedia.org/wiki/Mipmap" target="_blank" rel="noopener">维基百科有一个“Mipmap”</a>的页面，它指的是一个较老的技术发明于1983年，我不太相信当前的Android实现。</p>
+<hr>
+<p>我们应该将所有 <strong>应用程序图标存储在<code>res / mipmap</code>文件夹</strong> 中，以及这些mipmap图像的 <strong>准则</strong> 是什么？</p>
+<hr>
+<p>更新＃1 **</p>
+<p>这是一篇博客文章，试图解释一下。</p>
+<ul>
+<li><a href="http://programmium.wordpress.com/2014/03/20/mipmapping-for-drawables-in-android-4-3/" target="_blank" rel="noopener"> Mipmapping for drawables in Android 4.3 </a></li>
+</ul>
+<p>但是该博客文章中使用的图像显示了1个文件，其中有许多徽标。这不是我在Chrome的mipmap文件夹中看到的。</p>
+<p>Chrome的<code>mipmap-hdpi</code>文件夹包含3个图像。一个是Chrome徽标，它自己。</p>
+<p><img src="“https://i.stack.imgur.com/o75PM.png”alt" alt=""></p>
+<p>奇怪的是，这是72x72，而不是我所期望看到的48x48。</p>
+<p>也许这就是所有这一切 - 我们只需要在mipmap文件夹中保留更大的图标？</p>
+<hr>
+<p>更新＃2 **</p>
+<p>2014年10月23日的Android开发者博客帖子再次证实了为应用程序图标使用<code>mipmap</code>文件夹的想法：</p>
+<ul>
+<li><a href="http://android-developers.blogspot.com/2014/10/getting-your-apps-ready-for-nexus-6-and.html" target="_blank" rel="noopener">让您的适用于Nexus 6和Nexus 9的应用程序</a></li>
+</ul>
+<p>在谈到Nexus 6的屏幕密度时，作者写道：</p>
+<blockquote>
+<p>Itas best practice to place your app icons in mipmap- folders (not the<br>drawable- folders) because they are used at resolutions different from the<br>deviceas current density. For example, an xxxhdpi app icon can be used on<br>the launcher for an xxhdpi device.</p>
+</blockquote>
+<hr>
+<p><strong>更新＃3</strong></p>
+<p>请注意，Android Studio会在<code>mipmap ...</code>文件夹中创建<code>ic_launcher.png</code>图标，而不是<code>drawable
+...</code>文件夹Eclipse用来创建它们。</p>
+<hr>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/07/15/how-to-urlencode-data-for-curl-command/#more">Read More</a>
+            <a href="/2018/07/06/mipmap-drawables-for-icons/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a>
-  </div>
 
 </div>
 
@@ -188,372 +240,46 @@ curl -v -d &quot;param=${value}&quot; http://${host}/somepath $@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/07/15/if-strings-are-immutable-in-net-then-why-does-substring-take-on-time/" title="如果字符串在 NET中是不可变的，那么为什么子字符串需要O（n）次？" itemprop="url">如果字符串在 NET中是不可变的，那么为什么子字符串需要O（n）次？</a>
+      <a href="/2018/07/06/checking-bash-exit-status-of-several-commands-efficiently/" title="有效地检查几个命令的Bash退出状态" itemprop="url">有效地检查几个命令的Bash退出状态</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-07-15T01:51:39.000Z" itemprop="datePublished"> Published 2018-07-15</time>
+    <time datetime="2018-07-06T02:16:59.000Z" itemprop="datePublished"> Published 2018-07-06</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>假设字符串在.NET中是不可变的，我想知道为什么它们被设计为<code>string.Substring（）</code>需要O（）时间，而不是<code>O（1）</code>？</p>
-<p>即。什么是权衡，如果有的话？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/07/15/if-strings-are-immutable-in-net-then-why-does-substring-take-on-time/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
+        <p>有没有类似pipefail多个命令，像一个’尝试’的声明，但在bash内。我想要做这样的事情：</p>
+<pre><code>echo &quot;trying stuff&quot;
+try {
+    command1
+    command2
+    command3
+}
+</code></pre><p>任何时候，如果有任何命令失败，则退出并回显该命令的错误。我不想做这样的事情：</p>
+<pre><code>command1
+if [ $? -ne 0 ]; then
+    echo &quot;command1 borked it&quot;
+fi
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/07/14/unable-to-execute-dex-multiple-dex-files-define-lcom-myapp-rarray/" title="无法执行dex：多个dex文件定义Lcom / myapp / R 数组;" itemprop="url">无法执行dex：多个dex文件定义Lcom / myapp / R 数组;</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-07-14T02:47:20.000Z" itemprop="datePublished"> Published 2018-07-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>自从更新到<code>ADT</code> 14我不能再构建我的项目了。更新之前，它正在建设好。</p>
-<p>错误：</p>
-<pre><code>[2011-10-23 16:23:29 - Dex Loader] Unable to execute dex: Multiple dex files define Lcom/myapp/R$array;
-[2011-10-23 16:23:29 - myProj] Conversion to Dalvik format failed: Unable to execute dex: Multiple dex files define Lcom/myapp/R$array;
-</code></pre><p>有类似的问题已经被报道，我已经尝试了其中的建议，包括</p>
-<ul>
-<li>重新启动<code>Eclipse</code>。</li>
-<li>清理项目并重建 - 禁用“Project-＆gt;自动构建”选项，然后“清理”和“构建”项目，然后尝试运行。重置“自动生成”选项打开</li>
-<li>重新安装<code>Android</code>开发者工具</li>
-<li>重新安装Eclipse（已更新至最新版本3.7.1）</li>
-<li>创建了一个从文件系统导入的新项目</li>
-<li>从subversion创建了一个新项目。</li>
-</ul>
+command2
+if [ $? -ne 0 ]; then
+    echo &quot;command2 borked it&quot;
+fi
+</code></pre><p>等等…或类似的东西：</p>
+<pre><code>pipefail -o
+command1 &quot;arg1&quot; &quot;arg2&quot; | command2 &quot;arg1&quot; &quot;arg2&quot; | command3
+</code></pre><p>因为每个命令的论点我相信（纠正我，如果我错了）会互相干扰。这两种方法对我来说似乎非常啰嗦和讨厌，所以我在这里呼吁一个更有效的方法。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/07/14/unable-to-execute-dex-multiple-dex-files-define-lcom-myapp-rarray/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/07/14/extract-file-basename-without-path-and-extension-in-bash/" title="在bash中提取没有路径和扩展名的文件基本名称[复制]" itemprop="url">在bash中提取没有路径和扩展名的文件基本名称[复制]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-07-14T02:18:13.000Z" itemprop="datePublished"> Published 2018-07-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/965053/extract-filename-and-extension-in-bash">Extract filename and extension in Bash</a> 35 answers </li>
-</ul>
-<p>给定这样的文件名：</p>
-<pre><code>/the/path/foo.txt
-bar.txt
-</code></pre><p>我希望得到：</p>
-<pre><code>foo
-bar
-</code></pre><p>为什么这不起作用？</p>
-<pre><code>#!/bin/bash
-
-fullfile=$1
-fname=$(basename $fullfile)
-fbname=${fname%.*}
-echo $fbname
-</code></pre><p>什么是正确的做法？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/07/14/extract-file-basename-without-path-and-extension-in-bash/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a><a href="/tags/unix/">unix</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/07/14/how-to-get-the-list-of-properties-of-a-class/" title="如何获得一个类的属性列表？" itemprop="url">如何获得一个类的属性列表？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-07-14T01:51:30.000Z" itemprop="datePublished"> Published 2018-07-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我如何获得一个类的所有属性列表？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/07/14/how-to-get-the-list-of-properties-of-a-class/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/07/13/android-how-do-i-get-string-from-resources-using-its-name/" title="Android：如何从资源中获取字符串？" itemprop="url">Android：如何从资源中获取字符串？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-07-13T02:47:12.000Z" itemprop="datePublished"> Published 2018-07-13</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我希望为用户界面使用2种语言，并在资源文件<code>res \ values \ strings.xml</code>中为它们分隔字符串值：</p>
-<pre><code>&lt;string name=&quot;tab_Books_en&quot;&gt;Books&lt;/string&gt;
-&lt;string name=&quot;tab_Quotes_en&quot;&gt;Quotes&lt;/string&gt;
-&lt;string name=&quot;tab_Questions_en&quot;&gt;Questions&lt;/string&gt;
-&lt;string name=&quot;tab_Notes_en&quot;&gt;Notes&lt;/string&gt;
-&lt;string name=&quot;tab_Bookmarks_en&quot;&gt;Bookmarks&lt;/string&gt;
-
-&lt;string name=&quot;tab_Books_ru&quot;&gt;ÐÐ½Ð¸Ð³Ð¸&lt;/string&gt;
-&lt;string name=&quot;tab_Quotes_ru&quot;&gt;Ð¦Ð¸ÑÐ°ÑÑ&lt;/string&gt;
-&lt;string name=&quot;tab_Questions_ru&quot;&gt;ÐÐ¾Ð¿ÑÐ¾ÑÑ&lt;/string&gt;
-&lt;string name=&quot;tab_Notes_ru&quot;&gt;ÐÐ°Ð¼ÐµÑÐºÐ¸&lt;/string&gt;
-&lt;string name=&quot;tab_Bookmarks_ru&quot;&gt;ÐÐ°ÐºÐ»Ð°Ð´ÐºÐ¸&lt;/string&gt;
-</code></pre><p>现在我需要在我的应用程序中动态地检索这些值：</p>
-<pre><code>spec.setContent(R.id.tabPage1);
-String pack = getPackageName();
-String id = &quot;tab_Books_&quot; + Central.lang;
-int i = Central.Res.getIdentifier(id, &quot;string&quot;, pack);
-String str = Central.Res.getString(i);
-</code></pre><p>我的问题是<code>i = 0</code>。</p>
-<p>为什么它不能在我的情况下工作？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/07/13/android-how-do-i-get-string-from-resources-using-its-name/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/07/13/bash-my-script-bin-bashm-bad-interpreter-no-such-file-or-directory/" title="-bash： /my_script：/ bin / bash ^ M：错误的解释器：没有这样的文件或目录" itemprop="url">-bash： /my_script：/ bin / bash ^ M：错误的解释器：没有这样的文件或目录</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-07-13T02:18:01.000Z" itemprop="datePublished"> Published 2018-07-13</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/39527571/are-shell-scripts-sensitive-to-encoding-and-line-endings">Are shell scripts sensitive to encoding and line endings?</a> 1 answer </li>
-</ul>
-<p>我正在通过本教程学习<a href="http://linuxcommand.org/wss0010.php" target="_blank" rel="noopener">bash脚本</a>，以便为我自动完成一些任务。我使用putty连接到服务器。</p>
-<p>位于<code>... / Documents / LOG</code>中的脚本是：</p>
-<pre><code>#!/bin/bash
-# My first script
-echo &quot;Hello World!&quot;
-</code></pre><p>我执行以下的读/写/执行权限</p>
-<pre><code>chmod 755 my_script
-</code></pre><p>然后，当我输入<code>./ my_script</code>时，我得到了标题中给出的错误。</p>
-<p>一些类似的问题想要看到这些，所以我认为他们可能会帮助：</p>
-<pre><code>which bash
-</code></pre><blockquote>
-<p>/bin/bash</p>
-</blockquote>
-<p>和</p>
-<pre><code>echo $PATH
-</code></pre><p>&gt;<br>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/bin/mh</p>
-<p>我尝试将当前目录添加到<code>PATH</code>，但这不起作用。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/07/13/bash-my-script-bin-bashm-bad-interpreter-no-such-file-or-directory/#more">Read More</a>
+            <a href="/2018/07/06/checking-bash-exit-status-of-several-commands-efficiently/#more">Read More</a>
           
        </p>
     </div>
@@ -592,26 +318,139 @@ echo &quot;Hello World!&quot;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/07/13/replace-line-breaks-in-a-string-c-sharp/" title="替换字符串中的换行符C＃" itemprop="url">替换字符串中的换行符C＃</a>
+      <a href="/2018/07/06/protect-net-code-from-reverse-engineering/" title="从反向工程保护 NET代码？" itemprop="url">从反向工程保护 NET代码？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-07-13T01:51:26.000Z" itemprop="datePublished"> Published 2018-07-13</time>
+    <time datetime="2018-07-06T01:50:24.000Z" itemprop="datePublished"> Published 2018-07-06</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何在C＃中的字符串中替换换行符？</p>
+        <p>混淆是一种方式，但它不能保护应用程序的盗版保护安全。如何确保应用程序不被篡改，以及如何确保注册机制不能被反向设计？</p>
+<p>也可以将C＃应用程序转换为本机代码，而<a href="http://en.wikipedia.org/wiki/Spoon_%28software%29" target="_blank" rel="noopener"> Xenocode</a>太昂贵了。</p>
+<p>C＃提供了很多功能，并且是我的代码的理想语言，所以再次用C ++编写整个代码库是不可能的。</p>
+<p>安全证书可以很容易地从.NET中签名的程序集中移除。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/07/13/replace-line-breaks-in-a-string-c-sharp/#more">Read More</a>
+            <a href="/2018/07/06/protect-net-code-from-reverse-engineering/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/05/how-to-emulate-gps-location-in-the-android-emulator/" title="如何在Android模拟器中模拟GPS位置？" itemprop="url">如何在Android模拟器中模拟GPS位置？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-05T02:45:53.000Z" itemprop="datePublished"> Published 2018-07-05</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想获得Android模拟器的经度和纬度来进行测试。</p>
+<p>任何人都可以指导我如何实现这一目标？</p>
+<p>如何将模拟器的位置设置为测试位置？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/07/05/how-to-emulate-gps-location-in-the-android-emulator/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/05/changing-default-shell-in-linux/" title="在Linux中更改默认shell [关闭]" itemprop="url">在Linux中更改默认shell [关闭]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-05T02:16:52.000Z" itemprop="datePublished"> Published 2018-07-05</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何更改默认shell？当前的<code>env</code>命令说：</p>
+<pre><code>SHELL=/bin/tcsh
+</code></pre><p>我想把它改成Bash。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/07/05/changing-default-shell-in-linux/#more">Read More</a>
           
        </p>
     </div>
@@ -621,7 +460,7 @@ echo &quot;Hello World!&quot;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a><a href="/tags/shell/">shell</a>
   </div>
 
 </div>
@@ -650,28 +489,109 @@ echo &quot;Hello World!&quot;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/07/12/set-edittext-cursor-color/" title="设置EditText光标颜色" itemprop="url">设置EditText光标颜色</a>
+      <a href="/2018/07/04/timeout-a-command-in-bash-without-unnecessary-delay/" title="超时在bash命令没有不必要的延迟" itemprop="url">超时在bash命令没有不必要的延迟</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-07-12T02:47:06.000Z" itemprop="datePublished"> Published 2018-07-12</time>
+    <time datetime="2018-07-04T02:16:41.000Z" itemprop="datePublished"> Published 2018-07-04</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我遇到这个问题，我在平板电脑项目上使用Android的Holo主题。不过，我在屏幕上有一个白色背景的片段。我在这个片段上添加一个<code>EditText</code>组件。我试图通过设置Holo.Light主题资源的背景来覆盖主题。然而，我的文本光标（克拉）保持白色，因此，在屏幕上看不见（我可以在edittext字段中微弱地发现它）。</p>
-<p>有谁知道我可以如何让EditText使用更深的光标颜色？我已经尝试将EditText的样式设置为<code>“@ android：style /
-Widget.Holo.Light.EditText”</code>，但没有成功。</p>
+        <p><a href="https://stackoverflow.com/questions/601543#637753" target="_blank" rel="noopener">这个答案</a>到<a href="https://stackoverflow.com/questions/601543" target="_blank" rel="noopener">命令行命令在一段时间后自动杀死一个命令</a></p>
+<p>提出了一个1行方法来从bash命令行中超时长命令：</p>
+<pre><code>( /path/to/slow command with options ) &amp; sleep 5 ; kill $!
+</code></pre><p>但是，一个给定的“长时间运行”命令可能会比超时更早完成。 （让我们把它称为“通常长时间运行但有时是快速的”命令，或者叫做“tlrbsf”）。</p>
+<p>所以这个漂亮的1-liner方法有一些问题。首先，<code>sleep</code>不是有条件的，所以在序列完成所需的时间上设置了一个不希望的下限。如果在2秒钟内完成命令，则考虑睡眠30s或2m甚至5m，这是非常不理想的。其次，<code>kill</code>是无条件的，所以这个序列会试图杀死一个没有运行的进程并抱怨它。</p>
+<p>因此…</p>
+<hr>
+<ul>
+<li>有一个bash实现（另一个问题已经有了Perl和C的答案）</li>
+<li>将在两个之前的终止处终止：</li>
+<li>不会杀死不存在的/不在运行的进程（或者，可选地：不会对 __ 抱怨关于不良kill）</li>
+<li>并不一定是一行代码</li>
+<li>可以在Cygwin或Linux下运行</li>
+</ul>
+<p>…对于奖励点，在前台运行命令tlrbsf <em>，在后台运行任何’睡眠’或额外的进程，这样 </em>的stdin / stdout / stderr &gt;<br>tlrbsf_ 命令可以被重定向，就像它直接运行一样？</p>
+<p>如果是这样，请分享您的代码。如果没有，请解释原因。</p>
+<p>我花了一段时间试图破解前面提到的例子，但我已经达到了我的bash技能的极限。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/07/04/timeout-a-command-in-bash-without-unnecessary-delay/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/03/difference-between-id-and-id-in-android/" title="Android中“@ id /”和“@ + id /”的区别" itemprop="url">Android中“@ id /”和“@ + id /”的区别</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-03T02:45:39.000Z" itemprop="datePublished"> Published 2018-07-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <blockquote>
+<p>What is the diffirence between the <code>@id/</code> and <code>@+id/</code>?</p>
+</blockquote>
+<p>在 <strong><code>@ + id /</code> </strong> 中，加号指示创建一个新的资源名称并将其添加到<code>R.java</code>文件中那么 <strong><code>@id /</code> </strong> 呢？从<a href="http://developer.android.com/guide/topics/ui/declaring-
+layout.html#id" target="_blank" rel="noopener"><code>ID</code> </a>：引用Android资源ID时，不需要加号，但必须添加android包名称空间，如下所示：</p>
+<pre><code>android:id=&quot;@android:id/list&quot;
+</code></pre><p>但是在Eclipse下面的图片中并没有提供任何类型的<code>@android：id /</code>。</p>
+<p><img src="“https://i.stack.imgur.com/zgbUz.png”alt" alt=""></p>
+<blockquote>
+<p>Are <code>@id/</code> and <code>@android:id/</code> the same?</p>
+</blockquote>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/07/12/set-edittext-cursor-color/#more">Read More</a>
+            <a href="/2018/07/03/difference-between-id-and-id-in-android/#more">Read More</a>
           
        </p>
     </div>
@@ -705,28 +625,145 @@ Widget.Holo.Light.EditText”</code>，但没有成功。</p>
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/07/12/create-timestamp-variable-in-bash-script/" title="在bash脚本中创建时间戳变量" itemprop="url">在bash脚本中创建时间戳变量</a>
+      <a href="/2018/07/02/how-to-refresh-android-listview/" title="如何刷新Android的ListView？" itemprop="url">如何刷新Android的ListView？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-07-12T02:17:53.000Z" itemprop="datePublished"> Published 2018-07-12</time>
+    <time datetime="2018-07-02T02:45:34.000Z" itemprop="datePublished"> Published 2018-07-02</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我试图在shell脚本中创建一个timestamp变量来使日志更容易一些。我想在脚本的开始处创建变量，并在发出<code>echo $ timestamp</code>时打印出当前时间。然后我想，证明是更困难的。以下是我尝试过的一些事情：</p>
-<p>回声打印输出<code>（日期+“％T”）</code><br>echo ` echo打印变量被初始化的时间。</p>
-<p>` 我试过的其他东西只是轻微的变化，没有更好的工作。有谁知道如何完成我想要做的事情？</p>
-<p>
+        <p>如何在添加/删除动态数据后刷新Android <code>ListView</code>？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/07/12/create-timestamp-variable-in-bash-script/#more">Read More</a>
+            <a href="/2018/07/02/how-to-refresh-android-listview/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/02/escape-a-string-for-a-sed-replace-pattern/" title="转义sed替换模式的字符串" itemprop="url">转义sed替换模式的字符串</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-02T02:16:27.000Z" itemprop="datePublished"> Published 2018-07-02</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在我的bash脚本中，我有一个外部（从用户接收）字符串，我应该在sed模式中使用。</p>
+<pre><code>REPLACE=&quot;&lt;funny characters here&gt;&quot;
+sed &quot;s/KEYWORD/$REPLACE/g&quot;
+</code></pre><p>如何将<code>$ REPLACE</code>字符串转义出来，以便被<code>sed</code>安全地接受为字面替换？</p>
+<p>注意：** <code>KEYWORD</code>是一个哑巴的子字符串，没有匹配等。它不是由用户提供的。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/07/02/escape-a-string-for-a-sed-replace-pattern/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bash/">bash</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/01/setting-an-environment-variable-before-a-command-in-bash-not-working-for-second/" title="在bash中的命令之前设置一个环境变量不适用于管道中的第二个命令" itemprop="url">在bash中的命令之前设置一个环境变量不适用于管道中的第二个命令</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-01T02:16:20.000Z" itemprop="datePublished"> Published 2018-07-01</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>在给定的shell中，通常我会设置一个或多个变量，然后运行一个命令。最近，我学习了将一个变量定义添加到命令中的概念：</p>
+<pre><code>FOO=bar somecommand someargs
+</code></pre><p>这工作…种。当你改变一个LC_ *变量（似乎影响命令而不是它的参数，例如’[a-z]’字符范围），或者当输出到另一个命令时，它不起作用：</p>
+<pre><code>FOO=bar somecommand someargs | somecommand2  # somecommand2 is unaware of FOO
+</code></pre><p>我也可以用“FOO = bar”来预先指定一些命令2，但是这会增加不必要的重复，而且这对于根据变量解释的参数（例如’[az]’）没有帮助。 &gt;<br>那么，在一条线上做这件事的好方法是什么呢？我正在考虑：</p>
+<p>的顺序</p>
+<pre><code>FOO=bar (somecommand someargs | somecommand2)  # Doesn&apos;t actually work
+</code></pre><p>编辑：我有很多很好的答案！目标是保持这一点，最好不用“出口”。使用调用bash的方法是最好的总体，虽然括号中的“导出”在其中是一个更紧凑一点。使用重定向而不是管道的方法也很有趣。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/07/01/setting-an-environment-variable-before-a-command-in-bash-not-working-for-second/#more">Read More</a>
           
        </p>
     </div>
@@ -761,7 +798,7 @@ Widget.Holo.Light.EditText”</code>，但没有成功。</p>
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/5/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/7/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/7/">Next<span></span></a>
   </nav>
 
 </div>
@@ -804,15 +841,11 @@ Widget.Holo.Light.EditText”</code>，但没有成功。</p>
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -821,10 +854,6 @@ Widget.Holo.Light.EditText”</code>，但没有成功。</p>
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -837,6 +866,10 @@ Widget.Holo.Light.EditText”</code>，但没有成功。</p>
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -861,6 +894,8 @@ Widget.Holo.Light.EditText”</code>，但没有成功。</p>
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

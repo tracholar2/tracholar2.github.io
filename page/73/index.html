@@ -112,25 +112,55 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/26/how-do-i-reload-bashrc-without-logging-out-and-back-in/" title="如何重新加载 bashrc而不注销并返回？" itemprop="url">如何重新加载 bashrc而不注销并返回？</a>
+      <a href="/2018/01/14/catch-multiple-exceptions-in-one-line-except-block/" title="在一行中捕获多个异常（块除外）" itemprop="url">在一行中捕获多个异常（块除外）</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-26T01:56:00.000Z" itemprop="datePublished"> Published 2018-01-26</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如果我对<code>.bashrc</code>进行更改，如何重新加载而不注销并返回？</p>
+        <p>我知道我可以这样做：</p>
+<pre><code>try:
+    # do something that may fail
+except:
+    # do this if ANYTHING goes wrong
+</code></pre><p>我也可以这样做：</p>
+<pre><code>try:
+    # do something that may fail
+except IDontLikeYouException:
+    # say please
+except YouAreTooShortException:
+    # stand on a ladder
+</code></pre><p>但如果我想在两个不同的例外情况下做同样的事情，我现在能想到的最好的办法就是这样做：</p>
+<pre><code>try:
+    # do something that may fail
+except IDontLikeYouException:
+    # say please
+except YouAreBeingMeanException:
+    # say please
+</code></pre><p>有什么办法可以做这样的事情（因为在这两个例外情况下采取的行动是<code>说请</code>）：</p>
+<pre><code>try:
+    # do something that may fail
+except IDontLikeYouException, YouAreBeingMeanException:
+    # say please
+</code></pre><p>现在，这实际上不起作用，因为它符合以下语法：</p>
+<pre><code>try:
+    # do something that may fail
+except Exception, e:
+    # say please
+</code></pre><p>所以，我的努力来抓住两个明显的例外并不完全是通过。</p>
+<p>有没有办法做到这一点？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/26/how-do-i-reload-bashrc-without-logging-out-and-back-in/#more">Read More</a>
+            <a href="/2018/01/14/catch-multiple-exceptions-in-one-line-except-block/#more">Read More</a>
           
        </p>
     </div>
@@ -140,7 +170,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/bash/">bash</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -180,41 +210,26 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/26/catch-multiple-exceptions-at-once/" title="一次捕获多个异常？" itemprop="url">一次捕获多个异常？</a>
+      <a href="/2018/01/14/how-can-i-tell-if-im-running-in-64-bit-jvm-or-32-bit-jvm-from-within-a-program/" title="我怎么知道我在64位JVM或32位JVM（从程序中）运行？" itemprop="url">我怎么知道我在64位JVM或32位JVM（从程序中）运行？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-26T01:25:29.000Z" itemprop="datePublished"> Published 2018-01-26</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>简单地捕获<code>System.Exception</code>是令人沮丧的。相反，只有“已知”例外应该被捕获。</p>
-<p>现在，这有时会导致不必要的重复代码，例如：</p>
-<pre><code>try
-{
-    WebId = new Guid(queryString[&quot;web&quot;]);
-}
-catch (FormatException)
-{
-    WebId = Guid.Empty;
-}
-catch (OverflowException)
-{
-    WebId = Guid.Empty;
-}
-</code></pre><p>我想知道：有没有办法来捕获这两个异常，只调用一次<code>WebId = Guid.Empty</code>调用？</p>
-<p>给出的例子很简单，因为它只是一个<a href="http://en.wikipedia.org/wiki/Globally_unique_identifier" target="_blank" rel="noopener"> <code>GUID</code></a>。但是想象一下代码在多次修改一个对象的地方，如果其中一个操作失败了，你希望“重置”<code>object</code>。但是，如果出现意想不到的异常，我还是想把这个提高一些。</p>
+        <p>如何判断我的应用程序运行的JVM是32位还是64位？具体来说，我可以在程序中检测到什么功能或偏好？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/26/catch-multiple-exceptions-at-once/#more">Read More</a>
+            <a href="/2018/01/14/how-can-i-tell-if-im-running-in-64-bit-jvm-or-32-bit-jvm-from-within-a-program/#more">Read More</a>
           
        </p>
     </div>
@@ -224,7 +239,7 @@ catch (OverflowException)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -253,28 +268,27 @@ catch (OverflowException)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/26/how-to-make-an-image-center-vertically-horizontally-inside-a-bigger-div/" title="如何在一个更大的div内建立一个图像中心（垂直和水平）" itemprop="url">如何在一个更大的div内建立一个图像中心（垂直和水平）</a>
+      <a href="/2018/01/14/how-can-i-test-if-an-array-contains-a-certain-value/" title="我如何测试一个数组是否包含某个值？" itemprop="url">我如何测试一个数组是否包含某个值？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-26T01:21:15.000Z" itemprop="datePublished"> Published 2018-01-26</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个200×200像素的div。我想要在div中间放置一个50 x 50像素的图像。</p>
-<p>怎么做？</p>
-<p>我可以通过使用<code>text-align：center</code>为div来水平居中。但垂直对齐是问题。</p>
-<p>
+        <p>我有一个<code>String []</code>，其值如下：</p>
+<pre><code>public static final String[] VALUES = new String[] {&quot;AB&quot;,&quot;BC&quot;,&quot;CD&quot;,&quot;AE&quot;};
+</code></pre><p>给定<code>String s</code>是否有一种很好的方法来测试<code>VALUES</code>是否包含<code>s</code>？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/26/how-to-make-an-image-center-vertically-horizontally-inside-a-bigger-div/#more">Read More</a>
+            <a href="/2018/01/14/how-can-i-test-if-an-array-contains-a-certain-value/#more">Read More</a>
           
        </p>
     </div>
@@ -284,7 +298,7 @@ catch (OverflowException)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -313,100 +327,236 @@ catch (OverflowException)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/26/php-random-string-generator/" title="PHP随机字符串生成器" itemprop="url">PHP随机字符串生成器</a>
+      <a href="/2018/01/14/how-to-iterate-over-rows-in-a-dataframe-in-pandas/" title="如何迭代Pandas中的DataFrame中的行？" itemprop="url">如何迭代Pandas中的DataFrame中的行？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-26T01:01:04.000Z" itemprop="datePublished"> Published 2018-01-26</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我试图在PHP中创建一个随机字符串，而且我完全没有输出：</p>
-<pre><code>&lt;?php
-function RandomString()
+        <p>我有一个来自熊猫的数据框：</p>
+<pre><code>import pandas as pd
+inp = [{&apos;c1&apos;:10, &apos;c2&apos;:100}, {&apos;c1&apos;:11,&apos;c2&apos;:110}, {&apos;c1&apos;:12,&apos;c2&apos;:120}]
+df = pd.DataFrame(inp)
+print df
+</code></pre><p>输出：</p>
+<pre><code>   c1   c2
+0  10  100
+1  11  110
+2  12  120
+</code></pre><p>现在我想遍历上面的框架的行。对于每一行我希望能够通过列的名称访问其元素（单元格中的值）。所以，例如，我想有这样的事情：</p>
+<pre><code>for row in df.rows:
+   print row[&apos;c1&apos;], row[&apos;c2&apos;]
+</code></pre><p>熊猫可以做到吗？</p>
+<p>我发现[类似的问题&lt; / A&gt;。但这并不能给我我需要的答案。例如，建议在那里使用：</p>
+<pre><code>for date, row in df.T.iteritems():
+</code></pre><p>或</p>
+<pre><code>for row in df.iterrows():
+</code></pre><p>但是我不明白<code>row</code>对象是什么，以及我如何使用它。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-to-iterate-over-rows-in-a-dataframe-in-pandas/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/error-java-lang-outofmemoryerror-gc-overhead-limit-exceeded/" title="错误java lang OutOfMemoryError：超出GC开销限制" itemprop="url">错误java lang OutOfMemoryError：超出GC开销限制</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>当我执行我的JUnit测试时，得到这个错误消息：</p>
+<pre><code>java.lang.OutOfMemoryError: GC overhead limit exceeded
+</code></pre><p>我知道<code>OutOfMemoryError</code>是什么，但GC开销限制是什么意思？我该如何解决这个问题？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/error-java-lang-outofmemoryerror-gc-overhead-limit-exceeded/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/compare-two-dates-with-javascript/" title="用JavaScript比较两个日期" itemprop="url">用JavaScript比较两个日期</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有人可以提供一种方法来比较 <strong>两个日期</strong> 的值大于，小于，而不是过去使用JavaScript？这些值将来自文本框…</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/compare-two-dates-with-javascript/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/comparing-java-enum-members-or-equals/" title="比较Java枚举成员：==或equals（）？" itemprop="url">比较Java枚举成员：==或equals（）？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我知道Java枚举被编译为具有私有构造函数和一堆公共静态成员的类。比较给定枚举的两个成员时，我总是使用<code>.equals（）</code>，例如</p>
+<pre><code>public useEnums(SomeEnum a)
 {
-    $characters = &apos;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&apos;;
-    $randstring = &apos;&apos;;
-    for ($i = 0; $i &lt; 10; $i++) {
-        $randstring = $characters[rand(0, strlen($characters))];
+    if(a.equals(SomeEnum.SOME_ENUM_VALUE))
+    {
+        ...
     }
-    return $randstring;
+    ...
 }
-RandomString();
-echo $randstring;
-</code></pre><p>我做错了什么？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/26/php-random-string-generator/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/php/">php</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/26/dude-wheres-my-php-ini/" title="伙计，我的php ini在哪里？" itemprop="url">伙计，我的php ini在哪里？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-26T00:59:54.000Z" itemprop="datePublished"> Published 2018-01-26</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>几年前，我在我维护的Linux服务器上安装了Apache 2.2x和PHP 5.3.1。我使用了.tar.gz，并按照指示构建它们<br>（而不是rpms和what-have-you）。一切都很好。</p>
-<p>今天，我需要安装<a href="http://us2.php.net/ibm_db2" target="_blank" rel="noopener">这个</a>，这看起来像一个PHP库。我完成了所有安装步骤，并在<code>$ PHP_HOME
-/ lib / extensions / somecomplicatedname / ibm_db2.so</code>中找到了ibm_db2.so</p>
-<p>最大的困难是最后一步是配置php.ini，但是我的系统中没有php.ini。恐怖的恐怖。 PHP的工作正常，当然除了这个新的ibm_db2<br>thingamagic，我想要使用，所以有人可以使用GUI修补<code>DB2</code>。 （我尝试了一个小的PHP脚本，失败并表示ibm_db2函数不可用）。</p>
-<p>我必须每隔几年处理一次PHP，所以请在启发我的基础知识的基础上，说明如何启用基于Web的GUI访问<code>DB2</code>。</p>
+</code></pre><p>但是，我刚刚遇到了一些使用equals运算符<code>==</code>而不是.equals（）的代码：</p>
+<pre><code>public useEnums2(SomeEnum a)
+{
+    if(a == SomeEnum.SOME_ENUM_VALUE)
+    {
+        ...
+    }
+    ...
+}
+</code></pre><p>我应该使用哪一个操作符？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/26/dude-wheres-my-php-ini/#more">Read More</a>
+            <a href="/2018/01/14/comparing-java-enum-members-or-equals/#more">Read More</a>
           
        </p>
     </div>
@@ -416,7 +566,7 @@ echo $randstring;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -445,141 +595,33 @@ echo $randstring;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/25/lazy-load-of-images-in-listview/" title="在ListView中延迟加载图像" itemprop="url">在ListView中延迟加载图像</a>
+      <a href="/2018/01/14/how-to-know-if-an-object-has-an-attribute-in-python/" title="如何知道一个对象是否在Python中有一个属性" itemprop="url">如何知道一个对象是否在Python中有一个属性</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-25T02:22:18.000Z" itemprop="datePublished"> Published 2018-01-25</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我使用<code>ListView</code>来显示与这些图像相关的一些图像和标题。我正在从互联网上获取图像。有没有办法延迟加载图像，所以当文本显示，用户界面没有锁定，图像显示为他们下载？</p>
-<p>图片总数不固定。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/25/lazy-load-of-images-in-listview/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/25/how-do-i-parse-command-line-arguments-in-bash/" title="如何解析Bash中的命令行参数？" itemprop="url">如何解析Bash中的命令行参数？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-25T01:55:43.000Z" itemprop="datePublished"> Published 2018-01-25</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>说，我有一个脚本，被调用这一行：</p>
-<pre><code>./myscript -vfd ./foo/bar/someFile -o /fizz/someOtherFile
-</code></pre><p>或这个：</p>
-<pre><code>./myscript -v -f -d -o /fizz/someOtherFile ./foo/bar/someFile 
-</code></pre><p>解析这种方法的可接受方式是，在每种情况下（或两者的一些组合）<code>$ v</code>，<code>$ f</code>和<code>$ d &lt; / code&gt;将全部设置为</code> true <code>和</code>$ outFile <code>将等于</code> / fizz / someOtherFile `？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/25/how-do-i-parse-command-line-arguments-in-bash/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/bash/">bash</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/25/should-using-statements-be-inside-or-outside-the-namespace/" title="“使用”语句应该在命名空间的内部还是外部？" itemprop="url">“使用”语句应该在命名空间的内部还是外部？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-25T01:25:07.000Z" itemprop="datePublished"> Published 2018-01-25</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我已经在一些C＃代码上运行<a href="http://en.wikipedia.org/wiki/StyleCop" target="_blank" rel="noopener"> StyleCop</a>，并且一直在报告我的<code>使用</code>语句应该在命名空间内。</p>
-<p>使用`语句而不是名称空间之外是否存在技术上的原因？</p>
+        <p>Python有没有一种方法来确定一个对象是否有一些属性？例如：</p>
+<pre><code>&gt;&gt;&gt; a = SomeClass()
+&gt;&gt;&gt; a.someProperty = value
+&gt;&gt;&gt; a.property
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+AttributeError: SomeClass instance has no attribute &apos;property&apos;
+</code></pre><p>在使用它之前，如何知道<code>a</code>是否具有属性<code>property</code>？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/25/should-using-statements-be-inside-or-outside-the-namespace/#more">Read More</a>
+            <a href="/2018/01/14/how-to-know-if-an-object-has-an-attribute-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -589,7 +631,7 @@ echo $randstring;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -618,50 +660,34 @@ echo $randstring;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/25/height-equal-to-dynamic-width-css-fluid-layout/" title="高度等于动态宽度（CSS流体布局）" itemprop="url">高度等于动态宽度（CSS流体布局）</a>
+      <a href="/2018/01/14/how-to-leave-exit-deactivate-a-python-virtualenv/" title="如何离开/退出/停用python virtualenv？" itemprop="url">如何离开/退出/停用python virtualenv？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-25T01:21:11.000Z" itemprop="datePublished"> Published 2018-01-25</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/1495407/maintain-the-aspect-ratio-of-a-div-with-css">Maintain the aspect ratio of a div with CSS</a> 17 answers </li>
-</ul>
-<p>是否可以设置宽度相同（比例1：1）？</p>
-<p>**示例</p>
-<pre><code>+----------+
-| body     |
-| 1:3      |
-|          |
-| +------+ |
-| | div  | |
-| | 1:1  | |
-| +------+ |
-|          |
-|          |
-|          |
-|          |
-|          |
-+----------+
-</code></pre><p>&lt;强&gt; CSS</p>
-<pre><code>div {
-  width: 80%;
-  height: same-as-width
-}
-</code></pre>
+        <p>我使用的是virtualenv和virtualenvwrapper。我可以使用workon命令在virtualenv之间切换。</p>
+<pre><code>me@mymachine:~$ workon env1
+(env1)me@mymachine:~$ workon env2
+(env2)me@mymachine:~$ workon env1
+(env1)me@mymachine:~$ 
+</code></pre><p>但是，如何退出所有虚拟机并重新在真机上工作？现在，我只能回到</p>
+<p>了</p>
+<pre><code>me@mymachine:~$ 
+</code></pre><p>是退出shell并启动一个新的。这有点烦人。有没有一个“没有”的命令，如果是的话，那是什么？如果这样的命令不存在，我将如何去创建它？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/25/height-equal-to-dynamic-width-css-fluid-layout/#more">Read More</a>
+            <a href="/2018/01/14/how-to-leave-exit-deactivate-a-python-virtualenv/#more">Read More</a>
           
        </p>
     </div>
@@ -671,7 +697,7 @@ echo $randstring;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/jquery/">jquery</a><a href="/tags/css/">css</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -700,27 +726,27 @@ echo $randstring;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/25/get-first-key-in-a-possibly-associative-array/" title="获取（可能）关联数组中的第一个键？" itemprop="url">获取（可能）关联数组中的第一个键？</a>
+      <a href="/2018/01/14/accessing-the-index-in-python-for-loops/" title="在Python中为 循环访问索引" itemprop="url">在Python中为 循环访问索引</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-25T01:00:58.000Z" itemprop="datePublished"> Published 2018-01-25</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在可能的关联数组中，确定第一个键的最好方法是什么？我首先想到的只是对数组进行foreach，然后立即将其破解，如下所示：</p>
-<pre><code>foreach ($an_array as $key =&gt; $val) break;
-</code></pre><p>因此，让$ key包含第一个键，但这似乎效率低下。有没有人有更好的解决方案？</p>
+        <p>如何访问索引本身的列表如下所示？</p>
+<pre><code>ints = [8, 23, 45, 12, 78]
+</code></pre><p>当我使用<code>for</code>循环遍历它时，如何访问循环索引，在这种情况下从1到5？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/25/get-first-key-in-a-possibly-associative-array/#more">Read More</a>
+            <a href="/2018/01/14/accessing-the-index-in-python-for-loops/#more">Read More</a>
           
        </p>
     </div>
@@ -730,7 +756,7 @@ echo $randstring;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -755,7 +781,7 @@ echo $randstring;
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/72/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/71/">71</a><a class="page-number" href="/page/72/">72</a><span class="page-number current">73</span><a class="page-number" href="/page/74/">74</a><a class="page-number" href="/page/75/">75</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/74/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/72/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/71/">71</a><a class="page-number" href="/page/72/">72</a><span class="page-number current">73</span><a class="page-number" href="/page/74/">74</a><a class="page-number" href="/page/75/">75</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/74/">Next<span></span></a>
   </nav>
 
 </div>
@@ -798,15 +824,11 @@ echo $randstring;
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -815,10 +837,6 @@ echo $randstring;
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -831,6 +849,10 @@ echo $randstring;
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -855,6 +877,8 @@ echo $randstring;
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

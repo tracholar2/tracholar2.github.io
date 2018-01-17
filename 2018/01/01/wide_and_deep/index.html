@@ -1,0 +1,663 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>TensorFlow广泛深度学习教程 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="TensorFlow广泛深度学习教程在之前的TensorFlow线性模型教程中，我们训练了一个逻辑 回归模型来预测个体每年的概率 超过5万美元的收入使用 人口普查收入数据集。TensorFlow也非常适合训练深度神经网络，而且你也许是 思考你应该选择哪一个 - 好吧，为什么不呢？会有可能吗？ 在一个模型中结合两者的优点？ 在本教程中，我们将介绍如何共同使用tf.estimator API 训练宽线">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow广泛深度学习教程">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/wide_and_deep/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="TensorFlow广泛深度学习教程在之前的TensorFlow线性模型教程中，我们训练了一个逻辑 回归模型来预测个体每年的概率 超过5万美元的收入使用 人口普查收入数据集。TensorFlow也非常适合训练深度神经网络，而且你也许是 思考你应该选择哪一个 - 好吧，为什么不呢？会有可能吗？ 在一个模型中结合两者的优点？ 在本教程中，我们将介绍如何共同使用tf.estimator API 训练宽线">
+<meta property="og:image" content="https://www.tensorflow.org/images/wide_n_deep.svg">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow广泛深度学习教程">
+<meta name="twitter:description" content="TensorFlow广泛深度学习教程在之前的TensorFlow线性模型教程中，我们训练了一个逻辑 回归模型来预测个体每年的概率 超过5万美元的收入使用 人口普查收入数据集。TensorFlow也非常适合训练深度神经网络，而且你也许是 思考你应该选择哪一个 - 好吧，为什么不呢？会有可能吗？ 在一个模型中结合两者的优点？ 在本教程中，我们将介绍如何共同使用tf.estimator API 训练宽线">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/wide_n_deep.svg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/wide_and_deep/" title="TensorFlow广泛深度学习教程" itemprop="url">TensorFlow广泛深度学习教程</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TensorFlow广泛深度学习教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">定义基本特征列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">宽模型：具有交叉特征列的线性模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">深层模型：带嵌入的神经网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">将宽和深的模型组合成一个</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">培训和评估模型</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="tensorflow广泛深度学习教程">TensorFlow广泛深度学习教程</span></h1><p>在之前的TensorFlow线性模型教程中，我们训练了一个逻辑 回归模型来预测个体每年的概率 超过5万美元的收入使用 人口普查收入数据集。<br>TensorFlow也非常适合训练深度神经网络，而且你也许是 思考你应该选择哪一个 - 好吧，为什么不呢？会有可能吗？ 在一个模型中结合两者的优点？</p>
+<p>在本教程中，我们将介绍如何共同使用tf.estimator API 训练宽线性模型和深度前馈神经网络。这种方法 结合记忆和泛化的优势。这是有用的<br>通用的大规模回归和稀疏输入的分类问题 特征（例如，具有大量可能特征的分类特征 值）。如果您有兴趣了解更多关于如何广泛和深度学习 作品，请查看我们的研究论文。</p>
+<p><img src="https://www.tensorflow.org/images/wide_n_deep.svg" alt="Wide &amp; Deep Spectrum of
+Models"></p>
+<p>上图显示了一个广泛的模型（logistic回归与 稀疏特征和变换），深层模型（前馈神经网络） 有一个嵌入层和几个隐藏层）和一个Wide＆Deep模型<br>（两者的联合训练）。在较高的层面上，配置a只需要3个步骤 使用tf.estimator API的宽，深或Wide＆Deep模型：</p>
+<p>选择广泛部分的功能：选择稀疏基础列和     想要使用的交叉列。 选择深部的特征：选择连续的列，     为每个分类列嵌入维度，以及隐藏层大小。<br>把他们放在一个宽和深的模型     （<code>DNNLinearCombinedClassifier</code>）。</p>
+<p>而就是这样！我们来看一个简单的例子。</p>
+<h2><span id="建立">建立</span></h2><p>要尝试本教程的代码：</p>
+<p>如果你还没有安装TensorFlow， 下载教程代码。 执行我们提供给您的数据下载脚本： $ python data_download.py<br>使用以下命令执行教程代码以训练宽度和 本教程中描述的深层模型： $ python wide_deep.py</p>
+<p>继续阅读以了解此代码如何构建其模型。</p>
+<h2><span id="定义基本特征列">定义基本特征列</span></h2><p>首先，我们来定义基本分类和连续的特征列 我们将使用。这些基础列将是广泛使用的构建块 部分和模型的深层部分。</p>
+<pre><code>import tensorflow as tf
+
+# Continuous columns
+age = tf.feature_column.numeric_column(&apos;age&apos;)
+education_num = tf.feature_column.numeric_column(&apos;education_num&apos;)
+capital_gain = tf.feature_column.numeric_column(&apos;capital_gain&apos;)
+capital_loss = tf.feature_column.numeric_column(&apos;capital_loss&apos;)
+hours_per_week = tf.feature_column.numeric_column(&apos;hours_per_week&apos;)
+
+education = tf.feature_column.categorical_column_with_vocabulary_list(
+    &apos;education&apos;, [
+        &apos;Bachelors&apos;, &apos;HS-grad&apos;, &apos;11th&apos;, &apos;Masters&apos;, &apos;9th&apos;, &apos;Some-college&apos;,
+        &apos;Assoc-acdm&apos;, &apos;Assoc-voc&apos;, &apos;7th-8th&apos;, &apos;Doctorate&apos;, &apos;Prof-school&apos;,
+        &apos;5th-6th&apos;, &apos;10th&apos;, &apos;1st-4th&apos;, &apos;Preschool&apos;, &apos;12th&apos;])
+
+marital_status = tf.feature_column.categorical_column_with_vocabulary_list(
+    &apos;marital_status&apos;, [
+        &apos;Married-civ-spouse&apos;, &apos;Divorced&apos;, &apos;Married-spouse-absent&apos;,
+        &apos;Never-married&apos;, &apos;Separated&apos;, &apos;Married-AF-spouse&apos;, &apos;Widowed&apos;])
+
+relationship = tf.feature_column.categorical_column_with_vocabulary_list(
+    &apos;relationship&apos;, [
+        &apos;Husband&apos;, &apos;Not-in-family&apos;, &apos;Wife&apos;, &apos;Own-child&apos;, &apos;Unmarried&apos;,
+        &apos;Other-relative&apos;])
+
+workclass = tf.feature_column.categorical_column_with_vocabulary_list(
+    &apos;workclass&apos;, [
+        &apos;Self-emp-not-inc&apos;, &apos;Private&apos;, &apos;State-gov&apos;, &apos;Federal-gov&apos;,
+        &apos;Local-gov&apos;, &apos;?&apos;, &apos;Self-emp-inc&apos;, &apos;Without-pay&apos;, &apos;Never-worked&apos;])
+
+# To show an example of hashing:
+occupation = tf.feature_column.categorical_column_with_hash_bucket(
+    &apos;occupation&apos;, hash_bucket_size=1000)
+
+# Transformations.
+age_buckets = tf.feature_column.bucketized_column(
+    age, boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])
+</code></pre><h2><span id="宽模型具有交叉特征列的线性模型">宽模型：具有交叉特征列的线性模型</span></h2><p>宽模型是具有多种稀疏交叉特征的线性模型 列：</p>
+<pre><code>base_columns = [
+    education, marital_status, relationship, workclass, occupation,
+    age_buckets,
+]
+
+crossed_columns = [
+    tf.feature_column.crossed_column(
+        [&apos;education&apos;, &apos;occupation&apos;], hash_bucket_size=1000),
+    tf.feature_column.crossed_column(
+        [age_buckets, &apos;education&apos;, &apos;occupation&apos;], hash_bucket_size=1000),
+]
+</code></pre><p>您也可以看到TensorFlow线性模型教程的更多细节。</p>
+<p>具有交叉特征列的宽模型可以记忆稀疏交互 之间的功能有效。这就是说，交叉特征的一个局限性 列是他们不推广到没有特征的组合<br>出现在训练数据中。让我们添加一个嵌入式的深层模型来解决 那。</p>
+<h2><span id="深层模型带嵌入的神经网络">深层模型：带嵌入的神经网络</span></h2><p>如前所述，深层模型是一个前馈神经网络 数字。每个稀疏的高维分类特征都是第一个 转换成低维和密集的实值矢量，通常被称为 作为嵌入向量。这些低维稠密嵌入向量是<br>与连续的特征串联，然后馈送到隐藏层 神经网络的正向传递。嵌入值被初始化 随机地，并与所有其他模型参数一起训练以最小化<br>训练损失。如果您有兴趣了解有关嵌入的更多信息，请查看 单词或单词向量表示的TensorFlow教程 在维基百科上嵌入的词。</p>
+<p>另一种方法来表示分类列喂养神经网络是 通过单热或多热表示。这通常适合于 只有几个可能值的分类列。作为一个热门的例子 <code>&quot;Husband&quot;</code>可以表示为关系栏<br>[1,0,0,0,0,0]和<code>&quot;Not-in-family&quot;</code>为[0,1,0,0,0,0]等。这是一个 固定表示，而嵌入更灵活，并计算在 训练时间。</p>
+<p>我们将使用配置分类列的嵌入 <code>embedding_column</code>，并将它们与连续色谱柱连接。 我们还使用<code>indicator_column</code>创建一些多热表示<br>分类列。</p>
+<pre><code>deep_columns = [
+    age,
+    education_num,
+    capital_gain,
+    capital_loss,
+    hours_per_week,
+    tf.feature_column.indicator_column(workclass),
+    tf.feature_column.indicator_column(education),
+    tf.feature_column.indicator_column(marital_status),
+    tf.feature_column.indicator_column(relationship),
+    # To show an example of embedding
+    tf.feature_column.embedding_column(occupation, dimension=8),
+]
+</code></pre><p>嵌入的<code>dimension</code>越高，自由度越高 模型将不得不学习这些特征的表示。为了简单，我们 在此处将所有要素列的维度设置为8。经验上，更多<br>明智的决定维度的数量是从一个值开始的 \（\ log_2（n）\）或\（k \ sqrt [4] n \）的顺序，其中\（n \）是<br>特征列中的独特功能和\（k \）是一个小常量（通常是 小于10）。</p>
+<p>通过密集的嵌入，深层模型可以更好地推广和预测 在训练数据中以前看不到的特征对。不过呢 很难学习有效的低维表征 当两个特征列之间的基础交互矩阵是<br>稀疏和高级。在这种情况下，大多数特征对之间的相互作用 除少数外应为零，但密集的嵌入将导致非零 所有特征对的预测，因此可以过度概括。在另一<br>手，具有交叉特征的线性模型可以记住这些“例外规则” 使用更少的模型参数。</p>
+<p>现在，让我们看看如何联合训练广泛和深刻的模型，并允许他们 相辅相成的优点和缺点。</p>
+<h2><span id="将宽和深的模型组合成一个">将宽和深的模型组合成一个</span></h2><p>宽模型和深模型通过总结其最终输出进行组合 将对数作为预测，然后将预测结果提供给逻辑损失 功能。所有的图形定义和变量分配已经完成<br>在引擎盖下处理，所以你只需要创建一个 <code>DNNLinearCombinedClassifier</code>：</p>
+<pre><code>model = tf.estimator.DNNLinearCombinedClassifier(
+    model_dir=&apos;/tmp/census_model&apos;,
+    linear_feature_columns=base_columns + crossed_columns,
+    dnn_feature_columns=deep_columns,
+    dnn_hidden_units=[100, 50])
+</code></pre><h2><span id="培训和评估模型">培训和评估模型</span></h2><p>在我们训练模型之前，让我们先看看人口普查数据集 TensorFlow线性模型教程。参见<code>data_download.py</code>以及 <code>input_fn</code>之内<br><code>wide_deep.py</code>。</p>
+<p>读完数据后，您可以训练和评估模型：</p>
+<pre><code># Train and evaluate the model every `FLAGS.epochs_per_eval` epochs.
+for n in range(FLAGS.train_epochs // FLAGS.epochs_per_eval):
+  model.train(input_fn=lambda: input_fn(
+      FLAGS.train_data, FLAGS.epochs_per_eval, True, FLAGS.batch_size))
+
+  results = model.evaluate(input_fn=lambda: input_fn(
+      FLAGS.test_data, 1, False, FLAGS.batch_size))
+
+  # Display evaluation metrics
+  print(&apos;Results at epoch&apos;, (n + 1) * FLAGS.epochs_per_eval)
+  print(&apos;-&apos; * 30)
+
+  for key in sorted(results):
+    print(&apos;%s: %s&apos; % (key, results[key]))
+</code></pre><p>最终的输出精度应该在85.5％左右。如果你想 看到一个工作端到端的例子，你可以下载我们的 示例代码。</p>
+<p>请注意，本教程只是一个小数据集的简单例子 熟悉API。如果你有广泛和深度的学习将更加强大 尝试使用具有大量稀疏特征列的大型数据集<br>可能的特征值的数量。再次，请随时看看我们的 研究论文如何更多的想法 在现实世界的大型机器学习问题中应用广泛和深度学习。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/wide_and_deep/" data-title="TensorFlow广泛深度学习教程 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/wide/" title="TensorFlow线性模型教程">
+  <strong>上一篇：</strong><br/>
+  <span>
+  TensorFlow线性模型教程</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/seq2seq/"  title="神经机器翻译（seq2seq）教程">
+ <strong>下一篇：</strong><br/> 
+ <span>神经机器翻译（seq2seq）教程
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TensorFlow广泛深度学习教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">定义基本特征列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">宽模型：具有交叉特征列的线性模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">深层模型：带嵌入的神经网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">将宽和深的模型组合成一个</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">培训和评估模型</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

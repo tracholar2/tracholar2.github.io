@@ -1,0 +1,678 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>简单的音频识别 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="简单的音频识别本教程将向您展示如何构建一个基本的语音识别网络 承认十个不同的单词。知道真实的言论和知识是很重要的 音频识别系统要复杂得多，但像MNIST这样的图像，应该让你对所涉及的技术有一个基本的了解。一旦你 完成本教程，您将有一个试图分类一秒钟的模型 音频剪辑为沉默，未知单词，“是”，“否”，“上”，“下”，“左”，“右”，“上”，“关”，“停止”或“去”。你也可以把这个 模型并在Androi">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单的音频识别">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/audio_recognition/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="简单的音频识别本教程将向您展示如何构建一个基本的语音识别网络 承认十个不同的单词。知道真实的言论和知识是很重要的 音频识别系统要复杂得多，但像MNIST这样的图像，应该让你对所涉及的技术有一个基本的了解。一旦你 完成本教程，您将有一个试图分类一秒钟的模型 音频剪辑为沉默，未知单词，“是”，“否”，“上”，“下”，“左”，“右”，“上”，“关”，“停止”或“去”。你也可以把这个 模型并在Androi">
+<meta property="og:image" content="https://storage.googleapis.com/download.tensorflow.org/example_images/speech_commands_tensorflow.png">
+<meta property="og:image" content="https://storage.googleapis.com/download.tensorflow.org/example_images/spectrogram.png">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单的音频识别">
+<meta name="twitter:description" content="简单的音频识别本教程将向您展示如何构建一个基本的语音识别网络 承认十个不同的单词。知道真实的言论和知识是很重要的 音频识别系统要复杂得多，但像MNIST这样的图像，应该让你对所涉及的技术有一个基本的了解。一旦你 完成本教程，您将有一个试图分类一秒钟的模型 音频剪辑为沉默，未知单词，“是”，“否”，“上”，“下”，“左”，“右”，“上”，“关”，“停止”或“去”。你也可以把这个 模型并在Androi">
+<meta name="twitter:image" content="https://storage.googleapis.com/download.tensorflow.org/example_images/speech_commands_tensorflow.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/audio_recognition/" title="简单的音频识别" itemprop="url">简单的音频识别</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">简单的音频识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">制备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">混乱矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">Tensorboard</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">培训完成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">在Android应用程序中运行模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.8.</span> <span class="toc-text">这个模型如何工作？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.9.</span> <span class="toc-text">流媒体的准确性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.10.</span> <span class="toc-text">识别命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.</span> <span class="toc-text">高级培训</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.1.</span> <span class="toc-text">自定义培训数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.2.</span> <span class="toc-text">未知的类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.3.</span> <span class="toc-text">背景噪音</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.4.</span> <span class="toc-text">安静</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.5.</span> <span class="toc-text">时间转移</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.12.</span> <span class="toc-text">定制模型</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="简单的音频识别">简单的音频识别</span></h1><p>本教程将向您展示如何构建一个基本的语音识别网络 承认十个不同的单词。知道真实的言论和知识是很重要的 音频识别系统要复杂得多，但像MNIST这样的图像，<br>应该让你对所涉及的技术有一个基本的了解。一旦你 完成本教程，您将有一个试图分类一秒钟的模型 音频剪辑为沉默，未知单词，“是”，“否”，“上”，“下”，<br>“左”，“右”，“上”，“关”，“停止”或“去”。你也可以把这个 模型并在Android应用程序中运行。</p>
+<h2><span id="制备">制备</span></h2><p>你应该确保你已经安装了TensorFlow，并且从脚本开始 下载超过1GB的训练数据，你需要一个良好的互联网连接和<br>您的机器上有足够的可用空间。培训过程本身可能需要几个 小时，所以确保你有一台机器可用的那么久。</p>
+<h2><span id="训练">训练</span></h2><p>要开始训练过程，请转到TensorFlow源代码树并运行：</p>
+<pre><code>python tensorflow/examples/speech_commands/train.py
+</code></pre><p>脚本将从下载语音命令开始 数据集， 它由三十五个人的六万五千个WAVE音频文件组成 话。这些数据由Google收集，并以CC BY许可证的形式发布<br>你可以通过贡献自己的五分钟帮助改善它 语音。档案是 超过1GB，所以这部分可能需要一段时间，但你应该看到进度日志，和<br>一旦它被下载一次，你将不需要再做这一步。</p>
+<p>一旦下载完成，你会看到日志信息 喜欢这个：</p>
+<pre><code>I0730 16:53:44.766740   55030 train.py:176] Training from step: 1
+I0730 16:53:47.289078   55030 train.py:217] Step #1: rate 0.001000, accuracy 7.0%, cross entropy 2.611571
+</code></pre><p>这表明初始化过程完成，训练循环已经完成 开始。你会看到它为每个训练步骤输出信息。这是一个 打破它的意思：</p>
+<p><code>Step #1</code>显示我们正在进行训练循环的第一步。在这种情况下 总共有18000步，所以你可以看一下步数 以了解它是如何接近完成。</p>
+<p><code>rate 0.001000</code>是控制速度的学习速率 网络的重量更新。在这个早期是一个相对较高的数字（0.001），<br>但是对于以后的训练周期来说，它会减少10倍，达到0.0001。</p>
+<p><code>accuracy 7.0%</code>是多少类正确预测在这个 训练步骤。这个值往往会波动很多，但是应该增加 平均随着培训的进展。模型输出一个数字数组，一个用于<br>每个标签，每个数字是输入的预测可能性 类。预测的标签是通过选择最高的条目来挑选的 得分了。分数总是在0到1之间，数值越高越好 对结果表示更多的信心。</p>
+<p><code>cross entropy 2.611571</code>是我们正在使用的丢失功能的结果 指导培训过程。这是通过比较得到的分数 从当前训练运行到正确标签的分数向量<br>在训练中应该趋于下降。</p>
+<p>经过一百步后，你应该看到这样的一行：</p>
+<p>I0730 16：54：41.813438 55030 train.py:252]保存到<br>“/tmp/speech_commands_train/conv.ckpt-100”</p>
+<p>这节省了目前训练过的检查点文件的权重。如果你的 训练脚本被中断，你可以查找最后保存的检查点和 然后用重新启动脚本<br><code>--start_checkpoint=/tmp/speech_commands_train/conv.ckpt-100</code>作为命令行 从这一点开始。</p>
+<h2><span id="混乱矩阵">混乱矩阵</span></h2><p>经过四百步之后，这些信息将被记录下来：</p>
+<pre><code>I0730 16:57:38.073667   55030 train.py:243] Confusion Matrix:
+ [[258   0   0   0   0   0   0   0   0   0   0   0]
+ [  7   6  26  94   7  49   1  15  40   2   0  11]
+ [ 10   1 107  80  13  22   0  13  10   1   0   4]
+ [  1   3  16 163   6  48   0   5  10   1   0  17]
+ [ 15   1  17 114  55  13   0   9  22   5   0   9]
+ [  1   1   6  97   3  87   1  12  46   0   0  10]
+ [  8   6  86  84  13  24   1   9   9   1   0   6]
+ [  9   3  32 112   9  26   1  36  19   0   0   9]
+ [  8   2  12  94   9  52   0   6  72   0   0   2]
+ [ 16   1  39  74  29  42   0   6  37   9   0   3]
+ [ 15   6  17  71  50  37   0   6  32   2   1   9]
+ [ 11   1   6 151   5  42   0   8  16   0   0  20]]
+</code></pre><p>第一部分是一个混乱 矩阵。至 明白它的意思，你首先需要知道正在使用的标签， 这种情况是“沉默”，“不明”，“是”，“否”，“上”，“下”，“左”<br>“右”，“上”，“关”，“停”和“走”。每列代表一组样本 被预测为每个标签，所以第一列代表所有的 所有被预测为沉默的剪辑，所有那些剪辑<br>预测是未知的话，第三个“是”，等等。</p>
+<p>每行代表剪辑的正确的，地面的真相标签。第一行 是所有沉默的剪辑，第二个剪辑是未知的单词， 第三个“是”等</p>
+<p>这个矩阵可能比仅仅一个精度分数更有用，因为它 给出了网络正在发生的错误的一个很好的总结。在这个例子中你 可以看到，第一行中的所有条目都是零，除了<br>最初的一个。因为第一行是所有实际上是沉默的剪辑， 这意味着它们中没有一个被错误地标记为单词，所以我们没有 对沉默的负面否定。这显示网络已经变得漂亮了<br>善于区分沉默与言语。</p>
+<p>如果我们往下看第一列，我们会看到很多非零值。该 列代表所有被预测为沉默的剪辑，如此积极 第一个单元格外的数字是错误的。这意味着一些真实的剪辑<br>口头上的话实际上被预言是沉默，所以我们确实有相当的一个 很少有误报。</p>
+<p>一个完美的模型将产生一个混乱矩阵，其中所有条目都是 零通过中心的对角线。发现偏离 该模式可以帮助你弄清楚模型是如何最容易混淆的<br>一旦你确定了问题，你可以通过添加更多的数据或者解决它们 清理类别。</p>
+<h2><span id="验证">验证</span></h2><p>混淆矩阵后，你应该看到这样一行：</p>
+<p>步骤400：验证准确度= 26.3％ （N = 3093）</p>
+<p>将数据集分成三类是一个很好的做法。最大的 （在这种情况下大约80％的数据）用于训练网络，a 较小的一套（这里10％，被称为“验证”）被保留用于评估<br>在训练期间的准确性，另一组（最后的10％，“测试”）被使用 在训练结束后评估一次的准确性。</p>
+<p>这种分裂的原因是网络总会有危险 在训练期间开始记忆他们的输入。通过保持验证集 单独，您可以确保该模型与以前从未见过的数据一起工作。<br>测试集是一个额外的保证，以确保你不只是 一直以适合训练和训练的方式调整你的模型 验证集合，但不是更广泛的输入。</p>
+<p>训练脚本自动将数据集分成这三个 类别，上面的日志行显示了运行时模型的准确性 验证集。理想情况下，这应该相当接近培训<br>准确性。如果训练的准确性增加，但验证没有，那就是 一个标志，过度配合正在发生，你的模型只是学习的东西 关于培训片段，而不是泛泛的模式。</p>
+<h2><span id="tensorboard">Tensorboard</span></h2><p>想象如何使用Tensorboard进行培训的一个好方法就是使用Tensorboard。通过 默认情况下，脚本将事件保存到/ tmp /<br>retrain_logs，并且可以加载 这些通过运行：</p>
+<p><code>tensorboard --logdir /tmp/retrain_logs</code></p>
+<p>然后在浏览器中导航到http：// localhost：6006， 你会看到图表和图表显示你的模型的进展。</p>
+<p><img src="https://storage.googleapis.com/download.tensorflow.org/example_images/speech_commands_tensorflow.png" alt=""></p>
+<h2><span id="培训完成">培训完成</span></h2><p>经过几个小时的训练（取决于你的机器的速度），脚本 应该已经完成​​了所有18000个步骤。这将打印出最后的混乱 矩阵，以及准确性分数，都在测试集上运行。随着<br>默认设置，你应该看到在85％和90％之间的准确性。</p>
+<p>因为音频识别功能在移动设备上特别有用，接下来我们将会 将其导出为便于在这些平台上工作的紧凑格式。去做 那就运行这个命令行：</p>
+<pre><code>python tensorflow/examples/speech_commands/freeze.py \
+--start_checkpoint=/tmp/speech_commands_train/conv.ckpt-18000 \
+--output_file=/tmp/my_frozen_graph.pb
+</code></pre><p>冷冻模型创建完成后，您可以使用<code>label_wav.py</code>进行测试 脚本，如下所示：</p>
+<pre><code>python tensorflow/examples/speech_commands/label_wav.py \
+--graph=/tmp/my_frozen_graph.pb \
+--labels=/tmp/speech_commands_train/conv_labels.txt \
+--wav=/tmp/speech_dataset/left/a5d485dc_nohash_0.wav
+</code></pre><p>这应该打印出三个标签：</p>
+<pre><code>left (score = 0.81477)
+right (score = 0.14139)
+_unknown_ (score = 0.03808)
+</code></pre><p>希望“离开”是最高分，因为这是正确的标签，但自从 训练是随机的，它可能不会为您尝试的第一个文件。尝试一些 在同一个文件夹中的其他.wav文件，看看它有多好。</p>
+<p>分数在0到1之间，数值越高意味着模型越多 对预测充满信心。</p>
+<h2><span id="在android应用程序中运行模型">在Android应用程序中运行模型</span></h2><p>了解这个模型在真实应用程序中的最简单方法是下载 预构建的Android演示 应用 并将它们安装在您的手机上。你会看到’TF<br>Speech’出现在你的应用程序列表中， 打开它就会显示出我们刚刚培训过的动作词语列表 我们的模型，从“是”和“否”开始。一旦你给了应用程序的权限<br>要使用麦克风，你应该可以尝试说出这些话，看看他们 当模型识别其中的一个时，在用户界面中突出显示。</p>
+<p>你也可以自己构建这个应用程序，因为它是开源的 作为TensorFlow存储库的一部分提供 github上。 默认情况下，它从一个预训练模型下载<br>tensorflow.org， 但是您可以轻松地将其替换为您已训练的模型 你自己。 如果你这样做，你需要确保主要的常量 SpeechActivity<br>Java源码 文件 像<code>SAMPLE_RATE</code>和<code>SAMPLE_DURATION</code>匹配您所做的任何更改 在训练时默认。你也会看到有一个Java版本的<br>RecognizeCommands 模 这与本教程中的C ++版本非常相似。如果你调整了<br>参数，您也可以在SpeechActivity中更新它们以获得相同的结果 结果与您的服务器测试一样。</p>
+<p>演示应用程序根据标签自动更新其UI结果列表 您可以将文本文件复制到您的冻结图形的旁边，这意味着您可以 轻松地尝试不同的模型，而无需做任何代码更改。您<br>将需要更新<code>LABEL_FILENAME</code>和<code>MODEL_FILENAME</code>指向文件 你已经添加如果你改变路径。</p>
+<h2><span id="这个模型如何工作">这个模型如何工作？</span></h2><p>本教程中使用的体系结构基于本文中描述的一些体系结构 用于小尺寸关键字的卷积神经网络 斑点。 选择它是因为它比较简单，快速训练，而且容易<br>理解，而不是最先进的技术。有很多不同的 方法来建立神经网络模型来处理音频，包括 经常性网络或扩张 （atrous） 卷积。<br>本教程是基于那种感觉非常好的卷积网络 熟悉任何使用图像识别的人员。这似乎令人惊讶 首先，因为音频本质上是一维连续信号 随着时间的推移，不是一个2D空间问题。</p>
+<p>我们通过定义一个时间窗口来相信我们所说的话语来解决这个问题 应该适合，并将该窗口中的音频信号转换成图像。 这是通过将传入的音频样本分成短片段来完成的，<br>几毫秒长，并计算跨越a的频率的强度 一组乐队。来自一个段的每组频率强度被视为一个 数字矢量，而这些矢量按时间顺序排列组成<br>二维数组。这个值的数组可以被视为一个 单通道图像，并被称为一个 谱图。如果你想查看<br>音频采样产生了什么样的图像，你可以运行`wav_to_spectrogram 工具：</p>
+<pre><code>bazel run tensorflow/examples/wav_to_spectrogram:wav_to_spectrogram -- \
+--input_wav=/tmp/speech_dataset/happy/ab00c4b2_nohash_0.wav \
+--output_png=/tmp/spectrogram.png
+</code></pre><p>如果你打开<code>/tmp/spectrogram.png</code>你应该看到这样的东西：</p>
+<p><img src="https://storage.googleapis.com/download.tensorflow.org/example_images/spectrogram.png" alt=""></p>
+<p>由于TensorFlow的记忆顺序，此图像中的时间从顶部增加 到底，频率从左到右，不像平常 时间从左到右的谱图的约定。你应该能够<br>看到几个不同的部分，与第一个音节“哈”不同 “PPY”。</p>
+<p>由于人耳对某些频率比其他频率更敏感， 传统的语音识别方法对此做了进一步的处理 代表把它变成一套梅尔倒频谱 系数或MFCC<br>简而言之。这也是一个二维的单通道表示法 也被当作一个形象来对待。如果你的目标是一般的声音，而不是 你可能会发现你可以跳过这一步，直接操作 谱图。</p>
+<p>这些处理步骤产生的图像然后被输入到一个 多层卷积神经网络，具有完整的连接层 由softmax结束。你可以看到这部分的定义 tensorflow /示例/<br>speech_commands / models.py。</p>
+<h2><span id="流媒体的准确性">流媒体的准确性</span></h2><p>大多数音频识别应用程序需要在连续的音频流上运行， 而不是单独的剪辑。在此使用模型的典型方法 环境是在不同的偏移量和时间平均重复应用<br>结果在一个短的窗口产生一个平滑的预测。如果你认为 的输入作为图像，它不断沿着时间轴滚动。该 我们想要认识的话可以随时开始，所以我们需要采取一系列的措施<br>快照有机会获得大部分的对齐 在时间窗口中的话语我们进入模型。如果我们抽高一些 足够的速度，那么我们有一个很好的机会来捕捉这个词在多个<br>窗户，所以平均的结果提高了整体的信心 预测。</p>
+<p>有关如何在流式数据上使用模型的示例，可以查看 test_streaming_accuracy.cc。 这使用了 RecognizeCommands<br>类通过一个长形式的输入音频来运行，尝试发现单词，并进行比较 这些预测是针对标签和时间的基本事实清单。这使得它 一个将模型应用于音频信号流的好例子。</p>
+<p>您将需要一个长音频文件来测试它，并显示标签 在哪里说每个字。如果你不想自己录制一个，你可以<br>使用<code>generate_streaming_test_wav</code>生成一些综合测试数据 效用。默认情况下，这将创建一个大约10分钟的.wav文件<br>每三秒钟一个文本文件，每个文件包含每个时间的实际情况 说话。这些单词是从你当前的测试部分中提取的 数据集，与背景噪音混合在一起。运行它，使用：</p>
+<pre><code>bazel run tensorflow/examples/speech_commands:generate_streaming_test_wav
+</code></pre><p>这将保存一个.wav文件到<code>/tmp/speech_commands_train/streaming_test.wav</code>， 和一个列出标签的文本文件<br><code>/tmp/speech_commands_train/streaming_test_labels.txt</code>。你可以运行 准确性测试：</p>
+<pre><code>bazel run tensorflow/examples/speech_commands:test_streaming_accuracy -- \
+--graph=/tmp/my_frozen_graph.pb \
+--labels=/tmp/speech_commands_train/conv_labels.txt \
+--wav=/tmp/speech_commands_train/streaming_test.wav \
+--ground_truth=/tmp/speech_commands_train/streaming_test_labels.txt \
+--verbose
+</code></pre><p>这将输出正确匹配的单词数量的信息，如何 许多人被给出了错误的标签，以及当模型触发多少次 没有真正的言语。有各种各样的参数控制如何<br>信号均值工作，包括设定长度的<code>--average_window_ms</code> 时间平均结果超过，<code>--clip_stride_ms</code>之间的时间<br><code>--suppression_ms</code>型号的应用，停止后续的单词 在发现初始的一段时间后触发一段时间的检测<br><code>--detection_threshold</code>，控制平均得分必须达到多高 在它被认为是一个坚实的结果之前。</p>
+<p>您会看到，流式精确度会输出三个数字，而不仅仅是 在训练中使用的一个度量。这是因为不同的应用程序 不同的要求，有些能够容忍频繁的不正确<br>结果只要找到真正的单词（高回忆），而另一些非常集中 确保预测的标签即使有些也很可能是正确的 没有被检测到（高精度）。工具中的数字给你一个想法<br>你的模型将如何在应用程序中执行，你可以尝试调整 信号平均参数调整它给你想要的性能。 要了解什么是适合您的应用程序的正确参数，您可以查看 在创造一个中华民国<br>曲线帮助 你明白这个权衡。</p>
+<h2><span id="识别命令">识别命令</span></h2><p>流媒体精确度工具使用一个简单的解码器包含在一个小的C ++类 叫 RecognizeCommands。<br>这个类是随着时间的推移运行TensorFlow模型的输出 对信号进行平均，并在足够的时候返回关于标签的信息 证据认为已经发现了一个公认的词。执行是<br>相当小，只是跟踪最后的几个预测和平均他们， 所以很容易根据需要移植到其他平台和语言。例如，<br>在Android或Python上的Java级别上做类似的事情是很方便的 在树莓派。只要这些实现共享相同的逻辑，你 可以使用流测试来调整控制平均的参数<br>工具，然后将它们转移到您的应用程序以获得类似的结果。</p>
+<h2><span id="高级培训">高级培训</span></h2><p>训练脚本的默认设计是为了产生良好的端对端 导致一个相对较小的文件，但有很多选项，你可以 根据自己的要求更改以自定义结果。</p>
+<h3><span id="自定义培训数据">自定义培训数据</span></h3><p>默认情况下，脚本将下载语音命令 数据集，但是 你也可以提供你自己的训练数据。为了训练你自己的数据，你 应该确保每个声音至少有数百个录音<br>你想认识，并按课程安排成文件夹。对于 例如，如果你试图从猫咪中识别出狗吠，那么你会的 创建一个名为<code>animal_sounds</code>的根文件夹，然后在那两个之内<br>子文件夹称为<code>bark</code>和<code>miaow</code>。你会然后组织你的音频文件 进入适当的文件夹。</p>
+<p>要将脚本指向新的音频文件，您需要将<code>--data_url=</code>设置为 禁用语音命令数据集的下载，以及<br><code>--data_dir=/your/data/folder/</code>来查找刚创建的文件。</p>
+<p>文件本身应该是16位小端PCM编码的WAVE格式。该 采样率默认为16,000，但只要所有音频一致 相同的速度（脚本不支持重新采样），你可以改变这一点<br><code>--sample_rate</code>的说法。剪辑也应该大致相同 持续时间。默认的预期持续时间是一秒钟，但您可以使用此设置<br><code>--clip_duration_ms</code>标志。如果你有可变金额的剪辑 在开始的沉默，你可以看看字对齐工具来标准化他们<br>（这里是一个快速和肮脏的方法，你可以使用 太）。</p>
+<p>要注意的一个问题是，你可能会有非常类似的重复 在你的数据集中有相同的声音，如果是这样的话，这些可能会产生误导性的指标<br>分布在您的培训，验证和测试集。例如，演讲 设置的命令有人多次重复相同的单词。每一个 这些重复可能是非常接近其他人，所以如果训练是<br>过度拟合和记忆，它可能表现得不切实际 在测试集中看到一个非常相似的副本。为了避免这种危险，语音指令 要确保所有剪辑都包含一个人说的同一个词<br>被放入同一个分区。剪辑分配给培训，测试或 验证集基于它们的文件名的散列，以确保 即使添加了新的剪辑，作业也保持稳定，并避免任何培训<br>样本迁移到其他集合。确保所有给定的发言者 单词在同一个桶中，散列 功能 计算时忽略“nohash”后的文件名中的任何内容<br>分配。这意味着如果你有文件名如<code>pete_nohash_0.wav</code>和 <code>pete_nohash_1.wav</code>，他们保证在同一个集合。</p>
+<h3><span id="未知的类">未知的类</span></h3><p>您的应用程序很可能会听到不在您的培训中的声音 设置，你会希望模型表明它不能识别噪音 在这些情况下。为了帮助网络学习什么可以忽略，你需要<br>提供一些既不是你的课堂音频片段。要做到这一点，你会的 创建<code>quack</code>，<code>oink</code>和<code>moo</code>子文件夹， 你的用户可能遇到的其他动物。<br><code>--wanted_words</code>的论点 脚本定义你关心哪些类，所有其他提到的类 在训练期间，子文件夹名称将用于填充<code>_unknown_</code>类。<br>语音命令数据集在其未知的类中包含二十个词，包括 数字从零到九，随机名称如“Sheila”。</p>
+<p>默认情况下，10％的训练样例是从未知类中挑选出来的，但是 你可以用<code>--unknown_percentage</code>标志来控制它。增加这个意志<br>使得模型不太可能将不知名的单词误认为想要的单词，而是使其成为可能 它太大，可能会适得其反，因为模型可能会认为这是最安全的分类 所有的话都是未知的！</p>
+<h3><span id="背景噪音">背景噪音</span></h3><p>即使有其他不相关的情况，真正的应用程序也必须识别音频 发生在环境中的声音。要建立一个这种强大的模型 的干扰，我们需要训练与录制的音频相似<br>属性。语音命令数据集中的文件被捕获在一个变种上 用户在许多不同的环境中，而不是在工作室，这样的设备 有助于增加一些现实主义的培训。要添加更多，你可以随机混合<br>环境音频段到训练输入。在语音命令中 设置有一个名为<code>_background_noise_</code>的特殊文件夹 一分钟长的WAVE文件，白噪声，机器和日常录音<br>家庭活动。</p>
+<p>随机选择这些文件的小片段，并以低量混合 在训练期间进入剪辑。响度也是随机选择的，并受到控制<br>由<code>--background_volume</code>的论点作为一个比例，其中0是沉默，1 是完整的数量。不是所有的剪辑都添加了背景，所以<br><code>--background_frequency</code>标志控制着它们混合的比例。</p>
+<p>您自己的应用程序可能在不同的环境中运行 背景噪音模式比这些默认，所以你可以提供自己的音频<br>剪辑在<code>_background_noise_</code>文件夹中。这些应该是相同的采样率 作为你的主要数据集，但是持续时间要长得多，这样一套好的随机性<br>段可以从中选择。</p>
+<h3><span id="安静">安静</span></h3><p>在大多数情况下，你所关心的声音将是间歇性的，所以它是 重要的是要知道什么时候没有匹配的音频。为了支持这个，有一个<br>特殊的<code>_silence_</code>标签，指示模型什么时候什么都没有检测到 有趣。因为在真实环境中从来没有完全沉默，我们<br>实际上不得不提供安静和不相关的音频的例子。为此，我们 重新使用<code>_background_noise_</code>文件夹，这个文件夹也混合到了真正的剪辑中，<br>拖动音频数据的短小部分，并将其与地面进行馈送 <code>_silence_</code>的真理级。默认提供10％的训练数据<br>这个，但<code>--silence_percentage</code>可以用来控制比例。如 与未知的话，设置这个更高可以减轻模型的结果有利于<br>真正的保持沉默，牺牲了文字的否定，但也是如此 很大一部分会导致它陷入一直猜测的陷阱 安静。</p>
+<h3><span id="时间转移">时间转移</span></h3><p>增加背景噪音是扭曲a中训练数据的一种方式 现实的方式来有效地增加数据集的大小，等等增加 整体的准确性和时间的转移是另一回事。这涉及到一个随机偏移量<br>训练样本数据的时间，使得开始或结束的一小部分是 切断，对面的部分用零填充。这模仿了自然 训练数据中的起始时间的变化，并且由… …控制<br><code>--time_shift_ms</code>标志，默认为100ms。增加这个值将会 提供更多的变化，但有切断重要部分的风险<br>音频。用现实的扭曲来增加数据的一个相关的方法是通过 使用时间拉伸和俯仰 缩放， 但这超出了本教程的范围。</p>
+<h2><span id="定制模型">定制模型</span></h2><p>这个脚本使用的默认模型是相当大的，超过8亿 FLOPs为每个推断和使用940,000重量参数。这运行在 台式机或现代手机可用的速度，但涉及太多<br>计算在具有更多限制的设备上以交互式速度运行 资源。为了支持这些用例，有几个选择 可供选择：</p>
+<p>low_latency_conv 基于卷积中描述的’cnn-one-fstride4’拓扑 用于小型关键字点击的神经网络 纸。<br>精度略低于“conv”，但重量参数的数量 大致相同，只需要1100万FLOP就能进行一次预测， 使其更快。</p>
+<p>要使用此型号，请指定<code>--model_architecture=low_latency_conv</code> 命令行。您还需要更新培训费率和数量<br>的步骤，所以完整的命令将如下所示：</p>
+<pre><code>python tensorflow/examples/speech_commands/train \
+--model_architecture=low_latency_conv \
+--how_many_training_steps=20000,6000 \
+--learning_rate=0.01,0.001
+</code></pre><p>这就要求脚本以20000步的学习速率进行训练 然后以小10倍的速度微调6000步。</p>
+<p>low_latency_svdf 基于压缩深度神经网络的拓扑结构， Rank-Constrained Topology论文。<br>准确度也低于’conv’，但只用了大约75万 参数，最重要的是，它允许在一个优化的执行 测试时间（即，当你真的在你的应用程序中使用它），结果<br>在750万FLOPs。</p>
+<p>要使用此型号，请指定<code>--model_architecture=low_latency_svdf</code> 命令行，并更新培训率和数量<br>的步骤，所以完整的命令将如下所示：</p>
+<pre><code>python tensorflow/examples/speech_commands/train \
+--model_architecture=low_latency_svdf \
+--how_many_training_steps=100000,35000 \
+--learning_rate=0.01,0.005
+</code></pre><p>请注意，尽管需要比前两个更多的步骤 拓扑结构，减少计算的数量意味着训练应该采取 大约在同一时间，最后达到85％左右的精度。<br>你还可以进一步调整拓扑相当容易计算和 通过改变SVDF层中的这些参数来提高精度：</p>
+<p>等级 - 近似的等级（更高通常更好，但结果是          更多的计算）。 num_units - 类似于其他图层类型，指定中的节点数<br>层（更多的节点更好的质量，更多的计算）。</p>
+<p>关于运行时，由于该层允许缓存一些优化 内部神经网络激活，你需要确保使用一致的 （例如’clip_stride_ms’标志），当你冻结图表，以及什么时候<br>以流模式执行模型（例如test_streaming_accuracy.cc）。</p>
+<p>其他参数要定制 如果你想尝试定制模型，一个好的开始是通过 调整光谱图创建参数。这具有改变的效果 输入图像到模型的大小，以及创建代码 models.py<br>将自动调整计算和权重的数量以适应 不同的尺寸。如果您将输入变小，模型将需要更少 计算来处理它，所以它是一个折衷一些准确性的好方法 以改善延迟。<br><code>--window_stride_ms</code>控制每个相隔多远 频率分析样本是从以前的。如果你增加这个值，那么 在给定的持续时间内采样的数量越少，输入的时间轴越少<br>会缩小。 <code>--dct_coefficient_count</code>标志控制着多少桶 用于频率计数，所以减少这个会缩小输入 其他维度。<br><code>--window_size_ms</code>参数不影响大小，但是 确实控制了用于计算频率的区域的宽度 样品。减少训练样本的持续时间，由…控制<br><code>--clip_duration_ms</code>，如果你要找的声音很短， 因为这也减少了输入的时间维度。你需要做的 确保所有的训练数据在开始部分都包含正确的音频<br>虽然剪辑。</p>
+<p>如果你对于你的问题有一个完全不同的模型，你可能会发现 你可以插入它 models.py 并让脚本的其余部分处理所有的预处理和训练<br>力学。你会添加一个新的条款<code>create_model</code>，寻找的名字 你的架构，然后调用模型创建功能。这个功能是 给定光谱图输入的大小以及其他模型信息<br>预计会创建TensorFlow操作来读取并生成输出 预测向量和占位符来控制丢失率。剩下的 脚本将把这个模型整合到一个更大的图中去做<br>输入计算并应用softmax和损失函数来训练它。</p>
+<p>当你调整模型和训练超参数时，一个常见的问题是 由于数值精度问题，非数值可能会蔓延。在 一般来说，你可以通过减少像学习这样的东西来解决这些问题<br>费率和重量初始化函数，但如果它们是持久的，你可以 启用<code>--check_nans</code>标志来追踪错误的来源。这会<br>在TensorFlow中的大多数常规操作之间插入检查操作，然后中止 培训过程中遇到一个有用的错误消息。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/audio_recognition/" data-title="简单的音频识别 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/kernel_methods/" title="用显式核方法改进线性模型">
+  <strong>上一篇：</strong><br/>
+  <span>
+  用显式核方法改进线性模型</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/deep_cnn/"  title="卷积神经网络">
+ <strong>下一篇：</strong><br/> 
+ <span>卷积神经网络
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">简单的音频识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">制备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">混乱矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">Tensorboard</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">培训完成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">在Android应用程序中运行模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.8.</span> <span class="toc-text">这个模型如何工作？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.9.</span> <span class="toc-text">流媒体的准确性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.10.</span> <span class="toc-text">识别命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.</span> <span class="toc-text">高级培训</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.1.</span> <span class="toc-text">自定义培训数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.2.</span> <span class="toc-text">未知的类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.3.</span> <span class="toc-text">背景噪音</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.4.</span> <span class="toc-text">安静</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.5.</span> <span class="toc-text">时间转移</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.12.</span> <span class="toc-text">定制模型</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

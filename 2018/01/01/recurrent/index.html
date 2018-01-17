@@ -1,0 +1,673 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>复发神经网络 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="复发神经网络介绍看看这个伟大的文章 对于递归神经网络和LSTM的介绍尤其如此。 语言建模在本教程中，我们将展示如何训练一个循环神经网络 语言模型的挑战性任务。这个问题的目标是适合一个 将概率赋予句子的概率模型。它通过预测文本中的下一个单词，给出以前单词的历史。为了这 我们将使用宾州树银行 （PTB）数据集，这是衡量这些数据质量的流行基准 模型，虽然小，相对较快的训练。 语言建模是语音等许多有趣问题">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="复发神经网络">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/recurrent/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="复发神经网络介绍看看这个伟大的文章 对于递归神经网络和LSTM的介绍尤其如此。 语言建模在本教程中，我们将展示如何训练一个循环神经网络 语言模型的挑战性任务。这个问题的目标是适合一个 将概率赋予句子的概率模型。它通过预测文本中的下一个单词，给出以前单词的历史。为了这 我们将使用宾州树银行 （PTB）数据集，这是衡量这些数据质量的流行基准 模型，虽然小，相对较快的训练。 语言建模是语音等许多有趣问题">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="复发神经网络">
+<meta name="twitter:description" content="复发神经网络介绍看看这个伟大的文章 对于递归神经网络和LSTM的介绍尤其如此。 语言建模在本教程中，我们将展示如何训练一个循环神经网络 语言模型的挑战性任务。这个问题的目标是适合一个 将概率赋予句子的概率模型。它通过预测文本中的下一个单词，给出以前单词的历史。为了这 我们将使用宾州树银行 （PTB）数据集，这是衡量这些数据质量的流行基准 模型，虽然小，相对较快的训练。 语言建模是语音等许多有趣问题">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/recurrent/" title="复发神经网络" itemprop="url">复发神经网络</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">复发神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">语言建模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">教程文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">下载并准备数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">该模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.1.</span> <span class="toc-text">LSTM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.2.</span> <span class="toc-text">截断后向传播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.3.</span> <span class="toc-text">输入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.5.</span> <span class="toc-text">堆叠多个LSTM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">运行代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">接下来是什么？</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="复发神经网络">复发神经网络</span></h1><h2><span id="介绍">介绍</span></h2><p>看看这个伟大的文章 对于递归神经网络和LSTM的介绍尤其如此。</p>
+<h2><span id="语言建模">语言建模</span></h2><p>在本教程中，我们将展示如何训练一个循环神经网络 语言模型的挑战性任务。这个问题的目标是适合一个 将概率赋予句子的概率模型。它通过<br>预测文本中的下一个单词，给出以前单词的历史。为了这 我们将使用宾州树银行 （PTB）数据集，这是衡量这些数据质量的流行基准 模型，虽然小，相对较快的训练。</p>
+<p>语言建模是语音等许多有趣问题的关键 识别，机器翻译或图像字幕。这也很有趣 - 看看这里。</p>
+<p>为了本教程的目的，我们将重现结果 Zaremba等，2014 （pdf），达到非常好的质量 在PTB数据集上。</p>
+<h2><span id="教程文件">教程文件</span></h2><p>本教程在TensorFlow模型库中引用<code>models/tutorials/rnn/ptb</code>中的以下文件：</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ptb_word_lm.py</code></td>
+<td>The code to train a language model on the PTB dataset.  </td>
+</tr>
+<tr>
+<td><code>reader.py</code></td>
+<td>The code to read the dataset.  </td>
+</tr>
+</tbody>
+</table>
+<h2><span id="下载并准备数据">下载并准备数据</span></h2><p>本教程所需的数据位于<code>data/</code>目录中 PTM数据集来自Tomas Mikolov的网页。</p>
+<p>数据集已经过预处理，包含10000个不同的单词， 包括稀有的结束句子标记和特殊符号（\ ）<br>话。在<code>reader.py</code>中，我们将每个字转换为唯一的整数标识符， 以便使神经网络容易处理数据。</p>
+<h2><span id="该模型">该模型</span></h2><h3><span id="lstm">LSTM</span></h3><p>模型的核心由一个LSTM单元组成，它处理一个单词 并计算下一个单词可能值的概率 句子。网络的存储器状态用零矢量初始化<br>并在阅读每个单词后得到更新。出于计算的原因，我们会 处理大小为<code>batch_size</code>的小批量数据。在这个例子中，它是<br>重要的是要注意<code>current_batch_of_words</code>不对应一个 “句子”的话。批次中的每一个字都应该对应一个时间t。<br>TensorFlow会自动将您每批次的梯度加起来。</p>
+<p>例如：</p>
+<pre><code> t=0  t=1    t=2  t=3     t=4
+[The, brown, fox, is,     quick]
+[The, red,   fox, jumped, high]
+
+words_in_dataset[0] = [The, The]
+words_in_dataset[1] = [brown, red]
+words_in_dataset[2] = [fox, fox]
+words_in_dataset[3] = [is, jumped]
+words_in_dataset[4] = [quick, high]
+batch_size = 2, time_steps = 5
+</code></pre><p>基本的伪代码如下：</p>
+<pre><code>words_in_dataset = tf.placeholder(tf.float32, [time_steps, batch_size, num_features])
+lstm = tf.contrib.rnn.BasicLSTMCell(lstm_size)
+# Initial state of the LSTM memory.
+hidden_state = tf.zeros([batch_size, lstm.state_size])
+current_state = tf.zeros([batch_size, lstm.state_size])
+state = hidden_state, current_state
+probabilities = []
+loss = 0.0
+for current_batch_of_words in words_in_dataset:
+    # The value of state is updated after processing each batch of words.
+    output, state = lstm(current_batch_of_words, state)
+
+    # The LSTM output can be used to make next word predictions
+    logits = tf.matmul(output, softmax_w) + softmax_b
+    probabilities.append(tf.nn.softmax(logits))
+    loss += loss_function(probabilities, target_words)
+</code></pre><h3><span id="截断后向传播">截断后向传播</span></h3><p>通过设计，递归神经网络（RNN）的输出取决于任意 遥远的投入。不幸的是，这使得后向计算困难。 为了使学习过程易于处理，创建是常见的做法<br>网络的“展开”版本，其中包含一个固定的号码 （<code>num_steps</code>）的LSTM输入和输出。然后，这个模型被训练 RNN的有限近似。这可以通过馈送输入来实现<br>长度为<code>num_steps</code>，每次之后执行反向传球 这样的输入块。</p>
+<p>这是一个简化的代码块来创建一个图表执行 截断反向传播：</p>
+<pre><code># Placeholder for the inputs in a given iteration.
+words = tf.placeholder(tf.int32, [batch_size, num_steps])
+
+lstm = tf.contrib.rnn.BasicLSTMCell(lstm_size)
+# Initial state of the LSTM memory.
+initial_state = state = tf.zeros([batch_size, lstm.state_size])
+
+for i in range(num_steps):
+    # The value of state is updated after processing each batch of words.
+    output, state = lstm(words[:, i], state)
+
+    # The rest of the code.
+    # ...
+
+final_state = state
+</code></pre><p>这就是如何实现对整个数据集的迭代：</p>
+<pre><code># A numpy array holding the state of LSTM after each batch of words.
+numpy_state = initial_state.eval()
+total_loss = 0.0
+for current_batch_of_words in words_in_dataset:
+    numpy_state, current_loss = session.run([final_state, loss],
+        # Initialize the LSTM state from the previous iteration.
+        feed_dict={initial_state: numpy_state, words: current_batch_of_words})
+    total_loss += current_loss
+</code></pre><h3><span id="输入">输入</span></h3><p>单词ID将被嵌入到一个密集的表示形式中 矢量表示教程） LSTM。这使模型能够有效地表示有关的知识 特别的话。这也很容易写：</p>
+<pre><code># embedding_matrix is a tensor of shape [vocabulary_size, embedding size]
+word_embeddings = tf.nn.embedding_lookup(embedding_matrix, word_ids)
+</code></pre><p>嵌入矩阵将被随机初始化，模型将学习到 通过查看数据来区分单词的含义。</p>
+<h3><span id="损失函数">损失函数</span></h3><p>我们希望最小化目标词的平均负对数概率：</p>
+<p>$$ \text{loss} = -\frac{1}{N}\sum<em>{i=1}^{N} \ln p</em>{\text{target}_i} $$</p>
+<p>这个功能不是很难实现， <code>sequence_loss_by_example</code>已经上市，所以我们可以在这里使用它。</p>
+<p>文件中报告的典型测量是平均每个词的困惑（经常 只是被称为困惑），这相当于</p>
+<p>$$e^{-\frac{1}{N}\sum<em>{i=1}^{N} \ln p</em>{\text{target}_i}} = e^{\text{loss}} $$</p>
+<p>我们将在整个培训过程中监控其价值。</p>
+<h3><span id="堆叠多个lstm">堆叠多个LSTM</span></h3><p>为了给模型更多的表现力，我们可以添加多层LSTM 处理数据。第一层的输出将成为输入 第二个等等。</p>
+<p>我们有一个称为<code>MultiRNNCell</code>的类，使得实现无缝：</p>
+<pre><code>def lstm_cell():
+  return tf.contrib.rnn.BasicLSTMCell(lstm_size)
+stacked_lstm = tf.contrib.rnn.MultiRNNCell(
+    [lstm_cell() for _ in range(number_of_layers)])
+
+initial_state = state = stacked_lstm.zero_state(batch_size, tf.float32)
+for i in range(num_steps):
+    # The value of state is updated after processing each batch of words.
+    output, state = stacked_lstm(words[:, i], state)
+
+    # The rest of the code.
+    # ...
+
+final_state = state
+</code></pre><h2><span id="运行代码">运行代码</span></h2><p>在运行代码之前，下载PTB数据集，正如开头讨论的那样 本教程。然后，提取主目录下的PTB数据集 如下：</p>
+<pre><code>tar xvfz simple-examples.tgz -C $HOME
+</code></pre><p>（注意：在Windows上，您可能需要使用 其他工具。）</p>
+<p>现在，克隆TensorFlow模型回购 从GitHub。运行以下命令：</p>
+<pre><code>cd models/tutorials/rnn/ptb
+python ptb_word_lm.py --data_path=$HOME/simple-examples/data/ --model=small
+</code></pre><p>教程代码中有3种支持的模型配置：“小”， “中”和“大”。它们之间的区别在于LSTMs和 用于训练的一组超参数。</p>
+<p>模型越大，应该得到的结果就越好。 <code>small</code>型号应该 在测试装置和下面的<code>large</code>上可以达到120以下的困惑度 80，虽然可能需要几个小时的训练。</p>
+<h2><span id="接下来是什么">接下来是什么？</span></h2><p>有几个技巧，我们没有提到，使模型更好， 包含：</p>
+<p>降低学习速度时间表， LSTM层之间的压差。</p>
+<p>研究代码并对其进行修改以进一步改进模型。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/recurrent/" data-title="复发神经网络 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/variables/" title="变量">
+  <strong>上一篇：</strong><br/>
+  <span>
+  变量</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/saved_model/"  title="保存和恢复">
+ <strong>下一篇：</strong><br/> 
+ <span>保存和恢复
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">复发神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">语言建模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">教程文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">下载并准备数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">该模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.1.</span> <span class="toc-text">LSTM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.2.</span> <span class="toc-text">截断后向传播</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.3.</span> <span class="toc-text">输入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.</span> <span class="toc-text">损失函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.5.</span> <span class="toc-text">堆叠多个LSTM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">运行代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">接下来是什么？</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

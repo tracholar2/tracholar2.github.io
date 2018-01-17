@@ -1,0 +1,673 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>MN初学者MNIST | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="MN初学者MNIST本教程适用于对机器学习和机器学习都陌生的读者 TensorFlow。如果你已经知道MNIST是什么，以及什么softmax（multinomial逻辑）回归是，你可能更喜欢这个 节奏更快的教程。务必 在启动之前安装TensorFlow 教程。 当学习如何编程时，首先要做的就是传统 打印“Hello World”。就像编程有Hello World，机器学习一样 有MNIST。 M">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MN初学者MNIST">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/beginners/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="MN初学者MNIST本教程适用于对机器学习和机器学习都陌生的读者 TensorFlow。如果你已经知道MNIST是什么，以及什么softmax（multinomial逻辑）回归是，你可能更喜欢这个 节奏更快的教程。务必 在启动之前安装TensorFlow 教程。 当学习如何编程时，首先要做的就是传统 打印“Hello World”。就像编程有Hello World，机器学习一样 有MNIST。 M">
+<meta property="og:image" content="https://www.tensorflow.org/images/MNIST.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/MNIST-Matrix.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/mnist-train-xs.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/mnist-train-ys.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/softmax-weights.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/softmax-regression-scalargraph.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/softmax-regression-scalarequation.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/softmax-regression-
+vectorequation.png">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MN初学者MNIST">
+<meta name="twitter:description" content="MN初学者MNIST本教程适用于对机器学习和机器学习都陌生的读者 TensorFlow。如果你已经知道MNIST是什么，以及什么softmax（multinomial逻辑）回归是，你可能更喜欢这个 节奏更快的教程。务必 在启动之前安装TensorFlow 教程。 当学习如何编程时，首先要做的就是传统 打印“Hello World”。就像编程有Hello World，机器学习一样 有MNIST。 M">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/MNIST.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/beginners/" title="MN初学者MNIST" itemprop="url">MN初学者MNIST</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">MN初学者MNIST</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">关于本教程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">MNIST数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Softmax回归</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">实施回归</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">评估我们的模型</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="mn初学者mnist">MN初学者MNIST</span></h1><p>本教程适用于对机器学习和机器学习都陌生的读者 TensorFlow。如果你已经知道MNIST是什么，以及什么softmax（multinomial<br>逻辑）回归是，你可能更喜欢这个 节奏更快的教程。务必 在启动之前安装TensorFlow 教程。</p>
+<p>当学习如何编程时，首先要做的就是传统 打印“Hello World”。就像编程有Hello World，机器学习一样 有MNIST。</p>
+<p>MNIST是一个简单的计算机视觉数据集。它由手写的图像组成 这样的数字：</p>
+<p><img src="https://www.tensorflow.org/images/MNIST.png" alt=""></p>
+<p>它还包括每个图像的标签，告诉我们它是哪个数字。对于 例如，上述图片的标签是5,0,4和1。</p>
+<p>在本教程中，我们将训练一个模型来查看图像并进行预测 他们是什么数字。我们的目标不是训练一个真正精细的模型 达到了最先进的性能 - 尽管我们会给你这样的代码<br>后来！ - 而是倾向于使用TensorFlow的脚趾。就这样，我们走了 开始一个非常简单的模型，称为Softmax回归。</p>
+<p>本教程的实际代码非常短，而且都很有趣 东西发生在三行。但是，这是非常 重要的是要理解它背后的想法：TensorFlow如何工作和<br>核心机器学习概念。因此，我们要非常小心 通过代码工作。</p>
+<h2><span id="关于本教程">关于本教程</span></h2><p>这个教程是一行一行的解释 mnist_softmax.py代码。</p>
+<p>您可以通过几种不同的方式使用本教程，其中包括：</p>
+<p>将每个代码片段逐行复制并粘贴到Python环境中   你读通过每一行的解释。 在读取之前或之后运行整个<code>mnist_softmax.py</code> Python文件<br>通过解释，并使用本教程了解的行   代码不清楚给你。</p>
+<p>我们将在本教程中完成的任务：</p>
+<p>了解MNIST数据和softmax回归 创建一个函数，这个函数是一个基于数据来识别数字的模型   图像中的每个像素<br>使用TensorFlow训练模型，通过“看”来识别数字   成千上万的例子（并运行我们的第一个TensorFlow会话来这样做）<br>用我们的测试数据检查模型的准确性</p>
+<h2><span id="mnist数据">MNIST数据</span></h2><p>MNIST数据托管在 Yann LeCun的网站。如果你正在复制和 从本教程的代码粘贴，从这里开始这两行代码 它将自动下载并读取数据：</p>
+<pre><code>from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets(&quot;MNIST_data/&quot;, one_hot=True)
+</code></pre><p>MNIST数据分为三部分：55,000个训练数据点 数据（<code>mnist.train</code>），10,000点测试数据（<code>mnist.test</code>）和5,000<br>验证数据点（<code>mnist.validation</code>）。这个分裂是非常重要的： 在机器学习中，我们有独立的数据是不可或缺的<br>从中学习，以便我们确保我们所学到的东西 概括！</p>
+<p>如前所述，每个MNIST数据点都有两部分：a 手写数字和相应的标签。我们将调用图像“x” 和标签“y”。训练集和测试集都包含图像及其图像<br>相应的标签;例如训练图像是<code>mnist.train.images</code> 培训标签为<code>mnist.train.labels</code>。</p>
+<p>每个图像是28像素×28像素。我们可以把它解释为一大堆 数字：</p>
+<p><img src="https://www.tensorflow.org/images/MNIST-Matrix.png" alt=""></p>
+<p>我们可以把这个数组变成一个28x28 = 784的数字。它不 只要我们在图像之间保持一致，那么我们如何平铺阵列。 从这个角度来看，MNIST图像只是一堆点<br>784维矢量空间，用a 结构非常丰富 （警告：计算密集的可视化）。</p>
+<p>展平数据会丢弃有关图像二维结构的信息。 那不好吗？那么，最好的计算机视觉方法是利用这一点 结构，我们将在以后的教程。但是，我们将是简单的方法<br>在这里使用softmax回归（下面定义）不会。</p>
+<p>结果是<code>mnist.train.images</code>是一个张量（一个n维阵列） 形状为<code>[55000, 784]</code>。第一个维度是列表中的一个索引<br>第二维是每个图像中每个像素的索引。 张量中的每个条目都是0到1之间的像素强度，对于特定的 像素在特定的图像。</p>
+<p><img src="https://www.tensorflow.org/images/mnist-train-xs.png" alt=""></p>
+<p>MNIST中的每个图像都有一个相应的标签，一个介于0和9之间的数字 代表在图像中绘制的数字。</p>
+<p>对于本教程的目的，我们将要我们的标签为“一热” 矢量“，单向矢量是大多数情况下为0，向量为1的矢量 单一维度。在这种情况下，\（n \）的数字将被表示为a<br>向量在\（n \）维上是1。例如，3将是 \（[0,0,0,1,0,0,0,0,0,0] \）。因此，<code>mnist.train.labels</code>是一款<br><code>[55000, 10]</code>浮标阵列。</p>
+<p><img src="https://www.tensorflow.org/images/mnist-train-ys.png" alt=""></p>
+<p>我们现在准备好实际制作我们的模型！</p>
+<h2><span id="softmax回归">Softmax回归</span></h2><p>我们知道MNIST中的每个图像都是一个0到0之间的手写数字 九。所以一个给定的图像可能只有十个可能的东西。我们想要 能够看图像，并给出它们的概率<br>数字。例如，我们的模型可能会看到一个九的图片，并有80％的把握 这是一个九，但有一个5％的机会，作为一个八（因为顶级循环）<br>对所有其他人都有一定的概率，因为这不是100％确定的。</p>
+<p>这是softmax回归是一个自然，简单模型的经典案例。 如果你想给一个对象分配几个不同的概率<br>事情，softmax是要做的事情，因为softmax给了我们一个价值清单 在0和1之间加起来就是1.甚至在以后，当我们训练更复杂时<br>型号，最后一步将是softmax的一层。</p>
+<p>softmax回归有两个步骤：首先我们加上我们输入的证据 在某些类别中，然后我们将这些证据转化为概率。</p>
+<p>为了统计一个给定的图像是在一个特定的类别的证据，我们做一个 像素强度的加权和。如果该像素的重量是负的 具有高强度的证据是反对该类图像的证据<br>积极的，如果它是有利的证据。</p>
+<p>下图显示了一个模型为每个模型学习的权重 类。红色代表负重，蓝色代表正值 权重。</p>
+<p><img src="https://www.tensorflow.org/images/softmax-weights.png" alt=""></p>
+<p>我们还添加了一些额外的证据，称为偏见。基本上，我们希望能够 说有些东西更可能独立于输入。结果是 证明给定输入\（x \）的类\（i \）的证据是：</p>
+<p>$$\text{evidence}_i = \sum<em>j W</em>{i,~ j} x_j + b_i$$</p>
+<p>其中\（W_i \）是权重，\（b_i \）是类别\（i \）的偏差， \（j \）是对我们输入图像\（x \）中的像素求和的索引。<br>然后，我们将证据变成我们预测的概率 \（y \）使用“softmax”功能：</p>
+<p>$$y = \text{softmax}(\text{evidence})$$</p>
+<p>这里softmax是作为一个“激活”或“链接”功能，塑造 我们的线性函数输出成我们想要的形式 - 在这种情况下，a 概率分布10例。 你可以把它当作转换符号<br>将证据转化为我们在每个阶层投入的概率。 它被定义为：</p>
+<p>$$\text{softmax}(evidence) = \text{normalize}(\exp(evidence))$$</p>
+<p>如果将这个等式展开，你会得到：</p>
+<p>$$\text{softmax}(evidence)_i = \frac{\exp(evidence_i)}{\sum_j<br>\exp(evidence_j)}$$</p>
+<p>但是，首先想到softmax是指数式的，这通常会更有帮助 其输入，然后正常化他们。指数意味着多一个 证据单位乘以增加给予任何假设的权重。<br>相反，少一个单位的证据意味着一个假设得到一个 早期重量的一小部分。没有假设曾经有零或负面的 重量。 Softmax然后归一化这些权重，以便它们合计为一，<br>形成有效的概率分布。 （为了获得更多的直觉 softmax功能，检查出来 在它的部分 迈克尔·尼尔森（Michael<br>Nielsen）的书，完成一个交互式的可视化。</p>
+<p>您可以将我们的softmax回归看成如下所示， 尽管有更多\（x \）s。对于每个输出，我们计算一个加权和 \（x<br>\）s，添加一个偏差，然后应用softmax。</p>
+<p><img src="https://www.tensorflow.org/images/softmax-regression-scalargraph.png" alt=""></p>
+<p>如果我们把它写成等式，我们得到：</p>
+<p><img src="https://www.tensorflow.org/images/softmax-regression-scalarequation.png" alt="\[y1, y2, y3\] = softmax\(W11*x1 + W12*x2 + W13*x3 + b1,  W21*x1 + W22*x2 +
+W23*x3 + b2,  W31*x1 + W32*x2 + W33*x3 +
+b3\)"></p>
+<p>我们可以将这个过程“矢量化”，将其转化为矩阵乘法 和矢量添加。这对于计算效率是有帮助的。 （这也是 一个有用的思考方式。）</p>
+<p><img src="https://www.tensorflow.org/images/softmax-regression-
+vectorequation.png" alt="\[y1, y2, y3\] = softmax\(\[\[W11, W12, W13\], \[W21, W22, W23\], \[W31,
+W32, W33\]\]*\[x1, x2, x3\] + \[b1, b2,
+b3\]\)"></p>
+<p>更简洁，我们可以写：</p>
+<p>$$y = \text{softmax}(Wx + b)$$</p>
+<p>现在让我们把它转换成TensorFlow可以使用的东西。</p>
+<h2><span id="实施回归">实施回归</span></h2><p>为了在Python中进行高效的数值计算，我们通常使用像 NumPy做矩阵等昂贵的操作 在Python之外进行乘法，使用在其中实现的高效代码<br>另一种语言。不幸的是，还是会有很多开销 切换回Python的每一个操作。如果你这个开销特别糟糕 想要在GPU上运行计算或以分布式方式运行，在哪里可以<br>传输数据的成本很高。</p>
+<p>TensorFlow也在Python之外做了繁重的工作，但是它需要一些东西 进一步避免这种开销。而不是运行一个昂贵的<br>独立于Python的操作，TensorFlow让我们描述一个图 完全在Python之外运行的交互操作。 （像这样的方法 可以在几个机器学习库中看到）。</p>
+<p>要使用TensorFlow，首先我们需要导入它。</p>
+<pre><code>import tensorflow as tf
+</code></pre><p>我们通过操纵符号变量来描述这些交互操作。 我们来创建一个：</p>
+<pre><code>x = tf.placeholder(tf.float32, [None, 784])
+</code></pre><p><code>x</code>不是一个具体的值。这是一个<code>placeholder</code>，我们将在什么时候输入 我们要求TensorFlow进行计算。我们希望能够输入任何数字<br>的MNIST图像，每个平面化成784维向量。我们代表 这是一个浮点数的二维张量，形状为<code>[None, 784]</code>。<br>（这里<code>None</code>是指尺寸可以是任意长度。）</p>
+<p>我们也需要我们的模型的权重和偏见。我们可以想象治疗 这些额外的输入，但TensorFlow有一个更好的方式来处理 它：<code>Variable</code>。<br><code>Variable</code>是生活在TensorFlow中的可修改张量 互动操作图。它可以被使用甚至被修改 计算。对于机器学习应用程序，通常有一个模型<br>参数为<code>Variable</code>。</p>
+<pre><code>W = tf.Variable(tf.zeros([784, 10]))
+b = tf.Variable(tf.zeros([10]))
+</code></pre><p>我们通过给<code>Variable</code>创建这些<code>tf.Variable</code>的初始值 <code>Variable</code>：在这种情况下，我们将<code>W</code>和<code>b</code>初始化为张量充满<br>零。由于我们要学习<code>W</code>和<code>b</code>，所以没关系 他们最初是什么。</p>
+<p>请注意，<code>W</code>的形状为[784，10]，因为我们想要乘以 784维图像矢量由它产生的10维矢量 证据的差异类。 <code>b</code>具有[10]的形状，所以我们可以添加它<br>到输出。</p>
+<p>我们现在可以实现我们的模型。只需要一行来定义它！</p>
+<pre><code>y = tf.nn.softmax(tf.matmul(x, W) + b)
+</code></pre><p>首先，用<code>x</code>将<code>W</code>乘以<code>tf.matmul(x, W)</code>。这是 从我们在我们的方程中乘以它们的时候翻转过来，在那里我们有\（Wx \），如<br>处理<code>x</code>是一个具有多个输入的2D张量的小技巧。然后我们 加<code>b</code>，最后用<code>tf.nn.softmax</code>。</p>
+<p>而已。在短短几句之后，我们只用了一条线来定义我们的模型 设置线。那并不是因为TensorFlow被设计成softmax<br>回归特别容易：这只是一个非常灵活的方式来描述很多 从机器学习模型到物理学的各种数值计算 模拟。一旦定义，我们的模型可以在不同的设备上运行：<br>你的电脑的CPU，GPU甚至手机！</p>
+<h2><span id="训练">训练</span></h2><p>为了训练我们的模型，我们需要定义模型的含义 好。实际上，在机器学习中，我们通常定义它的意义 一个模型是坏的。我们称之为成本或损失，代表了多远<br>关闭我们的模型是从我们期望的结果。我们尽量减少这个错误，并且 误差越小，我们的模型越好。</p>
+<p>调用一个非常常见的非常好的函数来确定模型的损失 “交叉熵”。交叉熵来源于思考信息 压缩信息论中的代码，但它是一个重要的想法<br>在从赌博到机器学习的很多领域。它被定义为：</p>
+<p>$$H_{y’}(y) = -\sum_i y’_i \log(y_i)$$</p>
+<p>其中\（y \）是我们预测的概率分布，而\（y’\）是真实的 分配（带有数字标签的一个热点向量）。在一些粗略的意义上，<br>交叉熵是衡量我们的预测是如何低效的描述 真相。关于交叉熵的更多细节超出了范围 本教程，但它是非常值得的 理解。</p>
+<p>为了实现交叉熵，我们需要先添加一个新的占位符来输入 正确答案：</p>
+<pre><code>y_ = tf.placeholder(tf.float32, [None, 10])
+</code></pre><p>然后我们可以实现交叉熵函数\（ - \ sum y’\ log（y）\）：</p>
+<pre><code>cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[1]))
+</code></pre><p>首先，<code>tf.log</code>计算<code>y</code>各个元素的对数。接下来，我们乘以 <code>y_</code>的每个元件与<code>tf.log(y)</code>的相应元件。然后<br><code>tf.reduce_sum</code>增加了y的第二维中的元素，由于<br><code>reduction_indices=[1]</code>参数。最后，<code>tf.reduce_mean</code>计算平均值 在批处理中的所有例子。</p>
+<p>请注意，在源代码中，我们不使用这个公式，因为它是 数字不稳定。相反，我们申请<br><code>tf.nn.softmax_cross_entropy_with_logits</code>在非规范化的logits（例如，我们<br>请拨打<code>softmax_cross_entropy_with_logits</code>上的<code>tf.matmul(x, W) + b</code>），因为这样<br>在数值上更稳定的函数在内部计算softmax激活。在 你的代码，考虑使用<code>tf.nn.softmax_cross_entropy_with_logits</code><br>代替。</p>
+<p>现在我们知道我们的模型要做什么了，那么就很容易有TensorFlow 训练它这样做。因为TensorFlow知道你的整个图表 计算，它可以自动使用的<br>反向传播算法 有效地确定你的变量如何影响你所要求的损失 最小化。然后它可以应用你选择的优化算法来修改 变量并减少损失。</p>
+<pre><code>train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
+</code></pre><p>在这种情况下，我们要求TensorFlow使<code>cross_entropy</code>最小化 梯度下降算法 学习率为0.5。渐变下降是一个简单的程序，在哪里<br>TensorFlow简单地将每个变量稍微向一个方向移动 降低成本。但是TensorFlow也提供了 许多其他优化算法： 使用一个就像调整一行一样简单。</p>
+<p>什么TensorFlow实际上在这里，在幕后，是添加新的操作 实现向后传播和梯度下降的图形。然后呢 给你一个单一的操作，当运行时，做一个梯度的步骤<br>下降训练，稍微调整你的变量以减少损失。</p>
+<p>我们现在可以在<code>InteractiveSession</code>中启动该模型：</p>
+<pre><code>sess = tf.InteractiveSession()
+</code></pre><p>我们首先必须创建一个操作来初始化我们创建的变量：</p>
+<pre><code>tf.global_variables_initializer().run()
+</code></pre><p>让我们训练 - 我们将运行1000次的训练步骤！</p>
+<pre><code>for _ in range(1000):
+  batch_xs, batch_ys = mnist.train.next_batch(100)
+  sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
+</code></pre><p>循环的每一步，我们从中获得一百个随机数据点的“批” 我们的训练集。我们运行<code>train_step</code>送料批量数据更换 <code>placeholder</code>s。</p>
+<p>使用小批量的随机数据称为随机训练 情况下，随机梯度下降。理想情况下，我们想使用我们所有的数据 每一步的训练，因为这将使我们更好地了解我们的<br>应该在做，但是这很贵。所以，我们使用不同的子集 每次。这样做很便宜，而且有很多相同的好处。</p>
+<h2><span id="评估我们的模型">评估我们的模型</span></h2><p>我们的模型有多好？</p>
+<p>那么，首先让我们弄清楚我们预测了正确的标签。 <code>tf.argmax</code> 是一个非常有用的功能，它给你最高的条目索引<br>沿着一些轴张量。例如，<code>tf.argmax(y,1)</code>是我们的标签 型号认为是最有可能的每一个输入，而<code>tf.argmax(y_,1)</code>是<br>正确的标签。我们可以使用<code>tf.equal</code>来检查我们的预测是否符合 真相。</p>
+<pre><code>correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
+</code></pre><p>这给了我们一个布尔的列表。为了确定什么部分是正确的，我们 投到浮点数，然后取平均值。例如， <code>[True, False, True,
+True]</code>将成为<code>[1,0,1,1]</code>，成为<code>0.75</code>。</p>
+<pre><code>accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+</code></pre><p>最后，我们要求您的测试数据的准确性。</p>
+<pre><code>print(sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
+</code></pre><p>这应该是大约92％。</p>
+<p>那好吗？那么，不是真的。事实上，这很糟糕。这是因为我们 使用一个非常简单的模型。有一些小的变化，我们可以达到97％。最好的<br>模型可以达到超过99.7％的准确性！ （有关更多信息，请参阅 这个 结果列表）</p>
+<p>重要的是我们从这个模型中学到了东西。不过，如果你有点感觉 关于这些结果，退房 下一个教程，我们做了很多<br>更好地学习如何使用TensorFlow构建更复杂的模型！</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/beginners/" data-title="MN初学者MNIST | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/tensors/" title="张量">
+  <strong>上一篇：</strong><br/>
+  <span>
+  张量</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/fling-gesture-detection-on-grid-layout/"  title="在网格布局上进行手势检测">
+ <strong>下一篇：</strong><br/> 
+ <span>在网格布局上进行手势检测
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">MN初学者MNIST</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">关于本教程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">MNIST数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">Softmax回归</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">实施回归</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">评估我们的模型</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

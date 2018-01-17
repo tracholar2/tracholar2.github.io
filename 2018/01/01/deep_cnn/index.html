@@ -1,0 +1,703 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>卷积神经网络 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="卷积神经网络 注意：本教程适用于TensorFlow的高级用户 并承担机器学习方面的专业知识和经验。  概观CIFAR-10分类是机器学习中常见的基准问题。该 问题是分类10个类别的RGB 32x32像素图像： airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. 有关更多详细信息，请参阅CIFAR-10">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卷积神经网络">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/deep_cnn/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="卷积神经网络 注意：本教程适用于TensorFlow的高级用户 并承担机器学习方面的专业知识和经验。  概观CIFAR-10分类是机器学习中常见的基准问题。该 问题是分类10个类别的RGB 32x32像素图像： airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. 有关更多详细信息，请参阅CIFAR-10">
+<meta property="og:image" content="https://www.tensorflow.org/images/cifar_image_summary.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/cifar_graph.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/cifar_loss.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/cifar_lr_decay.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/cifar_sparsity.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/cifar_activations.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/Parallelism.png">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="卷积神经网络">
+<meta name="twitter:description" content="卷积神经网络 注意：本教程适用于TensorFlow的高级用户 并承担机器学习方面的专业知识和经验。  概观CIFAR-10分类是机器学习中常见的基准问题。该 问题是分类10个类别的RGB 32x32像素图像： airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck. 有关更多详细信息，请参阅CIFAR-10">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/cifar_image_summary.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/deep_cnn/" title="卷积神经网络" itemprop="url">卷积神经网络</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">卷积神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">概观</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">教程的亮点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.3.</span> <span class="toc-text">模型架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">代码组织</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">CIFAR-10型号</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">模型输入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">模型预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">模型训练</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">启动和训练模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">评估一个模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">使用多个GPU卡培训模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.1.</span> <span class="toc-text">在设备上放置变量和操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.2.</span> <span class="toc-text">在多个GPU卡上启动和训练模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">下一步</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="卷积神经网络">卷积神经网络</span></h1><blockquote>
+<p>注意：本教程适用于TensorFlow的高级用户 并承担机器学习方面的专业知识和经验。</p>
+</blockquote>
+<h2><span id="概观">概观</span></h2><p>CIFAR-10分类是机器学习中常见的基准问题。该 问题是分类10个类别的RGB 32x32像素图像：</p>
+<pre><code>airplane, automobile, bird, cat, deer, dog, frog, horse, ship, and truck.
+</code></pre><p>有关更多详细信息，请参阅CIFAR-10页面 和一份技术报告 Alex Krizhevsky。</p>
+<h3><span id="目标">目标</span></h3><p>本教程的目标是建立一个相对较小的卷积神经网络 网络（CNN） 识别图像。在这个过程中，本教程：</p>
+<p>突出了一个规范的网络架构组织， 培训和评估。 为构建更大更复杂的模型提供了一个模板。</p>
+<p>选择CIFAR-10的原因是它足够复杂 TensorFlow的大部分功能可以扩展到大型模型。与此同时， 该模型足够小，可以快速训练，这是尝试的理想选择<br>新的想法和新技术的尝试。</p>
+<h3><span id="教程的亮点">教程的亮点</span></h3><p>CIFAR-10教程演示了几个重要的构造 在TensorFlow中设计更大更复杂的模型：</p>
+<p>核心数学组件包括卷积 （维基） 纠正线性激活 （维基） 最大池 （维基） 和本地响应正常化 （第3.3章 AlexNet论文）。 可视化<br>训练期间的网络活动，包括输入图像， 激活和渐变的损失和分布。 用于计算的例程 移动平均线 学习的参数和使用这些平均值 在评估期间提高预测性能。 执行一个<br>学习率计划 随着时间的推移有系统地减少。 预取队列 输入 数据隔离模型从磁盘延迟和昂贵的图像预处理。</p>
+<p>我们也提供了一个多GPU版本 该模型的演示：</p>
+<p>配置一个模型来并行训练多个GPU卡。 在多个GPU之间共享和更新变量。</p>
+<p>我们希望这个教程提供了一个启动点来构建更大的CNN 视觉任务在TensorFlow。</p>
+<h3><span id="模型架构">模型架构</span></h3><p>这个CIFAR-10教程中的模型是一个多层体系结构 交替卷积和非线性。这些层完全跟随 连接层导致softmax分类器。模型遵循 架构所描述的<br>亚历克斯Krizhevsky，几个 在最上面几层的差异。</p>
+<p>这个模型在几个小时内达到了高达86％的精度 在GPU上的训练时间。请参阅下面的代码 了解详情。它由1,068,298个可学习的参数组成，需要大约<br>19.5M乘加操作来计算单个图像的推理。</p>
+<h2><span id="代码组织">代码组织</span></h2><p>本教程的代码驻留在 <code>models/tutorials/image/cifar10/</code>。</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_input.py" target="_blank" rel="noopener"><code>cifar10_input.py</code></a><br>| Reads the native CIFAR-10 binary file format.<br><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10.py" target="_blank" rel="noopener"><code>cifar10.py</code></a><br>| Builds the CIFAR-10 model.<br><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_train.py" target="_blank" rel="noopener"><code>cifar10_train.py</code></a><br>| Trains a CIFAR-10 model on a CPU or GPU.<br><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_multi_gpu_train.py" target="_blank" rel="noopener"><code>cifar10_multi_gpu_train.py</code></a><br>| Trains a CIFAR-10 model on multiple GPUs.<br><a href="https://www.tensorflow.org/code/tensorflow_models/tutorials/image/cifar10/cifar10_eval.py" target="_blank" rel="noopener"><code>cifar10_eval.py</code></a><br>| Evaluates the predictive performance of a CIFAR-10 model.  </p>
+<h2><span id="cifar-10型号">CIFAR-10型号</span></h2><p>CIFAR-10网络主要包含在内 <code>cifar10.py</code>。 完整的培训 图形包含大约765个操作。我们发现我们可以使代码最多<br>通过使用以下模块构建图表可重复使用：</p>
+<p>型号输入：<code>inputs()</code>和<code>distorted_inputs()</code>添加 操作，读取和预处理CIFAR图像进行评估和培训， 分别。<br>型号预测：<code>inference()</code> 增加对提供的图像执行推断（即，分类）的操作。 型号培训：<code>loss()</code>和<code>train()</code> 添加计算损失的操作，<br>渐变，可变更新和可视化摘要。</p>
+<h3><span id="模型输入">模型输入</span></h3><p>该型号的输入部分由功能<code>inputs()</code>和 <code>distorted_inputs()</code>从CIFAR-10二进制数据文件读取图像。<br>这些文件包含固定的字节长度记录，所以我们使用 <code>tf.FixedLengthRecordReader</code>。 请参阅读取数据<br>详细了解<code>Reader</code>的工作原理。</p>
+<p>图像处理如下：</p>
+<p>他们被裁剪为24 x 24像素，集中评估或    随机进行培训。 他们大约变白了    使模型对动态范围不敏感。</p>
+<p>对于训练，我们另外应用一系列的随机失真 人为地增加数据集的大小：</p>
+<p>随机从左到右翻转图像。 随机扭曲图像的亮度。 随机扭曲的图像对比度。</p>
+<p>请参阅图像页面的列表 可用的扭曲。我们也附上一个 <code>tf.summary.image</code>的图像 以便我们可以在TensorBoard中将它们可视化。<br>这是验证输入是否正确构建的良好实践。</p>
+<p><img src="https://www.tensorflow.org/images/cifar_image_summary.png" alt=""></p>
+<p>从磁盘读取图像和扭曲它们可以使用不平凡的数量 处理时间。为了防止这些操作放慢训练，我们运行 它们在16个独立的线程内连续填充一个TensorFlow 队列。</p>
+<h3><span id="模型预测">模型预测</span></h3><p>该模型的预测部分由<code>inference()</code>功能构建 这增加了计算预测的逻辑的操作。那部分 该模型组织如下：</p>
+<table>
+<thead>
+<tr>
+<th>Layer Name</th>
+<th>Description  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>conv1</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://www.tensorflow.org/api_docs/python/tf/nn/conv2d" target="_blank" rel="noopener">convolution</a> and<br><a href="https://www.tensorflow.org/api_docs/python/tf/nn/relu" target="_blank" rel="noopener">rectified linear</a><br>activation.<br><code>pool1</code> | <a href="https://www.tensorflow.org/api_docs/python/tf/nn/max_pool" target="_blank" rel="noopener">max<br>pooling</a>.<br><code>norm1</code> | <a href="https://www.tensorflow.org/api_docs/python/tf/nn/local_response_normalization" target="_blank" rel="noopener">local response<br>normalization</a>.<br><code>conv2</code> |<br><a href="https://www.tensorflow.org/api_docs/python/tf/nn/conv2d" target="_blank" rel="noopener">convolution</a> and<br><a href="https://www.tensorflow.org/api_docs/python/tf/nn/relu" target="_blank" rel="noopener">rectified linear</a><br>activation.<br><code>norm2</code> | <a href="https://www.tensorflow.org/api_docs/python/tf/nn/local_response_normalization" target="_blank" rel="noopener">local response<br>normalization</a>.<br><code>pool2</code> | <a href="https://www.tensorflow.org/api_docs/python/tf/nn/max_pool" target="_blank" rel="noopener">max<br>pooling</a>.<br><code>local3</code> | <a href="https://www.tensorflow.org/api_guides/python/nn" target="_blank" rel="noopener">fully connected layer with rectified linear<br>activation</a>.<br><code>local4</code> | <a href="https://www.tensorflow.org/api_guides/python/nn" target="_blank" rel="noopener">fully connected layer with rectified linear<br>activation</a>.<br><code>softmax_linear</code> | linear transformation to produce logits.  </p>
+<p>这是一个由TensorBoard生成的图形，描述了推理操作：</p>
+<p><img src="https://www.tensorflow.org/images/cifar_graph.png" alt=""></p>
+<blockquote>
+<p>练习：<code>inference</code>的输出是非标准化的对象。尝试编辑 网络体系结构返回归一化预测使用 <code>tf.nn.softmax</code>。</p>
+</blockquote>
+<p><code>inputs()</code>和<code>inference()</code>功能提供所有组件 进行模型评估是必要的。我们现在把重点转移到了 建立操作模型的训练。</p>
+<blockquote>
+<p>练习：<code>inference()</code>中的模型架构与之不同 在CIFAR-10模型中指定 CUDA-convnet。特别是顶部<br>亚历克斯的原始模型的层是本地连接，并没有完全连接。 尝试编辑体系结构以准确重现本地连接 架构在顶层。</p>
+</blockquote>
+<h3><span id="模型训练">模型训练</span></h3><p>训练网络执行N路分类的通常方法是 多项式逻辑回归， 又名。 softmax回归。 Softmax回归应用a softmax非线性的 网络的输出和计算 交叉熵<br>在标准化的预测与a 标签的1热编码。 为了正规化，我们也应用通常的 所有学习的重量衰减损失 变量。该模型的目标函数是交叉熵的和<br>以及<code>loss()</code>功能返回的所有这些重量衰减条款。</p>
+<p>我们使用<code>tf.summary.scalar</code>在TensorBoard中将其可视化：</p>
+<p><img src="https://www.tensorflow.org/images/cifar_loss.png" alt="CIFAR-10 Loss"></p>
+<p>我们使用标准来训练模型 梯度下降 算法（请参阅其他方法的培训） 学习率是 呈指数衰减 随着时间的推移。</p>
+<p><img src="https://www.tensorflow.org/images/cifar_lr_decay.png" alt="CIFAR-10 Learning Rate
+Decay"></p>
+<p><code>train()</code>功能通过添加所需的操作来最小化目标 计算梯度和更新学习的变量（见 <code>tf.train.GradientDescentOptimizer</code><br>详情）。它返回一个执行所有计算的操作 需要训练和更新一批图像的模型。</p>
+<h2><span id="启动和训练模型">启动和训练模型</span></h2><p>我们已经建立了模型，现在启动它并运行训练操作 脚本<code>cifar10_train.py</code>。</p>
+<pre><code>python cifar10_train.py
+</code></pre><blockquote>
+<p>注：第一次在CIFAR-10教程中运行任何目标时， CIFAR-10数据集自动下载。数据集是〜160MB 所以你可能想为你的第一次尝试拿一杯咖啡。</p>
+</blockquote>
+<p>你应该看到输出：</p>
+<pre><code>Filling queue with 20000 CIFAR images before starting to train. This will take a few minutes.
+2015-11-04 11:45:45.927302: step 0, loss = 4.68 (2.0 examples/sec; 64.221 sec/batch)
+2015-11-04 11:45:49.133065: step 10, loss = 4.66 (533.8 examples/sec; 0.240 sec/batch)
+2015-11-04 11:45:51.397710: step 20, loss = 4.64 (597.4 examples/sec; 0.214 sec/batch)
+2015-11-04 11:45:54.446850: step 30, loss = 4.62 (391.0 examples/sec; 0.327 sec/batch)
+2015-11-04 11:45:57.152676: step 40, loss = 4.61 (430.2 examples/sec; 0.298 sec/batch)
+2015-11-04 11:46:00.437717: step 50, loss = 4.59 (406.4 examples/sec; 0.315 sec/batch)
+...
+</code></pre><p>该脚本报告每10步的总损失以及速度 最后一批数据被处理。几点意见：</p>
+<p>第一批数据可能非常慢（如几分钟） 预处理线程用20,000处理的CIFAR填充混洗队列 图片。 报告的损失是最近一批的平均损失。请记住<br>这个损失是交叉熵和所有重量衰减项之和。 密切关注批次的处理速度。上面显示的数字是 在Tesla K40c上获得。如果您在CPU上运行，则性能会降低。</p>
+<blockquote>
+<p>练习：在试验时，有时候第一个很烦人 训练步骤可能需要很长时间。尝试减少图像的数量<br>最初填满队列。搜索<code>min_fraction_of_examples_in_queue</code> 在<code>cifar10_input.py</code>中。</p>
+</blockquote>
+<p><code>cifar10_train.py</code>定期保存 所有的模型参数 检查点文件 但它不评估模型。检查点文件 将被<code>cifar10_eval.py</code>用于测量预测值<br>性能（请参阅下面的评估模型）。</p>
+<p>如果你按照前面的步骤，那么你现在已经开始训练 一个CIFAR-10模型。恭喜！</p>
+<p>从<code>cifar10_train.py</code>返回的终端文本提供了最小的洞察力 模型是如何训练的。我们希望在培训期间更深入地了解模型：</p>
+<p>损失是真的减少还是只是噪音？ 模型是否提供了适当的图像？ 梯度，激活和权重是否合理？ 目前的学习率是多少？</p>
+<p>TensorBoard提供了这个 功能，显示<code>cifar10_train.py</code>定期输出的数据 一个 <code>tf.summary.FileWriter</code>。</p>
+<p>比如，我们可以看到激活的分布和度数 <code>local3</code>特性中的稀疏性在训练过程中发展：</p>
+<p><img src="https://www.tensorflow.org/images/cifar_sparsity.png" alt=""><br><img src="https://www.tensorflow.org/images/cifar_activations.png" alt=""></p>
+<p>个人损失函数以及全部损失尤其如此 有趣的跟踪时间。但是，损失表现出相当的数量 由于培训使用小批量的噪音。实际上我们发现<br>除了原始数据之外，还可以看到他们的移动平均线 值。看看脚本如何使用 <code>tf.train.ExponentialMovingAverage</code> 以此目的。</p>
+<h2><span id="评估一个模型">评估一个模型</span></h2><p>现在让我们来评估训练好的模型在保持数据集上的表现如何。 该模型由<code>cifar10_eval.py</code>脚本进行评估。它构建了模型<br>与<code>inference()</code>功能一起使用，并在评估套件中使用全部10,000张图像 CIFAR-10。它计算的精度为1：最高预测的频率 匹配图像的真实标签。</p>
+<p>为了监测训练期间模型的改进情况，评估脚本运行 定期在<code>cifar10_train.py</code>创建的最新检查点文件上。</p>
+<pre><code>python cifar10_eval.py
+</code></pre><blockquote>
+<p>小心不要在同一个GPU上运行评估和训练二进制文件 否则你可能会用完内存。考虑运行评估 一个单独的GPU（如果可用）或在运行时挂起训练二进制文件<br>在同一个GPU上进行评估。</p>
+</blockquote>
+<p>你应该看到输出：</p>
+<pre><code>2015-11-06 08:30:44.391206: precision @ 1 = 0.860
+...
+</code></pre><p>脚本只是定期返回精度@ 1，在这种情况下 它返回了86％的准确性。 <code>cifar10_eval.py</code>也<br>出口摘要可能在TensorBoard中可视化。这些总结 在评估过程中提供对模型的更多见解。</p>
+<p>训练脚本计算 移动平均线 所有学习变量的版本。评估脚本替代 所有学习的移动平均版本的模型参数。这个 替代在评估时提升模型表现。</p>
+<blockquote>
+<p>练习：使用平均参数可以提高预测性能 按精度@ 1测量约3％。编辑<code>cifar10_eval.py</code>不使用 模型的平均参数和验证预测性能 下降。</p>
+</blockquote>
+<h2><span id="使用多个gpu卡培训模型">使用多个GPU卡培训模型</span></h2><p>现代工作站可能包含多个GPU进行科学计算。 TensorFlow可以利用这个环境来运行培训操作 同时跨多个卡。</p>
+<p>以平行，分布式的方式训练模型需要 协调培训流程。以下我们称为模型副本 成为数据子集模型训练的一个副本。</p>
+<p>天真地使用模型参数的异步更新 导致次优训练绩效 因为一个单独的模型副本可能会被过时训练 模型参数的副本。相反，采用完全同步 更新将会像最慢的模型副本一样慢。</p>
+<p>在具有多个GPU卡的工作站中，每个GPU将具有相似的速度 并包含足够的内存来运行整个CIFAR-10模型。因此，我们选择 按照以下方式设计我们的培训系统：</p>
+<p>在每个GPU上放置一个模型副本。 等待所有的GPU完成，同步更新模型参数 处理一批数据。</p>
+<p>这是这个模型的图表：</p>
+<p><img src="https://www.tensorflow.org/images/Parallelism.png" alt=""></p>
+<p>请注意，每个GPU计算推理以及独特的渐变 一批数据。这种设置有效地允许分割更大的批次 的GPU数据。</p>
+<p>此设置要求所有GPU共享模型参数。一个众所周知的 事实上从GPU传输数据的速度相当慢。为了这 原因，我们决定存储和更新CPU上的所有模型参数（请参阅<br>绿色框）。一组新的模型参数被传送到GPU 当一批新的数据被所有GPU处理时。</p>
+<p>GPU在运行中同步。所有的渐变都是从 GPU和平均值（见绿框）。模型参数用更新 所有模型副本的平均梯度。</p>
+<h3><span id="在设备上放置变量和操作">在设备上放置变量和操作</span></h3><p>在设备上放置操作和变量需要一些特殊的东西 抽象。</p>
+<p>我们需要的第一个抽象是一个计算推理的功能 单个模型副本的渐变。在代码中我们称这个抽象 一个“塔”。我们必须为每个塔设置两个属性：</p>
+<p>塔内所有操作的唯一名称。 <code>tf.name_scope</code>提供 这个独特的名字通过预先的范围。例如，所有的操作 第一塔预先装有<code>tower_0</code>，例如，<br><code>tower_0/conv1/Conv2D</code>。 在塔内运行操作的首选硬件设备。 <code>tf.device</code>具体说明了这一点。对于<br>实例中，第一塔的所有操作都驻留在<code>device(&#39;/device:GPU:0&#39;)</code>内 范围指示它们应该在第一个GPU上运行。</p>
+<p>所有变量都被固定到CPU并通过访问 <code>tf.get_variable</code> 以便在多GPU版本中共享它们。 查看如何共享变量。</p>
+<h3><span id="在多个gpu卡上启动和训练模型">在多个GPU卡上启动和训练模型</span></h3><p>如果您的计算机上安装了多个GPU卡，则可以使用它们 用<code>cifar10_multi_gpu_train.py</code>脚本更快地训练模型。这个<br>训练脚本的版本在多个GPU卡上并行化模型。</p>
+<pre><code>python cifar10_multi_gpu_train.py --num_gpus=2
+</code></pre><p>请注意，所使用的GPU卡数量默认为1.此外，如果只有1 GPU在你的机器上是可用的，所有的计算都将被放置在它上面，即使 你要求更多。</p>
+<blockquote>
+<p>练习：<code>cifar10_train.py</code>的默认设置是<br>在批处理大小128上运行。尝试在2个GPU上运行<code>cifar10_multi_gpu_train.py</code> 批量大小为64，比较训练速度。</p>
+</blockquote>
+<h2><span id="下一步">下一步</span></h2><p>恭喜！你有 完成了CIFAR-10教程。</p>
+<p>如果你现在有兴趣开发和培养自己的形象 分类系统，我们建议分叉这个教程并替换 组件来解决你的图像分类问题。</p>
+<blockquote>
+<p>练习：下载 街景房屋号码（SVHN）数据集。 分叉CIFAR-10教程和交换在SVHN作为输入数据。尝试适应 网络架构来提高预测性能。</p>
+</blockquote>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/deep_cnn/" data-title="卷积神经网络 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/audio_recognition/" title="简单的音频识别">
+  <strong>上一篇：</strong><br/>
+  <span>
+  简单的音频识别</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/mobile_intro/"  title="TensorFlow Mobile简介">
+ <strong>下一篇：</strong><br/> 
+ <span>TensorFlow Mobile简介
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">卷积神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">概观</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">目标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">教程的亮点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.3.</span> <span class="toc-text">模型架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">代码组织</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">CIFAR-10型号</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">模型输入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">模型预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">模型训练</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">启动和训练模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">评估一个模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">使用多个GPU卡培训模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.1.</span> <span class="toc-text">在设备上放置变量和操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.2.</span> <span class="toc-text">在多个GPU卡上启动和训练模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">下一步</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

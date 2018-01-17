@@ -1,0 +1,589 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>TensorFlow版本兼容性 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="TensorFlow版本兼容性本文档适用于需要向后兼容的用户 TensorFlow（用于代码或数据）的版本，以及需要的开发人员 在保持兼容性的同时修改TensorFlow。 语义版本2.0TensorFlow遵循语义版本2.0（semver） 公共API。每个发布版本的TensorFlow都有MAJOR.MINOR.PATCH的形式。例如，TensorFlow 1.2.3版本有MAJOR版本1，M">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow版本兼容性">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/version_compat/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="TensorFlow版本兼容性本文档适用于需要向后兼容的用户 TensorFlow（用于代码或数据）的版本，以及需要的开发人员 在保持兼容性的同时修改TensorFlow。 语义版本2.0TensorFlow遵循语义版本2.0（semver） 公共API。每个发布版本的TensorFlow都有MAJOR.MINOR.PATCH的形式。例如，TensorFlow 1.2.3版本有MAJOR版本1，M">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorFlow版本兼容性">
+<meta name="twitter:description" content="TensorFlow版本兼容性本文档适用于需要向后兼容的用户 TensorFlow（用于代码或数据）的版本，以及需要的开发人员 在保持兼容性的同时修改TensorFlow。 语义版本2.0TensorFlow遵循语义版本2.0（semver） 公共API。每个发布版本的TensorFlow都有MAJOR.MINOR.PATCH的形式。例如，TensorFlow 1.2.3版本有MAJOR版本1，M">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/version_compat/" title="TensorFlow版本兼容性" itemprop="url">TensorFlow版本兼容性</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TensorFlow版本兼容性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">语义版本2.0</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">什么是覆盖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">什么不包括</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">图形和检查点的兼容性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">扩展TensorFlow时的图形和检查点兼容性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.1.</span> <span class="toc-text">向后和部分向前兼容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.2.</span> <span class="toc-text">独立的数据版本计划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.3.</span> <span class="toc-text">数据，生产者和消费者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.</span> <span class="toc-text">不断发展的GraphDef版本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">添加操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">添加一个操作并切换现有的Python包装来使用它</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.3.</span> <span class="toc-text">删除或限制操作的功能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.4.</span> <span class="toc-text">更改操作的功能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.5.</span> <span class="toc-text">禁止单个不安全的消费者版本</span></a></li></ol></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="tensorflow版本兼容性">TensorFlow版本兼容性</span></h1><p>本文档适用于需要向后兼容的用户 TensorFlow（用于代码或数据）的版本，以及需要的开发人员 在保持兼容性的同时修改TensorFlow。</p>
+<h2><span id="语义版本20">语义版本2.0</span></h2><p>TensorFlow遵循语义版本2.0（semver） 公共API。每个发布版本的TensorFlow都有<code>MAJOR.MINOR.PATCH</code>的形式。<br>例如，TensorFlow 1.2.3版本有<code>MAJOR</code>版本1，<code>MINOR</code>版本2， 和<code>PATCH</code>版本3.每个数字的更改具有以下含义：</p>
+<p>主要：潜在的后向不兼容的变化。代码和数据   与以前的主要版本一起工作不一定与新的工作   发布。但是，在某些情况下，现有的TensorFlow图和检查点<br>可能会迁移到较新的版本;看到   图形和检查点的兼容性   有关数据兼容性的细节。 MINOR：向后兼容功能，速度提升等等<br>与之前的次要版本一起工作的数据，并且仅依赖于   公共API将继续工作不变。关于什么是和是的细节   不是公共API，看看是什么涵盖。<br>补丁：向后兼容的错误修复。</p>
+<p>例如，1.0.0版引入了向后不兼容的更改 释放0.12.1。但是，版本1.1.1与版本向后兼容 1.0.0。</p>
+<h2><span id="什么是覆盖">什么是覆盖</span></h2><p>只有TensorFlow的公共API向后兼容minor和 补丁版本。公共API包含</p>
+<p>所有记录在Python中的函数和类 <code>tensorflow</code>模块及其子模块除外 <code>tf.contrib</code>的功能和类别<br>名称以<code>_</code>开头的函数和类（因为它们是私有的）   请注意，<code>examples/</code>和<code>tools/</code>目录中的代码不是   可通过<code>tensorflow</code><br>Python模块访问，因此不在此列   兼容性保证。</p>
+<p>如果一个符号可以通过<code>tensorflow</code> Python模块或者它的   子模块，但没有记录，那么它不被视为的一部分   公共API。</p>
+<p>C API。 以下协议缓冲区文件： <code>attr_value</code> <code>config</code> <code>event</code> <code>graph</code> <code>op_def</code> <code>reader_base</code><br><code>summary</code> <code>tensor</code> <code>tensor_shape</code> <code>types</code></p>
+<h2><span id="什么不包括">什么不包括</span></h2><p>某些API函数明确标记为“实验性”，可以更改 后向不兼容的方式在次要版本之间。这些包括：</p>
+<p>实验性API：Python中的<code>tf.contrib</code>模块及其子模块     以及C API中的任何函数或协议缓冲区中的字段     明确表示是实验性的。<br>其他语言：Python和C以外的其他语言的TensorFlow API，     如： C ++（通过头文件公开的<br><code>tensorflow/cc</code>）。 Java中， 走 复合操作的细节：Python中的许多公共函数扩展为<br>图中的几个原始操作，这些细节将成为任何的一部分     以<code>GraphDef</code>的形式保存到磁盘。这些细节可能会改变<br>次要版本。尤其是，回归测试，确切地检查     甚至，图形之间的匹配可能会跨越次要版本     尽管图的行为应该不变并存在     检查站仍然有效。<br>浮点数值细节：具体的浮点值     由运营商计算可能会随时改变。用户应该只依靠     近似精度和数值稳定性，而不是特定的位<br>计算。在次要和补丁版本中对数字公式的更改应该是     导致准确性相当或提高，与机器中的警告     学习提高特定公式的准确性可能会导致下降<br>整个系统的准确性。 随机数字：由特定的随机数字计算的     随机操作可能随时改变。     用户应该只依靠大致正确的分配和<br>统计强度，而不是计算的具体位数。但是，我们会做出     随机位的变化很少（也可能永远不会）发布。我们     当然会记录所有这些变化。<br>分布式Tensorflow中的版本偏差：运行两个不同的版本     TensorFlow在单个群集中不受支持。没有保证     关于有线协议的向后兼容性。<br>错误：我们保留向后兼容行为的权利     （尽管不是API）如果当前实现明显中断，     也就是说，如果它与文档相矛盾，或者如果是知名的<br>明确的预期行为由于错误而不能正确执行。     例如，如果一个优化器宣称要实现一个众所周知的优化     算法，但由于错误而不匹配该算法，则我们将修复<br>优化器。我们的修复可能会破坏依赖于错误行为的代码     收敛。我们会在发行说明中注意到这些变化。 错误消息：我们保留更改错误文本的权利<br>消息。另外，错误的类型可能会改变，除非类型是     在文档中指定。例如，一个函数记录到     举一个<code>InvalidArgument</code>异常会继续<br>提高<code>InvalidArgument</code>，但人类可读的信息内容可以改变。</p>
+<h2><span id="图形和检查点的兼容性">图形和检查点的兼容性</span></h2><p>你有时需要保存图形和检查点。 图表描述了在训练期间运行的操作的数据流 推理和检查点包含保存在变量中的张量值 图形。</p>
+<p>许多TensorFlow用户将图形和训练好的模型保存到磁盘 后来的评估或额外的培训，但最终运行他们保存的图表<br>或更高版本的模型。符合semver，任何图形或检查点 用一个版本的TensorFlow写出来就可以加载和评估一个<br>更高版本的TensorFlow与主要版本相同。但是，我们会 尽力在主要版本之间保持向后兼容性 可能的，以便序列化的文件可以长时间使用。</p>
+<p>图表通过<code>GraphDef</code>协议缓冲区进行序列化。为了方便（罕见） 向后不兼容的图形变化，每个<code>GraphDef</code>都有一个版本号<br>与TensorFlow版本分开。例如，<code>GraphDef</code>版本17 <code>inv</code>不赞成使用<code>reciprocal</code>。语义是：</p>
+<p>TensorFlow的每个版本都支持<code>GraphDef</code>版本的间隔。这个   间隔将在不同的补丁版本之间保持不变，并且只会越来越大<br>次要版本。只能删除对<code>GraphDef</code>版本的支持   为TensorFlow的主要版本。 新创建的图表分配了最新的<code>GraphDef</code>版本号。<br>如果给定版本的TensorFlow支持图形的<code>GraphDef</code>版本，   它将加载和评估与TensorFlow版本相同的行为<br>用于生成它（除了浮点数字细节和随机   数字），而不考虑TensorFlow的主要版本。尤其是所有   检查点文件将是兼容的。<br>如果<code>GraphDef</code>上限在（次要）版本中增加到X，那么   在下限增加到X之前至少6个月   例子（我们在这里使用假设的版本号）： TensorFlow<br>1.2可能支持<code>GraphDef</code>版本4至7。 TensorFlow 1.3可以添加<code>GraphDef</code>版本8并支持版本4到8。<br>至少半年后，TensorFlow 2.0.0可能会放弃支持   版本4到7，只剩下版本8。</p>
+<p>最后，在支持<code>GraphDef</code>版本的时候，我们会试着去做 提供自动将图形转换为新的支持的工具 <code>GraphDef</code>版本。</p>
+<h2><span id="扩展tensorflow时的图形和检查点兼容性">扩展TensorFlow时的图形和检查点兼容性</span></h2><p>只有在对<code>GraphDef</code>进行不兼容的更改时，本节才有意义 格式，如添加操作，删除操作或更改功能 现有的操作。上一节应该足以满足大多数用户的需求。</p>
+<h3><span id="向后和部分向前兼容">向后和部分向前兼容</span></h3><p>我们的版本方案有三个要求：</p>
+<p>向后兼容性，支持加载图形和检查点     用旧版本的TensorFlow创建。 向前兼容性，以支持生产者的场景<br>图形或检查点之前升级到更新版本的TensorFlow     消费者。 以不兼容的方式启用进化的TensorFlow。例如，删除Ops，<br>添加属性和删除属性。</p>
+<p>请注意，<code>GraphDef</code>版本机制与TensorFlow分离 版本，向后不兼容<code>GraphDef</code>格式的更改仍然存在<br>受语义版本的限制。这意味着功能只能被删除 或在<code>MAJOR</code>版本的TensorFlow（如<code>1.7</code>到<code>2.0</code>）之间进行更改。<br>另外，在补丁版本（<code>1.x.1</code>）中强制执行向前兼容性 以<code>1.x.2</code>为例）。</p>
+<p>实现向前和向后兼容性，并知道何时执行更改 在格式中，图形和检查点都有描述它们的时间的元数据 被生产了。下面的章节详细介绍了TensorFlow的实现和<br>不断发展的<code>GraphDef</code>版本指南。</p>
+<h3><span id="独立的数据版本计划">独立的数据版本计划</span></h3><p>图形和检查点有不同的数据版本。这两个数据 格式的演变速度不同，速度也不同 来自TensorFlow。两个版本控制系统都在<br><code>core/public/version.h</code>。 每当添加新版本时，会在标题中添加注释，详细说明内容 改变和日期。</p>
+<h3><span id="数据生产者和消费者">数据，生产者和消费者</span></h3><p>我们区分以下几种数据版本信息：  生产者：生成数据的二进制文件。生产者有一个版本   （<code>producer</code>）以及兼容的最低消费版本<br>（<code>min_consumer</code>）。  消费者：消耗数据的二进制文件。消费者有一个版本   （<code>consumer</code>）和它们兼容的最低生产者版本<br>（<code>min_producer</code>）。</p>
+<p>每个版本化数据都有一个VersionDef 版本 记录制作数据的<code>producer</code>，<code>min_consumer</code><br>它与<code>bad_consumers</code>版本兼容 不允许。</p>
+<p>默认情况下，当生产者创建一些数据时，数据会继承生产者的数据 <code>producer</code>和<code>min_consumer</code>版本。<br><code>bad_consumers</code>可根据具体情况进行设置 已知消费者版本包含错误，必须避免。消费者可以 接受一段数据如果以下情况都是如此：</p>
+<p><code>consumer</code>&gt; =数据的<code>min_consumer</code> 数据的<code>producer</code>&gt; =消费者的<code>min_producer</code><br><code>consumer</code>不在数据的<code>bad_consumers</code>中</p>
+<p>由于生产者和消费者都来自同一个TensorFlow代码库， <code>core/public/version.h</code><br>包含一个主要的数据版本，被视为<code>producer</code>或 <code>consumer</code>取决于上下文，<code>min_consumer</code>和<code>min_producer</code><br>（分别需要生产者和消费者）。特别，</p>
+<p>对于<code>GraphDef</code>型号，我们有<code>TF_GRAPH_DEF_VERSION</code>，<br><code>TF_GRAPH_DEF_VERSION_MIN_CONSUMER</code>，和     <code>TF_GRAPH_DEF_VERSION_MIN_PRODUCER</code>。<br>对于检查点版本，我们有<code>TF_CHECKPOINT_VERSION</code>，     <code>TF_CHECKPOINT_VERSION_MIN_CONSUMER</code>，和<br><code>TF_CHECKPOINT_VERSION_MIN_PRODUCER</code>。</p>
+<h3><span id="不断发展的graphdef版本">不断发展的GraphDef版本</span></h3><p>本节介绍如何使用这个版本机制来做出不同的 <code>GraphDef</code>格式的更改类型。</p>
+<h4><span id="添加操作">添加操作</span></h4><p>同时向消费者和生产者添加新的作品，而不是 改变任何<code>GraphDef</code>版本。这种改变是自动的 向后兼容，并且不影响兼容性计划<br>现有的生产者脚本不会突然使用新的功能。</p>
+<h4><span id="添加一个操作并切换现有的python包装来使用它">添加一个操作并切换现有的Python包装来使用它</span></h4><p>实现新的消费者功能并增加<code>GraphDef</code>版本。 如果有可能使包装仅使用新功能     以前没有用过的情况下，包装可以现在更新。<br>更改Python包装以使用新功能。不要增加     <code>min_consumer</code>，因为不使用此操作的模型不应该中断。</p>
+<h4><span id="删除或限制操作的功能">删除或限制操作的功能</span></h4><p>修复所有的生产者脚本（而不是TensorFlow本身）不使用禁止的操作或     功能。 增加<code>GraphDef</code>版本并实现新的消费者功能<br>禁止在新版本中删除GraphDefs的操作或功能     以上。如有可能，使TensorFlow停止生产<code>GraphDefs</code><br>禁止功能。为此，请添加     REGISTER_OP（…）。已过时（deprecated_at_version，     信息）。<br>等待主要版本的向后兼容性的目的。 将<code>min_producer</code>从（2）中增加到GraphDef版本，然后删除     功能完全。</p>
+<h4><span id="更改操作的功能">更改操作的功能</span></h4><p>添加一个新的类似的操作命名为<code>SomethingV2</code>或类似的，并通过     将其添加并切换现有的Python包装来使用它的过程<br>如果需要向前兼容，可能需要三周的时间。 删除旧的操作（只能发生与主要版本的变化，由于     向后兼容）。<br>增加<code>min_consumer</code>排除消费者与旧的欧普，加回     旧的Op作为<code>SomethingV2</code>的别名，并经过这个过程切换<br>现有的Python包装来使用它。 通过该过程删除<code>SomethingV2</code>。</p>
+<h4><span id="禁止单个不安全的消费者版本">禁止单个不安全的消费者版本</span></h4><p>碰撞<code>GraphDef</code>版本并添加坏的版本到<code>bad_consumers</code><br>所有新的GraphDefs。如有可能，只能将GraphDefs添加到<code>bad_consumers</code>     其中包含一定的操作或类似的。<br>如果现有的消费者有不好的版本，尽快将其推出     可能。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/version_compat/" data-title="TensorFlow版本兼容性 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/input_fn/" title="用tf.estimator构建输入函数">
+  <strong>上一篇：</strong><br/>
+  <span>
+  用tf.estimator构建输入函数</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/ios_build/"  title="在iOS上构建TensorFlow">
+ <strong>下一篇：</strong><br/> 
+ <span>在iOS上构建TensorFlow
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TensorFlow版本兼容性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">语义版本2.0</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">什么是覆盖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">什么不包括</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">图形和检查点的兼容性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">扩展TensorFlow时的图形和检查点兼容性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.1.</span> <span class="toc-text">向后和部分向前兼容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.2.</span> <span class="toc-text">独立的数据版本计划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.3.</span> <span class="toc-text">数据，生产者和消费者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.</span> <span class="toc-text">不断发展的GraphDef版本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">添加操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">添加一个操作并切换现有的Python包装来使用它</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.3.</span> <span class="toc-text">删除或限制操作的功能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.4.</span> <span class="toc-text">更改操作的功能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.5.</span> <span class="toc-text">禁止单个不安全的消费者版本</span></a></li></ol></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

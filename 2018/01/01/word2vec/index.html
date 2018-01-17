@@ -1,0 +1,641 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>词的矢量表示 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="词的矢量表示在本教程中，我们看一下word2vec模型 Mikolov等人 这个模型用于学习单词的向量表示，称为“单词” 的嵌入”。 强调本教程旨在突出有趣的，实质性的部分 在TensorFlow中建立一个word2vec模型。 我们首先给出为什么我们想要的动机 将单词表示为向量。 我们看看模型背后的直觉以及如何训练 （用数学的飞溅为好措施）。我们还在TensorFlow中展示了一个简单的模型实现">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="词的矢量表示">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/word2vec/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="词的矢量表示在本教程中，我们看一下word2vec模型 Mikolov等人 这个模型用于学习单词的向量表示，称为“单词” 的嵌入”。 强调本教程旨在突出有趣的，实质性的部分 在TensorFlow中建立一个word2vec模型。 我们首先给出为什么我们想要的动机 将单词表示为向量。 我们看看模型背后的直觉以及如何训练 （用数学的飞溅为好措施）。我们还在TensorFlow中展示了一个简单的模型实现">
+<meta property="og:image" content="https://www.tensorflow.org/images/audio-image-text.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/softmax-nplm.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/nce-nplm.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/linear-relationships.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/tsne.png">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="词的矢量表示">
+<meta name="twitter:description" content="词的矢量表示在本教程中，我们看一下word2vec模型 Mikolov等人 这个模型用于学习单词的向量表示，称为“单词” 的嵌入”。 强调本教程旨在突出有趣的，实质性的部分 在TensorFlow中建立一个word2vec模型。 我们首先给出为什么我们想要的动机 将单词表示为向量。 我们看看模型背后的直觉以及如何训练 （用数学的飞溅为好措施）。我们还在TensorFlow中展示了一个简单的模型实现">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/audio-image-text.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/word2vec/" title="词的矢量表示" itemprop="url">词的矢量表示</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">词的矢量表示</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">强调</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">动机：为什么学习Word嵌入？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">加大噪声对比培训力度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">跳跃模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">建立图表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">培训模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">可视化的嵌入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.8.</span> <span class="toc-text">评估嵌入：类比推理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.9.</span> <span class="toc-text">优化实施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.10.</span> <span class="toc-text">结论</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="词的矢量表示">词的矢量表示</span></h1><p>在本教程中，我们看一下word2vec模型 Mikolov等人 这个模型用于学习单词的向量表示，称为“单词” 的嵌入”。</p>
+<h2><span id="强调">强调</span></h2><p>本教程旨在突出有趣的，实质性的部分 在TensorFlow中建立一个word2vec模型。</p>
+<p>我们首先给出为什么我们想要的动机 将单词表示为向量。 我们看看模型背后的直觉以及如何训练 （用数学的飞溅为好措施）。<br>我们还在TensorFlow中展示了一个简单的模型实现。 最后，我们看看如何让天真版本更好地扩展。</p>
+<p>稍后在教程中我们会遍历代码，但是如果您愿意潜水 直接进来，随意看看简约的执行情况 tensorflow /示例/教程/ word2vec /<br>word2vec_basic.py 这个基本的例子包含了下载一些数据所需的代码，在其上进行训练 并可视化结果。一旦你阅读和运行舒适 基本版本，你可以毕业<br>车型/教程/嵌入/ word2vec.py 这是一个更严重的实施，展示了一些更先进的 有关如何有效地使用线程将数据移入数据库的TensorFlow原则<br>文本模型，训练期间如何检查点等</p>
+<p>但首先，我们来看看为什么我们想在第一个字中学习单词嵌入 地点。如果你是一个嵌入式专家，你可以随意跳过这一节 喜欢把你的手弄脏的细节。</p>
+<h2><span id="动机为什么学习word嵌入">动机：为什么学习Word嵌入？</span></h2><p>图像和音频处理系统可以处理丰富的高维数据集 编码为图像数据的各个原始像素强度的向量，或者 例如音频数据的功率谱密度系数。对象的任务<br>或者语音识别我们知道所有成功所需的信息 执行任务在数据中被编码（因为人类可以执行这些任务 来自原始数据）。但是，传统上自然语言处理系统<br>将单词视为离散的原子符号，因此可以表示“猫” 如<code>Id537</code>和“狗”，如<code>Id143</code>。这些编码是任意的，并提供<br>对于系统中可能存在的关系没有任何有用的信息 在各个符号之间。这意味着该模型可以利用 当它处理有关数据时，它所学到的关于“猫”的知识很少<br>‘狗’（例如，它们都是动物，四条腿，宠物等）。代表 字作为独特的，离散的ID进一步导致数据稀疏，通常 意味着我们可能需要更多的数据才能成功地训练统计数据<br>楷模。使用矢量表示可以克服这些障碍中的一些。</p>
+<p><img src="https://www.tensorflow.org/images/audio-image-text.png" alt=""></p>
+<p>向量空间模型（VSM） 在语义上表示（嵌入）连续向量空间中的单词 相似的词映射到附近的点（’嵌入在彼此附近’）。<br>VSM在NLP中有着悠久丰富的历史，但是所有的方法都依赖于某种方式 另一个 分布假说， 其中指出，出现在相同的情况下的话分享<br>语义意义。利用这个原理的不同方法可以 分为两类：基于计数的方法（例如， 潜在语义分析）， 和预测方法（例如 神经概率语言模型）。</p>
+<p>这个区别是由更详细的阐述 Baroni等人， 但简而言之：基于计数的方法计算的统计 在一个大的文本语料库中，某个词与其相邻词汇共同出现的频率，<br>然后将这些计数统计映射到每个单词的小密集矢量。 预测模型直接试图从其邻居预测一个字 学习小，密集的嵌入向量（考虑的参数 模型）。</p>
+<p>Word2vec是一个特别有效的计算预测模型 学习从原始文本中的单词嵌入。它有两个口味，连续 Bag-of-Words模型（CBOW）和Skip-<br>Gram模型（Mikolov等人的第3.1节和第3.2节）。算法上，这些 模型是相似的，除了CBOW预测目标词（例如“mat”）<br>源语境词语（’猫坐在’上），而跳跃词就是这样 反转并预测来自目标词语的源语境词语。这个倒置 可能看起来像一个任意的选择，但从统计上来看，它有这样的效果<br>CBOW平滑了许多分布信息（通过对待一个 整个上下文作为一个观察）。在大多数情况下，这原来是一个 小数据集有用的东西。但是，skip-<br>gram会处理每个上下文目标 对作为一个新的观察，这往往会做的更好，当我们有更大的 数据集。我们将在本教程的其余部分重点介绍skip-gram模型。</p>
+<h2><span id="加大噪声对比培训力度">加大噪声对比培训力度</span></h2><p>神经概率语言模型传统上使用的训练 最大似然（ML） 原则来最大化下一个单词\（w_t \）的概率（对于“目标”） 给出前面的单词\（h<br>\）（对于“历史”）而言 softmax功能，</p>
+<p>$$ \begin{align} P(w_t | h) &amp;= \text{softmax} (\text{score} (w_t, h)) \\ &amp;=<br>\frac{\exp \{ \text{score} (w<em>t, h) \} } {\sum</em>\text{Word w’ in Vocab} \exp<br>\{ \text{score} (w’, h) \} } \end{align} $$</p>
+<p>其中\（\ text {score}（w_t，h）\）计算word \（w_t \）的兼容性 与上下文\（h \）（点积通常使用）。我们训练这个模型<br>通过最大化其对数似然性 在训练集上，即通过最大化</p>
+<p>$$ \begin{align} J_\text{ML} &amp;= \log P(w_t | h) \\ &amp;= \text{score} (w<em>t, h) -<br>\log \left( \sum</em>\text{Word w’ in Vocab} \exp \{ \text{score} (w’, h) \}<br>\right). \end{align} $$</p>
+<p>这产生了一个适当的规范化的语言建模概率模型。 然而，这是非常昂贵的，因为我们需要计算和归一化每个 概率使用当前所有其他\（V \）单词\（W’\）的得分<br>上下文\（h \），在每个训练步骤。</p>
+<p><img src="https://www.tensorflow.org/images/softmax-nplm.png" alt=""></p>
+<p>另一方面，对于word2vec中的特征学习，我们不需要一个完整的 概率模型。 CBOW和skip-gram模型是用a来训练的 二元分类目标（逻辑回归）<br>从（k \）虚数（噪声）字\（\波浪w \）中区分真实目标字\（w_t \）， 相同的背景。我们在下面对CBOW模型进行说明。对于skip-gram来说<br>方向是简单的倒置。</p>
+<p><img src="https://www.tensorflow.org/images/nce-nplm.png" alt=""></p>
+<p>在数学上，目标（对于每个示例）是最大化的</p>
+<p>$$J<em>\text{NEG} = \log Q</em>\theta(D=1 |w<em>t, h) + k \mathop{\mathbb{E}}</em>{\tilde w<br>\sim P<em>\text{noise}} \left[ \log Q</em>\theta(D = 0 |\tilde w, h) \right]$$</p>
+<p>其中\（Q_ \ theta（D = 1 | w，h）\）是二元逻辑回归概率 在数据集的上下文\（h \）中查看单词\（w \）的模型下 \（D<br>\），根据学习的嵌入向量\（\ theta \）计算。在 实践中，我们通过画（\）对比词来逼近期望 从噪声分布（即我们计算a 蒙特卡洛平均）。</p>
+<p>当模型分配高概率时，这个目标是最大化的 真实的话，低概率的噪音词。从技术上讲，这是 叫 负面抽样， 使用这种损失函数有很好的数学动机：<br>它提出的更新近似于softmax函数的更新 限制。但是从计算角度来看，这是特别有吸引力的，因为计算 现在损失函数只能随着我们的噪声词的数量而缩放<br>选择（\（k \）），而不是词汇表中的所有单词（\（V \））。这使得它 训练要快得多。实际上我们会利用非常相似的 噪声对比估计（NCE）<br>为此TensorFlow有一个方便的帮手功能<code>tf.nn.nce_loss()</code>。</p>
+<p>让我们直观地感受一下，在实践中这将如何工作！</p>
+<h2><span id="跳跃模型">跳跃模型</span></h2><p>作为一个例子，我们来考虑一下数据集</p>
+<p><code>the quick brown fox jumped over the lazy dog</code></p>
+<p>我们首先形成单词的数据集和它们出现的上下文。我们 可以用任何有意义的方式来界定“背景”，事实上人们也可以 看着语法上下文（即当前的语法依赖者）<br>目标单词，请参阅 Levy等人）， 目标的左边，目标的右边，等等。现在， 让我们坚持香草的定义，并定义“上下文”作为窗口 的目标词的左侧和右侧的词。使用窗口<br>大小为1，那么我们有数据集</p>
+<p><code>([the, brown], quick), ([quick, fox], brown), ([brown, jumped], fox), ...</code></p>
+<p>的<code>(context, target)</code>对。回想一下，skip-gram会颠倒上下文 目标，并试图从其目标词预测每个环境词，所以<br>任务变成从“快”，“快”和“狐狸”预测’the’和’brown’ “棕色”等，因此我们的数据集成为</p>
+<p><code>(quick, the), (quick, brown), (brown, quick), (brown, fox), ...</code></p>
+<p>的<code>(input, output)</code>对。目标函数定义在整个 数据集，但我们通常使用优化 随机梯度下降<br>（SGD）一次只使用一个例子（或<code>batch_size</code>示例的“小批次” 典型的是<code>16 &lt;= batch_size &lt;= 512</code>）。所以我们来看一下<br>这个流程。</p>
+<p>让我们想象在训练步骤\（t \）我们观察上面的第一个训练案例， 目标是从<code>the</code>预测<code>quick</code>。我们选择<code>num_noise</code>编号<br>嘈杂（对比）的例子，从一些噪音分布， 通常是一元分布，\（P（w）\）。为了简单，让我们说<br><code>num_noise=1</code>和我们选择<code>sheep</code>作为一个嘈杂的例子。接下来我们计算 这一对观察到的和有噪音的例子，即在时间上的目标的损失 步骤\（t<br>\）变成</p>
+<p>$$J^{(t)}<em>\text{NEG} = \log Q</em>\theta(D=1 | \text{the, quick}) +<br>\log(Q_\theta(D=0 | \text{sheep, quick}))$$</p>
+<p>目标是对嵌入参数\（\ theta \）进行更新以改善 （在这种情况下，最大化）这个目标函数。我们通过派生来做到这一点 相对于嵌入参数的损失梯度，即 \（\<br>frac {\ partial} {\ partial \ theta} J_ \ text {NEG} \）（幸运的是TensorFlow提供<br>简单的辅助功能来做到这一点！）。然后，我们执行更新 通过向梯度方向迈出一小步来嵌入。当这个 过程在整个训练集上重复进行，这就产生了效果<br>为每个单词“移动”嵌入向量，直到模型为止 成功地区分真实的单词和噪音单词。</p>
+<p>我们可以通过将它们向下投影到2维来可视化所学习的向量 使用例如类似的东西 t-SNE降维技术。 当我们检查这些可视化时，变得明显的向量<br>捕捉一些一般的，实际上相当有用的语义信息 单词和他们之间的关系。当我们这是非常有趣的 首先发现了诱导向量空间中的某些方向是专门化的<br>朝着某些语义关系，例如男女，动词时态和 甚至包括国与国之间的文字之间的关系，如图所示 下面（参见例如 Mikolov等，2013）。</p>
+<p><img src="https://www.tensorflow.org/images/linear-relationships.png" alt=""></p>
+<p>这就解释了为什么这些矢量也可以用作许多规范的特征 NLP预测任务，如词性标注或命名实体识别 （见例如原来的工作 Collobert等人，2011<br>（pdf）或后续工作 Turian等，2010）。</p>
+<p>但现在，让我们用它们来画美丽的图画！</p>
+<h2><span id="建立图表">建立图表</span></h2><p>这是关于嵌入，所以我们来定义我们的嵌入矩阵。 这只是一个很大的随机矩阵开始。我们将初始化值 在单位立方体统一。</p>
+<pre><code>embeddings = tf.Variable(
+    tf.random_uniform([vocabulary_size, embedding_size], -1.0, 1.0))
+</code></pre><p>噪声对比估计损失是根据逻辑回归定义的 模型。为此，我们需要为每个单词定义权重和偏差 词汇（也被称为<code>output weights</code>而不是输入<br>嵌入物）。所以我们来定义一下。</p>
+<pre><code>nce_weights = tf.Variable(
+  tf.truncated_normal([vocabulary_size, embedding_size],
+                      stddev=1.0 / math.sqrt(embedding_size)))
+nce_biases = tf.Variable(tf.zeros([vocabulary_size]))
+</code></pre><p>现在我们已经有了参数，我们可以定义我们的skip-gram模型 图形。为了简单起见，假设我们已经整合了我们的文本语料库<br>与一个词汇，使每个单词被表示为一个整数（见 tensorflow /示例/教程/ word2vec / word2vec_basic.py<br>的细节）。跳跃模型需要两个输入。一个是满满的一批 代表源语境词的整数，另一个代表目标 话。让我们为这些输入创建占位符节点，以便我们可以输入 数据稍后。</p>
+<pre><code># Placeholders for inputs
+train_inputs = tf.placeholder(tf.int32, shape=[batch_size])
+train_labels = tf.placeholder(tf.int32, shape=[batch_size, 1])
+</code></pre><p>现在我们需要做的是查找每个源词的向量 该批次。 TensorFlow有方便的帮手，使这个简单。</p>
+<pre><code>embed = tf.nn.embedding_lookup(embeddings, train_inputs)
+</code></pre><p>好的，现在我们有每个单词的嵌入，我们想尝试预测 目标词使用噪声对比训练目标。</p>
+<pre><code># Compute the NCE loss, using a sample of the negative labels each time.
+loss = tf.reduce_mean(
+  tf.nn.nce_loss(weights=nce_weights,
+                 biases=nce_biases,
+                 labels=train_labels,
+                 inputs=embed,
+                 num_sampled=num_sampled,
+                 num_classes=vocabulary_size))
+</code></pre><p>现在我们有一个损失节点，我们需要添加计算所需的节点 渐变和更新参数等。为此，我们将使用随机<br>梯度下降，而且TensorFlow也有方便的帮手来使这一切变得简单。</p>
+<pre><code># We use the SGD optimizer.
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=1.0).minimize(loss)
+</code></pre><h2><span id="培训模型">培训模型</span></h2><p>然后使用<code>feed_dict</code>将数据推送到模型中，然后训练模型 占位符和呼叫 <code>tf.Session.run</code>与这个新的数据 在一个循环中。</p>
+<pre><code>for inputs, labels in generate_batch(...):
+  feed_dict = {train_inputs: inputs, train_labels: labels}
+  _, cur_loss = session.run([optimizer, loss], feed_dict=feed_dict)
+</code></pre><p>请参阅完整的示例代码 tensorflow /例子/教程/ word2vec / word2vec_basic.py。</p>
+<h2><span id="可视化的嵌入">可视化的嵌入</span></h2><p>训练完成后，我们可以使用可视化的学习嵌入 T-SNE。</p>
+<p><img src="https://www.tensorflow.org/images/tsne.png" alt=""></p>
+<p>Et瞧！如预期的那样，类似的词汇最终在每个附近聚集 其他。对于更重量级的word2vec实现，展示更多的 TensorFlow的高级功能，请参阅实现<br>车型/教程/嵌入/ word2vec.py。</p>
+<h2><span id="评估嵌入类比推理">评估嵌入：类比推理</span></h2><p>嵌入对于NLP中的各种预测任务是有用的。缺乏 训练一个完整的词性模型或命名实体模型，一个简单的方法 评估嵌入是直接使用它们来预测句法和语义 像<code>king
+is to queen as father is to ?</code>的关系。这就是所谓的 类比推理和任务被介绍了 Mikolov和同事 。<br>从该任务下载该任务的数据集 download.tensorflow.org。</p>
+<p>看看我们如何做这个评估，看看<code>build_eval_graph()</code>和 <code>eval()</code>的功能 车型/教程/嵌入/ word2vec.py。</p>
+<p>超参数的选择可以强烈影响此任务的准确性。 为了在这个任务上达到最高水平的表现，需要训练一个 非常大的数据集，仔细调整超参数和使用<br>这些技巧就像对数据进行二次采样，这超出了本教程的范围。</p>
+<h2><span id="优化实施">优化实施</span></h2><p>我们的香草实施展示了TensorFlow的灵活性。对于 例如，改变培训目标就像换掉电话一样简单 以<code>tf.nn.nce_loss()</code>为代表的现成替代品<br><code>tf.nn.sampled_softmax_loss()</code>。如果你有一个新的损失函数的想法，你 可以在TensorFlow中手动为新目标写一个表达式并让<br>优化器计算它的导数。这种灵活性是无价的 机器学习模式开发的探索阶段，我们正在尝试 出几个不同的想法，并迅速迭代。</p>
+<p>一旦你有一个模型结构你满意，这可能是值得的 优化您的实现以更高效地运行（并覆盖更多的数据 更短的时间）。例如，我们在本教程中使用的朴素代码会受到影响<br>由于我们使用Python来读取和提供数据项， 每个TensorFlow后端都需要很少的工作。如果你发现 你的模型是严重瓶颈输入数据，你可能想要实现一个<br>自定义数据读取器为您的问题，如所述 新的数据格式。对于Skip-Gram的情况 建模，我们实际上已经为你做了这个例子 车型/教程/嵌入/<br>word2vec.py。</p>
+<p>如果你的模型不再是I / O绑定的，但是你还需要更多的性能，你 可以通过编写自己的TensorFlow Ops来进一步处理，如下所述<br>添加一个新的操作我们再次提供了一个 这个例子就是Skip-Gram的例子 车型/教程/嵌入/ word2vec_o​​ptimized.py。<br>随意基准这些对方来衡量表现 每个阶段的改进。</p>
+<h2><span id="结论">结论</span></h2><p>在本教程中，我们介绍了word2vec模型，这是一个计算效率高的模型 学习单词嵌入的模型。我们激励为什么嵌入是有用的，<br>讨论了高效的培训技术，并展示了如何实施所有这些 在TensorFlow中。总的来说，我们希望这已经证明TensorFlow是如何提供的<br>你的灵活性，你需要早期的实验，并控制你 以后需要定制优化实施。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/word2vec/" data-title="词的矢量表示 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/android_build/" title="在Android上构建TensorFlow">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在Android上构建TensorFlow</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/wide/"  title="TensorFlow线性模型教程">
+ <strong>下一篇：</strong><br/> 
+ <span>TensorFlow线性模型教程
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">词的矢量表示</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">强调</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">动机：为什么学习Word嵌入？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">加大噪声对比培训力度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">跳跃模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">建立图表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">培训模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">可视化的嵌入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.8.</span> <span class="toc-text">评估嵌入：类比推理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.9.</span> <span class="toc-text">优化实施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.10.</span> <span class="toc-text">结论</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

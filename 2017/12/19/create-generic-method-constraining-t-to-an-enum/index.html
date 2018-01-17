@@ -1,0 +1,712 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>创建泛型方法约束T到一个枚举 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我正在构建一个扩展Enum.Parse概念的函数 允许在没有找到Enum值的情况下解析默认值 不区分大小写 所以我写了以下内容： public static T GetEnumFromString&amp;lt;T&amp;gt;(string value, T defaultValue) where T : Enum {     if (string.IsNullOrEmpty(value)) return d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创建泛型方法约束T到一个枚举">
+<meta property="og:url" content="https://www.tracholar.top/2017/12/19/create-generic-method-constraining-t-to-an-enum/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我正在构建一个扩展Enum.Parse概念的函数 允许在没有找到Enum值的情况下解析默认值 不区分大小写 所以我写了以下内容： public static T GetEnumFromString&amp;lt;T&amp;gt;(string value, T defaultValue) where T : Enum {     if (string.IsNullOrEmpty(value)) return d">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="创建泛型方法约束T到一个枚举">
+<meta name="twitter:description" content="我正在构建一个扩展Enum.Parse概念的函数 允许在没有找到Enum值的情况下解析默认值 不区分大小写 所以我写了以下内容： public static T GetEnumFromString&amp;lt;T&amp;gt;(string value, T defaultValue) where T : Enum {     if (string.IsNullOrEmpty(value)) return d">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/19/create-generic-method-constraining-t-to-an-enum/" title="创建泛型方法约束T到一个枚举" itemprop="url">创建泛型方法约束T到一个枚举</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-19T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">F# Solution as alternative</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我正在构建一个扩展Enum.Parse概念的函数</p>
+<p>允许在没有找到Enum值的情况下解析默认值 不区分大小写</p>
+<p>所以我写了以下内容：</p>
+<pre><code>public static T GetEnumFromString&lt;T&gt;(string value, T defaultValue) where T : Enum
+{
+    if (string.IsNullOrEmpty(value)) return defaultValue;
+    foreach (T item in Enum.GetValues(typeof(T)))
+    {
+        if (item.ToString().ToLower().Equals(value.Trim().ToLower())) return item;
+    }
+    return defaultValue;
+}
+</code></pre><p>我得到一个错误约束不能是特殊的类“System.Enum”。</p>
+<p>公平的，但是有一个解决方法，以允许一个通用的枚举，或者我将不得不模仿解析函数和传递一个类型作为一个属性，这迫使丑陋的拳击要求您的代码。</p>
+<p>编辑下面的所有建议已经非常感谢，谢谢。</p>
+<p>已经解决了（我已经离开了循环来保持区分大小写 - 我在解析XML时使用这个）</p>
+<pre><code>public static class EnumUtils
+{
+    public static T ParseEnum&lt;T&gt;(string value, T defaultValue) where T : struct, IConvertible
+    {
+        if (!typeof(T).IsEnum) throw new ArgumentException(&quot;T must be an enumerated type&quot;);
+        if (string.IsNullOrEmpty(value)) return defaultValue;
+
+        foreach (T item in Enum.GetValues(typeof(T)))
+        {
+            if (item.ToString().ToLower().Equals(value.Trim().ToLower())) return item;
+        }
+        return defaultValue;
+    }
+}
+</code></pre><p>编辑：（2015年2月16日）Julien<br>Lebosquain最近发布了一个编译器强制类型安全的通用解决方案在MSIL或F＃下面，这是非常值得一看，并upvote。如果解决方案在页面上进一步起泡，我将删除此编辑。</p>
+<a id="more"></a>
+<p>由于<code>Enum</code>类型实现<code>IConvertible</code>接口，更好的实现应该是这样的：</p>
+<pre><code>public T GetEnumFromString&lt;T&gt;(string value) where T : struct, IConvertible
+{
+   if (!typeof(T).IsEnum) 
+   {
+      throw new ArgumentException(&quot;T must be an enumerated type&quot;);
+   }
+
+   //...
+}
+</code></pre><p>这仍然允许传递值类型实现<code>IConvertible</code>。虽然这种可能性很少见。</p>
+<p>我迟到了，但是我把它看成是一个挑战，看看如何做到这一点。在C＃（或VB.NET，但向下滚动F＃）是不可能的，但在MSIL中是可能的。我写了这个小东西</p>
+<pre><code>// license: http://www.apache.org/licenses/LICENSE-2.0.html
+.assembly MyThing{}
+.class public abstract sealed MyThing.Thing
+       extends [mscorlib]System.Object
+{
+  .method public static !!T  GetEnumFromString&lt;valuetype .ctor ([mscorlib]System.Enum) T&gt;(string strValue,
+                                                                                          !!T defaultValue) cil managed
+  {
+    .maxstack  2
+    .locals init ([0] !!T temp,
+                  [1] !!T return_value,
+                  [2] class [mscorlib]System.Collections.IEnumerator enumerator,
+                  [3] class [mscorlib]System.IDisposable disposer)
+    // if(string.IsNullOrEmpty(strValue)) return defaultValue;
+    ldarg strValue
+    call bool [mscorlib]System.String::IsNullOrEmpty(string)
+    brfalse.s HASVALUE
+    br RETURNDEF         // return default it empty
+
+    // foreach (T item in Enum.GetValues(typeof(T)))
+  HASVALUE:
+    // Enum.GetValues.GetEnumerator()
+    ldtoken !!T
+    call class [mscorlib]System.Type [mscorlib]System.Type::GetTypeFromHandle(valuetype [mscorlib]System.RuntimeTypeHandle)
+    call class [mscorlib]System.Array [mscorlib]System.Enum::GetValues(class [mscorlib]System.Type)
+    callvirt instance class [mscorlib]System.Collections.IEnumerator [mscorlib]System.Array::GetEnumerator() 
+    stloc enumerator
+    .try
+    {
+      CONDITION:
+        ldloc enumerator
+        callvirt instance bool [mscorlib]System.Collections.IEnumerator::MoveNext()
+        brfalse.s LEAVE
+
+      STATEMENTS:
+        // T item = (T)Enumerator.Current
+        ldloc enumerator
+        callvirt instance object [mscorlib]System.Collections.IEnumerator::get_Current()
+        unbox.any !!T
+        stloc temp
+        ldloca.s temp
+        constrained. !!T
+
+        // if (item.ToString().ToLower().Equals(value.Trim().ToLower())) return item;
+        callvirt instance string [mscorlib]System.Object::ToString()
+        callvirt instance string [mscorlib]System.String::ToLower()
+        ldarg strValue
+        callvirt instance string [mscorlib]System.String::Trim()
+        callvirt instance string [mscorlib]System.String::ToLower()
+        callvirt instance bool [mscorlib]System.String::Equals(string)
+        brfalse.s CONDITION
+        ldloc temp
+        stloc return_value
+        leave.s RETURNVAL
+
+      LEAVE:
+        leave.s RETURNDEF
+    }
+    finally
+    {
+        // ArrayList&apos;s Enumerator may or may not inherit from IDisposable
+        ldloc enumerator
+        isinst [mscorlib]System.IDisposable
+        stloc.s disposer
+        ldloc.s disposer
+        ldnull
+        ceq
+        brtrue.s LEAVEFINALLY
+        ldloc.s disposer
+        callvirt instance void [mscorlib]System.IDisposable::Dispose()
+      LEAVEFINALLY:
+        endfinally
+    }
+
+  RETURNDEF:
+    ldarg defaultValue
+    stloc return_value
+
+  RETURNVAL:
+    ldloc return_value
+    ret
+  }
+} 
+</code></pre><p>它生成一个看起来像这样的函数，如果它是有效的C＃：</p>
+<pre><code>T GetEnumFromString&lt;T&gt;(string valueString, T defaultValue) where T : Enum
+</code></pre><p>然后用下面的C＃代码：</p>
+<pre><code>using MyThing;
+// stuff...
+private enum MyEnum { Yes, No, Okay }
+static void Main(string[] args)
+{
+    Thing.GetEnumFromString(&quot;No&quot;, MyEnum.Yes); // returns MyEnum.No
+    Thing.GetEnumFromString(&quot;Invalid&quot;, MyEnum.Okay);  // returns MyEnum.Okay
+    Thing.GetEnumFromString(&quot;AnotherInvalid&quot;, 0); // compiler error, not an Enum
+}
+</code></pre><p>不幸的是，这意味着将这部分代码写成MSIL而不是C＃，唯一的好处是可以通过<code>System.Enum</code>约束这个方法。这也是一种无赖，因为它被编译成一个单独的程序集。但是，这并不意味着你必须这样部署。</p>
+<p>通过删除行<code>.assembly MyThing{}</code>并调用ilasm，如下所示：</p>
+<pre><code>ilasm.exe /DLL /OUTPUT=MyThing.netmodule
+</code></pre><p>你得到一个netmodule而不是一个程序集。</p>
+<p>不幸的是，VS2010（和更早的，显然）不支持添加netmodule引用，这意味着当你正在调试时，你不得不把它放在2个独立的程序集中。您可以将它们作为程序集的一部分添加的唯一方法是使用<code>/addmodule:{files}</code>命令行参数自己运行csc.exe。在MSBuild脚本中不会太痛苦。当然，如果你勇敢或愚蠢，你可以每次手动运行csc。由于多个程序集需要访问它，它肯定会变得更加复杂。</p>
+<p>所以，它可以在.Net中完成。这值得额外的努力吗？恩，好吧，我想我会让你决定那个。</p>
+<hr>
+<h3><span id="f-solution-as-alternative">F# Solution as alternative</span></h3><p>额外的信用：事实证明，对于<code>enum</code>，除了MSIL之外，至少还有一种.NET语言可以使用通用的限制：F＃。</p>
+<pre><code>type MyThing =
+    static member GetEnumFromString&lt;&apos;T when &apos;T :&gt; Enum&gt; str defaultValue: &apos;T =
+        /// protect for null (only required in interop with C#)
+        let str = if isNull str then String.Empty else str
+
+        Enum.GetValues(typedefof&lt;&apos;T&gt;)
+        |&gt; Seq.cast&lt;_&gt;
+        |&gt; Seq.tryFind(fun v -&gt; String.Compare(v.ToString(), str.Trim(), true) = 0)
+        |&gt; function Some x -&gt; x | None -&gt; defaultValue
+</code></pre><p>这是一个很容易维护，因为它是一个熟悉的语言与完整的Visual Studio<br>IDE支持，但你仍然需要一个单独的项目在你的解决方案。然而，它自然会产生相当不同的IL（代码是非常不同的），它依赖于<code>FSharp.Core</code>库，就像任何其他外部库一样，它也需要成为你的发行版的一部分。</p>
+<p>以下是您可以如何使用它（基本上与MSIL解决方案相同），并显示它在其他同义词结构上正确失败：</p>
+<pre><code>// works, result is inferred to have type StringComparison
+var result = MyThing.GetEnumFromString(&quot;OrdinalIgnoreCase&quot;, StringComparison.Ordinal);
+// type restriction is recognized by C#, this fails at compile time
+var result = MyThing.GetEnumFromString(&quot;OrdinalIgnoreCase&quot;, 42);
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2017/12/19/create-generic-method-constraining-t-to-an-enum/" data-title="创建泛型方法约束T到一个枚举 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/12/19/proper-use-of-yield-return/" title="正确使用“收益回报”">
+  <strong>上一篇：</strong><br/>
+  <span>
+  正确使用“收益回报”</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/12/19/html-5-is-it-br-br-or-br/"  title="HTML 5：它是br，还是br /？">
+ <strong>下一篇：</strong><br/> 
+ <span>HTML 5：它是br，还是br /？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">F# Solution as alternative</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

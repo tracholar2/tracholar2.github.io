@@ -1,0 +1,680 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>TensorBoard：可视化学习 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="TensorBoard：可视化学习你将使用TensorFlow进行计算 - 就像训练一个巨大的 深度神经网络 - 可能是复杂和混乱的。为了更容易理解，调试和优化TensorFlow程序，我们已经包含了一套 可视化工具称为TensorBoard。您可以使用TensorBoard进行可视化您的TensorFlow图表，绘制关于您的执行的量化指标 图表，并显示其他数据，如通过它的图像。什么时候 Tens">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorBoard：可视化学习">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/summaries_and_tensorboard/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="TensorBoard：可视化学习你将使用TensorFlow进行计算 - 就像训练一个巨大的 深度神经网络 - 可能是复杂和混乱的。为了更容易理解，调试和优化TensorFlow程序，我们已经包含了一套 可视化工具称为TensorBoard。您可以使用TensorBoard进行可视化您的TensorFlow图表，绘制关于您的执行的量化指标 图表，并显示其他数据，如通过它的图像。什么时候 Tens">
+<meta property="og:image" content="https://www.tensorflow.org/images/mnist_tensorboard.png">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorBoard：可视化学习">
+<meta name="twitter:description" content="TensorBoard：可视化学习你将使用TensorFlow进行计算 - 就像训练一个巨大的 深度神经网络 - 可能是复杂和混乱的。为了更容易理解，调试和优化TensorFlow程序，我们已经包含了一套 可视化工具称为TensorBoard。您可以使用TensorBoard进行可视化您的TensorFlow图表，绘制关于您的执行的量化指标 图表，并显示其他数据，如通过它的图像。什么时候 Tens">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/mnist_tensorboard.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/summaries_and_tensorboard/" title="TensorBoard：可视化学习" itemprop="url">TensorBoard：可视化学习</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TensorBoard：可视化学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">序列化数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">启动TensorBoard</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="tensorboard可视化学习">TensorBoard：可视化学习</span></h1><p>你将使用TensorFlow进行计算 - 就像训练一个巨大的 深度神经网络 - 可能是复杂和混乱的。为了更容易<br>理解，调试和优化TensorFlow程序，我们已经包含了一套 可视化工具称为TensorBoard。您可以使用TensorBoard进行可视化<br>您的TensorFlow图表，绘制关于您的执行的量化指标 图表，并显示其他数据，如通过它的图像。什么时候 TensorBoard完全配置，看起来像这样：</p>
+<p><img src="https://www.tensorflow.org/images/mnist_tensorboard.png" alt="MNIST TensorBoard"></p>
+<p>本教程旨在让您开始使用简单的TensorBoard。 还有其他资源可用！ TensorBoard的GitHub<br>有更多关于TensorBoard使用情况的信息，包括提示和技巧 调试信息。</p>
+<h2><span id="序列化数据">序列化数据</span></h2><p>TensorBoard通过读取包含摘要的TensorFlow事件文件来操作 运行TensorFlow时可以生成的数据。一般来说<br>TensorBoard中的摘要数据的生命周期。</p>
+<p>首先，创建您想要收集摘要的TensorFlow图表 数据，并决定你想注释哪个节点 总结操作。</p>
+<p>例如，假设你正在训练一个卷积神经网络 识别MNIST数字。你想记录如何学习率 随时间变化，目标函数如何变化。通过收集这些<br>附加<code>tf.summary.scalar</code>操作 到分别输出学习率和损失的节点。然后，给<br>每个<code>scalar_summary</code>一个有意义的<code>tag</code>，就像<code>&#39;learning rate&#39;</code>或“损失 功能’。</p>
+<p>也许你也想看到即将到来的激活分布 关闭特定层，或者分布梯度或权重。搜集 这个数据通过附加 <code>tf.summary.histogram</code>选择<br>梯度输出和分别保存你的权重的变量。</p>
+<p>有关所有可用摘要操作的详细信息，请查看文档 总结操作。</p>
+<p>在运行之前，TensorFlow中的操作不会执行任何操作 取决于他们的输出。我们刚刚创建的摘要节点是 你的图形的外围设备：你当前运行的操作系统都不依赖于它<br>他们。所以，为了生成摘要，我们需要运行所有这些汇总节点。 用手来管理它们将是乏味的，所以使用 <code>tf.summary.merge_all</code><br>将它们组合成一个单独的操作来生成所有的汇总数据。</p>
+<p>然后，您可以运行合并的摘要操作，这将生成一个序列化 <code>Summary</code> protobuf对象与给定步骤中的所有摘要数据。<br>最后，要将这个汇总数据写入磁盘，请将summary protobuf传递给一个 <code>tf.summary.FileWriter</code>。</p>
+<p><code>FileWriter</code>在其构造函数中使用了一个logdir - 这个logdir是相当的 重要的是，这是所有事件将被写出的目录。<br>而且，<code>FileWriter</code>可以选择在其构造器中使用<code>Graph</code>。 如果它收到一个<code>Graph</code>对象，那么TensorBoard将显示您的图形<br>连同张量形状信息。这会给你一个更好的感觉 图中流动的东西：看 张量形状信息。</p>
+<p>现在你已经修改了你的图表，并有一个<code>FileWriter</code>，你准备好了 开始运行你的网络！如果你愿意，你可以运行合并的摘要操作<br>每一步，并记录大量的训练数据。这可能更多 数据比你需要，虽然。相反，请考虑运行合并的摘要操作 每个<code>n</code>步骤。</p>
+<p>下面的代码示例是对其的修改 简单的MNIST教程， 我们在其中添加了一些摘要操作，并且每十步执行一次。如果你 运行这个，然后启动<code>tensorboard
+--logdir=/tmp/tensorflow/mnist</code>，你就可以 统计数据的可视化，例如权重或准确度如何变化 训练。下面的代码是摘录;完整的来源是<br>这里。</p>
+<pre><code>def variable_summaries(var):
+  &quot;&quot;&quot;Attach a lot of summaries to a Tensor (for TensorBoard visualization).&quot;&quot;&quot;
+  with tf.name_scope(&apos;summaries&apos;):
+    mean = tf.reduce_mean(var)
+    tf.summary.scalar(&apos;mean&apos;, mean)
+    with tf.name_scope(&apos;stddev&apos;):
+      stddev = tf.sqrt(tf.reduce_mean(tf.square(var - mean)))
+    tf.summary.scalar(&apos;stddev&apos;, stddev)
+    tf.summary.scalar(&apos;max&apos;, tf.reduce_max(var))
+    tf.summary.scalar(&apos;min&apos;, tf.reduce_min(var))
+    tf.summary.histogram(&apos;histogram&apos;, var)
+
+def nn_layer(input_tensor, input_dim, output_dim, layer_name, act=tf.nn.relu):
+  &quot;&quot;&quot;Reusable code for making a simple neural net layer.
+
+  It does a matrix multiply, bias add, and then uses relu to nonlinearize.
+  It also sets up name scoping so that the resultant graph is easy to read,
+  and adds a number of summary ops.
+  &quot;&quot;&quot;
+  # Adding a name scope ensures logical grouping of the layers in the graph.
+  with tf.name_scope(layer_name):
+    # This Variable will hold the state of the weights for the layer
+    with tf.name_scope(&apos;weights&apos;):
+      weights = weight_variable([input_dim, output_dim])
+      variable_summaries(weights)
+    with tf.name_scope(&apos;biases&apos;):
+      biases = bias_variable([output_dim])
+      variable_summaries(biases)
+    with tf.name_scope(&apos;Wx_plus_b&apos;):
+      preactivate = tf.matmul(input_tensor, weights) + biases
+      tf.summary.histogram(&apos;pre_activations&apos;, preactivate)
+    activations = act(preactivate, name=&apos;activation&apos;)
+    tf.summary.histogram(&apos;activations&apos;, activations)
+    return activations
+
+hidden1 = nn_layer(x, 784, 500, &apos;layer1&apos;)
+
+with tf.name_scope(&apos;dropout&apos;):
+  keep_prob = tf.placeholder(tf.float32)
+  tf.summary.scalar(&apos;dropout_keep_probability&apos;, keep_prob)
+  dropped = tf.nn.dropout(hidden1, keep_prob)
+
+# Do not apply softmax activation yet, see below.
+y = nn_layer(dropped, 500, 10, &apos;layer2&apos;, act=tf.identity)
+
+with tf.name_scope(&apos;cross_entropy&apos;):
+  # The raw formulation of cross-entropy,
+  #
+  # tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(tf.softmax(y)),
+  #                               reduction_indices=[1]))
+  #
+  # can be numerically unstable.
+  #
+  # So here we use tf.nn.softmax_cross_entropy_with_logits on the
+  # raw outputs of the nn_layer above, and then average across
+  # the batch.
+  diff = tf.nn.softmax_cross_entropy_with_logits(targets=y_, logits=y)
+  with tf.name_scope(&apos;total&apos;):
+    cross_entropy = tf.reduce_mean(diff)
+tf.summary.scalar(&apos;cross_entropy&apos;, cross_entropy)
+
+with tf.name_scope(&apos;train&apos;):
+  train_step = tf.train.AdamOptimizer(FLAGS.learning_rate).minimize(
+      cross_entropy)
+
+with tf.name_scope(&apos;accuracy&apos;):
+  with tf.name_scope(&apos;correct_prediction&apos;):
+    correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+  with tf.name_scope(&apos;accuracy&apos;):
+    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+tf.summary.scalar(&apos;accuracy&apos;, accuracy)
+
+# Merge all the summaries and write them out to /tmp/mnist_logs (by default)
+merged = tf.summary.merge_all()
+train_writer = tf.summary.FileWriter(FLAGS.summaries_dir + &apos;/train&apos;,
+                                      sess.graph)
+test_writer = tf.summary.FileWriter(FLAGS.summaries_dir + &apos;/test&apos;)
+tf.global_variables_initializer().run()
+</code></pre><p>在我们初始化了<code>FileWriters</code>之后，我们必须添加总结 <code>FileWriters</code>在我们训练和测试模型。</p>
+<pre><code># Train the model, and also write summaries.
+# Every 10th step, measure test-set accuracy, and write test summaries
+# All other steps, run train_step on training data, &amp; add training summaries
+
+def feed_dict(train):
+  &quot;&quot;&quot;Make a TensorFlow feed_dict: maps data onto Tensor placeholders.&quot;&quot;&quot;
+  if train or FLAGS.fake_data:
+    xs, ys = mnist.train.next_batch(100, fake_data=FLAGS.fake_data)
+    k = FLAGS.dropout
+  else:
+    xs, ys = mnist.test.images, mnist.test.labels
+    k = 1.0
+  return {x: xs, y_: ys, keep_prob: k}
+
+for i in range(FLAGS.max_steps):
+  if i % 10 == 0:  # Record summaries and test-set accuracy
+    summary, acc = sess.run([merged, accuracy], feed_dict=feed_dict(False))
+    test_writer.add_summary(summary, i)
+    print(&apos;Accuracy at step %s: %s&apos; % (i, acc))
+  else:  # Record train set summaries, and train
+    summary, _ = sess.run([merged, train_step], feed_dict=feed_dict(True))
+    train_writer.add_summary(summary, i)
+</code></pre><p>您现在已经开始使用TensorBoard将这些数据可视化了。</p>
+<h2><span id="启动tensorboard">启动TensorBoard</span></h2><p>要运行TensorBoard，请使用以下命令（或者使用python -m tensorboard.main）</p>
+<pre><code>tensorboard --logdir=path/to/log-directory
+</code></pre><p><code>logdir</code>指向<code>FileWriter</code>串行化的目录 数据。如果这个<code>logdir</code>目录包含包含子目录<br>序列化的数据从单独的运行，然后TensorBoard将可视化的数据 从所有这些运行。一旦TensorBoard正在运行，浏览您的网页浏览器<br>以<code>localhost:6006</code>来查看张量板。</p>
+<p>在看TensorBoard时，你会看到右上角的导航标签 角。每个选项卡代表一组可以可视化的序列化数据。</p>
+<p>有关如何使用图形选项卡可视化图形的深入信息， 参见TensorBoard：Graph Visualization。</p>
+<p>有关TensorBoard的更多使用信息，请参阅TensorBoard的GitHub。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/summaries_and_tensorboard/" data-title="TensorBoard：可视化学习 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/debugger/" title="调试TensorFlow程序">
+  <strong>上一篇：</strong><br/>
+  <span>
+  调试TensorFlow程序</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/dev/"  title="发展">
+ <strong>下一篇：</strong><br/> 
+ <span>发展
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">TensorBoard：可视化学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">序列化数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">启动TensorBoard</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -112,31 +112,52 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/03/05/how-to-determine-the-first-and-last-iteration-in-a-foreach-loop/" title="如何确定foreach循环中的第一个和最后一个迭代？" itemprop="url">如何确定foreach循环中的第一个和最后一个迭代？</a>
+      <a href="/2018/01/15/can-one-controller-call-another/" title="一个控制器可以通话吗？" itemprop="url">一个控制器可以通话吗？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-03-05T01:06:27.000Z" itemprop="datePublished"> Published 2018-03-05</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>问题很简单。我的代码中有一个<code>foreach</code>循环：</p>
-<pre><code>foreach($array as $element) {
-    //code
+        <p>是否有可能让一个控制器使用另一个？</p>
+<p>例如：</p>
+<p>这个HTML文档只是简单地在<code>messageCtrl.js</code>文件中打印由<code>MessageCtrl</code>控制器传递的消息。</p>
+<pre><code>&lt;html xmlns:ng=&quot;http://angularjs.org/&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;title&gt;Inter Controller Communication&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div ng:controller=&quot;MessageCtrl&quot;&gt;
+        &lt;p&gt;{{message}}&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Angular Scripts --&gt;
+    &lt;script src=&quot;http://code.angularjs.org/angular-0.9.19.js&quot; ng:autobind&gt;&lt;/script&gt;
+    &lt;script src=&quot;js/messageCtrl.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>控制器文件包含以下代码：</p>
+<pre><code>function MessageCtrl()
+{
+    this.message = function() { 
+        return &quot;The current date is: &quot; + new Date().toString(); 
+    };
 }
-</code></pre><p>在这个循环中，当我们在第一次或最后一次迭代时，我想要做出不同的反应。</p>
-<p>如何做到这一点？</p>
+</code></pre><p>这只是打印当前日期;</p>
+<p>如果我添加另一个控制器，<code>DateCtrl</code>将特定格式的日期交给<code>MessageCtrl</code>，那么怎么去做呢？ DI框架似乎与<code>XmlHttpRequests</code>有关并访问服务。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/03/05/how-to-determine-the-first-and-last-iteration-in-a-foreach-loop/#more">Read More</a>
+            <a href="/2018/01/15/can-one-controller-call-another/#more">Read More</a>
           
        </p>
     </div>
@@ -146,7 +167,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -186,80 +207,36 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/03/04/how-to-check-if-a-service-is-running-on-android/" title="如何检查服务是否在Android上运行？" itemprop="url">如何检查服务是否在Android上运行？</a>
+      <a href="/2018/01/15/using-relative-url-in-css-file-what-location-is-it-relative-to/" title="在CSS文件中使用相对URL，它相对于什么位置？" itemprop="url">在CSS文件中使用相对URL，它相对于什么位置？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-03-04T02:27:31.000Z" itemprop="datePublished"> Published 2018-03-04</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何检查后台服务（在Android上）是否正在运行？</p>
-<p>我想要一个切换服务状态的Android活动 - 如果它处于关闭状态，我可以打开它。</p>
-<p>
+        <p>在CSS文件中定义类似于背景图像URL的内容时，使用相对URL时，它与哪个相关？例如：</p>
+<p>假设文件<code>/stylesheets/base-styles.css</code>包含：</p>
+<pre><code>div#header { 
+    background-image: url(&apos;images/header-background.jpg&apos;);
+}
+</code></pre><p>如果我通过<code>＆lt; link ... /＆gt;</code>将这个样式表包含在不同的文档中，CSS文件中的相对URL将相对于样式表文档 <strong>包含在<code>/
+stylesheets /</code>或 </strong>相对于当前文档** 中？可能的路径，如：</p>
+<pre><code>/item/details.html
+/about/index.html
+/about/extra/other.html
+/index.html
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/03/04/how-to-check-if-a-service-is-running-on-android/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/03/04/how-to-use-double-or-single-brackets-parentheses-curly-braces/" title="如何使用双括号或单括号，括号，大括号" itemprop="url">如何使用双括号或单括号，括号，大括号</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-03-04T02:01:33.000Z" itemprop="datePublished"> Published 2018-03-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我对Bash中括号，圆括号，花括号的使用以及它们的双重或单一形式的区别感到困惑。有清楚的解释吗？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/03/04/how-to-use-double-or-single-brackets-parentheses-curly-braces/#more">Read More</a>
+            <a href="/2018/01/15/using-relative-url-in-css-file-what-location-is-it-relative-to/#more">Read More</a>
           
        </p>
     </div>
@@ -269,7 +246,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/bash/">bash</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -298,37 +275,251 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/03/04/json-serialization-of-enum-as-string/" title="枚举的JSON序列化为字符串" itemprop="url">枚举的JSON序列化为字符串</a>
+      <a href="/2018/01/15/can-i-write-a-css-selector-selecting-elements-not-having-a-certain-class/" title="我可以写一个CSS选择器来选择没有特定类的元素吗？" itemprop="url">我可以写一个CSS选择器来选择没有特定类的元素吗？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-03-04T01:32:44.000Z" itemprop="datePublished"> Published 2018-03-04</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个包含<code>enum</code>属性的类，在使用<code>JavaScriptSerializer</code>序列化对象时，我的json结果包含枚举的整数值而不是<code>&gt;
-string</code>“name”。有没有办法在我的JSON中获得一个<code>string</code>的枚举，而不必创建一个自定义的<code>JavaScriptConverter</code>？也许有一个属性，我可以装饰的<code>枚举</code>定义，或对象的财产，与？</p>
-<p>举个例子：</p>
-<pre><code>enum Gender { Male, Female }
+        <p>我想编写一个CSS选择器规则，选择 __ 不具有某个类的所有元素。例如，给定以下HTML：</p>
+<pre><code>&lt;html class=&quot;printable&quot;&gt;
+    &lt;body class=&quot;printable&quot;&gt;
+        &lt;h1 class=&quot;printable&quot;&gt;Example&lt;/h1&gt;
+        &lt;nav&gt;
+            &lt;!-- Some menu links... --&gt;
+        &lt;/nav&gt;
+        &lt;a href=&quot;javascript:void(0)&quot; onclick=&quot;javascript:self.print()&quot;&gt;Print me!&lt;/a&gt;
+        &lt;p class=&quot;printable&quot;&gt;
+            This page is super interresting and you should print it!
+        &lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>我想编写一个选择器来选择所有没有“printable”类的元素，在这个例子中，是 <em>nav</em> 和 <em>a</em> 元素</p>
+<p>这可能吗？</p>
+<p>注意：在我想要使用的实际的HTML中，会有更多的 _不具有“可打印”类的元素比（我意识到它是以上例子中的其他方式）。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/can-i-write-a-css-selector-selecting-elements-not-having-a-certain-class/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
 
-class Person
-{
-    int Age { get; set; }
-    Gender Gender { get; set; }
-}
-</code></pre><p>所需的json结果：</p>
-<pre><code>{ &quot;Age&quot;: 35, &quot;Gender&quot;: &quot;Male&quot; }
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/using-meta-tags-to-turn-off-caching-in-all-browsers/" title="使用meta标签在所有浏览器中关闭缓存？" itemprop="url">使用meta标签在所有浏览器中关闭缓存？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/49547/how-to-control-web-page-caching-across-all-browsers">How to control web page caching, across all browsers?</a> 26 answers </li>
+</ul>
+<p>我读到，当您无法访问Web服务器的标题时，可以使用以下命令关闭缓存：</p>
+<pre><code>&lt;meta http-equiv=&quot;Cache-Control&quot; content=&quot;no-store&quot; /&gt;
+</code></pre><p>但是我也读到，这在IE的某些版本中不起作用。有没有一套＆lt; meta＆gt;标签会关闭所有浏览器的缓存？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/using-meta-tags-to-turn-off-caching-in-all-browsers/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/can-i-use-a-before-or-after-pseudo-element-on-an-input-field/" title="我可以使用输入字段上的伪元素之前或之后：？" itemprop="url">我可以使用输入字段上的伪元素之前或之后：？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我试图在<code>input</code>字段上使用<code>：</code>之后的CSS伪元素，但它不起作用。如果我用 `来使用它，它就可以正常工作。</p>
+<pre><code>&lt;style type=&quot;text/css&quot;&gt;
+.mystyle:after {content:url(smiley.gif);}
+.mystyle {color:red;}
+&lt;/style&gt;
+</code></pre><p>这是有效的（把“buu！”之后和“更多”之前的笑脸）</p>
+<pre><code>&lt;span class=&quot;mystyle&quot;&gt;buuu!&lt;/span&gt;a some more
+</code></pre><p>这不起作用 - 它只以红色显示某个值，但没有笑脸。</p>
+<pre><code>&lt;input class=&quot;mystyle&quot; type=&quot;text&quot; value=&quot;someValue&quot;&gt;
+</code></pre><p>我做错了什么？我应该使用另一个伪选择器吗？</p>
+<p>注意：我无法在我的<code>input</code>附近添加<code>span</code>，因为它是由第三方控件生成的。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/can-i-use-a-before-or-after-pseudo-element-on-an-input-field/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/proper-way-to-make-html-nested-list/" title="正确的方法来使HTML嵌套列表？" itemprop="url">正确的方法来使HTML嵌套列表？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>W3文档有<a href="http://www.w3.org/TR/html401/struct/lists.html#h-10.2" target="_blank" rel="noopener">嵌套列表示例</a>前缀为<code>DEPRECATED EXAMPLE：</code>，但是他们从来没有用一个不推荐的例子来纠正它，也没有解释这个例子到底出了什么问题。</p>
+<p>那么，哪种方法是编写HTML列表的正确方法？</p>
+<p>选项1 **：嵌套的<code>＆lt; ul＆gt;</code>是父<code>＆lt; ul＆gt;的子元素</code></p>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;List item one&lt;/li&gt;
+    &lt;li&gt;List item two with subitems:&lt;/li&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Subitem 1&lt;/li&gt;
+        &lt;li&gt;Subitem 2&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;li&gt;Final list item&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><p>选项2 **：嵌套的<code>＆lt; ul＆gt;</code>是它所属<code>＆lt; li＆gt;的一个子</code></p>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;List item one&lt;/li&gt;
+    &lt;li&gt;List item two with subitems:
+        &lt;ul&gt;
+            &lt;li&gt;Subitem 1&lt;/li&gt;
+            &lt;li&gt;Subitem 2&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;Final list item&lt;/li&gt;
+&lt;/ul&gt;
 </code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/03/04/json-serialization-of-enum-as-string/#more">Read More</a>
+            <a href="/2018/01/15/proper-way-to-make-html-nested-list/#more">Read More</a>
           
        </p>
     </div>
@@ -338,7 +529,7 @@ class Person
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  <span></span> <a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -367,27 +558,93 @@ class Person
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/03/04/new-self-vs-new-static/" title="新的自我与新的静态" itemprop="url">新的自我与新的静态</a>
+      <a href="/2018/01/15/vertical-alignment-of-elements-in-a-div/" title="元素在一个div中的垂直对齐" itemprop="url">元素在一个div中的垂直对齐</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-03-04T01:06:32.000Z" itemprop="datePublished"> Published 2018-03-04</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我正在将PHP 5.3库转换为PHP 5.2。如果我将它转换为<code>return new self（$
-options）</code>，那么使用新的静态绑定（如`我会得到相同的结果吗？</p>
-<p><code></code> new self <code>和</code> new static `有什么区别？</p>
+        <p>我有一个div有两个图像和一个<code>h1</code>。所有这些都需要在div内相互垂直对齐。</p>
+<p>其中一个图像需要在div内定位<code>absolute</code><br>在所有普通浏览器上使用这个CSS所需的CSS是什么？</p>
+<pre><code>&lt;div id=&quot;header&quot;&gt;
+    &lt;img src=&quot;..&quot; &gt;&lt;/img&gt;
+    &lt;h1&gt;testing...&lt;/h1&gt;
+    &lt;img src=&quot;...&quot;&gt;&lt;/img&gt;
+&lt;/div&gt;
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/03/04/new-self-vs-new-static/#more">Read More</a>
+            <a href="/2018/01/15/vertical-alignment-of-elements-in-a-div/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/get-the-full-url-in-php/" title="在PHP中获取完整的URL" itemprop="url">在PHP中获取完整的URL</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我使用此代码来获取完整网址：</p>
+<pre><code>$actual_link = &apos;http://&apos;.$_SERVER[&apos;HTTP_HOST&apos;].$_SERVER[&apos;PHP_SELF&apos;];
+</code></pre><p>问题是我在<code>.htaccess</code>中使用了一些掩码，所以我们在URL中看到的并不总是文件的真正路径。</p>
+<p>我需要的是获取网址，网址中写的是什么，什么也不少，完整的网址。</p>
+<p>我需要知道它是如何出现在浏览器的导航栏中，而不是服务器上文件的真实路径。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/get-the-full-url-in-php/#more">Read More</a>
           
        </p>
     </div>
@@ -426,167 +683,60 @@ options）</code>，那么使用新的静态绑定（如`我会得到相同的�
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/03/03/static-way-to-get-context-on-android/" title="在Android上获取“上下文”的静态方法？" itemprop="url">在Android上获取“上下文”的静态方法？</a>
+      <a href="/2018/01/15/how-to-center-a-position-absolute-element/" title="如何集中“职位：绝对”元素" itemprop="url">如何集中“职位：绝对”元素</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-03-03T02:27:26.000Z" itemprop="datePublished"> Published 2018-03-03</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>有没有办法通过使用静态方法来获取当前的“上下文”实例？</p>
-<p>我正在寻找这种方式，因为我讨厌每次修改时都保存“Context”实例。</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/03/03/static-way-to-get-context-on-android/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/03/03/why-is-whitespace-sometimes-needed-around-metacharacters/" title="为什么有时在元字符周围需要空格？" itemprop="url">为什么有时在元字符周围需要空格？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-03-03T02:01:25.000Z" itemprop="datePublished"> Published 2018-03-03</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>几个月前，我在手臂上纹了一个<a href="http://en.wikipedia.org/wiki/Fork_bomb" target="_blank" rel="noopener">叉子炸弹</a>，我跳过了空格，因为我觉得没有他们看起来更好。但令我沮丧的是，<br><strong>有时</strong> （并非总是）当我在shell中运行它时，它不会启动一个fork炸弹，但它只是给出一个语法错误。</p>
-<pre><code>bash: syntax error near unexpected token `{:&apos;
-</code></pre><p>昨天发生了，当我试图在朋友的<a href="http://en.wikipedia.org/wiki/Bash_%28Unix_shell%29" target="_blank" rel="noopener"> Bash </a><br>shell中运行它时，然后我添加了空格，并突然工作，<code>：（）{：|：＆amp; };：</code>而不是<code>：（）{：|：＆amp;};：</code><br>空白是否重要？我在手臂上纹了语法错误吗？！</p>
-<p>它似乎总是在<a href="http://en.wikipedia.org/wiki/Z_shell" target="_blank" rel="noopener"> zsh </a>中工作，但不是在Bash中。</p>
-<p><a href="https://stackoverflow.com/questions/991142/how-does-this-bash-fork-
-bomb-work" target="_blank" rel="noopener">一个相关的问题</a>没有解释有关空格的任何内容，这真是我的问题; <strong>为什么Bash需要空白才能正确解析它？</strong></p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/03/03/why-is-whitespace-sometimes-needed-around-metacharacters/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/03/03/how-do-i-use-reflection-to-call-a-generic-method/" title="我如何使用反射来调用一个通用的方法？" itemprop="url">我如何使用反射来调用一个通用的方法？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-03-03T01:32:35.000Z" itemprop="datePublished"> Published 2018-03-03</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>当编译时不知道类型参数，而是在运行时动态获得类型参数时，调用泛型方法的最好方法是什么？</p>
-<p>在<code>Example（）</code>方法中，使用<code>Type</code>来调用<code>GenericMethod＆lt; T＆gt;（）</code>的最简洁的方法是什么？ /<br>code&gt;存储在<code>myType</code>变量中？</p>
-<pre><code>public class Sample
-{
-    public void Example(string typeName)
-    {
-        Type myType = FindType(typeName);
-
-        // What goes here to call GenericMethod&lt;T&gt;()?
-        GenericMethod&lt;myType&gt;(); // This doesn&apos;t work
-
-        // What changes to call StaticMethod&lt;T&gt;()?
-        Sample.StaticMethod&lt;myType&gt;(); // This also doesn&apos;t work
-    }
-
-    public void GenericMethod&lt;T&gt;()
-    {
-        // ...
-    }
-
-    public static void StaticMethod&lt;T&gt;()
-    {
-        //...
-    }
+        <p>我将一个将<code>position</code>属性设置为<code>absolute</code>的元素居中的问题。 有谁知道为什么图像不居中？</p>
+<pre><code>body {
+  text-align: center;
 }
+
+#slideshowWrapper {
+  margin-top: 50px;
+  text-align: center;
+}
+
+ul#slideshow {
+  list-style: none;
+  position: relative;
+  margin: auto;
+}
+
+ul#slideshow li {
+  position: absolute;
+}
+
+ul#slideshow li img {
+  border: 1px solid #ccc;
+  padding: 4px;
+  height: 450px;
+}
+
+
+&lt;body&gt;
+  &lt;div id=&quot;slideshowWrapper&quot;&gt;
+    &lt;ul id=&quot;slideshow&quot;&gt;
+      &lt;li&gt;&lt;img src=&quot;img/dummy1.JPG&quot; alt=&quot;Dummy 1&quot; /&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;img src=&quot;img/piano_unlicened.JPG&quot; alt=&quot;Dummy 2&quot; /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/03/03/how-do-i-use-reflection-to-call-a-generic-method/#more">Read More</a>
+            <a href="/2018/01/15/how-to-center-a-position-absolute-element/#more">Read More</a>
           
        </p>
     </div>
@@ -596,7 +746,7 @@ bomb-work" target="_blank" rel="noopener">一个相关的问题</a>没有解释�
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -625,84 +775,35 @@ bomb-work" target="_blank" rel="noopener">一个相关的问题</a>没有解释�
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/03/02/how-to-hide-the-title-bar-for-an-activity-in-xml-with-existing-custom-theme/" title="如何使用现有的自定义主题隐藏XML中的活动标题栏" itemprop="url">如何使用现有的自定义主题隐藏XML中的活动标题栏</a>
+      <a href="/2018/01/15/hide-scroll-bar-but-while-still-being-able-to-scroll/" title="隐藏滚动条，但仍然可以滚动" itemprop="url">隐藏滚动条，但仍然可以滚动</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-03-02T02:27:20.000Z" itemprop="datePublished"> Published 2018-03-02</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想为我的一些活动隐藏标题栏。问题是，我将一个样式应用于所有的活动，因此我不能简单地将主题设置为@android：style /<br>Theme.NoTitleBar。</p>
-<p>使用NoTitleBar主题作为我的风格的父母将删除标题栏为许多活动。</p>
-<p>我可以在什么地方设置一个无标题样式的项目吗？</p>
+        <p>我希望能够滚动浏览整个页面，但不显示滚动条。</p>
+<p>在Google Chrome中：</p>
+<pre><code>::-webkit-scrollbar { 
+    display: none; 
+}
+</code></pre><p>但Mozilla Firefox和Internet Explorer似乎并不像这样。</p>
+<p>我也试过这个CSS：</p>
+<pre><code>overflow: hidden;
+</code></pre><p>这确实隐藏了滚动条，但我不能再滚动了。</p>
+<p>有什么办法可以删除滚动条，仍然可以滚动整个页面？ 请使用CSS或HTML。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/03/02/how-to-hide-the-title-bar-for-an-activity-in-xml-with-existing-custom-theme/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/03/02/count-number-of-lines-in-a-git-repository/" title="统计git仓库中的行数" itemprop="url">统计git仓库中的行数</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-03-02T02:01:20.000Z" itemprop="datePublished"> Published 2018-03-02</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何计算git存储库中所有文件中的总行数？</p>
-<p>git ls-files `给了我一个由git跟踪的文件列表。</p>
-<p>我正在寻找一个命令来 cat `所有这些文件。就像</p>
-<pre><code>git ls-files | [cat all these files] | wc -l
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/03/02/count-number-of-lines-in-a-git-repository/#more">Read More</a>
+            <a href="/2018/01/15/hide-scroll-bar-but-while-still-being-able-to-scroll/#more">Read More</a>
           
        </p>
     </div>
@@ -712,7 +813,7 @@ bomb-work" target="_blank" rel="noopener">一个相关的问题</a>没有解释�
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -737,7 +838,7 @@ bomb-work" target="_blank" rel="noopener">一个相关的问题</a>没有解释�
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/56/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/55/">55</a><a class="page-number" href="/page/56/">56</a><span class="page-number current">57</span><a class="page-number" href="/page/58/">58</a><a class="page-number" href="/page/59/">59</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/58/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/56/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/55/">55</a><a class="page-number" href="/page/56/">56</a><span class="page-number current">57</span><a class="page-number" href="/page/58/">58</a><a class="page-number" href="/page/59/">59</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/58/">Next<span></span></a>
   </nav>
 
 </div>
@@ -780,15 +881,11 @@ bomb-work" target="_blank" rel="noopener">一个相关的问题</a>没有解释�
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -797,10 +894,6 @@ bomb-work" target="_blank" rel="noopener">一个相关的问题</a>没有解释�
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -813,6 +906,10 @@ bomb-work" target="_blank" rel="noopener">一个相关的问题</a>没有解释�
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -837,6 +934,8 @@ bomb-work" target="_blank" rel="noopener">一个相关的问题</a>没有解释�
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

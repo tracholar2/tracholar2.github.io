@@ -1,0 +1,889 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>保存和恢复 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="保存和恢复本文档介绍了如何保存和恢复 变量和模型。 保存和恢复变量TensorFlow变量提供了表示共享，持久性的最佳方式 状态由你的程序操纵。 （详见变量） 本节介绍如何保存和恢复变量。请注意，估算器会自动保存和恢复变量 （在model_dir中）。 tf.train.Saver类提供了保存和恢复模型的方法。 tf.train.Saver构造器增加了save和restore ops到图为图表中的">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="保存和恢复">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/saved_model/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="保存和恢复本文档介绍了如何保存和恢复 变量和模型。 保存和恢复变量TensorFlow变量提供了表示共享，持久性的最佳方式 状态由你的程序操纵。 （详见变量） 本节介绍如何保存和恢复变量。请注意，估算器会自动保存和恢复变量 （在model_dir中）。 tf.train.Saver类提供了保存和恢复模型的方法。 tf.train.Saver构造器增加了save和restore ops到图为图表中的">
+<meta property="og:image" content="https://www.tensorflow.org/images/SavedModel.svg">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="保存和恢复">
+<meta name="twitter:description" content="保存和恢复本文档介绍了如何保存和恢复 变量和模型。 保存和恢复变量TensorFlow变量提供了表示共享，持久性的最佳方式 状态由你的程序操纵。 （详见变量） 本节介绍如何保存和恢复变量。请注意，估算器会自动保存和恢复变量 （在model_dir中）。 tf.train.Saver类提供了保存和恢复模型的方法。 tf.train.Saver构造器增加了save和restore ops到图为图表中的">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/SavedModel.svg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/saved_model/" title="保存和恢复" itemprop="url">保存和恢复</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">保存和恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">保存和恢复变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">保存变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">恢复变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.3.</span> <span class="toc-text">选择要保存和恢复的变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">保存和恢复模型概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">API来构建和加载SavedModel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">建立一个SavedModel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">在Python中加载SavedModel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">使用C ++加载Savedmodel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.4.</span> <span class="toc-text">标准常量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">标准的MetaGraphDef标签</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">标准SignatureDef常量</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">使用带估计器的SavedModel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.1.</span> <span class="toc-text">准备服务投入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.2.</span> <span class="toc-text">执行导出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.3.</span> <span class="toc-text">指定自定义模型的输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.4.</span> <span class="toc-text">在本地提供导出的模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.5.</span> <span class="toc-text">从本地服务器请求预测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">CLI检查并执行SavedModel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.1.</span> <span class="toc-text">安装SavedModel CLI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.2.</span> <span class="toc-text">命令概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.3.</span> <span class="toc-text">MetaGraphDef命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.</span> <span class="toc-text">run命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">--inputs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">--input_exprs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.3.</span> <span class="toc-text">保存输出</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.4.</span> <span class="toc-text">TensorFlow调试器（tfdbg）集成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.5.</span> <span class="toc-text">x1的完整示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">SavedModel目录的结构</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="保存和恢复">保存和恢复</span></h1><p>本文档介绍了如何保存和恢复 变量和模型。</p>
+<h2><span id="保存和恢复变量">保存和恢复变量</span></h2><p>TensorFlow变量提供了表示共享，持久性的最佳方式 状态由你的程序操纵。 （详见变量） 本节介绍如何保存和恢复变量。<br>请注意，估算器会自动保存和恢复变量 （在<code>model_dir</code>中）。</p>
+<p><code>tf.train.Saver</code>类提供了保存和恢复模型的方法。 <code>tf.train.Saver</code>构造器增加了<code>save</code>和<code>restore</code> ops到图<br>为图表中的所有变量或指定的列表。 <code>Saver</code> 对象提供了运行这些操作的方法，指定检查点的路径 要写入或读取的文件。</p>
+<p>保存器将恢复已经在模型中定义的所有变量。如果你是 加载一个模型，而不知道如何建立它的图形（例如，如果你是 编写一个通用程序来加载模型），然后阅读<br>保存和恢复模型概述部分 稍后在这个文件中。</p>
+<p>TensorFlow将变量保存在二进制检查点文件中， 大致来说，将变量名称映射到张量值。</p>
+<h3><span id="保存变量">保存变量</span></h3><p>用<code>Saver</code>创建一个<code>tf.train.Saver()</code>来管理所有变量 模型。例如，下面的代码演示了如何调用<br><code>tf.train.Saver.save</code>方法将变量保存到检查点文件：</p>
+<pre><code># Create some variables.
+v1 = tf.get_variable(&quot;v1&quot;, shape=[3], initializer = tf.zeros_initializer)
+v2 = tf.get_variable(&quot;v2&quot;, shape=[5], initializer = tf.zeros_initializer)
+
+inc_v1 = v1.assign(v1+1)
+dec_v2 = v2.assign(v2-1)
+
+# Add an op to initialize the variables.
+init_op = tf.global_variables_initializer()
+
+# Add ops to save and restore all the variables.
+saver = tf.train.Saver()
+
+# Later, launch the model, initialize the variables, do some work, and save the
+# variables to disk.
+with tf.Session() as sess:
+  sess.run(init_op)
+  # Do some work with the model.
+  inc_v1.op.run()
+  dec_v2.op.run()
+  # Save the variables to disk.
+  save_path = saver.save(sess, &quot;/tmp/model.ckpt&quot;)
+  print(&quot;Model saved in file: %s&quot; % save_path)
+</code></pre><h3><span id="恢复变量">恢复变量</span></h3><p><code>tf.train.Saver</code>对象不仅将变量保存到检查点文件中 还恢复变量。请注意，当你从文件恢复变量 不必事先初始化它们。例如，下面的代码片段<br>演示如何调用<code>tf.train.Saver.restore</code>方法进行恢复 来自检查点文件的变量：</p>
+<pre><code>tf.reset_default_graph()
+
+# Create some variables.
+v1 = tf.get_variable(&quot;v1&quot;, shape=[3])
+v2 = tf.get_variable(&quot;v2&quot;, shape=[5])
+
+# Add ops to save and restore all the variables.
+saver = tf.train.Saver()
+
+# Later, launch the model, use the saver to restore variables from disk, and
+# do some work with the model.
+with tf.Session() as sess:
+  # Restore variables from disk.
+  saver.restore(sess, &quot;/tmp/model.ckpt&quot;)
+  print(&quot;Model restored.&quot;)
+  # Check the values of the variables
+  print(&quot;v1 : %s&quot; % v1.eval())
+  print(&quot;v2 : %s&quot; % v2.eval())
+</code></pre><h3><span id="选择要保存和恢复的变量">选择要保存和恢复的变量</span></h3><p>如果您没有将任何参数传递给<code>tf.train.Saver()</code>，那么保存程序将处理所有的数据 图中的变量。每个变量都保存在传递的名字下 当变量被创建时。</p>
+<p>显式指定变量的名字有时是有用的 检查点文件。例如，您可能已经用一个变量训练了一个模型 命名为<code>&quot;weights&quot;</code>，其值要恢复到一个名为<br><code>&quot;params&quot;</code>。</p>
+<p>仅保存或恢复一部分变量也是有用的 由模型使用。例如，你可能已经训练了五个神经网络 你现在想要训练一个六层的新模型来重用这个模型<br>现有的五个训练层的权重。您可以使用保存程序进行恢复 只有前五层的权重。</p>
+<p>您可以通过传递来轻松指定要保存或加载的名称和变量 <code>tf.train.Saver()</code>的构造函数如下：</p>
+<p>变量列表（将以自己的名字存储）。 一个Python字典，其中键是要使用的名称，值是 要管理的变量。</p>
+<p>继续前面的保存/恢复示例：</p>
+<pre><code>tf.reset_default_graph()
+# Create some variables.
+v1 = tf.get_variable(&quot;v1&quot;, [3], initializer = tf.zeros_initializer)
+v2 = tf.get_variable(&quot;v2&quot;, [5], initializer = tf.zeros_initializer)
+
+# Add ops to save and restore only `v2` using the name &quot;v2&quot;
+saver = tf.train.Saver({&quot;v2&quot;: v2})
+
+# Use the saver object normally after that.
+with tf.Session() as sess:
+  # Initialize v1 since the saver will not.
+  v1.initializer.run()
+  saver.restore(sess, &quot;/tmp/model.ckpt&quot;)
+
+  print(&quot;v1 : %s&quot; % v1.eval())
+  print(&quot;v2 : %s&quot; % v2.eval())
+</code></pre><p>笔记：</p>
+<p>如果需要保存并且可以创建任意数量的<code>Saver</code>对象    恢复模型变量的不同子集。相同的变量可以    列在多个保存对象中;它的价值只有在改变的时候<br><code>Saver.restore()</code>方法运行。 如果您仅在a的开始处恢复模型变量的子集    会话，你必须运行其他变量的初始化操作。看到<br><code>tf.variables_initializer</code>了解更多信息。 要检查检查点中的变量，可以使用    <code>inspect_checkpoint</code><br>库，特别是<code>print_tensors_in_checkpoint_file</code>功能。<br>默认情况下，<code>Saver</code>使用<code>tf.Variable.name</code>属性的值    为每个变量。但是，当您创建一个<code>Saver</code>对象时，您可以<br>可以选择检查点文件中变量的名称。</p>
+<h2><span id="保存和恢复模型概述">保存和恢复模型概述</span></h2><p>当你想保存和加载变量，图形，和 图表的元数据 - 基本上，当你想保存或恢复 你的模型 - 我们推荐使用SavedModel。<br>SavedModel是一种语言中立，可恢复，密封 序列化格式。 SavedModel启用更高级别的系统 以及生产，消费和改造TensorFlow模型的工具。<br>TensorFlow提供了多种与之交互的机制 SavedModel，包括tf.saved_model API，Estimator API和CLI。</p>
+<h2><span id="api来构建和加载savedmodel">API来构建和加载SavedModel</span></h2><p>本节重点介绍用于构建和加载SavedModel的API， 特别是在使用低级别的TensorFlow API时。</p>
+<h3><span id="建立一个savedmodel">建立一个SavedModel</span></h3><p>我们提供了一个SavedModel的Python实现 建设者。 <code>SavedModelBuilder</code>类提供功能 保存多台<code>MetaGraphDef</code>。<br>MetaGraph是一个数据流图，加上 其关联的变量，资产和签名。 <code>MetaGraphDef</code> 是MetaGraph的协议缓冲表示。签名是<br>图表的输入和输出的集合。</p>
+<p>如果资产需要保存，写入或复制到磁盘，可以提供 当第一台<code>MetaGraphDef</code>被添加时。如果多个<code>MetaGraphDef</code>是<br>与同名资产相关联，只保留第一个版本。</p>
+<p>每个添加到SavedModel的<code>MetaGraphDef</code>都必须注明 用户指定的标签。标签提供了一种方法来识别具体的<br><code>MetaGraphDef</code>加载和恢复，以及共享的一组变量 和资产。这些标签 通常使用其功能注释<code>MetaGraphDef</code>（例如，<br>服务或培训）以及可选的硬件特定方面（对于 例如，GPU）。</p>
+<p>例如，下面的代码提示了一个典型的使用方法 <code>SavedModelBuilder</code>构建SavedModel：</p>
+<pre><code>export_dir = ...
+...
+builder = tf.saved_model_builder.SavedModelBuilder(export_dir)
+with tf.Session(graph=tf.Graph()) as sess:
+  ...
+  builder.add_meta_graph_and_variables(sess,
+                                       [tag_constants.TRAINING],
+                                       signature_def_map=foo_signatures,
+                                       assets_collection=foo_assets)
+...
+# Add a second MetaGraphDef for inference.
+with tf.Session(graph=tf.Graph()) as sess:
+  ...
+  builder.add_meta_graph([tag_constants.SERVING])
+...
+builder.save()
+</code></pre><h3><span id="在python中加载savedmodel">在Python中加载SavedModel</span></h3><p>SavedModel的Python版本 装载机 为SavedModel提供加载和恢复功能。 <code>load</code>操作 需要以下信息：</p>
+<p>在其中恢复图形定义和变量的会话。 用于标识要加载的MetaGraphDef的标签。 SavedModel的位置（目录）。</p>
+<p>加载时，作为其一部分提供的变量，资产和签名的子集 具体的MetaGraphDef将被恢复到提供的会话中。</p>
+<pre><code>export_dir = ...
+...
+with tf.Session(graph=tf.Graph()) as sess:
+  tf.saved_model.loader.load(sess, [tag_constants.TRAINING], export_dir)
+  ...
+</code></pre><h3><span id="使用c-加载savedmodel">使用C ++加载Savedmodel</span></h3><p>SavedModel的C ++版本 装载机 提供了一个API来从路径加载SavedModel，同时允许<br><code>SessionOptions</code>和<code>RunOptions</code>。 您必须指定与要加载的图形关联的标签。<br>SavedModel的加载版本被称为<code>SavedModelBundle</code> 并包含MetaGraphDef和加载它的会话。</p>
+<pre><code>const string export_dir = ...
+SavedModelBundle bundle;
+...
+LoadSavedModel(session_options, run_options, export_dir, {kSavedModelTagTrain},
+               &amp;bundle);
+</code></pre><h3><span id="标准常量">标准常量</span></h3><p>SavedModel提供了构建和加载TensorFlow图形的灵活性 各种各样的用例。对于最常见的用例，SavedModel的API 在Python和C<br>++中提供一组易于使用的常量 一致地重复使用和分享各种工具</p>
+<h4><span id="标准的metagraphdef标签">标准的MetaGraphDef标签</span></h4><p>您可以使用一组标签来唯一标识一个<code>MetaGraphDef</code>中保存的 SavedModel。常用标签的一个子集是在以下中指定的：</p>
+<p>蟒蛇 C ++</p>
+<h4><span id="标准signaturedef常量">标准SignatureDef常量</span></h4><p>SignatureDef 是定义计算签名的协议缓冲区 由图形支持。 常用的输入键，输出键和方法名是 定义在：</p>
+<p>蟒蛇 C ++</p>
+<h2><span id="使用带估计器的savedmodel">使用带估计器的SavedModel</span></h2><p>在培训<code>Estimator</code>型号后，您可能需要创建一项服务 从那个接受请求并返回结果的模型开始。你可以运行这样的<br>在您的计算机上进行本地服务或在云中进行可扩展部署。</p>
+<p>要准备一个训练有素的评估服务器，您必须将其导出到标准中 SavedModel格式。本节介绍如何：</p>
+<p>指定输出节点和相应的   蜜蜂   可以服务（分类，回归或预测）。 将您的模型导出到SavedModel格式。 从本地服务器提供模型并请求预测。</p>
+<h3><span id="准备服务投入">准备服务投入</span></h3><p>在培训期间，<code>input_fn()</code>摄取数据并准备好 由模型使用。在服务时间，同样，<code>serving_input_receiver_fn()</code><br>接受推理请求并为模型做好准备。这个功能 有以下目的：</p>
+<p>将占位符添加到服务系统将要馈送的图形中    有推理请求。 添加需要从输入格式转换数据的任何额外的操作    进入模型期望的<code>Tensor</code>功能。</p>
+<p>该函数返回一个<code>tf.estimator.export.ServingInputReceiver</code>对象， 将占位符和结果特征<code>Tensor</code>封装在一起。</p>
+<p>典型的模式是推理请求以序列化的形式到达 <code>tf.Example</code>s，所以<code>serving_input_receiver_fn()</code>创建一个单一的字符串<br>占位符来接收它们。 <code>serving_input_receiver_fn()</code>也是 负责通过添加<code>tf.Example</code><br>op来解析<code>tf.parse_example</code> 图表。</p>
+<p>在编写这样的<code>serving_input_receiver_fn()</code>时，您必须通过解析 规范到<code>tf.parse_example</code>告诉解析器什么功能名称<br>期望以及如何将它们映射到<code>Tensor</code>。解析规范采用<br>从功能名称的字典形式到<code>tf.FixedLenFeature</code>，<code>tf.VarLenFeature</code>，<br>和<code>tf.SparseFeature</code>。注意这个解析规范不应该包含 任何标签或重量栏，因为那些不会在服务 时间 -<br>与<code>input_fn()</code>中使用的解析规范相反 训练时间。</p>
+<p>结合起来，那么：</p>
+<pre><code>feature_spec = {&apos;foo&apos;: tf.FixedLenFeature(...),
+                &apos;bar&apos;: tf.VarLenFeature(...)}
+
+def serving_input_receiver_fn():
+  &quot;&quot;&quot;An input receiver that expects a serialized tf.Example.&quot;&quot;&quot;
+  serialized_tf_example = tf.placeholder(dtype=tf.string,
+                                         shape=[default_batch_size],
+                                         name=&apos;input_example_tensor&apos;)
+  receiver_tensors = {&apos;examples&apos;: serialized_tf_example}
+  features = tf.parse_example(serialized_tf_example, feature_spec)
+  return tf.estimator.export.ServingInputReceiver(features, receiver_tensors)
+</code></pre><p><code>tf.estimator.export.build_parsing_serving_input_receiver_fn</code>实用程序<br>功能为常见情况提供了输入接收器。</p>
+<blockquote>
+<p>注意：使用本地的Predict API训练要提供的模型时 服务器，解析步骤是不需要的，因为模型将接收原始 特征数据。</p>
+</blockquote>
+<p>即使你不需要解析或其他输入处理 - 也就是说， 服务系统将直接馈送功能<code>Tensor</code>s - 您仍然必须提供<br>为该功能创建占位符的<code>serving_input_receiver_fn()</code> <code>Tensor</code>s并通过它们。该<br><code>tf.estimator.export.build_raw_serving_input_receiver_fn</code>实用程序提供 这个。</p>
+<p>如果这些工具不能满足您的需求，您可以自由编写自己的 <code>serving_input_receiver_fn()</code>。一个可能需要的情况是如果你的<br>培训<code>input_fn()</code>包含一些必须预处理的逻辑 在服务时间重述。为了减少服务歪斜的风险，我们 建议将这样的处理封装在一个被调用的函数中<br>来自<code>input_fn()</code>和<code>serving_input_receiver_fn()</code>。</p>
+<p>请注意，<code>serving_input_receiver_fn()</code>也决定输入 签名的一部分。就是在写一个<br><code>serving_input_receiver_fn()</code>，你必须告诉解析器什么签名 期望以及如何将它们映射到您的模型的预期输入。<br>相比之下，签名的输出部分由模型确定。</p>
+<h3><span id="执行导出">执行导出</span></h3><p>要导出已训练的估算器，请致电 <code>tf.estimator.Estimator.export_savedmodel</code>与出口基地路径和<br><code>serving_input_receiver_fn</code>。</p>
+<pre><code>estimator.export_savedmodel(export_dir_base, serving_input_receiver_fn)
+</code></pre><p>这个方法先建立一个新的图形， <code>serving_input_receiver_fn()</code>获得功能<code>Tensor</code>s，然后调用<br>这台<code>Estimator</code>的<code>model_fn()</code>可以生成基于这些模型的图形 特征。它启动一个新的<code>Session</code>，并且默认情况下，恢复最近的 检查点。<br>（如果需要，可以通过不同的检查点。） 最后，它会在给定的下面创建一个带时间戳的导出目录<br><code>export_dir_base</code>（即<code>export_dir_base/&lt;timestamp&gt;</code>），并写入一个<br>包含一个单独的<code>MetaGraphDef</code>的SavedModel 会话。</p>
+<blockquote>
+<p>注意：您有责任垃圾回收旧出口。 否则，连续出口将在<code>export_dir_base</code>下积累。</p>
+</blockquote>
+<h3><span id="指定自定义模型的输出">指定自定义模型的输出</span></h3><p>在编写定制<code>model_fn</code>时，必须填写<code>export_outputs</code>元件<br>的<code>tf.estimator.EstimatorSpec</code>返回值。这是一个字典 <code>{name: output}</code>描述输出签名在输出和使用期间 服务。</p>
+<p>在通常情况下做出单一的预测，这个字典包含 一个元素，<code>name</code>是不重要的。在一个多头模型，每个头<br>是由这个字典中的条目代表。在这种情况下，<code>name</code>是一个字符串 可以用来请求服务时间的特定头部。</p>
+<p>每个<code>output</code>值必须是<code>ExportOutput</code>等对象 <code>tf.estimator.export.ClassificationOutput</code>，<br><code>tf.estimator.export.RegressionOutput</code>，或 <code>tf.estimator.export.PredictOutput</code>。</p>
+<p>这些输出类型直接映射到 TensorFlow服务API， 并确定哪些请求类型将被兑现。</p>
+<p>注意：在多头情况下，将为每个<code>SignatureDef</code>生成一个<code>export_outputs</code><br>从model_fn返回的<code>SignatureDef</code>字典的元素，用using命名 相同的键。这些<code>ExportOutput</code>仅在其输出方面有所不同，如<br>由相应的<code>serving_input_receiver_fn</code>条目提供。输入总是<br>那些由<code>signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY</code>提供的。<br>推理请求可以通过名称指定头部。一个头必须命名 使用<code>SignatureDef</code> 指示推理请求时<code>$export_dir_base</code>将被提供 没有指定一个。</p>
+<h3><span id="在本地提供导出的模型">在本地提供导出的模型</span></h3><p>对于本地部署，您可以使用您的模型 TensorFlow Serving，一个开源项目，加载一个 SavedModel并将其公开为gRPC服务。</p>
+<p>首先，安装TensorFlow服务。</p>
+<p>然后构建并运行本地模型服务器，替换为<code>prediction_service_pb2</code> 上面导出的SavedModel的路径：</p>
+<pre><code>bazel build //tensorflow_serving/model_servers:tensorflow_model_server
+bazel-bin/tensorflow_serving/model_servers/tensorflow_model_server --port=9000 --model_base_path=$export_dir_base
+</code></pre><p>现在，您有一台服务器在端口9000上通过gRPC监听推理请求！</p>
+<h3><span id="从本地服务器请求预测">从本地服务器请求预测</span></h3><p>服务器响应gRPC请求根据 PredictionService gRPC API服务定义。 （嵌套的协议缓冲区在 各种相邻的文件）。</p>
+<p>从API服务定义中，gRPC框架生成客户端库 以各种语言提供对API的远程访问。在一个项目中使用 Bazel构建工具，这些库是自动构建的，并通过提供<br>这样的依赖关系（例如使用Python）：</p>
+<pre><code>deps = [
+  &quot;//tensorflow_serving/apis:classification_proto_py_pb2&quot;,
+  &quot;//tensorflow_serving/apis:regression_proto_py_pb2&quot;,
+  &quot;//tensorflow_serving/apis:predict_proto_py_pb2&quot;,
+  &quot;//tensorflow_serving/apis:prediction_service_proto_py_pb2&quot;
+]
+</code></pre><p>Python客户端代码可以导入这些库：</p>
+<pre><code>from tensorflow_serving.apis import classification_pb2
+from tensorflow_serving.apis import regression_pb2
+from tensorflow_serving.apis import predict_pb2
+from tensorflow_serving.apis import prediction_service_pb2
+</code></pre><blockquote>
+<p>注：<code>classification_pb2</code>定义整体服务等 总是需要的。但是一个典型的客户只需要一个<br><code>regression_pb2</code>，<code>predict_pb2</code>和<code>ClassificationResponse</code>，取决于 请求类型。</p>
+</blockquote>
+<p>然后通过组装一个协议缓冲器来发送一个gRPC请求 包含请求数据并将其传递给服务存根。注意如何 请求协议缓冲区被创建为空，然后通过 生成的协议缓冲区API。</p>
+<pre><code>from grpc.beta import implementations
+
+channel = implementations.insecure_channel(host, int(port))
+stub = prediction_service_pb2.beta_create_PredictionService_stub(channel)
+
+request = classification_pb2.ClassificationRequest()
+example = request.input.example_list.examples.add()
+example.features.feature[&apos;x&apos;].float_list.value.extend(image[0].astype(float))
+
+result = stub.Classify(request, 10.0)  # 10 secs timeout
+</code></pre><p>本例中返回的结果是<code>ClassificationRequest</code>协议 缓冲。</p>
+<p>这是一个骨架的例子。请参阅Tensorflow服务 文档和例子 更多细节。</p>
+<blockquote>
+<p>注：<code>RegressionRequest</code>和<code>tensorflow.serving.Input</code>包含一个<br><code>tensorflow.Example</code>协议缓冲区，其中又包含一个列表 <code>PredictRequest</code>协议缓冲区。相比之下，<code>TensorProto</code>，<br>包含从功能名称到通过<code>Classify</code>编码的值的映射。 相应地：当使用<code>Regress</code>和<code>tf.Example</code> API时，TensorFlow<br>将<code>serving_input_receiver_fn()</code>s连续传送到图表，以便您的 <code>tf.parse_example()</code>应包含一个<code>Predict</code><br>Op。 但是，使用通用<code>serving_input_receiver_fn()</code> API时，TensorFlow Serving会以原始数据提供<br>功能数据到图形中，所以通过<code>SignatureDef</code> 应该使用。</p>
+</blockquote>
+<h2><span id="cli检查并执行savedmodel">CLI检查并执行SavedModel</span></h2><p>您可以使用SavedModel命令行界面（CLI）来检查和 执行一个SavedModel。<br>例如，您可以使用CLI检查型号的<code>bin\saved_model_cli</code>。 CLI使您能够快速确认输入 张量dtype和形状匹配模型。而且，如果你<br>想要测试你的模型，你可以使用CLI做一个完整的检查 以各种格式传递示例输入（例如，Python 表达式），然后获取输出。</p>
+<h3><span id="安装savedmodel-cli">安装SavedModel CLI</span></h3><p>一般来说，你可以在下面的任何一个中安装TensorFlow 两种方式：</p>
+<p>通过安装预构建的TensorFlow二进制文件。 通过从源代码构建TensorFlow。</p>
+<p>如果您通过预先构建的TensorFlow二进制文件安装了TensorFlow， 那么SavedModel CLI已经安装在您的系统上<br>路径名为<code>saved_model_cli</code>。</p>
+<p>如果您从源代码构建TensorFlow，则必须运行以下命令 额外的命令来建立<code>MetaGraphDef</code>：</p>
+<pre><code>$ bazel build tensorflow/python/tools:saved_model_cli
+</code></pre><h3><span id="命令概述">命令概述</span></h3><p>SavedModel CLI在a上支持以下两个命令 <code>show</code>在SavedModel：</p>
+<p><code>MetaGraphDef</code>，显示SavedModel中<code>run</code>的计算。 <code>MetaGraphDef</code>，在<code>show</code>上运行计算。</p>
+<h3><span id="metagraphdef命令"><code>MetaGraphDef</code>命令</span></h3><p>SavedModel包含一个或多个<code>SignatureDef</code>，由其标签集标识。 为了服务一个模型，你<br>可能想知道每种型号的<code>show</code>是什么样的，它们是什么 投入和产出。 <code>SignatureDef</code>命令让你检查的内容<br>SavedModel按层次顺序排列。这里是语法：</p>
+<pre><code>usage: saved_model_cli show [-h] --dir DIR [--all]
+[--tag_set TAG_SET] [--signature_def SIGNATURE_DEF_KEY]
+</code></pre><p>例如，以下命令显示所有可用的 SavedModel中的MetaGraphDef标签集：</p>
+<pre><code>$ saved_model_cli show --dir /tmp/saved_model_dir
+The given SavedModel contains the following tag-sets:
+serve
+serve, gpu
+</code></pre><p>以下命令显示所有可用的<code>MetaGraphDef</code>键 <code>MetaGraphDef</code>：</p>
+<pre><code>$ saved_model_cli show --dir /tmp/saved_model_dir --tag_set serve
+The given SavedModel `MetaGraphDef` contains `SignatureDefs` with the
+following keys:
+SignatureDef key: &quot;classify_x2_to_y3&quot;
+SignatureDef key: &quot;classify_x_to_y&quot;
+SignatureDef key: &quot;regress_x2_to_y3&quot;
+SignatureDef key: &quot;regress_x_to_y&quot;
+SignatureDef key: &quot;regress_x_to_y2&quot;
+SignatureDef key: &quot;serving_default&quot;
+</code></pre><p>如果<code>SignatureDef</code>在标签集中有多个标签，则必须指定 所有标签，每个标签用逗号分隔。例如：</p>
+<pre><code>$ saved_model_cli show --dir /tmp/saved_model_dir --tag_set serve,gpu
+</code></pre><p>要显示特定<code>SignatureDef</code>的所有输入和输出TensorInfo，请传入<br><code>signature_def</code>钥匙到<code>--all</code>选件。这是非常有用的，当你 想要知道张量键值，输入张量的dtype和shape 稍后执行计算图。例如：</p>
+<pre><code>$ saved_model_cli show --dir \
+/tmp/saved_model_dir --tag_set serve --signature_def serving_default
+The given SavedModel SignatureDef contains the following input(s):
+inputs[&apos;x&apos;] tensor_info:
+    dtype: DT_FLOAT
+    shape: (-1, 1)
+    name: x:0
+The given SavedModel SignatureDef contains the following output(s):
+outputs[&apos;y&apos;] tensor_info:
+    dtype: DT_FLOAT
+    shape: (-1, 1)
+    name: y:0
+Method name is: tensorflow/serving/predict
+</code></pre><p>要显示SavedModel中的所有可用信息，请使用<code>run</code>选件。 例如：</p>
+<pre><code>$ saved_model_cli show --dir /tmp/saved_model_dir --all
+MetaGraphDef with tag-set: &apos;serve&apos; contains the following SignatureDefs:
+
+signature_def[&apos;classify_x2_to_y3&apos;]:
+The given SavedModel SignatureDef contains the following input(s):
+inputs[&apos;inputs&apos;] tensor_info:
+    dtype: DT_FLOAT
+    shape: (-1, 1)
+    name: x2:0
+The given SavedModel SignatureDef contains the following output(s):
+outputs[&apos;scores&apos;] tensor_info:
+    dtype: DT_FLOAT
+    shape: (-1, 1)
+    name: y3:0
+Method name is: tensorflow/serving/classify
+
+...
+
+signature_def[&apos;serving_default&apos;]:
+The given SavedModel SignatureDef contains the following input(s):
+inputs[&apos;x&apos;] tensor_info:
+    dtype: DT_FLOAT
+    shape: (-1, 1)
+    name: x:0
+The given SavedModel SignatureDef contains the following output(s):
+outputs[&apos;y&apos;] tensor_info:
+    dtype: DT_FLOAT
+    shape: (-1, 1)
+    name: y:0
+Method name is: tensorflow/serving/predict
+</code></pre><h3><span id="run命令"><code>run</code>命令</span></h3><p>调用<code>run</code>命令来运行图计算，通过 输入，然后显示（并可选地保存）输出。 这里是语法：</p>
+<pre><code>usage: saved_model_cli run [-h] --dir DIR --tag_set TAG_SET --signature_def
+                           SIGNATURE_DEF_KEY [--inputs INPUTS]
+                           [--input_exprs INPUT_EXPRS] [--outdir OUTDIR]
+                           [--overwrite] [--tf_debug]
+</code></pre><p><code>--inputs</code>命令提供以下两种方式将输入传递给模型：</p>
+<p><code>--input_exprs</code>选项使您能够在文件中传递numpy ndarray。 <code>--inputs</code>选项使您能够传递Python表达式。</p>
+<h4><span id="-inputs"><code>--inputs</code></span></h4><p>要在文件中传递输入数据，请指定<code>&lt;input_key&gt;=&lt;filename&gt;</code>选项， 遵循一般格式：</p>
+<pre><code>--inputs &lt;INPUTS&gt;
+</code></pre><p>INPUTS是以下格式之一：</p>
+<p><code>&lt;input_key&gt;=&lt;filename&gt;[&lt;variable_name&gt;]</code> <code>saved_model_cli</code></p>
+<p>您可能会传递多个输入。如果您传递多个输入，请使用分号 分开每个输入。</p>
+<p><code>numpy.load</code>使用<code>.npy</code>加载文件名。 文件名可以是以下任何一种格式：</p>
+<p><code>.npz</code> <code>.npy</code> 泡菜格式</p>
+<p>一个<code>.npy</code>文件总是包含一个numpy的ndarray。因此，从何时加载 一个<code>.npy</code>文件，内容将直接分配给指定的输入<br>张量。如果用<code>.npz</code>文件指定变量名称， variable_name将被忽略，并发出警告。</p>
+<p>从<code>variable_name</code>（zip）文件加载时，可以选择指定一个 variable_name来标识要加载的zip文件中的变量<br>输入张量键。如果你没有指定一个variable_name，SavedModel CLI将检查压缩文件中是否只包含一个文件并加载它 为指定的输入张量键。</p>
+<p>从pickle文件加载时，如果没有指定<code>--inputs_exprs</code> 方括号，无论是在pickle文件里面都会传递给<br>指定的输入张量键。否则，SavedModel CLI会假设一个 字典存储在pickle文件和相应的值中 将使用variable_name。</p>
+<h4><span id="-input_exprs"><code>--input_exprs</code></span></h4><p>要通过Python表达式传递输入，请指定<code>SignatureDef</code>选项。 这对于您没有数据时可能会有用 躺在身边的文件，但仍然希望用一些简单的理智检查模型<br>输入符合型号<code>numpy</code>的dtype和形状。 例如：</p>
+<pre><code>`input_key=[[1], [2], [3]]`
+</code></pre><p>除了Python表达式之外，你还可以传递numpy函数。对于 例：</p>
+<pre><code>input_key=np.ones((32, 32, 3))
+</code></pre><p>（请注意，<code>np</code>模块已经可以作为<code>--outdir</code>使用。）</p>
+<h4><span id="保存输出">保存输出</span></h4><p>默认情况下，SavedModel CLI将输出写入标准输出。如果一个目录是 传递到<code>--overwrite</code>选项，输出将被保存为以.d命名的npy文件<br>输出给定目录下的张量键。</p>
+<p>使用<code>--tf_debug</code>覆盖现有的输出文件。</p>
+<h4><span id="tensorflow调试器tfdbg集成">TensorFlow调试器（tfdbg）集成</span></h4><p>如果设置了<code>run</code>选项，SavedModel CLI将使用 TensorFlow调试器（tfdbg）来观察中间张量和运行时间<br>图形或子图，同时运行SavedModel。</p>
+<h4><span id="x1的完整示例"><code>x1</code>的完整示例</span></h4><p>鉴于：</p>
+<p>您的型号只需添加<code>x2</code>和<code>y</code>即可获得输出<code>(-1, 1)</code>。 所有型号的张力器都有型号<code>npy</code>。 你有两个<code>/tmp/my_data1.npy</code>文件：<br><code>[[1], [2], [3]]</code>，其中包含一个nndary ndarray <code>/tmp/my_data2.npy</code>。 <code>[[0.5], [0.5],
+[0.5]]</code>，其中包含另一个numpy       ndarray <code>npy</code>。</p>
+<p>要通过模型运行这两个<code>y</code>文件以获得输出<code>.npy</code>，请发出 以下命令：</p>
+<pre><code>$ saved_model_cli run --dir /tmp/saved_model_dir --tag_set serve \
+--signature_def x1_x2_to_y --inputs x1=/tmp/my_data1.npy;x2=/tmp/my_data2.npy \
+--outdir /tmp/out
+Result for output key y:
+[[ 1.5]
+ [ 2.5]
+ [ 3.5]]
+</code></pre><p>让我们稍微改变一下前面的例子。这一次，而不是两个 <code>.npz</code>文件，您现在有一个<code>x2</code>文件和一个泡菜文件。此外， 你想覆盖任何现有的输出文件。这是命令：</p>
+<pre><code>$ saved_model_cli run --dir /tmp/saved_model_dir --tag_set serve \
+--signature_def x1_x2_to_y \
+--inputs x1=/tmp/my_data1.npz[x];x2=/tmp/my_data2.pkl --outdir /tmp/out \
+--overwrite
+Result for output key y:
+[[ 1.5]
+ [ 2.5]
+ [ 3.5]]
+</code></pre><p>您可以指定python表达式而不是输入文件。例如， 以下命令用Python表达式替换输入<code>assets</code>：</p>
+<pre><code>$ saved_model_cli run --dir /tmp/saved_model_dir --tag_set serve \
+--signature_def x1_x2_to_y --inputs x1=/tmp/my_data1.npz[x] \
+--input_exprs &apos;x2=np.ones((3,1))&apos;
+Result for output key y:
+[[ 2]
+ [ 3]
+ [ 4]]
+</code></pre><p>要使用TensorFlow调试器运行模型，请发出 以下命令：</p>
+<pre><code>$ saved_model_cli run --dir /tmp/saved_model_dir --tag_set serve \
+--signature_def serving_default --inputs x=/tmp/data.npz[x] --tf_debug
+</code></pre><h2><span id="savedmodel目录的结构">SavedModel目录的结构</span></h2><p>当您以SavedModel格式保存模型时，会创建TensorFlow 由以下子目录组成的SavedModel目录 和文件：</p>
+<pre><code>assets/
+assets.extra/
+variables/
+    variables.data-?????-of-?????
+    variables.index
+saved_model.pb|saved_model.pbtxt
+</code></pre><p>哪里：</p>
+<p><code>MetaGraphDef</code>是一个包含辅助（外部）文件的子文件夹，   如词汇表。资产被复制到SavedModel位置<br>并且可以在加载特定的<code>assets.extra</code>时读取。 <code>variables</code>是高级库和用户可以使用的子文件夹   添加自己的资源，与模型共存，但不加载<br>图表。这个子文件夹不是由SavedModel库管理的。 <code>tf.train.Saver</code>是包含输出的子文件夹   <code>saved_model.pb</code>。<br><code>saved_model.pbtxt</code>或<code>MetaGraphDef</code>是SavedModel协议缓冲区。<br>它包括图形定义为<code>MetaGraphDef</code>协议缓冲区。</p>
+<p>一个SavedModel可以表示多个图形。在这种情况下，所有的 SavedModel中的图形共享一组检查点（变量）<br>和资产。例如，下图显示了一个SavedModel 包含三个CXJ743-HDK-53L，所有这三个共享相同的集合 检查站和资产：</p>
+<p><img src="https://www.tensorflow.org/images/SavedModel.svg" alt="SavedModel represents checkpoints, assets, and one or more
+MetaGraphDefs"></p>
+<p>每个图形都与一组特定的标签相关联，这些标签启用 加载或恢复操作期间的识别。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/saved_model/" data-title="保存和恢复 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/recurrent/" title="复发神经网络">
+  <strong>上一篇：</strong><br/>
+  <span>
+  复发神经网络</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/pdes/"  title="偏微分方程">
+ <strong>下一篇：</strong><br/> 
+ <span>偏微分方程
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">保存和恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">保存和恢复变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">保存变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">恢复变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.3.</span> <span class="toc-text">选择要保存和恢复的变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">保存和恢复模型概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">API来构建和加载SavedModel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">建立一个SavedModel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">在Python中加载SavedModel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">使用C ++加载Savedmodel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.4.</span> <span class="toc-text">标准常量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">标准的MetaGraphDef标签</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">标准SignatureDef常量</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">使用带估计器的SavedModel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.1.</span> <span class="toc-text">准备服务投入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.2.</span> <span class="toc-text">执行导出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.3.</span> <span class="toc-text">指定自定义模型的输出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.4.</span> <span class="toc-text">在本地提供导出的模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.5.</span> <span class="toc-text">从本地服务器请求预测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">CLI检查并执行SavedModel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.1.</span> <span class="toc-text">安装SavedModel CLI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.2.</span> <span class="toc-text">命令概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.3.</span> <span class="toc-text">MetaGraphDef命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.</span> <span class="toc-text">run命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.1.</span> <span class="toc-text">--inputs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.2.</span> <span class="toc-text">--input_exprs</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.3.</span> <span class="toc-text">保存输出</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.4.</span> <span class="toc-text">TensorFlow调试器（tfdbg）集成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.5.</span> <span class="toc-text">x1的完整示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">SavedModel目录的结构</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

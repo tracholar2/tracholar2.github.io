@@ -1,0 +1,882 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>自动缩放TextView文本以适合边界 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我正在寻找一个最佳方式来调整TextView中的包装文本的大小，以便它适合在其getHeight和getWidth范围内。我不是简单地寻找一种方式来包装文本  我想确保它包装和足够小，完全适合在屏幕上。  我在StackOverflow上看到了一些需要自动调整大小的例子，但是它们或者是非常特殊的黑客解决方案，没有解决方案，或者是递归地重新绘制TextView，直到它足够小（这是内存激烈的，用户每次">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动缩放TextView文本以适合边界">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/02/auto-scale-textview-text-to-fit-within-bounds/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我正在寻找一个最佳方式来调整TextView中的包装文本的大小，以便它适合在其getHeight和getWidth范围内。我不是简单地寻找一种方式来包装文本  我想确保它包装和足够小，完全适合在屏幕上。  我在StackOverflow上看到了一些需要自动调整大小的例子，但是它们或者是非常特殊的黑客解决方案，没有解决方案，或者是递归地重新绘制TextView，直到它足够小（这是内存激烈的，用户每次">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自动缩放TextView文本以适合边界">
+<meta name="twitter:description" content="我正在寻找一个最佳方式来调整TextView中的包装文本的大小，以便它适合在其getHeight和getWidth范围内。我不是简单地寻找一种方式来包装文本  我想确保它包装和足够小，完全适合在屏幕上。  我在StackOverflow上看到了一些需要自动调整大小的例子，但是它们或者是非常特殊的黑客解决方案，没有解决方案，或者是递归地重新绘制TextView，直到它足够小（这是内存激烈的，用户每次">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/02/auto-scale-textview-text-to-fit-within-bounds/" title="自动缩放TextView文本以适合边界" itemprop="url">自动缩放TextView文本以适合边界</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-02T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我正在寻找一个最佳方式来调整<code>TextView</code>中的包装文本的大小，以便它适合在其getHeight和getWidth范围内。我不是简单地寻找一种方式来包装文本</p>
+<ul>
+<li>我想确保它包装和足够小，完全适合在屏幕上。</li>
+</ul>
+<p>我在StackOverflow上看到了一些需要自动调整大小的例子，但是它们或者是非常特殊的黑客解决方案，没有解决方案，或者是递归地重新绘制<code>TextView</code>，直到它足够小（这是内存激烈的，用户每次递归观看文本缩小步骤）。</p>
+<p>但是我确定有人在那里找到了一个不涉及我所做事情的好方法：编写几个沉重的例程来分析和测量文本，调整文本的大小，并重复，直到找到适当的小尺寸。</p>
+<p><code>TextView</code>使用哪些例程来包装文本？难道不能以某种方式来预测文字是否足够小？</p>
+<p>tl; dr：是否有一种最佳实践方式来自动调整<code>TextView</code>的大小，使其适合包装在其getHeight和getWidth范围内？</p>
+<a id="more"></a>
+<p>使用Android 8.0（Api等级26），这是一个默认功能。 <a href="https://developer.android.com/guide/topics/ui" target="_blank" rel="noopener">https://developer.android.com/guide/topics/ui</a><br>/look-and-feel/autosizing-textview.html</p>
+<p>作为一名移动开发者，我很遗憾地发现没有支持自动调整大小的本机。我的搜索没有发现任何对我有用的东西，最后，我度过了周末的一半时间，并创建了自己的自动调整文本视图。我会在这里发布代码，希望对别人有用。</p>
+<p>这个类使用原始文本视图的文本颜色的静态布局来测量高度。从那里，我下降2字体像素，并重新测量，直到我有一个适合的大小。最后，如果文本仍然不合适，我附加一个省略号。我有要求动画的文本和重用意见，这似乎在我有的设备上运行良好，似乎运行速度足够我。</p>
+<pre><code>/**
+ *               DO WHAT YOU WANT TO PUBLIC LICENSE
+ *                    Version 2, December 2004
+ * 
+ * Copyright (C) 2004 Sam Hocevar &lt;sam@hocevar.net&gt;
+ * 
+ * Everyone is permitted to copy and distribute verbatim or modified
+ * copies of this license document, and changing it is allowed as long
+ * as the name is changed.
+ * 
+ *            DO WHAT YOU WANT TO PUBLIC LICENSE
+ *   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ * 
+ *  0. You just DO WHAT YOU WANT TO.
+ */
+
+import android.content.Context;
+import android.text.Layout.Alignment;
+import android.text.StaticLayout;
+import android.text.TextPaint;
+import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.widget.TextView;
+
+/**
+ * Text view that auto adjusts text size to fit within the view.
+ * If the text size equals the minimum text size and still does not
+ * fit, append with an ellipsis.
+ * 
+ * @author Chase Colburn
+ * @since Apr 4, 2011
+ */
+public class AutoResizeTextView extends TextView {
+
+    // Minimum text size for this text view
+    public static final float MIN_TEXT_SIZE = 20;
+
+    // Interface for resize notifications
+    public interface OnTextResizeListener {
+        public void onTextResize(TextView textView, float oldSize, float newSize);
+    }
+
+    // Our ellipse string
+    private static final String mEllipsis = &quot;...&quot;;
+
+    // Registered resize listener
+    private OnTextResizeListener mTextResizeListener;
+
+    // Flag for text and/or size changes to force a resize
+    private boolean mNeedsResize = false;
+
+    // Text size that is set from code. This acts as a starting point for resizing
+    private float mTextSize;
+
+    // Temporary upper bounds on the starting text size
+    private float mMaxTextSize = 0;
+
+    // Lower bounds for text size
+    private float mMinTextSize = MIN_TEXT_SIZE;
+
+    // Text view line spacing multiplier
+    private float mSpacingMult = 1.0f;
+
+    // Text view additional line spacing
+    private float mSpacingAdd = 0.0f;
+
+    // Add ellipsis to text that overflows at the smallest text size
+    private boolean mAddEllipsis = true;
+
+    // Default constructor override
+    public AutoResizeTextView(Context context) {
+        this(context, null);
+    }
+
+    // Default constructor when inflating from XML file
+    public AutoResizeTextView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    // Default constructor override
+    public AutoResizeTextView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        mTextSize = getTextSize();
+    }
+
+    /**
+     * When text changes, set the force resize flag to true and reset the text size.
+     */
+    @Override
+    protected void onTextChanged(final CharSequence text, final int start, final int before, final int after) {
+        mNeedsResize = true;
+        // Since this view may be reused, it is good to reset the text size
+        resetTextSize();
+    }
+
+    /**
+     * If the text view size changed, set the force resize flag to true
+     */
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (w != oldw || h != oldh) {
+            mNeedsResize = true;
+        }
+    }
+
+    /**
+     * Register listener to receive resize notifications
+     * @param listener
+     */
+    public void setOnResizeListener(OnTextResizeListener listener) {
+        mTextResizeListener = listener;
+    }
+
+    /**
+     * Override the set text size to update our internal reference values
+     */
+    @Override
+    public void setTextSize(float size) {
+        super.setTextSize(size);
+        mTextSize = getTextSize();
+    }
+
+    /**
+     * Override the set text size to update our internal reference values
+     */
+    @Override
+    public void setTextSize(int unit, float size) {
+        super.setTextSize(unit, size);
+        mTextSize = getTextSize();
+    }
+
+    /**
+     * Override the set line spacing to update our internal reference values
+     */
+    @Override
+    public void setLineSpacing(float add, float mult) {
+        super.setLineSpacing(add, mult);
+        mSpacingMult = mult;
+        mSpacingAdd = add;
+    }
+
+    /**
+     * Set the upper text size limit and invalidate the view
+     * @param maxTextSize
+     */
+    public void setMaxTextSize(float maxTextSize) {
+        mMaxTextSize = maxTextSize;
+        requestLayout();
+        invalidate();
+    }
+
+    /**
+     * Return upper text size limit
+     * @return
+     */
+    public float getMaxTextSize() {
+        return mMaxTextSize;
+    }
+
+    /**
+     * Set the lower text size limit and invalidate the view
+     * @param minTextSize
+     */
+    public void setMinTextSize(float minTextSize) {
+        mMinTextSize = minTextSize;
+        requestLayout();
+        invalidate();
+    }
+
+    /**
+     * Return lower text size limit
+     * @return
+     */
+    public float getMinTextSize() {
+        return mMinTextSize;
+    }
+
+    /**
+     * Set flag to add ellipsis to text that overflows at the smallest text size
+     * @param addEllipsis
+     */
+    public void setAddEllipsis(boolean addEllipsis) {
+        mAddEllipsis = addEllipsis;
+    }
+
+    /**
+     * Return flag to add ellipsis to text that overflows at the smallest text size
+     * @return
+     */
+    public boolean getAddEllipsis() {
+        return mAddEllipsis;
+    }
+
+    /**
+     * Reset the text to the original size
+     */
+    public void resetTextSize() {
+        if (mTextSize &gt; 0) {
+            super.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
+            mMaxTextSize = mTextSize;
+        }
+    }
+
+    /**
+     * Resize text after measuring
+     */
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        if (changed || mNeedsResize) {
+            int widthLimit = (right - left) - getCompoundPaddingLeft() - getCompoundPaddingRight();
+            int heightLimit = (bottom - top) - getCompoundPaddingBottom() - getCompoundPaddingTop();
+            resizeText(widthLimit, heightLimit);
+        }
+        super.onLayout(changed, left, top, right, bottom);
+    }
+
+    /**
+     * Resize the text size with default width and height
+     */
+    public void resizeText() {
+
+        int heightLimit = getHeight() - getPaddingBottom() - getPaddingTop();
+        int widthLimit = getWidth() - getPaddingLeft() - getPaddingRight();
+        resizeText(widthLimit, heightLimit);
+    }
+
+    /**
+     * Resize the text size with specified width and height
+     * @param width
+     * @param height
+     */
+    public void resizeText(int width, int height) {
+        CharSequence text = getText();
+        // Do not resize if the view does not have dimensions or there is no text
+        if (text == null || text.length() == 0 || height &lt;= 0 || width &lt;= 0 || mTextSize == 0) {
+            return;
+        }
+
+        if (getTransformationMethod() != null) {
+            text = getTransformationMethod().getTransformation(text, this);
+        }
+
+        // Get the text view&apos;s paint object
+        TextPaint textPaint = getPaint();
+
+        // Store the current text size
+        float oldTextSize = textPaint.getTextSize();
+        // If there is a max text size set, use the lesser of that and the default text size
+        float targetTextSize = mMaxTextSize &gt; 0 ? Math.min(mTextSize, mMaxTextSize) : mTextSize;
+
+        // Get the required text height
+        int textHeight = getTextHeight(text, textPaint, width, targetTextSize);
+
+        // Until we either fit within our text view or we had reached our min text size, incrementally try smaller sizes
+        while (textHeight &gt; height &amp;&amp; targetTextSize &gt; mMinTextSize) {
+            targetTextSize = Math.max(targetTextSize - 2, mMinTextSize);
+            textHeight = getTextHeight(text, textPaint, width, targetTextSize);
+        }
+
+        // If we had reached our minimum text size and still don&apos;t fit, append an ellipsis
+        if (mAddEllipsis &amp;&amp; targetTextSize == mMinTextSize &amp;&amp; textHeight &gt; height) {
+            // Draw using a static layout
+            // modified: use a copy of TextPaint for measuring
+            TextPaint paint = new TextPaint(textPaint);
+            // Draw using a static layout
+            StaticLayout layout = new StaticLayout(text, paint, width, Alignment.ALIGN_NORMAL, mSpacingMult, mSpacingAdd, false);
+            // Check that we have a least one line of rendered text
+            if (layout.getLineCount() &gt; 0) {
+                // Since the line at the specific vertical position would be cut off,
+                // we must trim up to the previous line
+                int lastLine = layout.getLineForVertical(height) - 1;
+                // If the text would not even fit on a single line, clear it
+                if (lastLine &lt; 0) {
+                    setText(&quot;&quot;);
+                }
+                // Otherwise, trim to the previous line and add an ellipsis
+                else {
+                    int start = layout.getLineStart(lastLine);
+                    int end = layout.getLineEnd(lastLine);
+                    float lineWidth = layout.getLineWidth(lastLine);
+                    float ellipseWidth = textPaint.measureText(mEllipsis);
+
+                    // Trim characters off until we have enough room to draw the ellipsis
+                    while (width &lt; lineWidth + ellipseWidth) {
+                        lineWidth = textPaint.measureText(text.subSequence(start, --end + 1).toString());
+                    }
+                    setText(text.subSequence(0, end) + mEllipsis);
+                }
+            }
+        }
+
+        // Some devices try to auto adjust line spacing, so force default line spacing
+        // and invalidate the layout as a side effect
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, targetTextSize);
+        setLineSpacing(mSpacingAdd, mSpacingMult);
+
+        // Notify the listener if registered
+        if (mTextResizeListener != null) {
+            mTextResizeListener.onTextResize(this, oldTextSize, targetTextSize);
+        }
+
+        // Reset force resize flag
+        mNeedsResize = false;
+    }
+
+    // Set the text size of the text paint object and use a static layout to render text off screen before measuring
+    private int getTextHeight(CharSequence source, TextPaint paint, int width, float textSize) {
+        // modified: make a copy of the original TextPaint object for measuring
+        // (apparently the object gets modified while measuring, see also the
+        // docs for TextView.getPaint() (which states to access it read-only)
+        TextPaint paintCopy = new TextPaint(paint);
+        // Update the text paint object
+        paintCopy.setTextSize(textSize);
+        // Measure using a static layout
+        StaticLayout layout = new StaticLayout(source, paintCopy, width, Alignment.ALIGN_NORMAL, mSpacingMult, mSpacingAdd, true);
+        return layout.getHeight();
+    }
+
+}
+</code></pre><p>警告。有一个重要的固定错误影响Android 3.1 -<br>4.04导致所有AutoResizingTextView小部件不能工作。请阅读：https：//stackoverflow.com/a/21851157/2075875</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/02/auto-scale-textview-text-to-fit-within-bounds/" data-title="自动缩放TextView文本以适合边界 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/03/why-does-html-think-chucknorris-is-a-color/" title="为什么HTML认为？chucknorris？是一种颜色？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  为什么HTML认为？chucknorris？是一种颜色？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/02/how-to-check-whether-a-checkbox-is-checked-in-jquery/"  title="如何检查复选框是否在jQuery中检查？">
+ <strong>下一篇：</strong><br/> 
+ <span>如何检查复选框是否在jQuery中检查？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

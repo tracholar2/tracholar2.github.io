@@ -112,31 +112,102 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/try-except-in-python-how-do-you-properly-ignore-exceptions/" title="尝试/在Python除外：你如何正确地忽略例外？" itemprop="url">尝试/在Python除外：你如何正确地忽略例外？</a>
+      <a href="/2018/01/01/linking_libs/" title="集成TensorFlow库" itemprop="url">集成TensorFlow库</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>当你只是想做一个尝试（除了没有处理异常），你如何在Python中做到这一点？</p>
-<p>下面是正确的做法吗？</p>
-<pre><code>try:
-    shutil.rmtree(path)
-except:
-    pass
-</code></pre>
+        <h1><span id="集成tensorflow库">集成TensorFlow库</span></h1><p>一旦你在模型上取得了一些进展，解决你的问题 试图解决，重要的是在你的应用程序内部进行测试 立即。您的训练数据通常有意想不到的差异<br>以及用户在真实世界中遇到的情况，并获得清晰的图像 的差距，尽快提高产品体验。</p>
+<p>本页面讨论如何将TensorFlow库集成到您自己的 移动应用程序，一旦你已经成功地建立和部署了 TensorFlow移动演示应用程序。</p>
+<h2><span id="链接库">链接库</span></h2><p>在设法构建示例之后，您可能需要打电话 来自您现有应用程序的TensorFlow。最简单的方法 这是使用描述的Pod安装步骤<br>这里，但如果你想建立TensorFlow 从源代码（例如，自定义哪些运算符包含在内），您将需要 打破TensorFlow框架，包括正确的头文件和链接<br>针对构建的库和依赖项。</p>
+<h3><span id="android的">Android的</span></h3><p>对于Android，您只需链接JAR文件中包含的Java库<br>称为<code>libandroid_tensorflow_inference_java.jar</code>。有三种方法 在你的程序中包含这个功能：</p>
+<p>包含包含它的jcenter AAR，就像这样  示例应用程序 从下载每晚预编译的版本 ci.tensorflow.org。 使用我们的Android<br>Github回购中的说明自行构建JAR文件</p>
+<h3><span id="ios版">iOS版</span></h3><p>在iOS上调用TensorFlow库会稍微复杂一些。这是 一个清单，你需要做什么到你的iOS应用程序：</p>
+<p>与tensorflow / contrib / makefile / gen / lib / libtensorflow-core.a链接，通常<br>通过加入<code>-L/your/path/tensorflow/contrib/makefile/gen/lib/</code>和   <code>-ltensorflow-
+core</code>添加到您的链接器标志。 通过添加链接与生成的protobuf库<br><code>-L/your/path/tensorflow/contrib/makefile/gen/protobuf_ios/lib</code>和<br><code>-lprotobuf</code>和<code>-lprotobuf-lite</code>到您的命令行。 对于包含路径，您需要TensorFlow源文件夹的根目录   第一个入口，之后<br><code>tensorflow/contrib/makefile/downloads/protobuf/src</code>，<br><code>tensorflow/contrib/makefile/downloads</code>，<br><code>tensorflow/contrib/makefile/downloads/eigen</code>，和<br><code>tensorflow/contrib/makefile/gen/proto</code>。 确保你的二进制文件是用<code>-force_load</code>（或者你的<br>平台），针对TensorFlow库确保链接   正确。关于为什么这是必要的更多细节可以在下面找到   部分，全球构造魔术。在Linux上<br>平台，你需要不同的标志，更像   <code>-Wl,--allow-multiple-definition -Wl,--whole-archive</code>。</p>
+<p>您还需要链接加速器框架，因为这是用来 加快了一些操作。</p>
+<h2><span id="全球构造魔术">全球构造魔术</span></h2><p>你可能遇到的最微妙的问题之一是“没有会话工厂 在尝试调用TensorFlow时出错 从你自己的应用程序。了解为什么会发生这种情况，以及如何解决<br>它，你需要了解一下TensorFlow的架构。</p>
+<p>框架被设计成非常模块化的，有一个薄的核心和一个大的 独立的特定对象的数量，可以混合匹配 需要。为了实现这一点，C ++中的编码模式不得不让模块容易<br>通知框架有关他们提供的服务，而不需要中央 列表必须与每个实现分开更新。它也必须 允许单独的库添加自己的实现，而不需要一个 重新编译核心。</p>
+<p>为了实现这个功能，TensorFlow使用了很多的注册模式 地方。在代码中，它看起来像这样：</p>
+<pre><code>class MulKernel : OpKernel {
+  Status Compute(OpKernelContext* context) { … }
+};
+REGISTER_KERNEL(MulKernel, &quot;Mul&quot;);
+</code></pre><p>这将在独立的<code>.cc</code>文件中链接到您的应用程序中 作为主要内核集的一部分或作为单独的自定义库。魔术<br>部分是<code>REGISTER_KERNEL()</code>宏能通知核心的 它有一个执行Mul操作的TensorFlow，所以它可以 在需要它的任何图表中调用。</p>
+<p>从编程的角度来看，这个设置非常方便。该 实现和注册码在同一个文件中，并添加新的 实现就像编译和链接它一样简单。困难的部分<br>来自<code>REGISTER_KERNEL()</code>宏的实现方式。 C ++ 没有提供这样的注册的好机制，所以我们有 诉诸一些棘手的代码。在引擎盖下，宏是这样实现的<br>它产生这样的东西：</p>
+<pre><code>class RegisterMul {
+ public:
+  RegisterMul() {
+    global_kernel_registry()-&gt;Register(&quot;Mul&quot;, [](){
+      return new MulKernel()
+    });
+  }
+};
+RegisterMul g_register_mul;
+</code></pre><p>这建立了一个类<code>RegisterMul</code>与一个构造函数，告诉全球 内核注册表有什么功能，当有人问如何创建一个<br>“Mul”核心。那么这个类就有一个全局对象，所以就是构造函数 应该在任何程序开始时被调用。</p>
+<p>虽然这听起来很合理，但不幸的是，这个全球性的对象 这是定义不被任何其他代码使用，所以链接器不是用这个设计的 记住会决定可以删除。结果，构造函数是<br>从来没有打过电话，而且这个班从来没有注册各种各样的模块使用这个 模式在TensorFlow中，而<code>Session</code>的实现就是这样的<br>首先要查找代码运行的时间，这就是为什么它显示为 发生此问题时的特征错误。</p>
+<p>解决的办法是强制链接器不去掉库中的任何代码，甚至 如果它认为它没有被使用。在iOS上，这一步可以用<br><code>-force_load</code>标志，指定一个库路径，在你需要的Linux上 <code>--whole-archive</code>。这些说服连接器不要那么咄咄逼人<br>剥离，应保留全局。</p>
+<p>各种<code>REGISTER_*</code>宏的实际执行情况稍多一些 在实践中很复杂，但都遭受同样的根本问题。如果 你感兴趣的是它们如何工作，op_kernel.h<br>是开始调查的好地方。</p>
+<h2><span id="protobuf问题">Protobuf问题</span></h2><p>TensorFlow依靠 协议缓冲区库， 俗称protobuf。这个库需要数据结构的定义 并为它们生成各种序列化和访问代码<br>语言。棘手的部分是这个生成的代码需要被链接 针对共享库的完全相同版本的框架 用于发电机。 <code>protoc</code>，这个工具可以用来解决这个问题<br>生成的代码，是从不同版本的protobuf比库中 标准链接和包含路径。例如，您可能正在使用副本<br>在<code>protoc</code>本地制造的<code>~/projects/protobuf-3.0.1.a</code>，但你有<br>安装在<code>/usr/local/lib</code>和<code>/usr/local/include</code>上的库 3.0.0。</p>
+<p>此问题的症状在编译或链接阶段出现错误 与protobufs。通常，构建工具会照顾到这一点，但是如果你正在使用<br>makefile，确保你在本地构建protobuf库并使用 它，如这个Makefile所示。</p>
+<p>另一种可能导致问题的情况是protobuf头文件和源文件 文件需要作为构建过程的一部分生成。这个过程使得 建设更复杂，因为第一阶段必须是通过protobuf<br>定义来创建所有需要的代码文件，只有在这之后，你可以去 提前做一个库代码的构建。</p>
+<h3><span id="在同一个应用程序中的多个版本的protobufs">在同一个应用程序中的多个版本的protobufs</span></h3><p>Protobufs生成头文件，这是C ++接口的一部分 整体TensorFlow库。这使图书馆作为独立使用变得复杂 框架。</p>
+<p>如果您的应用程序已经在使用协议缓冲区库的版本1， 您可能无法集成TensorFlow，因为它需要版本2<br>你只是尝试将两个版本链接到相同的二进制文件，你会看到链接 错误，因为一些符号冲突。为了解决这个特殊的问题，我们<br>在rename_protobuf.sh上有一个实验脚本。</p>
+<p>在下载全部文件之后，您需要将其作为makefile版本的一部分来运行 依赖关系：</p>
+<pre><code>tensorflow/contrib/makefile/download_dependencies.sh
+tensorflow/contrib/makefile/rename_protobuf.sh
+</code></pre><h2><span id="调用tensorflow-api">调用TensorFlow API</span></h2><p>一旦你有框架可用，你需要调用它。通常 模式是，你首先加载你的模型，它代表一个预设的集合 数字计算，然后通过该模型运行输入（例如，<br>来自相机的图像）和接收输出（例如，预测的标签）。</p>
+<p>在Android上，我们提供了专注于此的Java推理库 用例，而在iOS和Raspberry Pi上，您可以直接调用C ++ API。</p>
+<h3><span id="android的">Android的</span></h3><p>以下是典型的推理库序列在Android上的样子：</p>
+<pre><code>// Load the model from disk.
+TensorFlowInferenceInterface inferenceInterface =
+new TensorFlowInferenceInterface(assetManager, modelFilename);
+
+// Copy the input data into TensorFlow.
+inferenceInterface.feed(inputName, floatValues, 1, inputSize, inputSize, 3);
+
+// Run the inference call.
+inferenceInterface.run(outputNames, logStats);
+
+// Copy the output Tensor back into the output array.
+inferenceInterface.fetch(outputName, outputs);
+</code></pre><p>您可以在Android示例中找到此代码的来源。</p>
+<h3><span id="ios和树莓派">iOS和树莓派</span></h3><p>以下是iOS和Raspberry Pi的等效代码：</p>
+<pre><code>// Load the model.
+PortableReadFileToProto(file_path, &amp;tensorflow_graph);
+
+// Create a session from the model.
+tensorflow::Status s = session-&gt;Create(tensorflow_graph);
+if (!s.ok()) {
+  LOG(FATAL) &lt;&lt; &quot;Could not create TensorFlow Graph: &quot; &lt;&lt; s;
+}
+
+// Run the model.
+std::string input_layer = &quot;input&quot;;
+std::string output_layer = &quot;output&quot;;
+std::vector&lt;tensorflow::Tensor&gt; outputs;
+tensorflow::Status run_status = session-&gt;Run({ {input_layer, image_tensor}},
+                           {output_layer}, {}, &amp;outputs);
+if (!run_status.ok()) {
+  LOG(FATAL) &lt;&lt; &quot;Running model failed: &quot; &lt;&lt; run_status;
+}
+
+// Access the output data.
+tensorflow::Tensor* output = &amp;outputs[0];
+</code></pre><p>这一切都基于 iOS示例代码， 但没有什么特定的iOS;相同的代码应该可以在任何平台上使用 支持C ++。</p>
+<p>你也可以找到树莓派的具体例子 这里。</p>
+
         
         
         <p class="article-more-link">
-          
-            <a href="/2018/01/14/try-except-in-python-how-do-you-properly-ignore-exceptions/#more">Read More</a>
           
        </p>
     </div>
@@ -146,7 +217,7 @@ except:
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
   </div>
 
 </div>
@@ -186,31 +257,251 @@ except:
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/trimming-a-string-in-python/" title="在Python中修剪一个字符串" itemprop="url">在Python中修剪一个字符串</a>
+      <a href="/2018/01/01/input_fn/" title="用tf.estimator构建输入函数" itemprop="url">用tf.estimator构建输入函数</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何从Python中的字符串中删除前导和后缀的空白？</p>
-<p>例如：</p>
-<pre><code>&quot; Hello &quot; --&gt; &quot;Hello&quot;
-&quot; Hello&quot;  --&gt; &quot;Hello&quot;
-&quot;Hello &quot;  --&gt; &quot;Hello&quot;
-&quot;Bob has a cat&quot; --&gt; &quot;Bob has a cat&quot;
-</code></pre><p>
+        <h1><span id="用tfestimator构建输入函数">用tf.estimator构建输入函数</span></h1><p>本教程将向您介绍如何在tf.estimator中创建输入函数。 您将了解如何构建<code>input_fn</code>以进行预处理和馈送<br>数据进入你的模型。然后，你将实施一个<code>input_fn</code>， 评估和预测数据组合成神经网络回归器进行预测 中间房屋价值。</p>
+<h2><span id="用input_fn自定义输入管道">用input_fn自定义输入管道</span></h2><p><code>input_fn</code>用于将特征和目标数据传送到<code>train</code>， <code>evaluate</code>，以及<code>predict</code>的<code>Estimator</code>方法。<br>用户可以在<code>input_fn</code>内进行特征设计或预处理。 以下是从tf.estimator快速入门教程中获取的示例：</p>
+<pre><code>import numpy as np
+
+training_set = tf.contrib.learn.datasets.base.load_csv_with_header(
+    filename=IRIS_TRAINING, target_dtype=np.int, features_dtype=np.float32)
+
+train_input_fn = tf.estimator.inputs.numpy_input_fn(
+    x={&quot;x&quot;: np.array(training_set.data)},
+    y=np.array(training_set.target),
+    num_epochs=None,
+    shuffle=True)
+
+classifier.train(input_fn=train_input_fn, steps=2000)
+</code></pre><h3><span id="解剖一个input_fn">解剖一个input_fn</span></h3><p>以下代码说明了输入函数的基本框架：</p>
+<pre><code>def my_input_fn():
+
+    # Preprocess your data here...
+
+    # ...then return 1) a mapping of feature columns to Tensors with
+    # the corresponding feature data, and 2) a Tensor containing labels
+    return feature_cols, labels
+</code></pre><p>输入函数的主体包含预处理的特定逻辑 你的输入数据，如清理不好的例子或 功能缩放。</p>
+<p>输入函数必须返回以下两个包含最终值的值 功能和标签数据输入到您的模型中（如上面的代码所示） 骨架）：</p>
+<p><code>feature_cols</code></p>
+<pre><code>A dict containing key/value pairs that map feature column names to `Tensor`s (or `SparseTensor`s) containing the corresponding feature data.
+</code></pre><p><code>labels</code></p>
+<pre><code>A `Tensor` containing your label (target) values: the values your model aims to predict.
+</code></pre><h3><span id="将要素数据转换为张量">将要素数据转换为张量</span></h3><p>如果你的特征/标签数据是一个Python数组或存储在 熊猫数据框或 numpy数组，你可以使用下面的方法来 构建体<code>input_fn</code>：</p>
+<pre><code>import numpy as np
+# numpy input_fn.
+my_input_fn = tf.estimator.inputs.numpy_input_fn(
+    x={&quot;x&quot;: np.array(x_data)},
+    y=np.array(y_data),
+    ...)
+
+
+
+import pandas as pd
+# pandas input_fn.
+my_input_fn = tf.estimator.inputs.pandas_input_fn(
+    x=pd.DataFrame({&quot;x&quot;: x_data}),
+    y=pd.Series(y_data),
+    ...)
+</code></pre><p>对于稀疏的分类数据 （数据的大部分值是0），你会改为填充一个 <code>SparseTensor</code>，它有三个参数实例化：</p>
+<p><code>dense_shape</code></p>
+<pre><code>The shape of the tensor. Takes a list indicating the number of elements in each dimension. For example, `dense_shape=[3,6]` specifies a two-dimensional 3x6 tensor, `dense_shape=[2,3,4]` specifies a three-dimensional 2x3x4 tensor, and `dense_shape=[9]` specifies a one-dimensional tensor with 9 elements.
+</code></pre><p><code>indices</code></p>
+<pre><code>The indices of the elements in your tensor that contain nonzero values. Takes a list of terms, where each term is itself a list containing the index of a nonzero element. (Elements are zero-indexed--i.e., [0,0] is the index value for the element in the first column of the first row in a two-dimensional tensor.) For example, `indices=[[1,3], [2,4]]` specifies that the elements with indexes of [1,3] and [2,4] have nonzero values.
+</code></pre><p><code>values</code></p>
+<pre><code>A one-dimensional tensor of values. Term `i` in `values` corresponds to term `i` in `indices` and specifies its value. For example, given `indices=[[1,3], [2,4]]`, the parameter `values=[18, 3.6]` specifies that element [1,3] of the tensor has a value of 18, and element [2,4] of the tensor has a value of 3.6.
+</code></pre><p>下面的代码定义了一个三维和五维的二维<code>SparseTensor</code> 列。索引[0,1]的元素的值为6，元素的值为<br>索引[2,4]的值为0.5（所有其他值为0）：</p>
+<pre><code>sparse_tensor = tf.SparseTensor(indices=[[0,1], [2,4]],
+                                values=[6, 0.5],
+                                dense_shape=[3, 5])
+</code></pre><p>这对应于下面的稠密张量：</p>
+<pre><code>[[0, 6, 0, 0, 0]
+ [0, 0, 0, 0, 0]
+ [0, 0, 0, 0, 0.5]]
+</code></pre><p>有关<code>SparseTensor</code>的更多信息，请参阅<code>tf.SparseTensor</code>。</p>
+<h3><span id="将input_fn数据传递给您的模型">将input_fn数据传递给您的模型</span></h3><p>要将数据提供给您的模型进行培训，只需传递输入函数即可 您创建的<code>train</code>的操作值为<code>input_fn</code> 参数，例如：</p>
+<pre><code>classifier.train(input_fn=my_input_fn, steps=2000)
+</code></pre><p>请注意，<code>input_fn</code>参数必须接收一个功能对象（即， <code>input_fn=my_input_fn</code>），而不是函数调用的返回值<br>（<code>input_fn=my_input_fn()</code>）。这意味着如果你尝试传递参数给 在<code>input_fn</code>调用中使用<code>train</code>，如以下代码所示，将导致<br><code>TypeError</code>：</p>
+<pre><code>classifier.train(input_fn=my_input_fn(training_set), steps=2000)
+</code></pre><p>但是，如果你想能够参数化你的输入功能，那么有 其他方法这样做。你可以使用不包含的包装函数 作为<code>input_fn</code>的参数，并用它来调用你的输入功能<br>与所需的参数。例如：</p>
+<pre><code>def my_input_fn(data_set):
+  ...
+
+def my_input_fn_training_set():
+  return my_input_fn(training_set)
+
+classifier.train(input_fn=my_input_fn_training_set, steps=2000)
+</code></pre><p>或者，您可以使用Python的<code>functools.partial</code> 函数来构建一个固定了所有参数值的新函数对象：</p>
+<pre><code>classifier.train(
+    input_fn=functools.partial(my_input_fn, data_set=training_set),
+    steps=2000)
+</code></pre><p>第三个选项是将<code>input_fn</code>调用包装在一个 <code>lambda</code> 并传递给<code>input_fn</code>参数：</p>
+<pre><code>classifier.train(input_fn=lambda: my_input_fn(training_set), steps=2000)
+</code></pre><p>设计输入流水线的一大优势就是如上所示 - 接受一个 参数数据集 - 是你可以通过相同的<code>input_fn</code>到<code>evaluate</code><br>和<code>predict</code>操作，只需更改数据集参数，例如：</p>
+<pre><code>classifier.evaluate(input_fn=lambda: my_input_fn(test_set), steps=2000)
+</code></pre><p>这种方法增强了代码的可维护性：不需要定义多个<br><code>input_fn</code>（例如<code>input_fn_train</code>，<code>input_fn_test</code>，<code>input_fn_predict</code>） 操作类型。</p>
+<p>最后，您可以使用<code>tf.estimator.inputs</code>中的方法创建<code>input_fn</code> 从numpy或pandas数据集。额外的好处是你可以使用<br>更多的参数，如<code>num_epochs</code>和<code>shuffle</code>来控制<code>input_fn</code> 迭代数据：</p>
+<pre><code>import pandas as pd
+
+def get_input_fn_from_pandas(data_set, num_epochs=None, shuffle=True):
+  return tf.estimator.inputs.pandas_input_fn(
+      x=pdDataFrame(...),
+      y=pd.Series(...),
+      num_epochs=num_epochs,
+      shuffle=shuffle)
+
+
+
+import numpy as np
+
+def get_input_fn_from_numpy(data_set, num_epochs=None, shuffle=True):
+  return tf.estimator.inputs.numpy_input_fn(
+      x={...},
+      y=np.array(...),
+      num_epochs=num_epochs,
+      shuffle=shuffle)
+</code></pre><h3><span id="波士顿房屋价值的神经网络模型">波士顿房屋价值的神经网络模型</span></h3><p>在本教程的其余部分中，您将为其编写一个输入函数 预处理从UCI住房数据中提取的一部分波士顿房屋数据 设置并使用它来提供数据<br>用于预测房屋中值的神经网络回归器。</p>
+<p>您将使用波士顿CSV数据集来训练您的神经网络 包含以下内容 特征数据 对于波士顿郊区：</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CRIM</td>
+<td>Crime rate per capita  </td>
+</tr>
+<tr>
+<td>ZN</td>
+<td>Fraction of residential land zoned to permit 25,000+ sq ft lots  </td>
+</tr>
+<tr>
+<td>INDUS</td>
+<td>Fraction of land that is non-retail business  </td>
+</tr>
+<tr>
+<td>NOX</td>
+<td>Concentration of nitric oxides in parts per 10 million  </td>
+</tr>
+<tr>
+<td>RM</td>
+<td>Average Rooms per dwelling  </td>
+</tr>
+<tr>
+<td>AGE</td>
+<td>Fraction of owner-occupied residences built before 1940  </td>
+</tr>
+<tr>
+<td>DIS</td>
+<td>Distance to Boston-area employment centers  </td>
+</tr>
+<tr>
+<td>TAX</td>
+<td>Property tax rate per $10,000  </td>
+</tr>
+<tr>
+<td>PTRATIO</td>
+<td>Student-teacher ratio  </td>
+</tr>
+</tbody>
+</table>
+<p>而你的模型预测的标签是MEDV，中值 自住住房以千美元计。</p>
+<h2><span id="建立">建立</span></h2><p>下载以下数据集： boston_train.csv， boston_test.csv和 boston_predict.csv。</p>
+<p>以下各节将逐步介绍如何创建一个 输入功能，将这些数据集输入到神经网络回归器，训练器 评估模型，并做房屋价值预测。完整的，最终的代码是可用的 这里。</p>
+<h3><span id="导入住房数据">导入住房数据</span></h3><p>首先，设置您的导入（包括<code>pandas</code>和<code>tensorflow</code>），并设置日志记录的详细程度 <code>INFO</code>更详细的日志输出：</p>
+<pre><code>from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import itertools
+
+import pandas as pd
+import tensorflow as tf
+
+tf.logging.set_verbosity(tf.logging.INFO)
+</code></pre><p>定义<code>COLUMNS</code>中数据集的列名。区分特征 从标签上也定义了<code>FEATURES</code>和<code>LABEL</code>。然后阅读三个CSV （<code>tf.train</code>，<br><code>tf.test</code>，和 预测）熊猫 <code>DataFrame</code>s：</p>
+<pre><code>COLUMNS = [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;, &quot;age&quot;,
+           &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;, &quot;medv&quot;]
+FEATURES = [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;,
+            &quot;age&quot;, &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;]
+LABEL = &quot;medv&quot;
+
+training_set = pd.read_csv(&quot;boston_train.csv&quot;, skipinitialspace=True,
+                           skiprows=1, names=COLUMNS)
+test_set = pd.read_csv(&quot;boston_test.csv&quot;, skipinitialspace=True,
+                       skiprows=1, names=COLUMNS)
+prediction_set = pd.read_csv(&quot;boston_predict.csv&quot;, skipinitialspace=True,
+                             skiprows=1, names=COLUMNS)
+</code></pre><h3><span id="定义featurecolumns并创建回归器">定义FeatureColumns并创建回归器</span></h3><p>接下来，正式为输入数据创建一个<code>FeatureColumn</code>的列表 指定用于训练的一组功能。因为所有的功能 住房数据集包含连续值，您可以创建自己的<br><code>FeatureColumn</code>使用<code>tf.contrib.layers.real_valued_column()</code>功能：</p>
+<pre><code>feature_cols = [tf.feature_column.numeric_column(k) for k in FEATURES]
+</code></pre><p>注：有关功能列的更深入的概述，请参阅 这个介绍， 并举例说明如何定义<code>FeatureColumns</code> 分类数据，请参阅线性模型教程。</p>
+<p>现在，将<code>DNNRegressor</code>实例化为神经网络回归模型。 您需要在这里提供两个参数：<code>hidden_units</code>，一个超参数<br>指定每个隐藏层（这里是两个隐藏层）中的节点数量 每个节点有10个节点）和<code>feature_columns</code>（包含该节点的列表）<br>您刚刚定义的<code>FeatureColumns</code>：</p>
+<pre><code>regressor = tf.estimator.DNNRegressor(feature_columns=feature_cols,
+                                      hidden_units=[10, 10],
+                                      model_dir=&quot;/tmp/boston_model&quot;)
+</code></pre><h3><span id="建立input_fn">建立input_fn</span></h3><p>要将输入数据传递到<code>regressor</code>，请编写一个工厂方法，接受一个 大熊猫<code>Dataframe</code>，并返回<code>input_fn</code>：</p>
+<pre><code>def get_input_fn(data_set, num_epochs=None, shuffle=True):
+  return tf.estimator.inputs.pandas_input_fn(
+      x=pd.DataFrame({k: data_set[k].values for k in FEATURES}),
+      y = pd.Series(data_set[LABEL].values),
+      num_epochs=num_epochs,
+      shuffle=shuffle)
+</code></pre><p>请注意，输入数据在<code>input_fn</code>参数中传递给<code>data_set</code>， 这意味着该功能可以处理您导入的任何<code>DataFrame</code>：<br><code>training_set</code>，<code>test_set</code>和<code>prediction_set</code>。</p>
+<p>提供了另外两个参数：  <code>num_epochs</code>：控制的数量   时代迭代数据。对于培训，请将此设置为<code>None</code>，这样的话<br><code>input_fn</code>不断返回数据，直到所需的列车步数为止   到达。为了评估和预测，设置为1，所以<code>input_fn</code>将会<br>重复数据一次，然后提出<code>OutOfRangeError</code>。那个错误会的   指示<code>Estimator</code>停止评估或预测。<br><code>shuffle</code>：是否洗牌数据。为了评估和预测，将其设置为   <code>False</code>，所以<code>input_fn</code>依次迭代数据。对于火车，   设置为<code>True</code>。</p>
+<h3><span id="培训减压阀">培训减压阀</span></h3><p>使用<code>train</code>运行<code>training_set</code>，训练神经网络回归器 按如下方式传给<code>input_fn</code>：</p>
+<pre><code>regressor.train(input_fn=get_input_fn(training_set), steps=5000)
+</code></pre><p>您应该看到类似于以下内容的日志输出，这会报告培训损失 每100步：</p>
+<pre><code>INFO:tensorflow:Step 1: loss = 483.179
+INFO:tensorflow:Step 101: loss = 81.2072
+INFO:tensorflow:Step 201: loss = 72.4354
+...
+INFO:tensorflow:Step 1801: loss = 33.4454
+INFO:tensorflow:Step 1901: loss = 32.3397
+INFO:tensorflow:Step 2001: loss = 32.0053
+INFO:tensorflow:Step 4801: loss = 27.2791
+INFO:tensorflow:Step 4901: loss = 27.2251
+INFO:tensorflow:Saving checkpoints for 5000 into /tmp/boston_model/model.ckpt.
+INFO:tensorflow:Loss for final step: 27.1674.
+</code></pre><h3><span id="评估模型">评估模型</span></h3><p>接下来，看看训练的模型如何针对测试数据集执行。跑 <code>evaluate</code>，这次将<code>test_set</code>传递给<code>input_fn</code>：</p>
+<pre><code>ev = regressor.evaluate(
+    input_fn=get_input_fn(test_set, num_epochs=1, shuffle=False))
+</code></pre><p>从<code>ev</code>结果中检索损失并打印输出：</p>
+<pre><code>loss_score = ev[&quot;loss&quot;]
+print(&quot;Loss: {0:f}&quot;.format(loss_score))
+</code></pre><p>您应该看到类似于以下的结果：</p>
+<pre><code>INFO:tensorflow:Eval steps [0,1) for training step 5000.
+INFO:tensorflow:Saving evaluation summary for 5000 step: loss = 11.9221
+Loss: 11.922098
+</code></pre><h3><span id="做预测">做预测</span></h3><p>最后，您可以使用该模型来预测房屋的中位数值 <code>prediction_set</code>，其中包含功能数据，但没有标签的六个例子：</p>
+<pre><code>y = regressor.predict(
+    input_fn=get_input_fn(prediction_set, num_epochs=1, shuffle=False))
+# .predict() returns an iterator of dicts; convert to a list and print
+# predictions
+predictions = list(p[&quot;predictions&quot;] for p in itertools.islice(y, 6))
+print(&quot;Predictions: {}&quot;.format(str(predictions)))
+</code></pre><p>你的结果应该包含六千美元的房屋价值预测， 例如：</p>
+<pre><code>Predictions: [ 33.30348587  17.04452896  22.56370163  34.74345398  14.55953979
+  19.58005714]
+</code></pre><h2><span id="其他资源">其他资源</span></h2><p>本教程着重于为神经网络回归器创建<code>input_fn</code>。 要了解有关将<code>input_fn</code>用于其他类型型号的更多信息，请查看 以下资源：</p>
+<p>具有张量流的大型线性模型：这个     在TensorFlow中引入线性模型提供了一个高层次的概述     用于转换输入数据的特征列和技术。<br>TensorFlow线性模型教程：本教程涵盖     创建<code>FeatureColumn</code>和<code>input_fn</code>进行线性分类<br>根据人口普查数据预测收入范围的模型。 TensorFlow广泛和深度学习教程：建立在     线性模型教程，本教程涵盖<br><code>FeatureColumn</code>和<code>input_fn</code>创造了一个“宽而深”的模型     结合了线性模型和神经网络的使用<br><code>DNNLinearCombinedClassifier</code>。</p>
+
         
         
         <p class="article-more-link">
-          
-            <a href="/2018/01/14/trimming-a-string-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -220,7 +511,7 @@ except:
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
   </div>
 
 </div>
@@ -249,26 +540,56 @@ except:
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/trim-string-in-javascript/" title="在JavaScript中修剪字符串？" itemprop="url">在JavaScript中修剪字符串？</a>
+      <a href="/2018/01/01/version_compat/" title="TensorFlow版本兼容性" itemprop="url">TensorFlow版本兼容性</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何在JavaScript中修剪字符串？</p>
-<p>
+        <h1><span id="tensorflow版本兼容性">TensorFlow版本兼容性</span></h1><p>本文档适用于需要向后兼容的用户 TensorFlow（用于代码或数据）的版本，以及需要的开发人员 在保持兼容性的同时修改TensorFlow。</p>
+<h2><span id="语义版本20">语义版本2.0</span></h2><p>TensorFlow遵循语义版本2.0（semver） 公共API。每个发布版本的TensorFlow都有<code>MAJOR.MINOR.PATCH</code>的形式。<br>例如，TensorFlow 1.2.3版本有<code>MAJOR</code>版本1，<code>MINOR</code>版本2， 和<code>PATCH</code>版本3.每个数字的更改具有以下含义：</p>
+<p>主要：潜在的后向不兼容的变化。代码和数据   与以前的主要版本一起工作不一定与新的工作   发布。但是，在某些情况下，现有的TensorFlow图和检查点<br>可能会迁移到较新的版本;看到   图形和检查点的兼容性   有关数据兼容性的细节。 MINOR：向后兼容功能，速度提升等等<br>与之前的次要版本一起工作的数据，并且仅依赖于   公共API将继续工作不变。关于什么是和是的细节   不是公共API，看看是什么涵盖。<br>补丁：向后兼容的错误修复。</p>
+<p>例如，1.0.0版引入了向后不兼容的更改 释放0.12.1。但是，版本1.1.1与版本向后兼容 1.0.0。</p>
+<h2><span id="什么是覆盖">什么是覆盖</span></h2><p>只有TensorFlow的公共API向后兼容minor和 补丁版本。公共API包含</p>
+<p>所有记录在Python中的函数和类 <code>tensorflow</code>模块及其子模块除外 <code>tf.contrib</code>的功能和类别<br>名称以<code>_</code>开头的函数和类（因为它们是私有的）   请注意，<code>examples/</code>和<code>tools/</code>目录中的代码不是   可通过<code>tensorflow</code><br>Python模块访问，因此不在此列   兼容性保证。</p>
+<p>如果一个符号可以通过<code>tensorflow</code> Python模块或者它的   子模块，但没有记录，那么它不被视为的一部分   公共API。</p>
+<p>C API。 以下协议缓冲区文件： <code>attr_value</code> <code>config</code> <code>event</code> <code>graph</code> <code>op_def</code> <code>reader_base</code><br><code>summary</code> <code>tensor</code> <code>tensor_shape</code> <code>types</code></p>
+<h2><span id="什么不包括">什么不包括</span></h2><p>某些API函数明确标记为“实验性”，可以更改 后向不兼容的方式在次要版本之间。这些包括：</p>
+<p>实验性API：Python中的<code>tf.contrib</code>模块及其子模块     以及C API中的任何函数或协议缓冲区中的字段     明确表示是实验性的。<br>其他语言：Python和C以外的其他语言的TensorFlow API，     如： C ++（通过头文件公开的<br><code>tensorflow/cc</code>）。 Java中， 走 复合操作的细节：Python中的许多公共函数扩展为<br>图中的几个原始操作，这些细节将成为任何的一部分     以<code>GraphDef</code>的形式保存到磁盘。这些细节可能会改变<br>次要版本。尤其是，回归测试，确切地检查     甚至，图形之间的匹配可能会跨越次要版本     尽管图的行为应该不变并存在     检查站仍然有效。<br>浮点数值细节：具体的浮点值     由运营商计算可能会随时改变。用户应该只依靠     近似精度和数值稳定性，而不是特定的位<br>计算。在次要和补丁版本中对数字公式的更改应该是     导致准确性相当或提高，与机器中的警告     学习提高特定公式的准确性可能会导致下降<br>整个系统的准确性。 随机数字：由特定的随机数字计算的     随机操作可能随时改变。     用户应该只依靠大致正确的分配和<br>统计强度，而不是计算的具体位数。但是，我们会做出     随机位的变化很少（也可能永远不会）发布。我们     当然会记录所有这些变化。<br>分布式Tensorflow中的版本偏差：运行两个不同的版本     TensorFlow在单个群集中不受支持。没有保证     关于有线协议的向后兼容性。<br>错误：我们保留向后兼容行为的权利     （尽管不是API）如果当前实现明显中断，     也就是说，如果它与文档相矛盾，或者如果是知名的<br>明确的预期行为由于错误而不能正确执行。     例如，如果一个优化器宣称要实现一个众所周知的优化     算法，但由于错误而不匹配该算法，则我们将修复<br>优化器。我们的修复可能会破坏依赖于错误行为的代码     收敛。我们会在发行说明中注意到这些变化。 错误消息：我们保留更改错误文本的权利<br>消息。另外，错误的类型可能会改变，除非类型是     在文档中指定。例如，一个函数记录到     举一个<code>InvalidArgument</code>异常会继续<br>提高<code>InvalidArgument</code>，但人类可读的信息内容可以改变。</p>
+<h2><span id="图形和检查点的兼容性">图形和检查点的兼容性</span></h2><p>你有时需要保存图形和检查点。 图表描述了在训练期间运行的操作的数据流 推理和检查点包含保存在变量中的张量值 图形。</p>
+<p>许多TensorFlow用户将图形和训练好的模型保存到磁盘 后来的评估或额外的培训，但最终运行他们保存的图表<br>或更高版本的模型。符合semver，任何图形或检查点 用一个版本的TensorFlow写出来就可以加载和评估一个<br>更高版本的TensorFlow与主要版本相同。但是，我们会 尽力在主要版本之间保持向后兼容性 可能的，以便序列化的文件可以长时间使用。</p>
+<p>图表通过<code>GraphDef</code>协议缓冲区进行序列化。为了方便（罕见） 向后不兼容的图形变化，每个<code>GraphDef</code>都有一个版本号<br>与TensorFlow版本分开。例如，<code>GraphDef</code>版本17 <code>inv</code>不赞成使用<code>reciprocal</code>。语义是：</p>
+<p>TensorFlow的每个版本都支持<code>GraphDef</code>版本的间隔。这个   间隔将在不同的补丁版本之间保持不变，并且只会越来越大<br>次要版本。只能删除对<code>GraphDef</code>版本的支持   为TensorFlow的主要版本。 新创建的图表分配了最新的<code>GraphDef</code>版本号。<br>如果给定版本的TensorFlow支持图形的<code>GraphDef</code>版本，   它将加载和评估与TensorFlow版本相同的行为<br>用于生成它（除了浮点数字细节和随机   数字），而不考虑TensorFlow的主要版本。尤其是所有   检查点文件将是兼容的。<br>如果<code>GraphDef</code>上限在（次要）版本中增加到X，那么   在下限增加到X之前至少6个月   例子（我们在这里使用假设的版本号）： TensorFlow<br>1.2可能支持<code>GraphDef</code>版本4至7。 TensorFlow 1.3可以添加<code>GraphDef</code>版本8并支持版本4到8。<br>至少半年后，TensorFlow 2.0.0可能会放弃支持   版本4到7，只剩下版本8。</p>
+<p>最后，在支持<code>GraphDef</code>版本的时候，我们会试着去做 提供自动将图形转换为新的支持的工具 <code>GraphDef</code>版本。</p>
+<h2><span id="扩展tensorflow时的图形和检查点兼容性">扩展TensorFlow时的图形和检查点兼容性</span></h2><p>只有在对<code>GraphDef</code>进行不兼容的更改时，本节才有意义 格式，如添加操作，删除操作或更改功能 现有的操作。上一节应该足以满足大多数用户的需求。</p>
+<h3><span id="向后和部分向前兼容">向后和部分向前兼容</span></h3><p>我们的版本方案有三个要求：</p>
+<p>向后兼容性，支持加载图形和检查点     用旧版本的TensorFlow创建。 向前兼容性，以支持生产者的场景<br>图形或检查点之前升级到更新版本的TensorFlow     消费者。 以不兼容的方式启用进化的TensorFlow。例如，删除Ops，<br>添加属性和删除属性。</p>
+<p>请注意，<code>GraphDef</code>版本机制与TensorFlow分离 版本，向后不兼容<code>GraphDef</code>格式的更改仍然存在<br>受语义版本的限制。这意味着功能只能被删除 或在<code>MAJOR</code>版本的TensorFlow（如<code>1.7</code>到<code>2.0</code>）之间进行更改。<br>另外，在补丁版本（<code>1.x.1</code>）中强制执行向前兼容性 以<code>1.x.2</code>为例）。</p>
+<p>实现向前和向后兼容性，并知道何时执行更改 在格式中，图形和检查点都有描述它们的时间的元数据 被生产了。下面的章节详细介绍了TensorFlow的实现和<br>不断发展的<code>GraphDef</code>版本指南。</p>
+<h3><span id="独立的数据版本计划">独立的数据版本计划</span></h3><p>图形和检查点有不同的数据版本。这两个数据 格式的演变速度不同，速度也不同 来自TensorFlow。两个版本控制系统都在<br><code>core/public/version.h</code>。 每当添加新版本时，会在标题中添加注释，详细说明内容 改变和日期。</p>
+<h3><span id="数据生产者和消费者">数据，生产者和消费者</span></h3><p>我们区分以下几种数据版本信息：  生产者：生成数据的二进制文件。生产者有一个版本   （<code>producer</code>）以及兼容的最低消费版本<br>（<code>min_consumer</code>）。  消费者：消耗数据的二进制文件。消费者有一个版本   （<code>consumer</code>）和它们兼容的最低生产者版本<br>（<code>min_producer</code>）。</p>
+<p>每个版本化数据都有一个VersionDef 版本 记录制作数据的<code>producer</code>，<code>min_consumer</code><br>它与<code>bad_consumers</code>版本兼容 不允许。</p>
+<p>默认情况下，当生产者创建一些数据时，数据会继承生产者的数据 <code>producer</code>和<code>min_consumer</code>版本。<br><code>bad_consumers</code>可根据具体情况进行设置 已知消费者版本包含错误，必须避免。消费者可以 接受一段数据如果以下情况都是如此：</p>
+<p><code>consumer</code>&gt; =数据的<code>min_consumer</code> 数据的<code>producer</code>&gt; =消费者的<code>min_producer</code><br><code>consumer</code>不在数据的<code>bad_consumers</code>中</p>
+<p>由于生产者和消费者都来自同一个TensorFlow代码库， <code>core/public/version.h</code><br>包含一个主要的数据版本，被视为<code>producer</code>或 <code>consumer</code>取决于上下文，<code>min_consumer</code>和<code>min_producer</code><br>（分别需要生产者和消费者）。特别，</p>
+<p>对于<code>GraphDef</code>型号，我们有<code>TF_GRAPH_DEF_VERSION</code>，<br><code>TF_GRAPH_DEF_VERSION_MIN_CONSUMER</code>，和     <code>TF_GRAPH_DEF_VERSION_MIN_PRODUCER</code>。<br>对于检查点版本，我们有<code>TF_CHECKPOINT_VERSION</code>，     <code>TF_CHECKPOINT_VERSION_MIN_CONSUMER</code>，和<br><code>TF_CHECKPOINT_VERSION_MIN_PRODUCER</code>。</p>
+<h3><span id="不断发展的graphdef版本">不断发展的GraphDef版本</span></h3><p>本节介绍如何使用这个版本机制来做出不同的 <code>GraphDef</code>格式的更改类型。</p>
+<h4><span id="添加操作">添加操作</span></h4><p>同时向消费者和生产者添加新的作品，而不是 改变任何<code>GraphDef</code>版本。这种改变是自动的 向后兼容，并且不影响兼容性计划<br>现有的生产者脚本不会突然使用新的功能。</p>
+<h4><span id="添加一个操作并切换现有的python包装来使用它">添加一个操作并切换现有的Python包装来使用它</span></h4><p>实现新的消费者功能并增加<code>GraphDef</code>版本。 如果有可能使包装仅使用新功能     以前没有用过的情况下，包装可以现在更新。<br>更改Python包装以使用新功能。不要增加     <code>min_consumer</code>，因为不使用此操作的模型不应该中断。</p>
+<h4><span id="删除或限制操作的功能">删除或限制操作的功能</span></h4><p>修复所有的生产者脚本（而不是TensorFlow本身）不使用禁止的操作或     功能。 增加<code>GraphDef</code>版本并实现新的消费者功能<br>禁止在新版本中删除GraphDefs的操作或功能     以上。如有可能，使TensorFlow停止生产<code>GraphDefs</code><br>禁止功能。为此，请添加     REGISTER_OP（…）。已过时（deprecated_at_version，     信息）。<br>等待主要版本的向后兼容性的目的。 将<code>min_producer</code>从（2）中增加到GraphDef版本，然后删除     功能完全。</p>
+<h4><span id="更改操作的功能">更改操作的功能</span></h4><p>添加一个新的类似的操作命名为<code>SomethingV2</code>或类似的，并通过     将其添加并切换现有的Python包装来使用它的过程<br>如果需要向前兼容，可能需要三周的时间。 删除旧的操作（只能发生与主要版本的变化，由于     向后兼容）。<br>增加<code>min_consumer</code>排除消费者与旧的欧普，加回     旧的Op作为<code>SomethingV2</code>的别名，并经过这个过程切换<br>现有的Python包装来使用它。 通过该过程删除<code>SomethingV2</code>。</p>
+<h4><span id="禁止单个不安全的消费者版本">禁止单个不安全的消费者版本</span></h4><p>碰撞<code>GraphDef</code>版本并添加坏的版本到<code>bad_consumers</code><br>所有新的GraphDefs。如有可能，只能将GraphDefs添加到<code>bad_consumers</code>     其中包含一定的操作或类似的。<br>如果现有的消费者有不好的版本，尽快将其推出     可能。</p>
+
         
         
         <p class="article-more-link">
-          
-            <a href="/2018/01/14/trim-string-in-javascript/#more">Read More</a>
           
        </p>
     </div>
@@ -278,7 +599,7 @@ except:
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
   </div>
 
 </div>
@@ -307,29 +628,48 @@ except:
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/trigger-a-button-click-with-javascript-on-the-enter-key-in-a-text-box/" title="用文本框中的Enter键触发一个按钮点击" itemprop="url">用文本框中的Enter键触发一个按钮点击</a>
+      <a href="/2018/01/01/ios_build/" title="在iOS上构建TensorFlow" itemprop="url">在iOS上构建TensorFlow</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个文本输入和一个按钮（见下文）。如果在文本框内按下<code>Enter</code>键，如何使用JavaScript <strong>触发按钮的点击事件</strong> ？</p>
-<p>在我目前的页面上已经有了一个不同的提交按钮，所以我不能简单地将按钮设为提交按钮。而且，只有当<code>Enter</code>键在这个文本框内按下时才需要点击这个特定的按钮，否则就没有别的了。</p>
-<pre><code>&lt;input type=&quot;text&quot; id=&quot;txtSearch&quot; /&gt;
-&lt;input type=&quot;button&quot; id=&quot;btnSearch&quot; value=&quot;Search&quot; onclick=&quot;doSomething();&quot; /&gt;
-</code></pre><p>
+        <h1><span id="在ios上构建tensorflow">在iOS上构建TensorFlow</span></h1><h2><span id="使用cocoapods">使用CocoaPods</span></h2><p>在iOS上开始使用TensorFlow最简单的方法是使用CocoaPods 包管理系统。您可以将<code>TensorFlow-
+experimental</code>吊舱添加到您的 Podfile，它安装一个通用的二进制框架。这使得它很容易得到 开始，但有难以定制的缺点，这是重要的<br>如果你想缩小你的二进制大小。如果你确实需要的能力 自定义您的库，请参阅后面的部分关于如何做到这一点。</p>
+<h2><span id="创建自己的应用程序">创建自己的应用程序</span></h2><p>如果您想将TensorFlow功能添加到您自己的应用程序中，请执行以下操作：</p>
+<p>创建自己的应用程序或在XCode中加载已经创建的应用程序。 在项目根目录下添加一个名为Podfile的文件，内容如下：<br>目标’YourProjectName’ pod’TensorFlow-experimental’ 运行<code>pod install</code>下载并安装<br><code>TensorFlow-experimental</code>吊舱。 打开<code>YourProjectName.xcworkspace</code>并添加您的代码。<br>在您的应用程序的生成设置中，请确保将<code>$(inherited)</code>添加到   其他链接器标志和标题搜索路径部分。</p>
+<h2><span id="运行示例">运行示例</span></h2><p>您需要Xcode 7.3或更高版本来运行我们的iOS示例。</p>
+<p>目前有三个例子：简单，基准和相机。现在，你 可以通过克隆主张量库（我们是。）下载示例代码 计划稍后将样品作为单独的存储库提供）。</p>
+<p>从tensorflow文件夹的根目录下载Inception V1， 并将标签和图形文件提取到两个数据文件夹中 简单和相机的例子使用这些步骤：</p>
+<pre><code>mkdir -p ~/graphs
+curl -o ~/graphs/inception5h.zip \
+ https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip \
+ &amp;&amp; unzip ~/graphs/inception5h.zip -d ~/graphs/inception5h
+cp ~/graphs/inception5h/* tensorflow/examples/ios/benchmark/data/
+cp ~/graphs/inception5h/* tensorflow/examples/ios/camera/data/
+cp ~/graphs/inception5h/* tensorflow/examples/ios/simple/data/
+</code></pre><p>切换到一个示例目录，下载 Tensorflow实验性 荚，并打开Xcode工作区。请注意，安装吊舱可能需要很长时间<br>因为它很大（〜450MB）。如果你想运行这个简单的例子，那么：</p>
+<pre><code>cd tensorflow/examples/ios/simple
+pod install
+open tf_simple_example.xcworkspace   # note .xcworkspace, not .xcodeproj
+                                     # this is created by pod install
+</code></pre><p>在XCode模拟器中运行简单的应用程序。你应该看到一个单屏幕的应用程序 与运行模型按钮。点击，你应该看到一些调试输出 出现在下面，指出示例Grace<br>Hopper图像在目录数据中 已经被分析，用军装认可。</p>
+<p>使用相同的过程运行其他样品。相机的例子需要一个真实的 设备已连接。一旦你建立和运行，你应该得到一个实时相机视图 你可以指向对象获得实时识别结果。</p>
+<h3><span id="ios示例细节">iOS示例细节</span></h3><p>iOS有三个演示应用程序，全部在Xcode项目中定义 tensorflow /示例/ IOS。</p>
+<p>简单：这是一个简单的例子，展示了如何加载和运行一个TensorFlow   在尽可能少的线条模型。它只是一个单一的视图与一个<br>按钮，当按下它时执行模型加载和推理。 相机：这是非常类似于Android的TF分类演示。它加载   Inception<br>v3并输出其最佳标签估计值，以查看实况相机中的内容   视图。与Android版本一样，您可以使用训练您自己的自定义模型<br>用于诗人的TensorFlow并将其放入此示例中，只需最少的代码更改。 基准：与Simple很接近，但它反复运行图形<br>向Android上的基准测试工具输出类似的统计数据。</p>
+<h3><span id="故障排除">故障排除</span></h3><p>确保你使用了TensorFlow-experimental pod（而不是TensorFlow）。 TensorFlow-experimental<br>pod目前约为450MB。原因是这样的   大的是因为我们捆绑了多个平台，而且这个吊舱包括了所有的平台<br>TensorFlow功能（例如操作）。构建后的最终应用程序大小是   （〜25MB）大大减小。使用完整的吊舱是<br>在开发过程中很方便，但请参阅下面关于如何构建您的   自己定制的TensorFlow库来减小尺寸。</p>
+<h2><span id="从源码构建tensorflow-ios库">从源码构建TensorFlow iOS库</span></h2><p>虽然Cocapods是最快，最简单的入门方式，但有时候也是如此 需要更多的灵活性来确定你的应用应该是TensorFlow的哪个部分<br>随附。对于这种情况下，你可以从 源。这个 指南 包含如何做到这一点的详细说明。</p>
+
         
         
         <p class="article-more-link">
-          
-            <a href="/2018/01/14/trigger-a-button-click-with-javascript-on-the-enter-key-in-a-text-box/#more">Read More</a>
           
        </p>
     </div>
@@ -339,7 +679,7 @@ except:
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
   </div>
 
 </div>
@@ -368,25 +708,427 @@ except:
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/what-is-stdclass-in-php/" title="什么是PHP中的stdClass？" itemprop="url">什么是PHP中的stdClass？</a>
+      <a href="/2018/01/01/graphs/" title="图表和会话" itemprop="url">图表和会话</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>请定义<code>stdClass</code>是什么。</p>
+        <h1><span id="图表和会话">图表和会话</span></h1><p>TensorFlow使用数据流图来表示您的计算 个别操作之间的依赖关系。这导致了一个低层次 编程模型，在其中您首先定义数据流图，然后创建一个<br>TensorFlow会话跨部分图形运行一组本地和 远程设备。</p>
+<p>如果您打算使用低级编程，本指南将非常有用 直接模型。更高级别的API，如<code>tf.estimator.Estimator</code>和Keras<br>从最终用户隐藏图表和会话的细节，但本指南可能 如果你想了解这些API是如何实现的，也是有用的。</p>
+<h2><span id="为什么使用数据流图">为什么使用数据流图？</span></h2><p><img src="https://www.tensorflow.org/images/tensors_flowing.gif" alt=""></p>
+<p>数据流是常见的 并行计算的编程模型。在数据流图中，节点 表示计算的单位，边表示消耗的数据<br>计算产生的。例如，在TensorFlow图中，<code>tf.matmul</code> 操作将对应于具有两个传入边的单个节点（ 矩阵相乘）和一个传出边缘（的结果 乘法）。</p>
+<p>数据流有几个优点，当执行你的TensorFlow时， 程式：</p>
+<p>并行。通过使用显式边来表示之间的依赖关系   操作，系统很容易识别可执行的操作   在平行下。 分布式执行。通过使用显式边来表示值<br>在操作之间流动，TensorFlow可能会分割你的   程序跨多个设备（CPU，GPU和TPU）附加到不同的   机器。<br>TensorFlow插入必要的沟通和协调   设备之间。 汇编。 TensorFlow的XLA编译器可以   使用数据流图中的信息来生成更快的代码<br>例如，通过融合相邻的操作。 可移植性。数据流图是一种与语言无关的表示   的模型中的代码。你可以用Python构建一个数据流图，存储它<br>在SavedModel中，并在C ++程序中恢复它   低延迟推断。</p>
+<h2><span id="什么是tfgraph">什么是<code>tf.Graph</code>？</span></h2><p><code>tf.Graph</code>包含两种相关的信息：</p>
+<p>图结构。图的节点和边，指示如何   个别的操作是组合在一起的，但没有规定它们如何   应该使用。图结构就像汇编代码：检查它可以<br>传达一些有用的信息，但并不包含所有有用的信息   源代码传达的上下文。 图表集合。 TensorFlow提供了一个通用的存储机制<br><code>tf.Graph</code>中的元数据集合。 <code>tf.add_to_collection</code>功能<br>使您可以将对象列表与一个键（其中<code>tf.GraphKeys</code>）关联   定义了一些标准键），<code>tf.get_collection</code>使您可以<br>查找与某个键关联的所有对象。 TensorFlow的很多部分   库使用这个工具：例如，当你创建一个<code>tf.Variable</code>，它<br>被默认添加到代表“全局变量”的集合中   “可训练变量”。当你以后来创建一个<code>tf.train.Saver</code>或者<br><code>tf.train.Optimizer</code>，这些集合中的变量被用作为   默认参数。</p>
+<h2><span id="建立一个tfgraph">建立一个<code>tf.Graph</code></span></h2><p>大多数TensorFlow程序从数据流图构建阶段开始。在这 阶段，您将调用构建新<code>tf.Operation</code>的TensorFlow API函数<br>（节点）和<code>tf.Tensor</code>（边缘）对象并将它们添加到<code>tf.Graph</code> 实例。 TensorFlow提供了一个默认图形，这是一个隐含的参数<br>到同一上下文中的所有API函数。例如：</p>
+<p>调用<code>tf.constant(42.0)</code>创建一个单一的<code>tf.Operation</code>生产<br>值<code>42.0</code>，将其添加到默认图形，并返回一个<code>tf.Tensor</code>   代表常数的值。 调用<code>tf.matmul(x,
+y)</code>将创建一个乘法的单个<code>tf.Operation</code>   将<code>tf.Tensor</code>对象<code>x</code>和<code>y</code>的值添加到默认图形中，<br>并返回表示乘法结果的<code>tf.Tensor</code>。 执行<code>v = tf.Variable(0)</code>增加了图表<code>tf.Operation</code>，将<br>存储在<code>tf.Session.run</code>呼叫之间持续的可写张量值。   <code>tf.Variable</code>对象包装了这个操作，可以像a一样使用<br>张量，它会读取当前的值   储值。 <code>tf.Variable</code>对象也有类似的方法   <code>assign</code>和<code>assign_add</code><br>创建<code>tf.Operation</code>对象，执行时更新存储的值。   （有关变量的更多信息，请参阅变量。）<br>调用<code>tf.train.Optimizer.minimize</code>将增加操作和张量   计算梯度的默认图表，并返回一个<code>tf.Operation</code>，<br>运行时，会将这些渐变应用于一组变量。</p>
+<p>大多数程序仅依赖于默认图形。然而， 有关更多信息，请参阅处理多个图表 高级用例。高级API，如<code>tf.estimator.Estimator</code> API<br>以您的名义管理默认图表，例如 - 可能会创建不同的图表 图表进行培训和评估。</p>
+<p>注意：调用TensorFlow API中的大部分函数只是添加操作 和张量到默认图形，但不执行实际<br>计算。相反，直到你有一个<code>tf.Tensor</code>，你才能完成这些功能 或代表整体计算的<code>tf.Operation</code>，如执行 一步梯度下降 -<br>然后将该物体传递给<code>tf.Session</code> 执行计算。请参阅“在<code>tf.Session</code>中执行图表” 更多细节。</p>
+<h2><span id="命名操作">命名操作</span></h2><p><code>tf.Graph</code>对象定义了<code>tf.Operation</code>对象的名称空间 包含的内容。 TensorFlow自动为每个操作选择一个唯一的名称<br>你的图形，但给操作描述性名称可以使你的程序更容易 读取和调试。 TensorFlow API提供了两种覆盖名称的方法 一个手术：</p>
+<p>每个创建新<code>tf.Operation</code>的API函数或返回一个新的   <code>tf.Tensor</code>接受可选的<code>name</code>参数。例如，<br><code>tf.constant(42.0, name=&quot;answer&quot;)</code>创建了一个新的<code>tf.Operation</code><br><code>&quot;answer&quot;</code>，并返回名为<code>tf.Tensor</code>的<code>&quot;answer:0&quot;</code>。如果默认图<br>已经包含了一个名为<code>&quot;answer&quot;</code>的操作，TensorFlow将被添加   <code>&quot;_1&quot;</code>，<code>&quot;_2&quot;</code>等名称，以使其独一无二。<br><code>tf.name_scope</code>功能可以添加名称范围前缀   到在特定环境中创建的所有操作。当前名称范围<br>前缀是<code>&quot;/&quot;</code>分隔的所有活动<code>tf.name_scope</code>名称列表   情境经理。如果名称范围已经在当前使用<br>上下文中，TensorFlow出现<code>&quot;_1&quot;</code>，<code>&quot;_2&quot;</code>等。例如：</p>
+<blockquote>
+<p>c_0 = tf.constant（0，name =“c”）＃=&gt;名为“c”的操作 ＃已经使用的名字将是“独一无二的”。 c_1 =<br>tf.constant（2，name =“c”）＃=&gt;名为“c_1”的操作 ＃名称作用域为在同一个上下文中创建的所有操作添加一个前缀。<br>与tf.name_scope（“外部”）：   c_2 = tf.constant（2，name =“c”）＃=&gt;操作名为“outer / c”<br>＃命名作用域在分层文件系统中像路径一样嵌套。   与tf.name_scope（“内部”）：     c_3 = tf.constant（3，name<br>=“c”）＃=&gt;名为“outer / inner / c”的操作   ＃退出名称范围上下文将返回到以前的前缀。   c_4 =<br>tf.constant（4，name =“c”）＃=&gt;操作名为“outer / c_1”   ＃已经使用的名称范围将是“独特的”。<br>与tf.name_scope（“内部”）：     c_5 = tf.constant（5，name =“c”）＃=&gt;名为“outer / inner_1<br>/ c”的操作</p>
+</blockquote>
+<p>图表可视化工具使用名称范围对操作进行分组并减少视觉效果 图的复杂性。请参阅可视化您的图表 更多信息。</p>
+<p>请注意，<code>tf.Tensor</code>对象以<code>tf.Operation</code> 产生张量作为输出。张量名称形式为<code>&quot;&lt;OP_NAME&gt;:&lt;i&gt;&quot;</code> 哪里：</p>
+<p><code>&quot;&lt;OP_NAME&gt;&quot;</code>是生成它的操作的名称。 <code>&quot;&lt;i&gt;&quot;</code>是表示该张量之间的索引的整数   操作的输出。</p>
+<h2><span id="将操作放置在不同的设备上">将操作放置在不同的设备上</span></h2><p>如果你想让你的TensorFlow程序使用多个不同的设备， <code>tf.device</code>功能提供了一种方便的方式来请求所有操作<br>创建在一个特定的上下文被放置在相同的设备（或类型） 设备）。</p>
+<p>设备规范具有以下形式：</p>
+<pre><code>/job:&lt;JOB_NAME&gt;/task:&lt;TASK_INDEX&gt;/device:&lt;DEVICE_TYPE&gt;:&lt;DEVICE_INDEX&gt;
+</code></pre><p>哪里：</p>
+<p><code>&lt;JOB_NAME&gt;</code>是一个不以数字开头的字母数字字符串。 <code>&lt;DEVICE_TYPE&gt;</code>是注册设备类型（如<code>GPU</code>或<code>CPU</code>）。<br><code>&lt;TASK_INDEX&gt;</code>是一个表示任务索引的非负整数<br>在名为<code>&lt;JOB_NAME&gt;</code>的作业中。有关说明，请参阅<code>tf.train.ClusterSpec</code>   的工作和任务。<br><code>&lt;DEVICE_INDEX&gt;</code>是一个非负整数，表示的索引   设备，例如，以区分不同的GPU设备中使用的   同样的过程。</p>
+<p>您不需要指定设备规范的每个部分。例如， 如果您正在单GPU配置的单机配置中运行，那么您 可能会使用<code>tf.device</code>将一些操作固定到CPU和GPU上：</p>
+<pre><code># Operations created outside either context will run on the &quot;best possible&quot;
+# device. For example, if you have a GPU and a CPU available, and the operation
+# has a GPU implementation, TensorFlow will choose the GPU.
+weights = tf.random_normal(...)
+
+with tf.device(&quot;/device:CPU:0&quot;):
+  # Operations created in this context will be pinned to the CPU.
+  img = tf.decode_jpeg(tf.read_file(&quot;img.jpg&quot;))
+
+with tf.device(&quot;/device:GPU:0&quot;):
+  # Operations created in this context will be pinned to the GPU.
+  result = tf.matmul(weights, img)
+</code></pre><p>如果您正在部署典型的分布式TensorFlow 配置，您可以指定作业名称和任务ID以放置变量 参数服务器作业（<code>&quot;/job:ps&quot;</code>）中的任务以及其他操作<br>工作任务（<code>&quot;/job:worker&quot;</code>）中的任务：</p>
+<pre><code>with tf.device(&quot;/job:ps/task:0&quot;):
+  weights_1 = tf.Variable(tf.truncated_normal([784, 100]))
+  biases_1 = tf.Variable(tf.zeroes([100]))
+
+with tf.device(&quot;/job:ps/task:1&quot;):
+  weights_2 = tf.Variable(tf.truncated_normal([100, 10]))
+  biases_2 = tf.Variable(tf.zeroes([10]))
+
+with tf.device(&quot;/job:worker&quot;):
+  layer_1 = tf.matmul(train_batch, weights_1) + biases_1
+  layer_2 = tf.matmul(train_batch, weights_2) + biases_2
+</code></pre><p><code>tf.device</code>为您提供了很大的灵活性，可以为个人选择展示位置 操作或TensorFlow图形的广泛区域。在很多情况下，有<br>简单的启发式运作良好。例如， <code>tf.train.replica_device_setter</code> API可与<code>tf.device</code>配合使用<br>数据并行分布式培训的操作。例如， 以下代码片段显示了<code>tf.train.replica_device_setter</code>的应用<br><code>tf.Variable</code>对象和其他操作的不同放置策略：</p>
+<pre><code>with tf.device(tf.train.replica_device_setter(ps_tasks=3)):
+  # tf.Variable objects are, by default, placed on tasks in &quot;/job:ps&quot; in a
+  # round-robin fashion.
+  w_0 = tf.Variable(...)  # placed on &quot;/job:ps/task:0&quot;
+  b_0 = tf.Variable(...)  # placed on &quot;/job:ps/task:1&quot;
+  w_1 = tf.Variable(...)  # placed on &quot;/job:ps/task:2&quot;
+  b_1 = tf.Variable(...)  # placed on &quot;/job:ps/task:0&quot;
+
+  input_data = tf.placeholder(tf.float32)     # placed on &quot;/job:worker&quot;
+  layer_0 = tf.matmul(input_data, w_0) + b_0  # placed on &quot;/job:worker&quot;
+  layer_1 = tf.matmul(layer_0, w_1) + b_1     # placed on &quot;/job:worker&quot;
+</code></pre><h2><span id="张量类物体">张量类物体</span></h2><p>许多TensorFlow操作将一个或多个<code>tf.Tensor</code>对象作为参数。<br>例如，<code>tf.matmul</code>带有两个<code>tf.Tensor</code>物体，<code>tf.add_n</code>带 <code>n</code> <code>tf.Tensor</code>物品清单。为了方便，这些功能将被接受<br>一个张量样物体代替<code>tf.Tensor</code>，并将其隐式转换 到<code>tf.Tensor</code>使用<code>tf.convert_to_tensor</code>方法。张量类物体<br>包括以下类型的元素：</p>
+<p><code>tf.Tensor</code> <code>tf.Variable</code> <code>numpy.ndarray</code> <code>list</code>（以及张量状物体列表）<br>标量Python类型：<code>bool</code>，<code>float</code>，<code>int</code>，<code>str</code></p>
+<p>您可以使用注册额外张量类型 <code>tf.register_tensor_conversion_function</code>。</p>
+<p>注意：默认情况下，TensorFlow会在每次使用时创建一个新的<code>tf.Tensor</code> 相同的张量状物体。如果张量状物体很大（例如a<br><code>numpy.ndarray</code>包含一组训练实例），您可以多次使用它 次，你可能会用完内存。要避免这种情况，请手动调用<br><code>tf.convert_to_tensor</code>上的张量状物体一次并使用返回 <code>tf.Tensor</code>来代替。</p>
+<h2><span id="执行tfsession中的图表">执行<code>tf.Session</code>中的图表</span></h2><p>TensorFlow使用<code>tf.Session</code>类来表示连接 客户端程序—通常是一个Python程序，虽然有一个类似的界面 可用其他语言—和C<br>++运行库。一个<code>tf.Session</code>对象 提供对本地机器中的设备以及使用该设备的远程设备的访问 分布式TensorFlow运行时。它也缓存关于你的信息<br><code>tf.Graph</code>，以便您可以高效地运行相同的计算多次。</p>
+<h3><span id="创建一个tfsession">创建一个<code>tf.Session</code></span></h3><p>如果您使用低级别的TensorFlow API，则可以创建<code>tf.Session</code> 对于当前的默认图形如下：</p>
+<pre><code># Create a default in-process session.
+with tf.Session() as sess:
+  # ...
+
+# Create a remote session.
+with tf.Session(&quot;grpc://example.org:2222&quot;):
+  # ...
+</code></pre><p>由于<code>tf.Session</code>拥有物理资源（如GPU和GPU） 网络连接），通常用作上下文管理器（在<code>with</code>中） 块），当你退出块时自动关闭会话。它是<br>也可以在不使用<code>with</code>模块的情况下创建一个会话，但应该这样做 清楚地呼叫<code>tf.Session.close</code>时，请将其释放 资源。</p>
+<p>注：更高级的API，如<code>tf.train.MonitoredTrainingSession</code>或<br><code>tf.estimator.Estimator</code>将为您创建和管理<code>tf.Session</code>。这些<br>API接受可选的<code>target</code>和<code>config</code>参数（直接或者作为 <code>tf.estimator.RunConfig</code>物体的一部分），其含义与<br>如下面所描述的。</p>
+<p><code>tf.Session.__init__</code>接受三个可选参数：</p>
+<p><code>target</code>。如果这个参数是空的（默认），会话将会   只能在本地机器上使用设备。不过，你也可以指定一个   <code>grpc://</code><br>URL指定一个TensorFlow服务器的地址，它给出了   会话访问此服务器控制的机器上的所有设备。看到<br><code>tf.train.Server</code>了解如何创建TensorFlow的详细信息   服务器。例如，在常见的图形间复制中<br><code>tf.Session</code>与<code>tf.train.Server</code>相同   作为客户进行处理。分布式的TensorFlow   部署指南介绍了其他常见场景。<br><code>graph</code>。默认情况下，新的<code>tf.Session</code>将被绑定到—并且只能使用   在—当前的默认图中运行操作。如果你使用多个<br>在您的程序中的图形（请参阅多个编程   图表更多细节），你可以指定   一个显式的<code>tf.Graph</code>，当你构建会话。<br><code>config</code>。这个参数允许你指定一个<code>tf.ConfigProto</code>   控制会话的行为。例如，一些配置   选项包括：<br><code>allow_soft_placement</code>。将其设置为<code>True</code>以启用“软”设备     放置算法，忽略尝试的<code>tf.device</code>注释<br>将仅CPU操作放置在GPU设备上，并将其放置在CPU上     代替。 <code>cluster_def</code>。当使用分布式TensorFlow时，这个选项允许你<br>指定在计算中使用哪些机器，并提供映射     作业名称，任务索引和网络地址之间。看到<br><code>tf.train.ClusterSpec.as_cluster_def</code>的详细信息。<br><code>graph_options.optimizer_options</code>。提供对优化的控制     TensorFlow在执行之前在您的图表上执行。<br><code>gpu_options.allow_growth</code>。将其设置为<code>True</code>以更改GPU内存     分配器，以便逐渐增加分配的内存量，<br>而不是在启动时分配大部分内存。</p>
+<h3><span id="使用tfsessionrun执行操作">使用<code>tf.Session.run</code>执行操作</span></h3><p><code>tf.Session.run</code>方法是运行<code>tf.Operation</code>的主要机制<br>或评估<code>tf.Tensor</code>。您可以通过一个或多个<code>tf.Operation</code>或<br><code>tf.Tensor</code>对象到<code>tf.Session.run</code>，TensorFlow将执行 计算结果所需的操作。</p>
+<p><code>tf.Session.run</code>要求您指定一个确定的提取列表 返回值，可能是<code>tf.Operation</code>，<code>tf.Tensor</code>或<br>像<code>tf.Variable</code>那样的张量型。这些提取 确定整个<code>tf.Graph</code>的哪个子图必须执行 产生结果：这是包含所有名为in的操作的子图<br>读取列表以及所有其输出用于计算值的操作 的取货。例如，下面的代码片段显示了如何不同 <code>tf.Session.run</code>的参数会导致不同的子图被执行：</p>
+<pre><code>x = tf.constant([[37.0, -23.0], [1.0, 4.0]])
+w = tf.Variable(tf.random_uniform([2, 2]))
+y = tf.matmul(x, w)
+output = tf.nn.softmax(y)
+init_op = w.initializer
+
+with tf.Session() as sess:
+  # Run the initializer on `w`.
+  sess.run(init_op)
+
+  # Evaluate `output`. `sess.run(output)` will return a NumPy array containing
+  # the result of the computation.
+  print(sess.run(output))
+
+  # Evaluate `y` and `output`. Note that `y` will only be computed once, and its
+  # result used both to return `y_val` and as an input to the `tf.nn.softmax()`
+  # op. Both `y_val` and `output_val` will be NumPy arrays.
+  y_val, output_val = sess.run([y, output])
+</code></pre><p><code>tf.Session.run</code>也可以选择一个饲料字典，这是一个 从<code>tf.Tensor</code>物体（通常为<code>tf.placeholder</code>张量）映射到<br>值（通常是Python标量，列表或NumPy数组） 代替执行中的张量。例如：</p>
+<pre><code># Define a placeholder that expects a vector of three floating-point values,
+# and a computation that depends on it.
+x = tf.placeholder(tf.float32, shape=[3])
+y = tf.square(x)
+
+with tf.Session() as sess:
+  # Feeding a value changes the result that is returned when you evaluate `y`.
+  print(sess.run(y, {x: [1.0, 2.0, 3.0]})  # =&gt; &quot;[1.0, 4.0, 9.0]&quot;
+  print(sess.run(y, {x: [0.0, 0.0, 5.0]})  # =&gt; &quot;[0.0, 0.0, 25.0]&quot;
+
+  # Raises `tf.errors.InvalidArgumentError`, because you must feed a value for
+  # a `tf.placeholder()` when evaluating a tensor that depends on it.
+  sess.run(y)
+
+  # Raises `ValueError`, because the shape of `37.0` does not match the shape
+  # of placeholder `x`.
+  sess.run(y, {x: 37.0})
+</code></pre><p><code>tf.Session.run</code>也支持可选的<code>options</code>参数 指定关于呼叫的选项，以及可选的<code>run_metadata</code>参数<br>使您能够收集有关执行的元数据。例如，你可以使用 这些选项一起收集有关执行的跟踪信息：</p>
+<pre><code>y = tf.matmul([[37.0, -23.0], [1.0, 4.0]], tf.random_uniform([2, 2]))
+
+with tf.Session() as sess:
+  # Define options for the `sess.run()` call.
+  options = tf.RunOptions()
+  options.output_partition_graphs = True
+  options.trace_level = tf.RunOptions.FULL_TRACE
+
+  # Define a container for the returned metadata.
+  metadata = tf.RunMetadata()
+
+  sess.run(y, options=options, run_metadata=metadata)
+
+  # Print the subgraphs that executed on each device.
+  print(metadata.partition_graphs)
+
+  # Print the timings of each operation that executed.
+  print(metadata.step_stats)
+</code></pre><h2><span id="可视化你的图形">可视化你的图形</span></h2><p>TensorFlow包含的工具可以帮助您理解图表中的代码。 图表可视化器是TensorBoard的一个组件， 在浏览器中可视化结构。最简单的方法来创建一个<br>可视化是在创建<code>tf.Graph</code>时通过 <code>tf.summary.FileWriter</code>：</p>
+<pre><code># Build your graph.
+x = tf.constant([[37.0, -23.0], [1.0, 4.0]])
+w = tf.Variable(tf.random_uniform([2, 2]))
+y = tf.matmul(x, w)
+# ...
+loss = ...
+train_op = tf.train.AdagradOptimizer(0.01).minimize(loss)
+
+with tf.Session() as sess:
+  # `sess.graph` provides access to the graph used in a `tf.Session`.
+  writer = tf.summary.FileWriter(&quot;/tmp/log/...&quot;, sess.graph)
+
+  # Perform your computation...
+  for i in range(1000):
+    sess.run(train_op)
+    # ...
+
+  writer.close()
+</code></pre><p>注意：如果您使用<code>tf.estimator.Estimator</code>，图表（和任何 摘要）将自动记录到您指定的<code>model_dir</code> 当创建估计器。</p>
+<p>然后可以打开<code>tensorboard</code>中的日志，导航到“图形”选项卡，然后 看到图形结构的高级可视化。请注意，一个典型的 张量流图 -<br>特别是自动计算的训练图 渐变—有太多的节点，一次可视化。图形可视化工具 使用名称范围将相关操作分组为“超级”节点。您可以<br>点击这些超级节点上的橙色“+”按钮来展开 子图里面。</p>
+<p><img src="https://www.tensorflow.org/images/mnist_deep.png" alt=""></p>
+<p>有关使用TensorFlow应用程序可视化的更多信息 TensorBoard，请参阅TensorBoard教程。</p>
+<h2><span id="用多个图表编程">用多个图表编程</span></h2><p>注意：在训练模型时，组织代码的常用方法是使用一个 用于训练模型的图表，以及用于评估或执行的单独图形 推理与训练有素的模型。在许多情况下，推理图将是<br>与训练图不同：例如，丢失和丢失等技术 批量标准化在每种情况下使用不同的操作。而且，通过<br>如<code>tf.train.Saver</code>的默认实用程序使用<code>tf.Variable</code>对象的名称 （其名称基于<code>tf.Operation</code>）来识别每一个<br>在保存的检查点中变量。用这种方式编程时，可以使用 完全分离Python进程来构建和执行图，或者你可以 在同一个过程中使用多个图。本节介绍如何使用<br>在同一个过程中的多个图表。</p>
+<p>如上所述，TensorFlow提供了一个隐式传递的“默认图” 到同一上下文中的所有API函数。对于许多应用程序，一个图形<br>足够了。但是，TensorFlow也提供了操作的方法 默认图形，这在更高级的用例中可能是有用的。例如：</p>
+<p><code>tf.Graph</code>定义<code>tf.Operation</code>对象的名称空间：每个对象   在单个图表中操作必须具有唯一的名称。 TensorFlow将会<br>通过附加<code>&quot;_1&quot;</code>，<code>&quot;_2&quot;</code>等来“独立”操作的名称   他们的名字，如果请求的名字已经被采取。明确使用多个   创建的图表让您更多地控制给每个名称<br>操作。 默认图表存储有关<code>tf.Operation</code>和<code>tf.Tensor</code>的信息   <code>tf.Graph</code>曾被添加到它。如果你的程序创建一个大数字<br>没有连接的子图，使用不同的子图可能更有效率   <code>tf.Graph</code>构建每个子图，这样无关的状态可以被垃圾回收   集。</p>
+<p>您可以使用默认的图形安装不同的<code>tf.Graph.as_default</code> <code>tf.get_default_graph</code>上下文管理器：</p>
+<pre><code>g_1 = tf.Graph()
+with g_1.as_default():
+  # Operations created in this scope will be added to `g_1`.
+  c = tf.constant(&quot;Node in g_1&quot;)
+
+  # Sessions created in this scope will run operations from `g_1`.
+  sess_1 = tf.Session()
+
+g_2 = tf.Graph()
+with g_2.as_default():
+  # Operations created in this scope will be added to `g_2`.
+  d = tf.constant(&quot;Node in g_2&quot;)
+
+# Alternatively, you can pass a graph when constructing a `tf.Session`:
+# `sess_2` will run operations from `g_2`.
+sess_2 = tf.Session(graph=g_2)
+
+assert c.graph is g_1
+assert sess_1.graph is g_1
+
+assert d.graph is g_2
+assert sess_2.graph is g_2
+</code></pre><p>要检查当前的默认图形，请拨打<code>tf.Graph</code> 返回一个CXJ743-HDK-53L对象：</p>
+<pre><code># Print all of the operations in the default graph.
+g = tf.get_default_graph()
+print(g.get_operations())
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/what-is-stdclass-in-php/#more">Read More</a>
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/graph_viz/" title="TensorBoard：图形可视化" itemprop="url">TensorBoard：图形可视化</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h1><span id="tensorboard图形可视化">TensorBoard：图形可视化</span></h1><p>TensorFlow计算图功能强大但复杂。图表可视化可以帮助您理解和调试它们。这是一个可视化工作的例子。</p>
+<p><img src="https://www.tensorflow.org/images/graph_vis_animation.gif" alt="Visualization of a TensorFlow
+graph"><br>可视化TensorFlow图形。</p>
+<p>要查看您自己的图形，请运行TensorBoard将其指向作业的日志目录，单击顶部窗格上的图形选项卡，然后使用左上角的菜单选择适当的运行。有关如何运行TensorBoard并确保记录所有必要信息的深入信息，请参阅TensorBoard：可视化学习。</p>
+<h2><span id="命名范围和节点">命名范围和节点</span></h2><p>典型的TensorFlow图可以有成千上万的节点 - 太多看不到 很容易一次，甚至使用标准的图形工具布局。为了简化，<br>变量名称可以被作用域，可视化使用这个信息 在图中的节点上定义一个层次结构。默认情况下，只有这个的顶部 显示层次结构。下面是一个定义三个操作的例子<br><code>hidden</code>名称范围使用 <code>tf.name_scope</code>：</p>
+<pre><code>import tensorflow as tf
+
+with tf.name_scope(&apos;hidden&apos;) as scope:
+  a = tf.constant(5, name=&apos;alpha&apos;)
+  W = tf.Variable(tf.random_uniform([1, 2], -1.0, 1.0), name=&apos;weights&apos;)
+  b = tf.Variable(tf.zeros([1]), name=&apos;biases&apos;)
+</code></pre><p>这导致了以下三个op名称：</p>
+<p><code>hidden/alpha</code> <code>hidden/weights</code> <code>hidden/biases</code></p>
+<p>默认情况下，可视化文件将全部折叠成标记为<code>hidden</code>的节点。 额外的细节不会丢失。您可以双击或单击 在<code>+</code>的橙色标志上右上角展开节点，然后你会看到<br><code>alpha</code>，<code>weights</code>和<code>biases</code>的三个子节点。</p>
+<p>这是一个更复杂的节点在其最初和最后一个真实的例子 扩大的国家。</p>
+<p><img src="https://www.tensorflow.org/images/pool1_collapsed.png" alt="Unexpanded name
+scope"> |  <img src="https://www.tensorflow.org/images/pool1_expanded.png" alt="Expanded
+name scope"><br>—|—<br>Initial view of top-level name scope <code>pool_1</code>. Clicking on the orange <code>+</code><br>button on the top right or double-clicking on the node itself will expand it.<br>|  Expanded view of <code>pool_1</code> name scope. Clicking on the orange <code>-</code> button on<br>the top right or double-clicking on the node itself will collapse the name<br>scope.  </p>
+<p>按名称范围对节点进行分组对于制作清晰的图形至关重要。如果你是 建立一个模型，名称范围让你控制生成的可视化。 你的名字范围越好，你的可视化就越好。</p>
+<p>上图说明了可视化的第二个方面。 TensorFlow 图有两种连接：数据依赖和控制 依赖。数据依赖性显示了两个操作符之间张量的流动<br>显示为实线箭头，而控制依赖关系使用虚线。在里面 展开视图（上图右侧）所有的连接都是数据 连接<code>CheckNumerics</code>的虚线除外<br>和<code>control_dependency</code>。</p>
+<p>还有一个简化布局的技巧。大多数TensorFlow图有一个 很少有多个连接到其他节点的节点。例如，许多节点可能<br>对初始化步骤具有控制依赖性。绘制之间的所有边缘 <code>init</code>节点及其依赖关系将创建一个非常混乱的视图。</p>
+<p>为了减少混乱，可视化将所有高度节点分离出来 在右边的辅助区域，并不画线来表示它们的边缘。 我们绘制小节点图标来代替连线。 分离出辅助节点通常不会消除关键<br>因为这些节点通常涉及簿记功能。 请参阅交互以了解如何在主图之间移动节点 和辅助区域。</p>
+<p><img src="https://www.tensorflow.org/images/conv_1.png" alt="conv_1 is part of the main
+graph"> |  <img src="https://www.tensorflow.org/images/save.png" alt="save is extracted as
+auxiliary node"><br>—|—<br>Node <code>conv_1</code> is connected to <code>save</code>. Note the little <code>save</code> node icon on its<br>right.  |  <code>save</code> has a high degree, and will appear as an auxiliary node. The<br>connection with <code>conv_1</code> is shown as a node icon on its left. To further<br>reduce clutter, since <code>save</code> has a lot of connections, we show the first 5 and<br>abbreviate the others as <code>... 12 more</code>.  </p>
+<p>最后一个结构简化是系列崩溃。顺序 图案 - 也就是说，名称相差数字的节点，并具有 同构结构 - 被折叠成一堆节点，如图所示<br>下面。对于长序列的网络，这大大简化了视图。如 通过分层节点，双击展开该系列。看到 互动如何禁用/启用系列崩溃的一个 特定的一组节点。</p>
+<p><img src="https://www.tensorflow.org/images/series.png" alt="Sequence of nodes"> |<br><img src="https://www.tensorflow.org/images/series_expanded.png" alt="Expanded sequence of
+nodes"><br>—|—<br>A collapsed view of a node sequence.  |  A small piece of the expanded view,<br>after double-click.  </p>
+<p>最后，作为易读性的最后一个助手，可视化使用特殊的图标 常量和汇总节点。总结一下，下面是一个节点符号表：</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="https://www.tensorflow.org/images/namespace_node.png" alt="Name scope"></td>
+<td>_High-</td>
+</tr>
+</tbody>
+</table>
+<p>level_ node representing a name scope. Double-click to expand a high-level<br>node.<br><img src="https://www.tensorflow.org/images/horizontal_stack.png" alt="Sequence of unconnected
+nodes"> |  Sequence of<br>numbered nodes that are not connected to each other.<br><img src="https://www.tensorflow.org/images/vertical_stack.png" alt="Sequence of connected
+nodes"> | Sequence of<br>numbered nodes that are connected to each other.<br><img src="https://www.tensorflow.org/images/op_node.png" alt="Operation node"> | An<br>individual operation node.<br><img src="https://www.tensorflow.org/images/constant.png" alt="Constant node"> | A constant.<br><img src="https://www.tensorflow.org/images/summary.png" alt="Summary node"> | A summary<br>node.<br><img src="https://www.tensorflow.org/images/dataflow_edge.png" alt="Data flow edge"> | Edge<br>showing the data flow between operations.<br><img src="https://www.tensorflow.org/images/control_edge.png" alt="Control dependency edge"><br>| Edge showing the control dependency between operations.<br><img src="https://www.tensorflow.org/images/reference_edge.png" alt="Reference edge"> | A<br>reference edge showing that the outgoing operation node can mutate the<br>incoming tensor.  </p>
+<h2><span id="相互作用">相互作用</span></h2><p>通过平移和缩放导航图形。点击并拖动以平移，然后使用 滚动手势进行缩放。双击一个节点，或点击其<code>+</code>按钮，即可 展开代表一组操作的名称范围。轻松保持<br>在缩放和平移时跟踪当前的视点，中有一个小地图 在右下角。</p>
+<p>要关闭打开的节点，请再次双击或单击<code>-</code>按钮。您可以 也点击一次选择一个节点。它会变成一个较暗的颜色，和细节 关于它和它连接的节点将出现在上面的信息卡中<br>可视化的右上角。</p>
+<p><img src="https://www.tensorflow.org/images/infocard.png" alt="Info card of a name scope"> |<br><img src="https://www.tensorflow.org/images/infocard_op.png" alt="Info card of operation
+node"><br>—|—<br>Info card showing detailed information for the <code>conv2</code> name scope. The inputs<br>and outputs are combined from the inputs and outputs of the operation nodes<br>inside the name scope. For name scopes no attributes are shown.  |  Info card<br>showing detailed information for the <code>DecodeRaw</code> operation node. In addition<br>to inputs and outputs, the card shows the device and the attributes associated<br>with the current operation.  </p>
+<p>TensorBoard提供了几种方法来改变图形的视觉布局。这个 不会改变图的计算语义，但它可以带来一些 网络结构清晰。通过右键单击节点或按<br>该节点信息卡底部的按钮，可以进行以下操作 改变其布局：</p>
+<p>节点可以在主图表和辅助区域之间移动。 可以将一系列节点取消分组，从而使得该系列节点不会 出现在一起。未分组的系列也可以重新组合。</p>
+<p>选择也可以帮助理解高度节点。选择任何 高度节点，以及其他连接的相应节点图标 也将被选中。例如，这可以很容易地看到哪些节点 正在被保存 - 而不是。</p>
+<p>点击信息卡中的节点名称将选择它。如果有必要的话 视点将自动平移，使节点可见。</p>
+<p>最后，您可以使用颜色菜单为图形选择两种配色方案 在传奇之上。默认的结构视图显示结构：当两个 高层节点具有相同的结构，它们出现在相同的颜色中<br>彩虹。结构独特的节点是灰色的。还有第二种看法，这表明 不同的操作在哪个设备上运行。名称范围是有颜色的 与其内部操作的设备比例成比例。</p>
+<p>下面的图片给出了一张真实生活图的插图。</p>
+<p><img src="https://www.tensorflow.org/images/colorby_structure.png" alt="Color by structure"><br>|  <img src="https://www.tensorflow.org/images/colorby_device.png" alt="Color by device"><br>—|—<br>Structure view: The gray nodes have unique structure. The orange <code>conv1</code> and<br><code>conv2</code> nodes have the same structure, and analogously for nodes with other<br>colors.  |  Device view: Name scopes are colored proportionally to the<br>fraction of devices of the operation nodes inside them. Here, purple means GPU<br>and the green is CPU.  </p>
+<h2><span id="张量形状信息">张量形状信息</span></h2><p>当序列化的<code>GraphDef</code>包含张量形状时，图形可视化器 用张量维度标注边缘，边缘厚度反映总张量<br>尺寸。要在<code>GraphDef</code>中包含张量形状，请传递实际图形对象 （如在<code>sess.graph</code>中）连接到<code>FileWriter</code>。<br>下面的图片显示了具有张量形状信息的CIFAR-10模型：</p>
+<p>![CIFAR-10 model with tensor shape</p>
+<h2><span id="informationhttpswwwtensorfloworgimagestensor_shapespng">information]()  </span></h2><p>CIFAR-10 model with tensor shape information.  </p>
+<h2><span id="运行时统计">运行时统计</span></h2><p>为运行收集运行时元数据（如总内存）通常很有用 使用情况，总计算时间和节点的张量形状。下面的代码示例 是从列车和测试部分的一个修改的片段<br>简单的MNIST教程， 其中我们记录了摘要和运行时统计信息。请参阅摘要教程 有关如何记录摘要的详细信息。 完整的源代码在这里。</p>
+<pre><code># Train the model, and also write summaries.
+# Every 10th step, measure test-set accuracy, and write test summaries
+# All other steps, run train_step on training data, &amp; add training summaries
+
+def feed_dict(train):
+  &quot;&quot;&quot;Make a TensorFlow feed_dict: maps data onto Tensor placeholders.&quot;&quot;&quot;
+  if train or FLAGS.fake_data:
+    xs, ys = mnist.train.next_batch(100, fake_data=FLAGS.fake_data)
+    k = FLAGS.dropout
+  else:
+    xs, ys = mnist.test.images, mnist.test.labels
+    k = 1.0
+  return {x: xs, y_: ys, keep_prob: k}
+
+for i in range(FLAGS.max_steps):
+  if i % 10 == 0:  # Record summaries and test-set accuracy
+    summary, acc = sess.run([merged, accuracy], feed_dict=feed_dict(False))
+    test_writer.add_summary(summary, i)
+    print(&apos;Accuracy at step %s: %s&apos; % (i, acc))
+  else:  # Record train set summaries, and train
+    if i % 100 == 99:  # Record execution stats
+      run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+      run_metadata = tf.RunMetadata()
+      summary, _ = sess.run([merged, train_step],
+                            feed_dict=feed_dict(True),
+                            options=run_options,
+                            run_metadata=run_metadata)
+      train_writer.add_run_metadata(run_metadata, &apos;step%d&apos; % i)
+      train_writer.add_summary(summary, i)
+      print(&apos;Adding run metadata for&apos;, i)
+    else:  # Record a summary
+      summary, _ = sess.run([merged, train_step], feed_dict=feed_dict(True))
+      train_writer.add_summary(summary, i)
+</code></pre><p>此代码将从步骤99开始每100步发出运行时统计信息。</p>
+<p>当您启动tensorboard并转到图表选项卡，您现在将看到选项 在“会话运行”下对应于添加运行元数据的步骤。 选择其中一个运行将显示网络的快照<br>一步，淡出未使用的节点。在左边的控件中，你会的 能够通过总内存或总计算时间对节点着色。另外， 点击一个节点将显示确切的总内存，计算时间和 张量输出大小。</p>
+<p><img src="https://www.tensorflow.org/images/colorby_compute_time.png" alt="Color by compute
+time"> |  <img src="https://www.tensorflow.org/images/run_metadata_graph.png" alt="Run
+metadata graph"> |<br><img src="https://www.tensorflow.org/images/run_metadata_infocard.png" alt="Run metadata info
+card"><br>—|—|—</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/31/php-and-enumerations/" title="PHP和枚举" itemprop="url">PHP和枚举</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-31T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-31</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我知道PHP没有本地枚举。但是我已经习惯了来自Java世界的他们。我很乐意使用枚举作为给出IDE自动完成功能可以理解的预定义值的方法。</p>
+<p>常量可以做到这一点，但是命名空间碰撞问题和（或者实际上是因为）它们是全局的。数组没有命名空间问题，但是它们太模糊，在运行时可能会被覆盖，而IDE很少（从不？）知道如何自动填充它们的键。</p>
+<p>有什么解决方案/解决方法你通常使用？有没有人记得PHP的人是否对枚举有任何想法或决定？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/12/31/php-and-enumerations/#more">Read More</a>
           
        </p>
     </div>
@@ -425,56 +1167,44 @@ except:
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/storing-objects-in-html5-localstorage/" title="将对象存储在HTML5 localStorage中" itemprop="url">将对象存储在HTML5 localStorage中</a>
+      <a href="/2017/12/31/vertically-align-text-in-a-div/" title="在div中垂直对齐文本" itemprop="url">在div中垂直对齐文本</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-31T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-31</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想在HTML5 <code>localStorage</code>中存储一个JavaScript对象，但是我的对象显然正在转换为一个字符串。</p>
-<p>我可以使用<code>localStorage</code>存储和检索原始JavaScript类型和数组，但对象似乎不工作。他们应该吗？</p>
-<p>这是我的代码：</p>
-<pre><code>var testObject = { &apos;one&apos;: 1, &apos;two&apos;: 2, &apos;three&apos;: 3 };
-console.log(&apos;typeof testObject: &apos; + typeof testObject);
-console.log(&apos;testObject properties:&apos;);
-for (var prop in testObject) {
-    console.log(&apos;  &apos; + prop + &apos;: &apos; + testObject[prop]);
-}
+        <p>我正在尝试找到最有效的方式来对齐文本与div。我已经尝试了一些东西，似乎没有工作。</p>
+<pre><code>.testimonialText
+    {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+        width: 150px;
+        height: 309px;
+        vertical-align: middle;
+        text-align: center;
+        font-family: Georgia, &quot;Times New Roman&quot;, Times, serif;
+        font-style: italic;
+        padding: 1em 0 1em 0;
+    }
 
-// Put the object into storage
-localStorage.setItem(&apos;testObject&apos;, testObject);
 
-// Retrieve the object from storage
-var retrievedObject = localStorage.getItem(&apos;testObject&apos;);
-
-console.log(&apos;typeof retrievedObject: &apos; + typeof retrievedObject);
-console.log(&apos;Value of retrievedObject: &apos; + retrievedObject);
-</code></pre><p>控制台输出是</p>
-<pre><code>typeof testObject: object
-testObject properties:
-  one: 1
-  two: 2
-  three: 3
-typeof retrievedObject: string
-Value of retrievedObject: [object Object]
-</code></pre><p>在我看来，像<code>setItem</code>方法在将输入转换为字符串之前将其存储。</p>
-<p>我在Safari，Chrome和Firefox中看到了这种行为，所以我认为这是对<a href="http://www.w3.org/TR/webstorage/" target="_blank" rel="noopener">HTML5的误解网络存储</a>规范，而不是浏览器特定的错误或限制。</p>
-<p>我尝试了解<a href="“http://www.w3.org/TR/html5/infrastructure.html”rel">结构化克隆_算法。 noreferrer“&gt; http://www.w3.org/TR/html5/infrastructure.html</a>。我不完全明白它的意思，但也许我的问题与我的对象的属性不能被枚举（???）</p>
-<p>有一个简单的解决方法吗？</p>
-<hr>
-<p>更新：W3C最终改变了关于结构化克隆规范的想法，并决定改变规范来匹配实现。请参阅<a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=12111" target="_blank" rel="noopener">https://www.w3.org/Bugs/Public/show_bug。 CGI？ID = 12111</a>。所以这个问题不再100％有效，但答案仍然可能是有趣的。</p>
+&lt;div class=&quot;testimonialText&quot;&gt; 
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+&lt;/div&gt;
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/storing-objects-in-html5-localstorage/#more">Read More</a>
+            <a href="/2017/12/31/vertically-align-text-in-a-div/#more">Read More</a>
           
        </p>
     </div>
@@ -484,7 +1214,7 @@ Value of retrievedObject: [object Object]
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html5/">html5</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -513,26 +1243,25 @@ Value of retrievedObject: [object Object]
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/terminating-a-python-script/" title="终止一个Python脚本" itemprop="url">终止一个Python脚本</a>
+      <a href="/2017/12/31/what-is-thread-safe-or-non-thread-safe-in-php/" title="在PHP中，线程安全或非线程安全是什么？" itemprop="url">在PHP中，线程安全或非线程安全是什么？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-31T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-31</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我知道PHP中的<code>die（）</code>命令，可以尽早停止脚本。</p>
-<p>我怎样才能在Python中做到这一点？</p>
+        <p>我看到了PHP的不同的二进制文件，如非线程或线程安全？这是什么意思？这些软件包有什么区别？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/terminating-a-python-script/#more">Read More</a>
+            <a href="/2017/12/31/what-is-thread-safe-or-non-thread-safe-in-php/#more">Read More</a>
           
        </p>
     </div>
@@ -542,7 +1271,7 @@ Value of retrievedObject: [object Object]
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -571,27 +1300,26 @@ Value of retrievedObject: [object Object]
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/stop-setinterval-call-in-javascript/" title="在JavaScript中停止setInterval调用" itemprop="url">在JavaScript中停止setInterval调用</a>
+      <a href="/2017/12/31/echo-that-outputs-to-stderr/" title="回应输出到stderr" itemprop="url">回应输出到stderr</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-31T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-31</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我正在使用<code>setInterval（fname，10000）;</code>在JavaScript中每10秒调用一次函数。是否有可能停止在某些事件上调用它？</p>
-<p>我希望用户能够停止重复刷新数据。</p>
-<p>
+        <p>是否有一个标准的Bash工具，行为像回声，但输出到标准错误而不是标准输出？</p>
+<p>我知道我可以做<code>echo foo 1&gt;&amp;2</code>，但它有点丑，我怀疑，容易出错（例如，当事情改变时，更容易被编辑错误）。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/stop-setinterval-call-in-javascript/#more">Read More</a>
+            <a href="/2017/12/31/echo-that-outputs-to-stderr/#more">Read More</a>
           
        </p>
     </div>
@@ -601,123 +1329,7 @@ Value of retrievedObject: [object Object]
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/static-methods-in-python/" title="Python中的静态方法？" itemprop="url">Python中的静态方法？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>是否有可能在Python中有静态方法，所以我可以在不初始化类的情况下调用它们，如：</p>
-<pre><code>ClassName.StaticMethod ( )
-</code></pre><p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/static-methods-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/static-class-variables-in-python/" title="Python中的静态类变量" itemprop="url">Python中的静态类变量</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在Python中可以有静态类变量或方法吗？需要什么语法才能做到这一点？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/static-class-variables-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/bash/">bash</a>
   </div>
 
 </div>
@@ -742,7 +1354,7 @@ Value of retrievedObject: [object Object]
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/124/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/123/">123</a><a class="page-number" href="/page/124/">124</a><span class="page-number current">125</span><a class="page-number" href="/page/126/">126</a><a class="page-number" href="/page/127/">127</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/126/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/124/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/123/">123</a><a class="page-number" href="/page/124/">124</a><span class="page-number current">125</span><a class="page-number" href="/page/126/">126</a><a class="page-number" href="/page/127/">127</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/126/">Next<span></span></a>
   </nav>
 
 </div>
@@ -785,15 +1397,11 @@ Value of retrievedObject: [object Object]
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -802,10 +1410,6 @@ Value of retrievedObject: [object Object]
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -818,6 +1422,10 @@ Value of retrievedObject: [object Object]
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -842,6 +1450,8 @@ Value of retrievedObject: [object Object]
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

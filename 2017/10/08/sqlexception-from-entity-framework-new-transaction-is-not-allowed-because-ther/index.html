@@ -1,0 +1,696 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>实体框架中的SqlException  - 不允许新的事务，因为会话中还有其他线程正在运行 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我目前得到这个错误：  System.Data.SqlClient.SqlException: New transaction is not allowed becausethere are other threads running in the session.  运行这个代码时： public class ProductManager : IProductManager {     #reg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实体框架中的SqlException  - 不允许新的事务，因为会话中还有其他线程正在运行">
+<meta property="og:url" content="https://www.tracholar.top/2017/10/08/sqlexception-from-entity-framework-new-transaction-is-not-allowed-because-ther/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我目前得到这个错误：  System.Data.SqlClient.SqlException: New transaction is not allowed becausethere are other threads running in the session.  运行这个代码时： public class ProductManager : IProductManager {     #reg">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实体框架中的SqlException  - 不允许新的事务，因为会话中还有其他线程正在运行">
+<meta name="twitter:description" content="我目前得到这个错误：  System.Data.SqlClient.SqlException: New transaction is not allowed becausethere are other threads running in the session.  运行这个代码时： public class ProductManager : IProductManager {     #reg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/10/08/sqlexception-from-entity-framework-new-transaction-is-not-allowed-because-ther/" title="实体框架中的SqlException  - 不允许新的事务，因为会话中还有其他线程正在运行" itemprop="url">实体框架中的SqlException  - 不允许新的事务，因为会话中还有其他线程正在运行</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-10-08T02:00:00.000Z" itemprop="datePublished"> Published 2017-10-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我目前得到这个错误：</p>
+<blockquote>
+<p>System.Data.SqlClient.SqlException: New transaction is not allowed because<br>there are other threads running in the session.</p>
+</blockquote>
+<p>运行这个代码时：</p>
+<pre><code>public class ProductManager : IProductManager
+{
+    #region Declare Models
+    private RivWorks.Model.Negotiation.RIV_Entities _dbRiv = RivWorks.Model.Stores.RivEntities(AppSettings.RivWorkEntities_connString);
+    private RivWorks.Model.NegotiationAutos.RivFeedsEntities _dbFeed = RivWorks.Model.Stores.FeedEntities(AppSettings.FeedAutosEntities_connString);
+    #endregion
+
+    public IProduct GetProductById(Guid productId)
+    {
+        // Do a quick sync of the feeds...
+        SyncFeeds();
+        ...
+        // get a product...
+        ...
+        return product;
+    }
+
+    private void SyncFeeds()
+    {
+        bool found = false;
+        string feedSource = &quot;AUTO&quot;;
+        switch (feedSource) // companyFeedDetail.FeedSourceTable.ToUpper())
+        {
+            case &quot;AUTO&quot;:
+                var clientList = from a in _dbFeed.Client.Include(&quot;Auto&quot;) select a;
+                foreach (RivWorks.Model.NegotiationAutos.Client client in clientList)
+                {
+                    var companyFeedDetailList = from a in _dbRiv.AutoNegotiationDetails where a.ClientID == client.ClientID select a;
+                    foreach (RivWorks.Model.Negotiation.AutoNegotiationDetails companyFeedDetail in companyFeedDetailList)
+                    {
+                        if (companyFeedDetail.FeedSourceTable.ToUpper() == &quot;AUTO&quot;)
+                        {
+                            var company = (from a in _dbRiv.Company.Include(&quot;Product&quot;) where a.CompanyId == companyFeedDetail.CompanyId select a).First();
+                            foreach (RivWorks.Model.NegotiationAutos.Auto sourceProduct in client.Auto)
+                            {
+                                foreach (RivWorks.Model.Negotiation.Product targetProduct in company.Product)
+                                {
+                                    if (targetProduct.alternateProductID == sourceProduct.AutoID)
+                                    {
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found)
+                                {
+                                    var newProduct = new RivWorks.Model.Negotiation.Product();
+                                    newProduct.alternateProductID = sourceProduct.AutoID;
+                                    newProduct.isFromFeed = true;
+                                    newProduct.isDeleted = false;
+                                    newProduct.SKU = sourceProduct.StockNumber;
+                                    company.Product.Add(newProduct);
+                                }
+                            }
+                            _dbRiv.SaveChanges();  // ### THIS BREAKS ### //
+                        }
+                    }
+                }
+                break;
+        }
+    }
+}
+</code></pre><p>模型＃1 - 这个模型位于我们的开发服务器的数据库中。 模型＃1<br><a href="http://content.screencast.com/users/Keith.Barrows/folders/Jing/media/bdb2b000-6e60-4af0-a7a1-2bb6b05d8bc1/Model1.png" target="_blank" rel="noopener">http://content.screencast.com/users/Keith.Barrows/folders/Jing/media/bdb2b000-6e60-4af0-a7a1-2bb6b05d8bc1/Model1.png</a></p>
+<p>模型＃2 - 此模型位于Prod服务器上的数据库中，并且每天都通过自动提要进行更新。 alt text<br><a href="http://content.screencast.com/users/Keith.Barrows/folders/Jing/media/4260259f-" target="_blank" rel="noopener">http://content.screencast.com/users/Keith.Barrows/folders/Jing/media/4260259f-</a><br>bce6-43d5-9d2a-017bd9a980d4/Model2.png</p>
+<p>注 - 模型＃1中红圈的项目是我用来“映射”到模型＃2的字段。请忽略模型2中的红色圆圈：这是我现在回答的另一个问题。</p>
+<p>注意：我仍然需要放入一个isDeleted检查，以便我可以从DB1软删除它，如果它已经离开我们客户的库存。</p>
+<p>我想用这个特定的代码将DB1中的一个公司与DB2中的一个客户端连接起来，从DB2获取它们的产品列表，并将它插入到DB1中，如果它不在那里的话。第一次通过应该是全面拉动库存。每次在没有任何事情发生的情况下运行，除非新的库存进入饲料过夜。</p>
+<blockquote>
+<p><strong>So the big question - how to I solve the transaction error I am getting?<br>Do I need to drop and recreate my context each time through the loops (does<br>not make sense to me)?</strong></p>
+</blockquote>
+<a id="more"></a>
+<p>经过多次拔除头发，我发现<code>foreach</code>循环是罪魁祸首。需要发生的是调用EF，但将其返回到该目标类型的<code>IList&lt;T&gt;</code>，然后在<code>IList&lt;T&gt;</code>上循环。</p>
+<p>例：</p>
+<pre><code>IList&lt;Client&gt; clientList = from a in _dbFeed.Client.Include(&quot;Auto&quot;) select a;
+foreach (RivWorks.Model.NegotiationAutos.Client client in clientList)
+{
+   var companyFeedDetailList = from a in _dbRiv.AutoNegotiationDetails where a.ClientID == client.ClientID select a;
+    // ...
+}
+</code></pre><p>正如你已经确定的那样，你不能从一个<code>foreach</code>中保存，这个<code>ToList()</code>仍然通过一个活动的阅读器从数据库中获取数据。</p>
+<p>调用<code>ToArray()</code>或<code>IQueryable&lt;T&gt;.Skip(int)</code>适用于小数据集，但是当您有成千上万行时，您将消耗大量的内存。</p>
+<p>最好加载块中的行。</p>
+<pre><code>public static class EntityFrameworkUtil
+{
+    public static IEnumerable&lt;T&gt; QueryInChunksOf&lt;T&gt;(this IQueryable&lt;T&gt; queryable, int chunkSize)
+    {
+        return queryable.QueryChunksOfSize(chunkSize).SelectMany(chunk =&gt; chunk);
+    }
+
+    public static IEnumerable&lt;T[]&gt; QueryChunksOfSize&lt;T&gt;(this IQueryable&lt;T&gt; queryable, int chunkSize)
+    {
+        int chunkNumber = 0;
+        while (true)
+        {
+            var query = (chunkNumber == 0)
+                ? queryable 
+                : queryable.Skip(chunkNumber * chunkSize);
+            var chunk = query.Take(chunkSize).ToArray();
+            if (chunk.Length == 0)
+                yield break;
+            yield return chunk;
+            chunkNumber++;
+        }
+    }
+}
+</code></pre><p>鉴于上述扩展方法，你可以这样写你的查询：</p>
+<pre><code>foreach (var client in clientList.OrderBy(c =&gt; c.Id).QueryInChunksOf(100))
+{
+    // do stuff
+    context.SaveChanges();
+}
+</code></pre><p>您调用此方法的可查询对象必须是有序的。这是因为实体框架仅支持有序查询中的<code>SaveChanges()</code>，当您考虑到针对不同范围的多个查询需要稳定时，这是有意义的。如果排序对您不重要，那么只需按主键排序，因为这可能具有聚集索引。</p>
+<p>此版本将以100批为单位查询数据库。请注意，每个实体都会调用<code>SaveChanges()</code>。</p>
+<p>如果你想大大提高你的吞吐量，你应该调用<code>row_number</code>。改用这样的代码：</p>
+<pre><code>foreach (var chunk in clientList.OrderBy(c =&gt; c.Id).QueryChunksOfSize(100))
+{
+    foreach (var client in chunk)
+    {
+        // do stuff
+    }
+    context.SaveChanges();
+}
+</code></pre><p>这导致数据库更新调用次数减少了100次。当然，这些电话中的每一个都需要更长的时间才能完成，但最终还是会走到前面。你的里程可能会有所不同，但这对我来说世界更快了。</p>
+<p>它解决了你所看到的例外情况。</p>
+<p>编辑我运行SQL事件探查器后重新访问这个问题，并更新了一些东西，以提高性能。对于任何有兴趣的人来说，下面是一些示例SQL，显示了DB创建的内容。</p>
+<p>第一个循环不需要跳过任何东西，所以更简单。</p>
+<pre><code>SELECT TOP (100)                     -- the chunk size 
+[Extent1].[Id] AS [Id], 
+[Extent1].[Name] AS [Name], 
+FROM [dbo].[Clients] AS [Extent1]
+ORDER BY [Extent1].[Id] ASC
+</code></pre><p>随后的调用需要跳过以前的结果块，因此引入1j2l4n3k4n32m43n的使用：</p>
+<pre><code>SELECT TOP (100)                     -- the chunk size
+[Extent1].[Id] AS [Id], 
+[Extent1].[Name] AS [Name], 
+FROM (
+    SELECT [Extent1].[Id] AS [Id], [Extent1].[Name] AS [Name], row_number()
+    OVER (ORDER BY [Extent1].[Id] ASC) AS [row_number]
+    FROM [dbo].[Clients] AS [Extent1]
+) AS [Extent1]
+WHERE [Extent1].[row_number] &gt; 100   -- the number of rows to skip
+ORDER BY [Extent1].[Id] ASC
+</code></pre>
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2017/10/08/sqlexception-from-entity-framework-new-transaction-is-not-allowed-because-ther/" data-title="实体框架中的SqlException  - 不允许新的事务，因为会话中还有其他线程正在运行 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/10/08/findviewbyid-in-fragment/" title="在片段中找到ViewById">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在片段中找到ViewById</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/10/08/tostring-equivalent-in-php/"  title="在PHP中相当于ToString（）">
+ <strong>下一篇：</strong><br/> 
+ <span>在PHP中相当于ToString（）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

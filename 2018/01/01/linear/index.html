@@ -1,0 +1,619 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>具有张量流的大规模线性模型 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="具有张量流的大规模线性模型tf.estimator API为其提供了一套丰富的工具 在TensorFlow中使用线性模型。本文件提供了一个概述 那些工具。它解释说： 线性模型是什么。 为什么你可能想要使用线性模型。 tf.estimator如何使TensorFlow中的线性模型变得容易。如何使用tf.estimator将线性模型与    深入学习以获得双方的优势。 阅读本概述以确定tf.estim">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="具有张量流的大规模线性模型">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/linear/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="具有张量流的大规模线性模型tf.estimator API为其提供了一套丰富的工具 在TensorFlow中使用线性模型。本文件提供了一个概述 那些工具。它解释说： 线性模型是什么。 为什么你可能想要使用线性模型。 tf.estimator如何使TensorFlow中的线性模型变得容易。如何使用tf.estimator将线性模型与    深入学习以获得双方的优势。 阅读本概述以确定tf.estim">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="具有张量流的大规模线性模型">
+<meta name="twitter:description" content="具有张量流的大规模线性模型tf.estimator API为其提供了一套丰富的工具 在TensorFlow中使用线性模型。本文件提供了一个概述 那些工具。它解释说： 线性模型是什么。 为什么你可能想要使用线性模型。 tf.estimator如何使TensorFlow中的线性模型变得容易。如何使用tf.estimator将线性模型与    深入学习以获得双方的优势。 阅读本概述以确定tf.estim">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/linear/" title="具有张量流的大规模线性模型" itemprop="url">具有张量流的大规模线性模型</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">具有张量流的大规模线性模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">什么是线性模型？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">你为什么要使用线性模型？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">tf.estimator如何帮助您构建线性模型？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">功能列和转换</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">稀疏的列</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.1.1.</span> <span class="toc-text">编码稀疏列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.1.2.</span> <span class="toc-text">特色十字架</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">连续的列</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.2.1.</span> <span class="toc-text">桶化</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">输入功能</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">线性估计器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">广泛深入的学习</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="具有张量流的大规模线性模型">具有张量流的大规模线性模型</span></h1><p>tf.estimator API为其提供了一套丰富的工具 在TensorFlow中使用线性模型。本文件提供了一个概述 那些工具。它解释说：</p>
+<p>线性模型是什么。 为什么你可能想要使用线性模型。 tf.estimator如何使TensorFlow中的线性模型变得容易。<br>如何使用tf.estimator将线性模型与    深入学习以获得双方的优势。</p>
+<p>阅读本概述以确定tf.estimator线性模型工具是否可能 对你有用。然后做线性模型教程 试一试。这个概述使用了教程中的代码示例，但是<br>教程更详细地介绍代码。</p>
+<p>要理解这个概述，这将有助于一些熟悉 有基本的机器学习概念，还有tf.estimator。</p>
+<h2><span id="什么是线性模型">什么是线性模型？</span></h2><p>线性模型使用单个加权和特征进行预测。 例如，如果你有数据 年龄，受教育年限和每周小时数 为一个人口工作，你可以学习每个这样的数字的权重<br>他们的加权总和估计一个人的工资。您也可以使用线性模型 进行分类。</p>
+<p>一些线性模型将加权和转换成更方便的形式。对于 例如，逻辑回归将加权和插入逻辑 函数将输出转换为介于0和1之间的值。但是你仍然只是 每个输入特征都有一个权重。</p>
+<h2><span id="你为什么要使用线性模型">你为什么要使用线性模型？</span></h2><p>为什么你要在最近的研究中使用这么简单的模型？ 展示了更复杂的多层神经网络的力量？</p>
+<p>线性模型：</p>
+<p>训练很快，比较深的神经网络。 可以在非常大的功能集上运行良好。 可以用不需要太多摆弄的算法来训练    学习率等 可以比神经网络更容易地解释和调试。<br>您可以检查分配给每个功能的权重来确定是什么    对预测影响最大。 为学习机器学习提供了一个很好的起点。 在工业中被广泛使用。</p>
+<h2><span id="tfestimator如何帮助您构建线性模型">tf.estimator如何帮助您构建线性模型？</span></h2><p>您可以在TensorFlow中从头开始构建一个线性模型，而无需借助 特殊的API。但是tf.estimator提供了一些工具，使它更容易构建<br>有效的大型线性模型。</p>
+<h3><span id="功能列和转换">功能列和转换</span></h3><p>设计线性模型的大部分工作都是转换原始数据 到合适的输入功能。 Tensorflow使用<code>FeatureColumn</code>抽象 启用这些转换。</p>
+<p><code>FeatureColumn</code>代表数据中的单一功能。 <code>FeatureColumn</code> 可能代表像“高度”这样的数量，也可能代表类似的数量<br>‘eye_color’其中值是从一组离散的可能性中绘制的 {‘蓝色’，’棕色’，’绿色’}。</p>
+<p>在“高度”和“分类”等连续特征的情况下 诸如“eye_color”之类的特征，数据中的单个值可能会被转换 在输入到模型中之前将其转换为数字序列。该<br><code>FeatureColumn</code>抽象允许您将该功能作为一个单独的操作 尽管如此，语义单位。你可以指定转换和 选择要包含的特征而不处理特定的索引<br>张量你喂入模型。</p>
+<h4><span id="稀疏的列">稀疏的列</span></h4><p>线性模型中的分类特征通常会转换为稀疏分类 矢量，其中每个可能的值具有对应的索引或id。对于 例如，如果只有三种可能的眼睛颜色，您可以表示<br>‘eye_color’作为长度为3的矢量：’brown’会变成[1,0,0]，’blue’会变成<br>变成[0,1,0]，“绿色”变成[0,0,1]。这些载体被调用 “稀疏”，因为它们可能很长，有很多的零时，集合 可能的值非常大（比如所有的英文单词）。</p>
+<p>虽然你不需要使用分类列来使用tf.estimator linear 模型，线性模型的优势之一就是他们处理的能力 大的稀疏矢量。稀疏特征是一个主要的用例<br>tf.estimator线性模型工具。</p>
+<h5><span id="编码稀疏列">编码稀疏列</span></h5><p><code>FeatureColumn</code>处理分类值向量的转换 自动，与这样的代码：</p>
+<pre><code>eye_color = tf.feature_column.categorical_column_with_vocabulary_list(
+    &quot;eye_color&quot;, vocabulary_list=[&quot;blue&quot;, &quot;brown&quot;, &quot;green&quot;])
+</code></pre><p>其中<code>eye_color</code>是源数据中列的名称。</p>
+<p>您也可以生成<code>FeatureColumn</code>作为您的分类功能 不知道所有可能的价值。对于这种情况下，你会使用<br><code>categorical_column_with_hash_bucket()</code>，它使用散列函数来分配 指标的特征值。</p>
+<pre><code>education = tf.feature_column.categorical_column_with_hash_bucket(
+    &quot;education&quot;, hash_bucket_size=1000)
+</code></pre><h5><span id="特色十字架">特色十字架</span></h5><p>因为线性模型分配独立的权重分离功能，他们 不能学习特定组合的相对重要性<br>值。如果你有一个功能’favorite_sport’和一个功能’home_city’和 你正在试图预测一个人是否喜欢穿红色，你的线性模型<br>将无法从圣路易斯学习棒球迷特别喜欢 穿红色。</p>
+<p>您可以通过创建一个新功能来解决这个限制 ‘favorite_sport_x_home_city’。这个特性对于一个给定的人的价值是 只是两个源特征值的连接：<br>例如，’baseball_x_stlouis’。这种组合功能被称为 一个功能十字架。</p>
+<p><code>crossed_column()</code>方法可以轻松设置特征十字：</p>
+<pre><code>sport_x_city = tf.feature_column.crossed_column(
+    [&quot;sport&quot;, &quot;city&quot;], hash_bucket_size=int(1e4))
+</code></pre><h4><span id="连续的列">连续的列</span></h4><p>您可以像这样指定一个连续的功能：</p>
+<pre><code>age = tf.feature_column.numeric_column(&quot;age&quot;)
+</code></pre><p>虽然作为一个单一的实数，通常可以输入一个连续的特征 直接进入模型，Tensorflow为这种类型提供了有用的转换 的列也是如此。</p>
+<h5><span id="桶化">桶化</span></h5><p>分行化将连续的列变成分类列。这个 转换可以让你在特征十字中使用连续的特征，或者学习 具体价值范围特别重要的案例。</p>
+<p>分行化将可能值的范围划分为子范围 水桶：</p>
+<pre><code>age_buckets = tf.feature_column.bucketized_column(
+    age, boundaries=[18, 25, 30, 35, 40, 45, 50, 55, 60, 65])
+</code></pre><p>值落入的桶成为分类标签 那个价值。</p>
+<h4><span id="输入功能">输入功能</span></h4><p><code>FeatureColumn</code>为您的模型输入数据提供了一个规范， 指示如何表示和转换数据。但他们不提供 数据本身。您通过输入功能提供数据。</p>
+<p>输入函数必须返回张量字典。每个键对应于 <code>FeatureColumn</code>的名称。每个键的值是一个张量包含的 所有数据实例的该功能的值。看到<br>使用tf.estimator为输入构建输入函数 更全面的看输入功能，和<code>input_fn</code>中 线性模型教程代码 作为输入函数的示例实现。</p>
+<p>输入功能被传递给<code>train()</code>和<code>evaluate()</code>呼叫 开始培训和测试，如下一节所述。</p>
+<h3><span id="线性估计器">线性估计器</span></h3><p>Tensorflow估算器类提供统一的培训和评估工具 用于回归和分类模型。他们照顾的细节 训练和评估循环，并允许用户专注于模型输入和 建筑。</p>
+<p>要建立一个线性估计器，你可以使用 <code>tf.estimator.LinearClassifier</code>估算器或<br><code>tf.estimator.LinearRegressor</code>估算器，用于分类和 回归分别。</p>
+<p>与所有张量流估计器一样，运行估算器只需要：</p>
+<p>实例化估计器类。对于两个线性估计器类，    您将<code>FeatureColumn</code>的列表传递给构造函数。 调用估算器的<code>train()</code>方法进行训练。<br>调用估算器的<code>evaluate()</code>方法来看看它是如何工作的。</p>
+<p>例如：</p>
+<pre><code>e = tf.estimator.LinearClassifier(
+    feature_columns=[
+        native_country, education, occupation, workclass, marital_status,
+        race, age_buckets, education_x_occupation,
+        age_buckets_x_race_x_occupation],
+    model_dir=YOUR_MODEL_DIRECTORY)
+e.train(input_fn=input_fn_train, steps=200)
+# Evaluate for one step (one pass through the test data).
+results = e.evaluate(input_fn=input_fn_test)
+
+# Print the stats for the evaluation.
+for key in sorted(results):
+    print(&quot;%s: %s&quot; % (key, results[key]))
+</code></pre><h3><span id="广泛深入的学习">广泛深入的学习</span></h3><p>tf.estimator API还提供了一个可以联合使用的估计器类 训练线性模型和深度神经网络。这种新颖的方法结合了 线性模型用泛化“记忆”关键特征的能力<br>神经网络的能力。使用<code>tf.estimator.DNNLinearCombinedClassifier</code>来 创造这种“宽而深”的模式：</p>
+<pre><code>e = tf.estimator.DNNLinearCombinedClassifier(
+    model_dir=YOUR_MODEL_DIR,
+    linear_feature_columns=wide_columns,
+    dnn_feature_columns=deep_columns,
+    dnn_hidden_units=[100, 50])
+</code></pre><p>有关更多信息，请参阅广泛深入学习教程。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/linear/" data-title="具有张量流的大规模线性模型 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/optimizing/" title="针对移动设备进行优化">
+  <strong>上一篇：</strong><br/>
+  <span>
+  针对移动设备进行优化</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/layers/"  title="TF层指南：建立卷积神经网络">
+ <strong>下一篇：</strong><br/> 
+ <span>TF层指南：建立卷积神经网络
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">具有张量流的大规模线性模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">什么是线性模型？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">你为什么要使用线性模型？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">tf.estimator如何帮助您构建线性模型？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">功能列和转换</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">稀疏的列</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.1.1.</span> <span class="toc-text">编码稀疏列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.1.2.</span> <span class="toc-text">特色十字架</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">连续的列</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.2.1.</span> <span class="toc-text">桶化</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">输入功能</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">线性估计器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">广泛深入的学习</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

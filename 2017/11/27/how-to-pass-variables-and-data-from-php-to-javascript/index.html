@@ -1,0 +1,696 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何将变量和数据从PHP传递到JavaScript？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我有一个PHP的变量，我需要在我的JavaScript代码的价值。我怎样才能让我的变量从PHP到JavaScript？ 我有这样的代码： &amp;lt;?php      ...      $val = $myService-&amp;gt;getValue(); // makes an api and db call ?&amp;gt; 我有JavaScript代码，需要val和看起来沿线： &amp;lt;script&amp;g">
+<meta name="keywords" content="javascript,php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何将变量和数据从PHP传递到JavaScript？">
+<meta property="og:url" content="https://www.tracholar.top/2017/11/27/how-to-pass-variables-and-data-from-php-to-javascript/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我有一个PHP的变量，我需要在我的JavaScript代码的价值。我怎样才能让我的变量从PHP到JavaScript？ 我有这样的代码： &amp;lt;?php      ...      $val = $myService-&amp;gt;getValue(); // makes an api and db call ?&amp;gt; 我有JavaScript代码，需要val和看起来沿线： &amp;lt;script&amp;g">
+<meta property="og:updated_time" content="2018-01-15T15:49:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何将变量和数据从PHP传递到JavaScript？">
+<meta name="twitter:description" content="我有一个PHP的变量，我需要在我的JavaScript代码的价值。我怎样才能让我的变量从PHP到JavaScript？ 我有这样的代码： &amp;lt;?php      ...      $val = $myService-&amp;gt;getValue(); // makes an api and db call ?&amp;gt; 我有JavaScript代码，需要val和看起来沿线： &amp;lt;script&amp;g">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/11/27/how-to-pass-variables-and-data-from-php-to-javascript/" title="如何将变量和数据从PHP传递到JavaScript？" itemprop="url">如何将变量和数据从PHP传递到JavaScript？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-11-27T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">1. Use AJAX to get the data you need from the server</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text">Pros</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text">Cons</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Implementation Example</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">get-data.php</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">index.php (or whatever the actual page is named like)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Some more reading material</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">2. Echo the data into the page somewhere, and use JavaScript to get the</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.1.</span> <span class="toc-text">Pros</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.2.</span> <span class="toc-text">Cons</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">Implementation Example</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.1.</span> <span class="toc-text">index.php</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">3. Echo the data directly to JavaScript</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.0.1.</span> <span class="toc-text">Pros</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.0.2.</span> <span class="toc-text">Cons</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Implementation Example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Explanation of the problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text">Solutions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.</span> <span class="toc-text">Am I writing a website or an application?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.1.</span> <span class="toc-text">Website</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.2.</span> <span class="toc-text">Application</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我有一个PHP的变量，我需要在我的JavaScript代码的价值。我怎样才能让我的变量从PHP到JavaScript？</p>
+<p>我有这样的代码：</p>
+<pre><code>&lt;?php
+     ...
+     $val = $myService-&gt;getValue(); // makes an api and db call
+?&gt;
+</code></pre><p>我有JavaScript代码，需要<code>val</code>和看起来沿线：</p>
+<pre><code>&lt;script&gt;
+    myPlugin.start($val); // tried this, didn&apos;t work
+    &lt;?php myPlugin.start($val); ?&gt; // this didn&apos;t work either
+    myPlugin.start(&lt;?=$val?&gt; // this works sometimes, but sometimes it fails
+&lt;/script&gt;
+</code></pre><a id="more"></a>
+<p>实际上有几种方法可以做到这一点。有些需要比别人更多的开销，有些被认为比别人更好。</p>
+<p>没有特别的顺序：</p>
+<p>使用AJAX从服务器获取所需的数据。 将数据回传到某个地方的页面，然后使用JavaScript从DOM获取信息。 将数据直接回传给JavaScript。</p>
+<p>在这篇文章中，我们将分析上面的每一个方法，看看每个方法的优缺点，以及如何实现它们。</p>
+<h1><span id="1-use-ajax-to-get-the-data-you-need-from-the-server">1. Use AJAX to get the data you need from the server</span></h1><p>这种方法被认为是最好的，因为你的服务器端和客户端脚本是完全分离的。</p>
+<h3><span id="pros">Pros</span></h3><p>更好地分离图层 - 如果明天停止使用PHP，并且希望移动到servlet，REST API或其他服务，则不必更改很多JavaScript代码。 更可读 -<br>JavaScript是JavaScript，PHP是PHP。如果不混合这两种语言，您将在两种语言中获得更多可读代码。 允许异步数据传输 -<br>从PHP获取信息可能是时间/资源昂贵。有时你只是不想等待信息，加载页面，并随时获取信息。 数据不能直接在标记中找到 -<br>这意味着您的标记保持清洁的任何额外的数据，只有JavaScript看到它。</p>
+<h3><span id="cons">Cons</span></h3><p>延迟 - AJAX创建一个HTTP请求，并且HTTP请求通过网络传输并具有网络延迟。 状态 -<br>通过单独的HTTP请求获取的数据将不包括来自获取HTML文档的HTTP请求的任何信息。您可能需要这些信息（例如，如果HTML文档是为了响应表单提交而生成的），如果您确实需要，则需要以某种方式进行传输。如果你已经排除了将数据嵌入到页面中（如果你使用这种技术，你将会得到这些数据），那么这就限制了你可能会受到竞争条件影响的cookies<br>/会话。</p>
+<h2><span id="implementation-example">Implementation Example</span></h2><p>使用AJAX，您需要两个页面，一个是PHP生成输出的地方，另一个是JavaScript获取输出的地方：</p>
+<h3><span id="get-dataphp">get-data.php</span></h3><pre><code>/* Do some operation here, like talk to the database, the file-session
+ * The world beyond, limbo, the city of shimmers, and Canada.
+ * 
+ * AJAX generally uses strings, but you can output JSON, HTML and XML as well. 
+ * It all depends on the Content-type header that you send with your AJAX
+ * request. */
+
+echo json_encode(42); //In the end, you need to **echo** the result. 
+                      //All data should be _json_encode()_ d.
+
+                      //You can json_encode() any value in PHP, arrays, strings,
+                      //even objects.
+</code></pre><h3><span id="indexphp-or-whatever-the-actual-page-is-named-like">index.php (or whatever the actual page is named like)</span></h3><pre><code>&lt;!-- snip --&gt;
+&lt;script&gt;
+    function reqListener () {
+      console.log(this.responseText);
+    }
+
+    var oReq = new XMLHttpRequest(); //New request object
+    oReq.onload = function() {
+        //This is where you handle what to do with the response.
+        //The actual data is found on this.responseText
+        alert(this.responseText); //Will alert: 42
+    };
+    oReq.open(&quot;get&quot;, &quot;get-data.php&quot;, true);
+    //                               ^ Don&apos;t block the rest of the execution.
+    //                                 Don&apos;t wait until the request finishes to 
+    //                                 continue.
+    oReq.send();
+&lt;/script&gt;
+&lt;!-- snip --&gt;
+</code></pre><p>上述两个文件的组合将在文件加载完成时提示<code>42</code>。</p>
+<h2><span id="some-more-reading-material">Some more reading material</span></h2><p>使用XMLHttpRequest - MDN XMLHttpRequest对象引用 - MDN 如何返回来自异步调用的响应？</p>
+<h1><span id="2-echo-the-data-into-the-page-somewhere-and-use-javascript-to-get-the">2. Echo the data into the page somewhere, and use JavaScript to get the</span></h1><p>information from the DOM</p>
+<p>这种方法不如AJAX更好，但它仍然有其优点。 PHP和JavaScript之间仍然相对独立，因为JavaScript中没有直接的PHP。</p>
+<h3><span id="pros">Pros</span></h3><p>快速DOM操作通常很快，您可以相对快速地存储和访问大量数据。</p>
+<h3><span id="cons">Cons</span></h3><p>潜在的非语义标记 - 通常情况下，你使用某种<code>&lt;input
+type=hidden&gt;</code>来存储信息，因为从<code>inputNode.value</code>中获取信息比较容易，但这样做意味着在HTML中没有任何意义。<br>HTML具有关于文档的数据的<code>&lt;meta&gt;</code>元素，并且HTML 5引入<code>data-*</code>属性专门用于与可以与特定元素关联的JS读取的数据。 Dirties<br>the Source - PHP生成的数据直接输出到HTML源代码，这意味着你得到一个更大，更少聚焦的HTML源代码。 更难得到结构化的数据 -<br>结构化的数据将必须是有效的HTML，否则你将不得不逃生并自己转换字符串。 紧密地将PHP耦合到您的数据逻辑 -<br>因为在演示文稿中使用了PHP，所以不能将这两者完全分开。</p>
+<h2><span id="implementation-example">Implementation Example</span></h2><p>有了这个，这个想法就是创建一些不会显示给用户的元素，但对JavaScript来说是可见的。</p>
+<h3><span id="indexphp">index.php</span></h3><pre><code>&lt;!-- snip --&gt;
+&lt;div id=&quot;dom-target&quot; style=&quot;display: none;&quot;&gt;
+    &lt;?php 
+        $output = &quot;42&quot;; //Again, do some operation, get the output.
+        echo htmlspecialchars($output); /* You have to escape because the result
+                                           will not be valid HTML otherwise. */
+    ?&gt;
+&lt;/div&gt;
+&lt;script&gt;
+    var div = document.getElementById(&quot;dom-target&quot;);
+    var myData = div.textContent;
+&lt;/script&gt;
+&lt;!-- snip --&gt;
+</code></pre><h1><span id="3-echo-the-data-directly-to-javascript">3. Echo the data directly to JavaScript</span></h1><p>这可能是最容易理解的，也是最可怕的使用。除非你知道你在做什么，否则不要这样做。</p>
+<h3><span id="pros">Pros</span></h3><p>很容易实现 - 实现这一点并且理解起来很少。 不脏源 - 变量直接输出到JavaScript，所以DOM不受影响。</p>
+<h3><span id="cons">Cons</span></h3><p>不安全 - PHP没有简单的JavaScript转义功能，而且它们不是微不足道的。特别是在使用用户输入时，您非常容易受到二级注入的影响。争议见评论<br>紧密地将PHP耦合到您的数据逻辑 - 因为在演示文稿中使用了PHP，所以不能将这两者完全分开。 结构化的数据很难 - 你也许可以做JSON<br>…还挺。但是XML和HTML需要特别关注。</p>
+<h2><span id="implementation-example">Implementation Example</span></h2><p>实施相对简单：</p>
+<pre><code>&lt;!-- snip --&gt;
+&lt;script&gt;
+    var data = &lt;?php echo json_encode(&quot;42&quot;, JSON_HEX_TAG); ?&gt;; //Don&apos;t forget the extra semicolon!
+&lt;/script&gt;
+&lt;!-- snip --&gt;
+</code></pre><p>祝你好运！</p>
+<p>我会尝试一个更简单的答案：</p>
+<h2><span id="explanation-of-the-problem">Explanation of the problem</span></h2><p>首先，让我们了解从服务器提供页面时的事件流程：</p>
+<p>首先运行PHP，它生成提供给客户端的HTML。 然后，HTML被传送到客户端，PHP完成后，我想强调，一旦代码离开服务器 - PHP已经完成，不能再访问它。<br>然后，JavaScript的HTML到达客户端，可以在该HTML上执行JS。</p>
+<p>所以，真正要记住的核心是HTTP是无状态的。一旦请求离开服务器，服务器就不能触摸它。所以，这使我们的选择：</p>
+<p>初始请求完成后，从客户端发送更多请求。 在初始请求中编码服务器必须说的内容。</p>
+<h2><span id="solutions">Solutions</span></h2><p>这是你应该问自己的核心问题是：</p>
+<h2><span id="am-i-writing-a-website-or-an-application">Am I writing a website or an application?</span></h2><p>网站主要是基于页面的，页面加载时间需要尽可能快（例如 - 维基百科）。 Web应用程序更多的AJAX沉重，并执行大量的往返获取客户端的快速信息（例如 -<br>股票仪表板）。</p>
+<h3><span id="website">Website</span></h3><p>初始请求完成后，从客户端发送更多的请求是很慢的，因为它需要更多的HTTP请求，这些HTTP请求具有相当大的开销。而且，它需要异步性，因为在完成AJAX请求时需要一个处理程序。</p>
+<p>除非您的网站是从服务器获取信息的应用程序，否则我不会建议再发送一个请求。</p>
+<p>您希望快速的响应时间对转换和加载时间产生巨大的影响。在这种情况下，创建Ajax请求对于初始正常运行时间是缓慢的，并且不需要。</p>
+<p>你有两种方法来解决这个问题</p>
+<p>设置一个cookie - cookies是在服务器和客户端都可以读取的HTTP请求中发送的头文件。 将变量编码为JSON -<br>JSON看起来非常接近JavaScript对象，大多数JSON对象都是有效的JavaScript变量。</p>
+<p>设置一个cookie真的不是很难，你只需要给它赋值：</p>
+<pre><code>setcookie(&quot;MyCookie&quot;, $value); // sets the cookie to the value, remember, do not
+                               // set it with HTTP only to true.
+</code></pre><p>然后，你可以使用<code>document.cookie</code>：</p>
+<p>这里是一个简短的滚动解析器，但是我在上面链接的答案有更好的测试：</p>
+<pre><code>var cookies = document.cookie.split(&quot;;&quot;).
+    map(function(el){ return el.split(&quot;=&quot;); }).
+    reduce(function(prev,cur){ prev[cur[0]] = cur[1];return prev },{});
+
+cookies[&quot;MyCookie&quot;] // value set with php.
+</code></pre><p>Cookies对于一些数据很有用。这是跟踪服务经常做的事情。</p>
+<p>一旦我们有了更多的数据，我们就可以用JSON把它编码成一个JS变量：</p>
+<pre><code>&lt;script&gt;
+    var myServerData = &lt;?=json_encode($value)?&gt;; // don&apos;t forget to sanitize 
+                                                 //server data
+&lt;/script&gt;
+</code></pre><p>假设<code>$value</code>是<code>json_encode</code>able在PHP端（通常是）。这种技术是StackOverflow与聊天的例子（只使用.net而不是php）。</p>
+<h3><span id="application">Application</span></h3><p>如果您正在编写应用程序 - 突然间，初始加载时间并不总是与应用程序正在进行的性能一样重要，并且它开始为单独加载数据和代码而付出代价。</p>
+<p>我的答案在这里解释了如何在JavaScript中使用AJAX加载数据：</p>
+<pre><code>function callback(data){
+    // what do I do with the response?
+}
+
+var httpRequest = new XMLHttpRequest;
+httpRequest.onreadystatechange = function(){
+    if (httpRequest.readyState === 4) {// request is done
+        if (httpRequest.status === 200) {// successfully
+            callback(httpRequest.responseText);// we&apos;re calling our method
+        }
+    }
+};
+httpRequest.open(&apos;GET&apos;, &quot;/echo/json&quot;);
+httpRequest.send();
+</code></pre><p>或者用jQuery：</p>
+<pre><code>$.get(&quot;/your/url&quot;).done(function(data){
+    // what do I do with the data?
+});
+</code></pre><p>现在，服务器只需要包含一个<code>/your/url</code>路由/文件，其中包含抓取数据和执行某些操作的代码，在您的情况下：</p>
+<pre><code>&lt;$php
+ ...
+ $val = myService-&gt;getValue(); // makes an api and db call
+ echo json_encode($val); // write it to the output
+ $&gt;
+</code></pre><p>这样，我们的JS文件要求数据，并显示它，而不是要求代码或布局。这是更清洁，并随着应用程序变得更高而开始回报。这也是更好的分离问题，它允许测试客户端代码，而不涉及任何服务器端技术，这是另一个优点。</p>
+<p>后记：当你从PHP到JavaScript注入任何东西时，你必须非常了解XSS攻击向量。要正确地转义值非常困难，而且对上下文很敏感。如果您不确定如何处理XSS，或者不知道这些，请阅读OWASP的这篇文章，以及这个问题。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2017/11/27/how-to-pass-variables-and-data-from-php-to-javascript/" data-title="如何将变量和数据从PHP传递到JavaScript？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/11/27/how-to-push-both-value-and-key-into-array/" title="如何将数值和键都推到数组中">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何将数值和键都推到数组中</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/11/27/validate-a-username-and-password-against-active-directory/"  title="根据Active Directory验证用户名和密码？">
+ <strong>下一篇：</strong><br/> 
+ <span>根据Active Directory验证用户名和密码？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">1. Use AJAX to get the data you need from the server</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text">Pros</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text">Cons</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">Implementation Example</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">get-data.php</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">index.php (or whatever the actual page is named like)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">Some more reading material</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">2. Echo the data into the page somewhere, and use JavaScript to get the</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.1.</span> <span class="toc-text">Pros</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.0.2.</span> <span class="toc-text">Cons</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.</span> <span class="toc-text">Implementation Example</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.1.1.</span> <span class="toc-text">index.php</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">3. Echo the data directly to JavaScript</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.0.1.</span> <span class="toc-text">Pros</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.0.2.</span> <span class="toc-text">Cons</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.1.</span> <span class="toc-text">Implementation Example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.2.</span> <span class="toc-text">Explanation of the problem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.3.</span> <span class="toc-text">Solutions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.</span> <span class="toc-text">Am I writing a website or an application?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.1.</span> <span class="toc-text">Website</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.4.2.</span> <span class="toc-text">Application</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

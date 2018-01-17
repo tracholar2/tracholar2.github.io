@@ -112,25 +112,79 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/what-does-enctype-multipart-form-data-mean/" title="enctype = multipart / form-data 是什么意思？" itemprop="url">enctype = multipart / form-data 是什么意思？</a>
+      <a href="/2018/01/14/iterating-through-a-collection-avoiding-concurrentmodificationexception-when-re/" title="迭代集合，避免在循环中移除时出现ConcurrentModificationException异常" itemprop="url">迭代集合，避免在循环中移除时出现ConcurrentModificationException异常</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><code></code> enctype =’multipart / form-data’<code>在</code> HTML `表单中是什么意思，我们应该什么时候使用它？</p>
+        <p>我们都知道你不能这样做：</p>
+<pre><code>for (Object i : l) {
+    if (condition(i)) {
+        l.remove(i);
+    }
+}
+</code></pre><p>ConcurrentModificationException `等…这显然有效，但并不总是。以下是一些特定的代码：</p>
+<pre><code>public static void main(String[] args) {
+    Collection&lt;Integer&gt; l = new ArrayList&lt;Integer&gt;();
+
+    for (int i=0; i &lt; 10; ++i) {
+        l.add(new Integer(4));
+        l.add(new Integer(5));
+        l.add(new Integer(6));
+    }
+
+    for (Integer i : l) {
+        if (i.intValue() == 5) {
+            l.remove(i);
+        }
+    }
+
+    System.out.println(l);
+}
+</code></pre><p>这当然会导致：</p>
+<pre><code>Exception in thread &quot;main&quot; java.util.ConcurrentModificationException
+</code></pre><p>即使多个线程没有这样做……无论如何。</p>
+<p>这个问题最好的解决办法是什么？我怎样才能从循环中删除一个项目而不会抛出这个异常？</p>
+<p>我也在这里使用一个任意的<code>Collection</code>，不一定是一个<code>ArrayList</code>，所以你不能依赖<code>get</code>。<code>p&gt; &lt;!-- more --&gt;
+Iterator.remove（）</code>是安全的，你可以像这样使用它：</p>
+<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;();
+
+// This is a clever way to create the iterator and call iterator.hasNext() like
+// you would do in a while-loop. It would be the same as doing:
+//     Iterator&lt;String&gt; iterator = list.iterator();
+//     while (iterator.hasNext()) {
+for (Iterator&lt;String&gt; iterator = list.iterator(); iterator.hasNext();) {
+    String string = iterator.next();
+    if (string.isEmpty()) {
+        // Remove the current element from the iterator and the list.
+        iterator.remove();
+    }
+}
+</code></pre><p>请注意，<code>Iterator.remove</code>是在迭代过程中修改集合的唯一安全方法。如果在迭代过程中以其他方式修改了底层集合，则行为是未指定的。</p>
+<p>来源：</p>
+<p><a href="http://docs.oracle.com/javase/tutorial/collections/interfaces/collection.html" target="_blank" rel="noopener"> http://docs.oracle.com/javase/tutorial/集合/接口/ collection.html</a></p>
+<hr>
+<p>同样，如果你有一个<code>ListIterator</code>并且想要添加_项，你可以使用<a href="“http://docs.oracle.com/javase"> <code>ListIterator＃add</code></a>，出于同样的原因，您可以使用<code>Iterator＃remove</code> - 它被设计为允许它。</p>
+<p>愚蠢的我：</p>
+<pre><code>Iterator&lt;Integer&gt; iter = l.iterator();
+while (iter.hasNext()) {
+    if (iter.next().intValue() == 5) {
+        iter.remove();
+    }
+}
+</code></pre><p>我认为，由于foreach循环是用于迭代的语法糖，所以使用迭代器将无济于事……但它为您提供了<code>.remove（）</code>功能。</p>
+
         
         
         <p class="article-more-link">
-          
-            <a href="/2018/01/15/what-does-enctype-multipart-form-data-mean/#more">Read More</a>
           
        </p>
     </div>
@@ -140,7 +194,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/html/">html</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -180,476 +234,29 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/how-to-prevent-buttons-from-submitting-forms/" title="如何防止按钮提交表单" itemprop="url">如何防止按钮提交表单</a>
+      <a href="/2018/01/14/java-3-dots-in-parameters/" title="Java，参数中有3个点" itemprop="url">Java，参数中有3个点</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在下面的页面中，使用Firefox的删除按钮提交表单，但添加按钮没有。如何防止删除按钮提交表单？</p>
-<pre><code>&lt;html&gt;
-&lt;head&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.3.2.min.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-function addItem() {
-  var v = $(&apos;form :hidden:last&apos;).attr(&apos;name&apos;);
-  var n = /(.*)input/.exec(v);
-  var newPrefix;
-  if ( n[1].length == 0 ) {
-    newPrefix = &apos;1&apos;;
-  } else {
-    newPrefix = parseInt(n[1])+1;
-  }
-  var oldElem = $(&apos;form tr:last&apos;);
-  var newElem = oldElem.clone(true);
-  var lastHidden = $(&apos;form :hidden:last&apos;);
-  lastHidden.val(newPrefix);
-  var pat = &apos;=\&quot;&apos;+n[1]+&apos;input&apos;;
-  newElem.html(newElem.html().replace(new RegExp(pat, &apos;g&apos;), &apos;=\&quot;&apos;+newPrefix+&apos;input&apos;));
-  newElem.appendTo(&apos;table&apos;);
-  $(&apos;form :hidden:last&apos;).val(&apos;&apos;);
+        <p>以下方法中的3个点是什么意思？</p>
+<pre><code>public void myMethod(String... strings){
+    // method body
 }
-function removeItem() {
-  var rows = $(&apos;form tr&apos;);
-  if ( rows.length &gt; 2 ) {
-    rows[rows.length-1].html(&apos;&apos;);
-    $(&apos;form :hidden:last&apos;).val(&apos;&apos;);
-  } else {
-    alert(&apos;Cannot remove any more rows&apos;);
-  }
-}
-&lt;/script&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;form autocomplete=&quot;off&quot; method=&quot;post&quot; action=&quot;&quot;&gt;
-&lt;p&gt;Title:&lt;input type=&quot;text&quot; /&gt;&lt;/p&gt;
-&lt;button onclick=&quot;addItem(); return false;&quot;&gt;Add Item&lt;/button&gt;
-&lt;button onclick=&quot;removeItem(); return false;&quot;&gt;Remove Last Item&lt;/button&gt;
-&lt;table&gt;
-&lt;th&gt;Name&lt;/th&gt;
-
-&lt;tr&gt;
-  &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;input1&quot; name=&quot;input1&quot; /&gt;&lt;/td&gt;
-  &lt;td&gt;&lt;input type=&quot;hidden&quot; id=&quot;input2&quot; name=&quot;input2&quot; /&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;input id=&quot;submit&quot; type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot;&gt;
-&lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/how-to-prevent-buttons-from-submitting-forms/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/selecting-all-text-in-html-text-input-when-clicked/" title="单击时选择HTML文本输入中的所有文本" itemprop="url">单击时选择HTML文本输入中的所有文本</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有以下代码在HTML网页中显示文本框。</p>
-<pre><code>&lt;input type=&quot;text&quot; id=&quot;userid&quot; name=&quot;userid&quot; value=&quot;Please enter the user ID&quot; /&gt;
-</code></pre><p>当页面显示时，文本包含 <em>请输入用户名</em> 消息。但是，我发现用户需要点击3次才能选择所有的文本（在这种情况下，它是 <em>请输入用户ID</em> ）。</p>
-<p>只用一次点击就可以选择整个文本吗？</p>
-<p>**修改</p>
-<p>对不起，我忘了说：我必须使用输入<code>type =“text”</code><br>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/selecting-all-text-in-html-text-input-when-clicked/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/select-elements-by-data-attribute-in-css/" title="在CSS中按数据属性选择元素" itemprop="url">在CSS中按数据属性选择元素</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>是否可以通过CSS5中的HTML5数据属性（例如<code>data-role</code>）选择元素？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/select-elements-by-data-attribute-in-css/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a><a href="/tags/html5/">html5</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/how-do-i-remove-the-space-between-inline-block-elements/" title="如何去除内联块元素之间的空间？" itemprop="url">如何去除内联块元素之间的空间？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>鉴于这个HTML和CSS：</p>
-<pre><code>span {
-    display:inline-block;
-    width:100px;
-    background-color:palevioletred;
-}
-
-
-&lt;p&gt;
-    &lt;span&gt; Foo &lt;/span&gt;
-    &lt;span&gt; Bar &lt;/span&gt;
-&lt;/p&gt;
-</code></pre><p>因此，SPAN元素之间会有一个4像素宽的空间。</p>
-<p><strong>演示：</strong> <a href="http://jsfiddle.net/dGHFV/" target="_blank" rel="noopener"> http://jsfiddle.net/dGHFV/ </a> &lt; / p&gt;<br>我明白为什么会发生这种情况，而且我也知道可以通过消除HTML源代码中的SPAN元素之间的空白来消除该空间，如下所示：</p>
-<pre><code>&lt;p&gt;
-    &lt;span&gt; Foo &lt;/span&gt;&lt;span&gt; Bar &lt;/span&gt;
-&lt;/p&gt;
-</code></pre><p>然而，我希望有一个不需要HTML源代码被篡改的CSS解决方案。</p>
-<p>我知道如何通过JavaScript解决这个问题 - 通过从容器元素（段落）中删除文本节点，如下所示：</p>
-<pre><code>// jQuery
-$(&apos;p&apos;).contents().filter(function() { return this.nodeType === 3; }).remove();
-</code></pre><p><strong>演示</strong> ：[ <a href="http://jsfiddle.net/dGHFV/1/" target="_blank" rel="noopener">http://jsfiddle.net/dGHFV/1/</a> &lt; / A&gt;</p>
-<p>但是这个问题可以用CSS来解决吗？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/how-do-i-remove-the-space-between-inline-block-elements/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/why-shouldnt-i-use-mysql-functions-in-php/" title="为什么我不应该在PHP中使用mysql_ *函数？" itemprop="url">为什么我不应该在PHP中使用mysql_ *函数？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>为什么不应该使用<code>mysql _ *</code>函数的技术原因是什么？ （例如<code>mysql_query（）</code>，<code>mysql_connect（）</code>或者<code>mysql_real_escape_string（）</code> 为什么我应该使用别的东西，即使他们在我的网站上工作？</p>
-<p>如果他们不在我的网站上工作，为什么我会收到像</p>
-<p>这样的错误</p>
-<blockquote>
-<p>Warning: mysql_connect(): No such file or directory</p>
-</blockquote>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/why-shouldnt-i-use-mysql-functions-in-php/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/php/">php</a><a href="/tags/mysql/">mysql</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/how-do-i-retrieve-an-html-elements-actual-width-and-height/" title="如何检索HTML元素的实际宽度和高度？" itemprop="url">如何检索HTML元素的实际宽度和高度？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>假设我有一个<code>＆lt; div＆gt;</code>，我希望在浏览器的显示（视口）中居中。为此，我需要计算<code>＆lt; div＆gt;</code>元素的宽度和高度。</p>
-<p>我应该使用什么？请提供有关浏览器兼容性的信息。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/how-do-i-retrieve-an-html-elements-actual-width-and-height/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/jquery-set-cursor-position-in-text-area/" title="jQuery设置文本区域的光标位置" itemprop="url">jQuery设置文本区域的光标位置</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何使用jQuery在文本字段中设置光标位置？我有一个带有内容的文本字段，并且我希望用户光标在焦点位于某个偏移量的位置。代码应该看起来像这样：</p>
-<pre><code>$(&apos;#input&apos;).focus(function() {
-  $(this).setCursorPosition(4);
-});
-</code></pre><p>那个setCursorPosition函数的实现是什么样的？如果你有一个内容为abcdefg的文本字段，这个调用将导致光标的位置如下：abcd <strong> |
-</strong> efg。</p>
-<p>Java有一个类似的函数setCaretPosition。 JavaScript是否存在类似的方法？</p>
-<p><strong>更新：我修改了CMS的代码以使用jQuery，如下所示：</strong></p>
-<pre><code>new function($) {
-  $.fn.setCursorPosition = function(pos) {
-    if (this.setSelectionRange) {
-      this.setSelectionRange(pos, pos);
-    } else if (this.createTextRange) {
-      var range = this.createTextRange();
-      range.collapse(true);
-      if(pos &lt; 0) {
-        pos = $(this).val().length + pos;
-      }
-      range.moveEnd(&apos;character&apos;, pos);
-      range.moveStart(&apos;character&apos;, pos);
-      range.select();
-    }
-  }
-}(jQuery);
 </code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/jquery-set-cursor-position-in-text-area/#more">Read More</a>
+            <a href="/2018/01/14/java-3-dots-in-parameters/#more">Read More</a>
           
        </p>
     </div>
@@ -659,7 +266,7 @@ $(&apos;p&apos;).contents().filter(function() { return this.nodeType === 3; }).r
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a><a href="/tags/jquery/">jquery</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -688,55 +295,49 @@ $(&apos;p&apos;).contents().filter(function() { return this.nodeType === 3; }).r
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/frame-buster-buster-buster-code-needed/" title="框架巴斯特巴斯特   克星代码需要" itemprop="url">框架巴斯特巴斯特   克星代码需要</a>
+      <a href="/2018/01/14/java-8-listv-into-mapk-v/" title="Java 8列表V到地图K，V中" itemprop="url">Java 8列表V到地图K，V中</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>假设您不希望其他网站在<code>＆lt; iframe＆gt;</code>中“构建”您的网站：</p>
-<pre><code>&lt;iframe src=&quot;http://example.org&quot;&gt;&lt;/iframe&gt;
-</code></pre><p>所以你在你所有的网页中插入反框架的JavaScript代码：</p>
-<pre><code>/* break us out of any containing iframes */
-if (top != self) { top.location.replace(self.location.href); }
-</code></pre><p>出色！现在，你可以“自动”破解任何包含iframe的内容。除了一个小问题。</p>
-<p>事实证明， <strong>你的框架破解代码可能被破坏</strong> ，<strong>，</strong> ` **如下所示：</p>
-<pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
-    var prevent_bust = 0  
-    window.onbeforeunload = function() { prevent_bust++ }  
-    setInterval(function() {  
-      if (prevent_bust &gt; 0) {  
-        prevent_bust -= 2  
-        window.top.location = &apos;http://example.org/page-which-responds-with-204&apos;  
-      }  
-    }, 1)  
-&lt;/script&gt;
-</code></pre><p>该代码执行以下操作：</p>
-<ul>
-<li>每次浏览器尝试通过<code>window.onbeforeunload</code>事件处理程序远离当前页面时，递增计数器</li>
-<li>通过 setInterval（）`设置一个每毫秒触发一个计时器，如果计数器递增，则将当前位置更改为攻击者控制的服务器。</li>
-<li>该服务器提供了一个HTTP状态代码 <strong>204</strong> 的页面，该页面不会导致浏览器在任何地方导航</li>
-</ul>
-<p>我的问题是 - 这更像是一个JavaScript难题，而不是一个真正的问题_ - 你怎么能打败这个破架破解者？</p>
-<p>我有几个想法，但没有在我的测试工作：</p>
-<ul>
-<li>尝试通过<code>onbeforeunload = null</code>清除<code>onbeforeunload</code>事件没有任何效果</li>
-<li>添加一个<code>alert（）</code>可以停止进程，让用户知道它正在发生，但不会以任何方式干扰代码;点击“确定”即可继续正常使用</li>
-<li>我想不出任何方法来清除<code>setInterval（）</code>定时器</li>
-</ul>
-<p>我不是一个JavaScript程序员，所以这是我的挑战：嘿，克星，你可以破坏这个糟糕的破坏者吗？**</p>
+        <p>我想使用Java 8的流和lambdas将对象列表翻译成Map。</p>
+<p>这是我在Java 7及以下版本中编写的。</p>
+<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
+        final Map&lt;String, Choice&gt; hashMap = new HashMap&lt;&gt;();
+        for (final Choice choice : choices) {
+            hashMap.put(choice.getName(), choice);
+        }
+        return hashMap;
+}
+</code></pre><p>使用Java 8和Guava我可以轻松完成这个任务，但是我想知道如何在没有Guava的情况下做到这一点。</p>
+<p>在番石榴：</p>
+<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
+    return Maps.uniqueIndex(choices, new Function&lt;Choice, String&gt;() {
+
+        @Override
+        public String apply(final Choice input) {
+            return input.getName();
+        }
+    });
+}
+</code></pre><p>用Java 8 lambda表达番石榴。</p>
+<pre><code>private Map&lt;String, Choice&gt; nameMap(List&lt;Choice&gt; choices) {
+    return Maps.uniqueIndex(choices, c -&gt; c.getName());
+}
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/frame-buster-buster-buster-code-needed/#more">Read More</a>
+            <a href="/2018/01/14/java-8-listv-into-mapk-v/#more">Read More</a>
           
        </p>
     </div>
@@ -746,7 +347,7 @@ if (top != self) { top.location.replace(self.location.href); }
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -775,25 +376,69 @@ if (top != self) { top.location.replace(self.location.href); }
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/whats-the-difference-between-b-and-strong-i-and-em/" title="b和strong，i和em之间有什么区别？" itemprop="url">b和strong，i和em之间有什么区别？</a>
+      <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/" title="Java：检查与未经检查的异常说明" itemprop="url">Java：检查与未经检查的异常说明</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>**＆lt; b＆gt;<code>和</code>＆lt; strong＆gt; <code>，</code>＆lt; i＆gt; <code>和</code>＆lt; em＆gt; `在HTML /<br>XHTML中？你应该什么时候使用每个？</p>
+        <p>我已经阅读StackOverFlow有关检查与未经检查的异常多个职位。我老实说还不太清楚如何正确使用它们。</p>
+<p>Joshua Bloch在“ <em>Effective Java</em> ”中表示，</p>
+<blockquote>
+<p>Use checked exceptions for recoverable conditions and runtime exceptions for<br>programming errors (Item 58 in 2nd edition)</p>
+</blockquote>
+<p>让我们看看我是否正确理解这一点。</p>
+<p>这里是我对被检查的异常的理解：</p>
+<pre><code>try{
+    String userInput = //read in user input
+    Long id = Long.parseLong(userInput);
+}catch(NumberFormatException e){
+    id = 0; //recover the situation by setting the id to 0
+}
+</code></pre><p>&lt;强&gt; 1。上面是否考虑过检查异常？**</p>
+<p>&lt;强&gt; 2。 RuntimeException是一个未经检查的异常吗？**</p>
+<p>以下是我对非检查异常的理解：</p>
+<pre><code>try{
+    File file = new File(&quot;my/file/path&quot;);
+    FileInputStream fis = new FileInputStream(file);   
+}catch(FileNotFoundException e){
+
+//3. What should I do here?
+    //Should I &quot;throw new FileNotFoundException(&quot;File not found&quot;);&quot;?
+    //Should I log?
+    //Or should I System.exit(0);?
+}
+</code></pre><p>&lt;强&gt; 4。现在，不能上面的代码也是一个检查异常？我可以尝试恢复这种情况？我可以吗？**（注意：我的第三个问题在上面的<code>catch</code>里面）</p>
+<pre><code>try{
+    String filePath = //read in from user input file path
+    File file = new File(filePath);
+    FileInputStream fis = new FileInputStream(file);   
+}catch(FileNotFoundException e){
+    //Kindly prompt the user an error message
+    //Somehow ask the user to re-enter the file path.
+}
+</code></pre><p>&lt;强&gt; 5。为什么人们这样做？**</p>
+<pre><code>public void someMethod throws Exception{
+
+}
+</code></pre><p>他们为什么让这个例外冒出来呢？没有更好地处理错误？为什么泡起来？</p>
+<p>编辑：我应该冒出确切的异常或使用异常屏蔽它？**</p>
+<p><strong>以下是我的读物</strong></p>
+<p>[<br><a href="https://stackoverflow.com/questions/27578/when-to-choose-
+checked-and-unchecked-exceptions" target="_blank" rel="noopener">何时选择已检查和未检查的例外情况</a></p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/whats-the-difference-between-b-and-strong-i-and-em/#more">Read More</a>
+            <a href="/2018/01/14/java-checked-vs-unchecked-exception-explanation/#more">Read More</a>
           
        </p>
     </div>
@@ -803,7 +448,364 @@ if (top != self) { top.location.replace(self.location.href); }
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/html/">html</a>
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/generate-random-number-between-two-numbers-in-javascript/" title="在JavaScript中生成两个数字之间的随机数" itemprop="url">在JavaScript中生成两个数字之间的随机数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有没有一种方法可以在JavaScript中的指定范围（例如从1到6：1,2,3,4,5或6）中生成随机数字？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/generate-random-number-between-two-numbers-in-javascript/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-inner-class-and-static-nested-class/" title="Java内部类和静态嵌套类" itemprop="url">Java内部类和静态嵌套类</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Java中的内部类和静态嵌套类之间的主要区别是什么？设计/实现在选择其中一个方面起作用吗？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/java-inner-class-and-static-nested-class/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-optional-parameters/" title="Java可选参数" itemprop="url">Java可选参数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何在Java中使用可选参数？什么规范支持可选参数？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/java-optional-parameters/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-string-to-date-conversion/" title="Java字符串到日期的转换" itemprop="url">Java字符串到日期的转换</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有人可以推荐最好的方式来转换格式’2010年1月2日’的字符串在Java中的日期？最终，我想把整个月份，每一天，每一年都分解为整数，以便我可以使用：</p>
+<pre><code>Date date = new Date();
+date.setMonth()..
+date.setYear()..
+date.setDay()..
+date.setlong currentTime = date.getTime();
+</code></pre><p>将日期转换成时间。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/java-string-to-date-conversion/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-url-encoding-of-query-string-parameters/" title="查询字符串参数的Java URL编码" itemprop="url">查询字符串参数的Java URL编码</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>假设我有一个网址</p>
+<pre><code>http://example.com/query?q=
+</code></pre><p>我有一个用户输入的查询，如：</p>
+<blockquote>
+<p>random word Â£500 bank $</p>
+</blockquote>
+<p>我希望结果是一个正确编码的网址：</p>
+<pre><code>http://example.com/query?q=random%20word%20%A3500%20bank%20%24
+</code></pre><p>实现这个目标的最好方法是什么？我尝试了<code>URLEncoder</code>并创建了URI / URL对象，但是没有一个出来很正确。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/java-url-encoding-of-query-string-parameters/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/http/">http</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/java-util-date-to-xmlgregoriancalendar/" title="java util Date到XMLGregorianCalendar" itemprop="url">java util Date到XMLGregorianCalendar</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>没有从java.util.Date到XMLGregorianCalendar的简便方法吗？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/java-util-date-to-xmlgregoriancalendar/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/xml/">xml</a>
   </div>
 
 </div>
@@ -828,7 +830,7 @@ if (top != self) { top.location.replace(self.location.href); }
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/89/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/88/">88</a><a class="page-number" href="/page/89/">89</a><span class="page-number current">90</span><a class="page-number" href="/page/91/">91</a><a class="page-number" href="/page/92/">92</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/91/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/89/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/88/">88</a><a class="page-number" href="/page/89/">89</a><span class="page-number current">90</span><a class="page-number" href="/page/91/">91</a><a class="page-number" href="/page/92/">92</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/91/">Next<span></span></a>
   </nav>
 
 </div>
@@ -871,15 +873,11 @@ if (top != self) { top.location.replace(self.location.href); }
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -888,10 +886,6 @@ if (top != self) { top.location.replace(self.location.href); }
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -904,6 +898,10 @@ if (top != self) { top.location.replace(self.location.href); }
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -928,6 +926,8 @@ if (top != self) { top.location.replace(self.location.href); }
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

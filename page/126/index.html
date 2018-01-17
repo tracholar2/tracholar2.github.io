@@ -112,183 +112,46 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/speed-comparison-with-project-euler-c-vs-python-vs-erlang-vs-haskell/" title="与项目欧拉速度比较：C vs Python与Erlang vs Haskell" itemprop="url">与项目欧拉速度比较：C vs Python与Erlang vs Haskell</a>
+      <a href="/2017/12/31/is-quitting-an-application-frowned-upon/" title="正在放弃申请吗？" itemprop="url">正在放弃申请吗？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-31T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-31</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我从<a href="http://projecteuler.net/index.php?section=problems&amp;id=12" target="_blank" rel="noopener">问题＃12 </a> <a href="“"> Project<br>Euler</a>作为编程练习，并比较我在C，Python，Erlang和Haskell中的实现（当然不是最优）实现。为了获得更高的执行时间，我搜索了第一个有1000个以上因子的三角形数字，而不是原始问题中所述的500个。</p>
-<p>结果如下：</p>
-<p>&lt;强&gt; C：</p>
-<pre><code>lorenzo@enzo:~/erlang$ gcc -lm -o euler12.bin euler12.c
-lorenzo@enzo:~/erlang$ time ./euler12.bin
-842161320
-
-real    0m11.074s
-user    0m11.070s
-sys 0m0.000s
-</code></pre><p>&lt;强&gt;的Python：</p>
-<pre><code>lorenzo@enzo:~/erlang$ time ./euler12.py 
-842161320
-
-real    1m16.632s
-user    1m16.370s
-sys 0m0.250s
-</code></pre><p>Python与PyPy：**</p>
-<pre><code>lorenzo@enzo:~/Downloads/pypy-c-jit-43780-b590cf6de419-linux64/bin$ time ./pypy /home/lorenzo/erlang/euler12.py 
-842161320
-
-real    0m13.082s
-user    0m13.050s
-sys 0m0.020s
-</code></pre><p>&lt;强&gt;二郎：</p>
-<pre><code>lorenzo@enzo:~/erlang$ erlc euler12.erl 
-lorenzo@enzo:~/erlang$ time erl -s euler12 solve
-Erlang R13B03 (erts-5.7.4) [source] [64-bit] [smp:4:4] [rq:4] [async-threads:0] [hipe] [kernel-poll:false]
-
-Eshell V5.7.4  (abort with ^G)
-1&gt; 842161320
-
-real    0m48.259s
-user    0m48.070s
-sys 0m0.020s
-</code></pre><p>&lt;强&gt; Haskell中：</p>
-<pre><code>lorenzo@enzo:~/erlang$ ghc euler12.hs -o euler12.hsx
-[1 of 1] Compiling Main             ( euler12.hs, euler12.o )
-Linking euler12.hsx ...
-lorenzo@enzo:~/erlang$ time ./euler12.hsx 
-842161320
-
-real    2m37.326s
-user    2m37.240s
-sys 0m0.080s
-</code></pre><p>&lt;强&gt;要点：</p>
+        <p>在我学习Android的尝试中，我刚刚阅读了以下内容：</p>
+<blockquote>
+<p>Question: <em>Does the user have a choice to kill the application unless we put<br>a menu option in to kill it? If no such option exists, how does the user<br>terminate the application?</em></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Answer: (Romain Guy): <em>The user doesn’t, the system handles this<br>automatically. That’s what the activity lifecycle (especially<br>onPause/onStop/onDestroy) is for. No matter what you do, do not put a “quit”<br>or “exit” application button. It is useless with Android’s application model.<br>This is also contrary to how core applications work.</em></p>
+</blockquote>
+<p>嘿嘿，我在Android世界的每一步都遇到了一些问题=（</p>
+<p>显然，你不能退出Android的应用程序（但Android系统可以很好地彻底摧毁你的应用程序，只要感觉像）。那是怎么回事？我开始认为编写一个“普通应用程序”的应用程序是不可能的</p>
 <ul>
-<li>C：100％</li>
-<li>Python：692％（使用PyPy的占118％）</li>
-<li>Erlang：436％（135％感谢RichardC）</li>
-<li>Haskell：1421％</li>
+<li>用户可以在他/她决定这样做时退出应用程序。这不是应该依靠操作系统来做的事情。</li>
 </ul>
-<p>我认为C有一个很大的优势，因为它用了很长的时间来计算，而不是任意长度的整数。另外它不需要首先加载运行时（其他人？）。</p>
-<p><strong>问题1：</strong> Erlang，Python和Haskell会因为使用任意长度的整数而失去速度，或者只要值小于<code>MAXINT</code>？</p>
-<p><strong>问题2：</strong> 为什么Haskell这么慢？有没有编译器标志，关闭刹车或是我的实施？ （后者很可能，因为Haskell是一本有七个印章的书。）</p>
-<p><strong>问题3：</strong> 你可以提供一些提示，如何优化这些实现而不改变我确定因素的方式？以任何方式优化：更好，更快，更“原生”的语言。</p>
-<p>**修改</p>
-<p><strong>问题4：</strong> 我的功能实现是否允许LCO（最后一次调用优化，又名尾递归消除），从而避免在调用堆栈中添加不必要的帧？</p>
-<p>尽管我不得不承认我的Haskell和Erlang知识是非常有限的，但我真的试图在四种语言中尽可能地实现相同的算法。</p>
-<hr>
-<p>使用的源代码：</p>
-<pre><code>#include &lt;stdio.h&gt;
-#include &lt;math.h&gt;
-
-int factorCount (long n)
-{
-    double square = sqrt (n);
-    int isquare = (int) square;
-    int count = isquare == square ? -1 : 0;
-    long candidate;
-    for (candidate = 1; candidate &lt;= isquare; candidate ++)
-        if (0 == n % candidate) count += 2;
-    return count;
-}
-
-int main ()
-{
-    long triangle = 1;
-    int index = 1;
-    while (factorCount (triangle) &lt; 1001)
-    {
-        index ++;
-        triangle += index;
-    }
-    printf (&quot;%ld\n&quot;, triangle);
-}
-</code></pre><hr>
-<pre><code>#! /usr/bin/env python3.2
-
-import math
-
-def factorCount (n):
-    square = math.sqrt (n)
-    isquare = int (square)
-    count = -1 if isquare == square else 0
-    for candidate in range (1, isquare + 1):
-        if not n % candidate: count += 2
-    return count
-
-triangle = 1
-index = 1
-while factorCount (triangle) &lt; 1001:
-    index += 1
-    triangle += index
-
-print (triangle)
-</code></pre><hr>
-<pre><code>-module (euler12).
--compile (export_all).
-
-factorCount (Number) -&gt; factorCount (Number, math:sqrt (Number), 1, 0).
-
-factorCount (_, Sqrt, Candidate, Count) when Candidate &gt; Sqrt -&gt; Count;
-
-factorCount (_, Sqrt, Candidate, Count) when Candidate == Sqrt -&gt; Count + 1;
-
-factorCount (Number, Sqrt, Candidate, Count) -&gt;
-    case Number rem Candidate of
-        0 -&gt; factorCount (Number, Sqrt, Candidate + 1, Count + 2);
-        _ -&gt; factorCount (Number, Sqrt, Candidate + 1, Count)
-    end.
-
-nextTriangle (Index, Triangle) -&gt;
-    Count = factorCount (Triangle),
-    if
-        Count &gt; 1000 -&gt; Triangle;
-        true -&gt; nextTriangle (Index + 1, Triangle + Index + 1)  
-    end.
-
-solve () -&gt;
-    io:format (&quot;~p~n&quot;, [nextTriangle (1, 1) ] ),
-    halt (0).
-</code></pre><hr>
-<pre><code>factorCount number = factorCount&apos; number isquare 1 0 - (fromEnum $ square == fromIntegral isquare)
-    where square = sqrt $ fromIntegral number
-          isquare = floor square
-
-factorCount&apos; number sqrt candidate count
-    | fromIntegral candidate &gt; sqrt = count
-    | number `mod` candidate == 0 = factorCount&apos; number sqrt (candidate + 1) (count + 2)
-    | otherwise = factorCount&apos; number sqrt (candidate + 1) count
-
-nextTriangle index triangle
-    | factorCount triangle &gt; 1000 = triangle
-    | otherwise = nextTriangle (index + 1) (triangle + index + 1)
-
-main = print $ nextTriangle 1 1
-</code></pre><p>
+<p>我试图创建的应用程序不是Android Market的应用程序。这不是一般公众“广泛使用”的应用程序，它是一个将在狭窄的业务领域使用的商业应用程序。</p>
+<p>实际上，我真的很期待为Android平台开发，因为它解决了Windows<br>Mobile和.NET中存在的许多问题。不过，上个星期对我来说有点关闭了……我希望我不必放弃Android，但现在看起来不太好（=</p>
+<p>有没有办法让我真的退出应用程序？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/speed-comparison-with-project-euler-c-vs-python-vs-erlang-vs-haskell/#more">Read More</a>
+            <a href="/2017/12/31/is-quitting-an-application-frowned-upon/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
 
 </div>
 
@@ -327,33 +190,91 @@ main = print $ nextTriangle 1 1
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/sort-array-of-objects-by-string-property-value-in-javascript/" title="在JavaScript中按字符串属性值排序对象数组" itemprop="url">在JavaScript中按字符串属性值排序对象数组</a>
+      <a href="/2017/12/30/concat-all-strings-inside-a-liststring-using-linq/" title="使用LINQ对List string中的所有字符串进行Concat" itemprop="url">使用LINQ对List string中的所有字符串进行Concat</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-30T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-30</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个JavaScript对象数组：</p>
-<pre><code>var objs = [ 
-    { first_nom: &apos;Lazslo&apos;, last_nom: &apos;Jamf&apos;     },
-    { first_nom: &apos;Pig&apos;,    last_nom: &apos;Bodine&apos;   },
-    { first_nom: &apos;Pirate&apos;, last_nom: &apos;Prentice&apos; }
-];
-</code></pre><p>如何使用JavaScript中的<code>last_nom</code>的值对它们进行排序？</p>
-<p>我知道<code>sort（a，b）</code>，但是这似乎只适用于字符串和数字。我是否需要将toString方法添加到我的对象？</p>
-<p>
+        <p>有没有任何简单的LINQ表达式将我的整个<code>List&lt;string&gt;</code>收集项目连接到带有分隔符的单个<code>string</code>？</p>
+<p>如果该集合是自定义对象而不是<code>string</code>呢？想象一下，我需要连接<code>object.Name</code>。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/sort-array-of-objects-by-string-property-value-in-javascript/#more">Read More</a>
+            <a href="/2017/12/30/concat-all-strings-inside-a-liststring-using-linq/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/30/use-jquery-to-hide-a-div-when-the-user-clicks-outside-of-it/" title="当用户点击它时，使用jQuery来隐藏DIV" itemprop="url">当用户点击它时，使用jQuery来隐藏DIV</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-30T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-30</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我正在使用这个代码：</p>
+<pre><code>$(&apos;body&apos;).click(function() {
+   $(&apos;.form_wrapper&apos;).hide();
+});
+
+$(&apos;.form_wrapper&apos;).click(function(event){
+   event.stopPropagation();
+});
+</code></pre><p>而这个HTML：</p>
+<pre><code>&lt;div class=&quot;form_wrapper&quot;&gt;
+   &lt;a class=&quot;agree&quot; href=&quot;javascript:;&quot;&gt;I Agree&lt;/a&gt;
+   &lt;a class=&quot;disagree&quot; href=&quot;javascript:;&quot;&gt;Disagree&lt;/a&gt;
+&lt;/div&gt;
+</code></pre><p>问题是我有DIV内的链接，当他们点击时不再工作。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/12/30/use-jquery-to-hide-a-div-when-the-user-clicks-outside-of-it/#more">Read More</a>
           
        </p>
     </div>
@@ -363,7 +284,7 @@ main = print $ nextTriangle 1 1
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/jquery/">jquery</a><a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -392,58 +313,56 @@ main = print $ nextTriangle 1 1
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/sorting-an-array-of-javascript-objects/" title="排序JavaScript对象的数组" itemprop="url">排序JavaScript对象的数组</a>
+      <a href="/2017/12/30/pass-method-as-parameter-using-c-sharp/" title="传递方法作为参数使用C＃" itemprop="url">传递方法作为参数使用C＃</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-30T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-30</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我使用Ajax读取以下对象，并将它们存储在数组中：</p>
-<pre><code>var homes = [        {
-        &quot;h_id&quot;: &quot;3&quot;,
-        &quot;city&quot;: &quot;Dallas&quot;,
-        &quot;state&quot;: &quot;TX&quot;,
-        &quot;zip&quot;: &quot;75201&quot;,
-        &quot;price&quot;: &quot;162500&quot;
-    }, {
-        &quot;h_id&quot;: &quot;4&quot;,
-        &quot;city&quot;: &quot;Bevery Hills&quot;,
-        &quot;state&quot;: &quot;CA&quot;,
-        &quot;zip&quot;: &quot;90210&quot;,
-        &quot;price&quot;: &quot;319250&quot;
-    }, {
-        &quot;h_id&quot;: &quot;5&quot;,
-        &quot;city&quot;: &quot;New York&quot;,
-        &quot;state&quot;: &quot;NY&quot;,
-        &quot;zip&quot;: &quot;00010&quot;,
-        &quot;price&quot;: &quot;962500&quot;
-    }
-];
-</code></pre><p>如何创建一个函数，按 <em>升序</em> <strong>或</strong> <em>降序</em> 顺序对<code>price</code>只使用JavaScript？</p>
-<p>
+        <p>我有几个方法都具有相同的签名（参数和返回值），但不同的名称和方法的内部是不同的。我想传递该方法的名称运行到另一个方法，将调用传入的方法。</p>
+<pre><code>public int Method1(string)
+{
+    ... do something
+    return myInt;
+}
+
+public int Method2(string)
+{
+    ... do something different
+    return myInt;
+}
+
+public bool RunTheMethod([Method Name passed in here] myMethodName)
+{
+    ... do stuff
+    int i = myMethodName(&quot;My String&quot;);
+    ... do more stuff
+    return true;
+}
+
+public bool Test()
+{
+    return RunTheMethod(Method1);
+}
+</code></pre><p>此代码不起作用，但这是我想要做的。我不明白的是如何编写RunTheMethod代码，因为我需要定义参数。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/sorting-an-array-of-javascript-objects/#more">Read More</a>
+            <a href="/2017/12/30/pass-method-as-parameter-using-c-sharp/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
 
 </div>
 
@@ -471,90 +390,30 @@ main = print $ nextTriangle 1 1
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/single-quotes-vs-double-quotes-in-python/" title="单引号与Python中的双引号[closed]" itemprop="url">单引号与Python中的双引号[closed]</a>
+      <a href="/2017/12/30/how-to-check-if-a-variable-is-set-in-bash/" title="如何检查一个变量是否在Bash中设置？" itemprop="url">如何检查一个变量是否在Bash中设置？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-30T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-30</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>根据文件，他们几乎可以互换。是否有一个风格的理由来使用一个在另一个？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/single-quotes-vs-double-quotes-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/set-a-default-parameter-value-for-a-javascript-function/" title="为JavaScript函数设置默认参数值" itemprop="url">为JavaScript函数设置默认参数值</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我想要一个JavaScript函数有可选的参数，我设置了一个默认值，如果这个值没有被定义的话会被使用。在Ruby中，你可以这样做：</p>
-<pre><code>def read_file(file, delete_after = false)
-  # code
-end
-</code></pre><p>这是否在JavaScript中工作？</p>
-<pre><code>function read_file(file, delete_after = false) {
-  // Code
+        <p>我如何知道是否在Bash中设置了一个变量？</p>
+<p>例如，如何检查用户是否给函数第一个参数？</p>
+<pre><code>function a {
+    # if $1 is set ?
 }
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/set-a-default-parameter-value-for-a-javascript-function/#more">Read More</a>
+            <a href="/2017/12/30/how-to-check-if-a-variable-is-set-in-bash/#more">Read More</a>
           
        </p>
     </div>
@@ -564,7 +423,7 @@ end
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/bash/">bash</a><a href="/tags/shell/">shell</a>
   </div>
 
 </div>
@@ -593,14 +452,78 @@ end
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/serializing-to-json-in-jquery/" title="在jQuery中序列化为JSON [复制]" itemprop="url">在jQuery中序列化为JSON [复制]</a>
+      <a href="/2017/12/29/why-does-c-sharp-forbid-generic-attribute-types/" title="为什么C＃禁止泛型属性类型？" itemprop="url">为什么C＃禁止泛型属性类型？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-29T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-29</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这会导致编译时异常：</p>
+<pre><code>public sealed class ValidatesAttribute&lt;T&gt; : Attribute
+{
+
+}
+
+[Validates&lt;string&gt;]
+public static class StringValidation
+{
+
+}
+</code></pre><p>我意识到C＃不支持通用属性。但是，经过多次Google搜索，我似乎无法找到原因。</p>
+<p>有谁知道为什么泛型类型不能从<code>Attribute</code>派生？任何理论？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/12/29/why-does-c-sharp-forbid-generic-attribute-types/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/29/creating-a-div-element-in-jquery/" title="在jQuery中创建一个div元素[复制]" itemprop="url">在jQuery中创建一个div元素[复制]</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-29T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-29</time>
     
   </p>
 </header>
@@ -608,26 +531,14 @@ end
         
         <p>This question already has an answer here:</p>
 <ul>
-<li><a href="/questions/558518/serializing-an-object-to-json">Serializing an object to JSON</a> 3 answers </li>
+<li><a href="/questions/268490/jquery-document-createelement-equivalent">jQuery document.createElement equivalent?</a> 13 answers </li>
 </ul>
-<p>我需要序列化一个对象到JSON。我正在使用jQuery。有没有一个“标准”的方式来做到这一点？</p>
-<p>我的具体情况：我有一个数组定义如下所示：</p>
-<pre><code>var countries = new Array();
-countries[0] = &apos;ga&apos;;
-countries[1] = &apos;cd&apos;;
-...
-</code></pre><p>我需要把它变成一个字符串来传递给<code>$。ajax（）</code>，像这样：</p>
-<pre><code>$.ajax({
-    type: &quot;POST&quot;,
-    url: &quot;Concessions.aspx/GetConcessions&quot;,
-    data: &quot;{&apos;countries&apos;:[&apos;ga&apos;,&apos;cd&apos;]}&quot;,
-...
-</code></pre>
+<p>如何在jQuery中创建<code>div</code>元素？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/serializing-to-json-in-jquery/#more">Read More</a>
+            <a href="/2017/12/29/creating-a-div-element-in-jquery/#more">Read More</a>
           
        </p>
     </div>
@@ -637,7 +548,7 @@ countries[1] = &apos;cd&apos;;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -666,27 +577,86 @@ countries[1] = &apos;cd&apos;;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/select-rows-from-a-dataframe-based-on-values-in-a-column-in-pandas/" title="根据熊猫中列中的值从DataFrame中选择行" itemprop="url">根据熊猫中列中的值从DataFrame中选择行</a>
+      <a href="/2017/12/29/returning-ienumerablet-vs-iqueryablet/" title="返回IEnumerable T与IQueryable T" itemprop="url">返回IEnumerable T与IQueryable T</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-29T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-29</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何根据pandas中的某列中的值从DataFrame中选择行？<br>在SQL中，我会使用：</p>
-<pre><code>select * from table where colume_name = some_value. 
-</code></pre><p><em>我试图看熊猫文档，但没有立即找到答案。</em></p>
+        <p>返回<code>IQueryable&lt;T&gt;</code>与<code>IEnumerable&lt;T&gt;</code>有何区别？</p>
+<pre><code>IQueryable&lt;Customer&gt; custs = from c in db.Customers
+where c.City == &quot;&lt;City&gt;&quot;
+select c;
+
+IEnumerable&lt;Customer&gt; custs = from c in db.Customers
+where c.City == &quot;&lt;City&gt;&quot;
+select c;
+</code></pre><p>这两个都是延期执行，什么时候应该比另一个更受欢迎？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/select-rows-from-a-dataframe-based-on-values-in-a-column-in-pandas/#more">Read More</a>
+            <a href="/2017/12/29/returning-ienumerablet-vs-iqueryablet/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/29/what-is-the-difference-between-single-quoted-and-double-quoted-strings-in-php/" title="PHP中单引号和双引号字符串有什么区别？" itemprop="url">PHP中单引号和双引号字符串有什么区别？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-29T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-29</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我不是PHP编程的专家，但我有点困惑，为什么我看到PHP中的一些代码，字符串放在单引号中，有时用双引号。</p>
+<p>我只是在.NET或C语言中知道，如果是单引号，那就意味着它是一个字符，而不是一个字符串。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/12/29/what-is-the-difference-between-single-quoted-and-double-quoted-strings-in-php/#more">Read More</a>
           
        </p>
     </div>
@@ -696,7 +666,7 @@ countries[1] = &apos;cd&apos;;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -725,26 +695,25 @@ countries[1] = &apos;cd&apos;;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/scroll-to-the-top-of-the-page-using-javascript-jquery/" title="使用JavaScript / jQuery滚动到页面顶部？" itemprop="url">使用JavaScript / jQuery滚动到页面顶部？</a>
+      <a href="/2017/12/28/using-jquery-to-center-a-div-on-the-screen/" title="使用jQuery在屏幕上居中一个DIV" itemprop="url">使用jQuery在屏幕上居中一个DIV</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-12-28T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-28</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我在页面上有一个<code>＆lt; button＆gt;</code>，当按下这个按钮时，使用jQuery显示一个隐藏的<code>＆lt; div＆gt;</code>。</p>
-<p>如何使用该函数中的JavaScript / jQuery命令滚动到页面的顶部？即使滚动条立即跳转到顶部也是可取的。我不是在寻找一个平滑的滚动。</p>
+        <p>我如何去使用jQuery在屏幕的中心设置<code>&lt;div&gt;</code>？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/scroll-to-the-top-of-the-page-using-javascript-jquery/#more">Read More</a>
+            <a href="/2017/12/28/using-jquery-to-center-a-div-on-the-screen/#more">Read More</a>
           
        </p>
     </div>
@@ -754,139 +723,7 @@ countries[1] = &apos;cd&apos;;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/save-plot-to-image-file-instead-of-displaying-it-using-matplotlib/" title="保存绘图到图像文件，而不是使用Matplotlib显示它" itemprop="url">保存绘图到图像文件，而不是使用Matplotlib显示它</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我正在写一个快速而肮脏的脚本来即时生成剧情。我使用下面的代码（来自<a href="http://en.wikipedia.org/wiki/Matplotlib" target="_blank" rel="noopener"> Matplotlib</a>文档）作为起点：</p>
-<pre><code>from pylab import figure, axes, pie, title, show
-
-# Make a square figure and axes
-figure(1, figsize=(6, 6))
-ax = axes([0.1, 0.1, 0.8, 0.8])
-
-labels = &apos;Frogs&apos;, &apos;Hogs&apos;, &apos;Dogs&apos;, &apos;Logs&apos;
-fracs = [15, 30, 45, 10]
-
-explode = (0, 0.05, 0, 0)
-pie(fracs, explode=explode, labels=labels, autopct=&apos;%1.1f%%&apos;, shadow=True)
-title(&apos;Raining Hogs and Dogs&apos;, bbox={&apos;facecolor&apos;: &apos;0.8&apos;, &apos;pad&apos;: 5})
-
-show()  # Actually, don&apos;t show, just save to foo.png
-</code></pre><p>我不想在GUI上显示图表，而是将图表保存到一个文件（比如说foo.png）中，例如，它可以在批处理脚本中使用。我该怎么做？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/save-plot-to-image-file-instead-of-displaying-it-using-matplotlib/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/safely-turning-a-json-string-into-an-object/" title="安全地将JSON字符串转换为对象" itemprop="url">安全地将JSON字符串转换为对象</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>给定一串JSON数据，如何安全地将该字符串转换为JavaScript对象？</p>
-<p>显然，你可以用这样的东西来保密。</p>
-<pre><code>var obj = eval(&quot;(&quot; + json + &apos;)&apos;);
-</code></pre><p>…但是这让我们容易受到包含其他代码的json字符串的影响，这对于简单的eval来说似乎非常危险。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/safely-turning-a-json-string-into-an-object/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -911,7 +748,7 @@ show()  # Actually, don&apos;t show, just save to foo.png
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/125/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/124/">124</a><a class="page-number" href="/page/125/">125</a><span class="page-number current">126</span><a class="page-number" href="/page/127/">127</a><a class="page-number" href="/page/128/">128</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/127/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/125/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/124/">124</a><a class="page-number" href="/page/125/">125</a><span class="page-number current">126</span><a class="page-number" href="/page/127/">127</a><a class="page-number" href="/page/128/">128</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/127/">Next<span></span></a>
   </nav>
 
 </div>
@@ -954,15 +791,11 @@ show()  # Actually, don&apos;t show, just save to foo.png
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -971,10 +804,6 @@ show()  # Actually, don&apos;t show, just save to foo.png
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -987,6 +816,10 @@ show()  # Actually, don&apos;t show, just save to foo.png
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -1011,6 +844,8 @@ show()  # Actually, don&apos;t show, just save to foo.png
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

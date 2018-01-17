@@ -112,38 +112,92 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-can-i-format-numbers-as-dollars-currency-string-in-javascript/" title="如何在JavaScript中将数字格式设置为美元货币字符串？" itemprop="url">如何在JavaScript中将数字格式设置为美元货币字符串？</a>
+      <a href="/2017/11/24/android-only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-vi/" title="Android“只有创建视图层次结构的原始线程才能触及其视图。”" itemprop="url">Android“只有创建视图层次结构的原始线程才能触及其视图。”</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-24T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-24</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想用JavaScript格式化一个价格 我想要一个将<code>float</code>作为参数的函数，并返回格式如下所示的<code>string</code>：</p>
-<pre><code>&quot;$ 2,500.00&quot;
-</code></pre><p>最好的方法是什么？</p>
+        <p>我已经在Android中构建了一个简单的音乐播放器。每首歌曲的视图都包含一个SeekBar，实现如下：</p>
+<pre><code>public class Song extends Activity implements OnClickListener,Runnable {
+    private SeekBar progress;
+    private MediaPlayer mp;
+
+    // ...
+
+    private ServiceConnection onService = new ServiceConnection() {
+          public void onServiceConnected(ComponentName className,
+            IBinder rawBinder) {
+              appService = ((MPService.LocalBinder)rawBinder).getService(); // service that handles the MediaPlayer
+              progress.setVisibility(SeekBar.VISIBLE);
+              progress.setProgress(0);
+              mp = appService.getMP();
+              appService.playSong(title);
+              progress.setMax(mp.getDuration());
+              new Thread(Song.this).start();
+          }
+          public void onServiceDisconnected(ComponentName classname) {
+              appService = null;
+          }
+    };
+
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.song);
+
+        // ...
+
+        progress = (SeekBar) findViewById(R.id.progress);
+
+        // ...
+    }
+
+    public void run() {
+    int pos = 0;
+    int total = mp.getDuration();
+    while (mp != null &amp;&amp; pos&lt;total) {
+        try {
+            Thread.sleep(1000);
+            pos = appService.getSongPosition();
+        } catch (InterruptedException e) {
+            return;
+        } catch (Exception e) {
+            return;
+        }
+        progress.setProgress(pos);
+    }
+}
+</code></pre><p>这工作正常。现在我想要一个计时器来计算歌曲进度的秒/分钟。所以我把一个<code>TextView</code>放在布局中，用<code>findViewById()</code>在<code>onCreate()</code>中得到它，把它放在<code>run()</code>后面<code>progress.setProgress(pos)</code>：</p>
+<pre><code>String time = String.format(&quot;%d:%d&quot;,
+            TimeUnit.MILLISECONDS.toMinutes(pos),
+            TimeUnit.MILLISECONDS.toSeconds(pos),
+            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(
+                    pos))
+            );
+currentTime.setText(time);  // currentTime = (TextView) findViewById(R.id.current_time);
+</code></pre><p>但最后一行给我例外：</p>
+<blockquote>
+<p>android.view.ViewRoot$CalledFromWrongThreadException: Only the original<br>thread that created a view hierarchy can touch its views.</p>
+</blockquote>
+<p>然而，我在这里做的事情基本上和我在做<code>SeekBar</code>一样 - 在<code>onCreate</code>中创建视图，然后在<code>run()</code>中触摸它 - 并没有给我这个抱怨。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-can-i-format-numbers-as-dollars-currency-string-in-javascript/#more">Read More</a>
+            <a href="/2017/11/24/android-only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-vi/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
 
 </div>
 
@@ -182,93 +236,98 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-can-i-get-a-list-of-locally-installed-python-modules/" title="我如何获得本地安装的Python模块列表？" itemprop="url">我如何获得本地安装的Python模块列表？</a>
+      <a href="/2017/11/24/calling-the-base-constructor-in-c-sharp/" title="在C＃中调用基础构造函数" itemprop="url">在C＃中调用基础构造函数</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-24T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-24</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想获得Python模块的列表，这些模块位于我的Python安装（UNIX服务器）中。</p>
-<p><strong>如何获得计算机上安装的Python模块列表？</strong></p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-can-i-get-a-list-of-locally-installed-python-modules/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-can-i-get-jquery-to-perform-a-synchronous-rather-than-asynchronous-ajax-re/" title="我怎样才能让jQuery执行同步而不是异步的Ajax请求？" itemprop="url">我怎样才能让jQuery执行同步而不是异步的Ajax请求？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有一个提供标准扩展点的JavaScript小部件。其中之一是<code>beforecreate</code>函数。它应该返回<code>false</code>以防止创建项目。</p>
-<p>我使用jQuery将一个Ajax调用添加到此函数中：</p>
-<pre><code>beforecreate: function (node, targetNode, type, to) {
-  jQuery.get(&apos;http://example.com/catalog/create/&apos; + targetNode.id + &apos;?name=&apos; + encode(to.inp[0].value),
-
-  function (result) {
-    if (result.isOk == false) 
-        alert(result.message);
-  });
+        <p>如果我从一个基类继承，并希望从继承的类的构造函数传递给基类的构造函数，我该怎么做？</p>
+<p>例如，</p>
+<p>如果我从Exception类继承我想要做这样的事情：</p>
+<pre><code>class MyExceptionClass : Exception
+{
+     public MyExceptionClass(string message, string extraInfo)
+     {
+         //This is where it&apos;s all falling apart
+         base(message);
+     }
 }
-</code></pre><p>但是我想阻止我的小部件创建项目，所以我应该在母函数中返回<code>false</code>，而不是在回调中。有没有办法使用jQuery或任何其他API执行同步的Ajax请求？</p>
+</code></pre><p>基本上我想要的是能够将字符串消息传递给基类Exception类。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-can-i-get-jquery-to-perform-a-synchronous-rather-than-asynchronous-ajax-re/#more">Read More</a>
+            <a href="/2017/11/24/calling-the-base-constructor-in-c-sharp/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/11/24/string-contains-in-bash/" title="字符串包含在Bash中" itemprop="url">字符串包含在Bash中</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-11-24T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-24</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>使用Bash，我有一个字符串：</p>
+<pre><code>string = &quot;My string&quot;
+</code></pre><p>我如何测试它是否包含另一个字符串？</p>
+<pre><code>if [ $string ?? &apos;foo&apos; ]; then
+  echo &quot;It&apos;s there!&quot;
+fi
+</code></pre><p><code>??</code>是我未知的操作符。我使用回声和<code>grep</code>？</p>
+<pre><code>if echo &quot;$string&quot; | grep &apos;foo&apos;; then
+  echo &quot;It&apos;s there!&quot;
+fi
+</code></pre><p>这看起来有点笨拙。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/11/24/string-contains-in-bash/#more">Read More</a>
           
        </p>
     </div>
@@ -278,7 +337,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
+  <span></span> <a href="/tags/bash/">bash</a>
   </div>
 
 </div>
@@ -307,25 +366,78 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-can-i-make-a-time-delay-in-python/" title="我怎样才能在Python中延迟时间？" itemprop="url">我怎样才能在Python中延迟时间？</a>
+      <a href="/2017/11/24/how-to-get-the-list-of-properties-of-a-class/" title="如何获得一个类的属性列表？" itemprop="url">如何获得一个类的属性列表？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-24T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-24</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想知道如何在Python脚本中加入时间延迟。</p>
+        <p>我如何获得一个类的所有属性列表？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-can-i-make-a-time-delay-in-python/#more">Read More</a>
+            <a href="/2017/11/24/how-to-get-the-list-of-properties-of-a-class/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/11/24/how-to-call-shell-script-from-another-shell-script/" title="如何从另一个shell脚本调用shell脚本？" itemprop="url">如何从另一个shell脚本调用shell脚本？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-11-24T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-24</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有两个shell脚本，<code>a.sh</code>和<code>b.sh</code>。</p>
+<p>如何从shell脚本<code>b.sh</code>中调用<code>a.sh</code>？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/11/24/how-to-call-shell-script-from-another-shell-script/#more">Read More</a>
           
        </p>
     </div>
@@ -335,7 +447,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/bash/">bash</a><a href="/tags/shell/">shell</a>
   </div>
 
 </div>
@@ -364,33 +476,28 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-can-i-merge-properties-of-two-javascript-objects-dynamically/" title="如何动态合并两个JavaScript对象的属性？" itemprop="url">如何动态合并两个JavaScript对象的属性？</a>
+      <a href="/2017/11/24/how-can-i-know-which-radio-button-is-selected-via-jquery/" title="我怎么知道哪个单选按钮是通过jQuery选择的？" itemprop="url">我怎么知道哪个单选按钮是通过jQuery选择的？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-24T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-24</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我需要能够在运行时合并两个（非常简单的）JavaScript对象。例如，我想：</p>
-<pre><code>var obj1 = { food: &apos;pizza&apos;, car: &apos;ford&apos; }
-var obj2 = { animal: &apos;dog&apos; }
-
-obj1.merge(obj2);
-
-//obj1 now has three properties: food, car, and animal
-</code></pre><p>有没有人有一个脚本，或知道一个内置的方式来做到这一点？我不需要递归，也不需要合并函数，只需要平面对象上的方法。</p>
-<p>
+        <p>我有两个单选按钮，并希望发布所选的一个值。 我怎样才能得到与jQuery的价值？</p>
+<p>我可以像这样得到他们所有的人：</p>
+<pre><code>$(&quot;form :radio&quot;)
+</code></pre><p>我如何知道选择哪一个？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-can-i-merge-properties-of-two-javascript-objects-dynamically/#more">Read More</a>
+            <a href="/2017/11/24/how-can-i-know-which-radio-button-is-selected-via-jquery/#more">Read More</a>
           
        </p>
     </div>
@@ -400,7 +507,7 @@ obj1.merge(obj2);
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -429,25 +536,137 @@ obj1.merge(obj2);
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-can-i-pretty-print-json-using-javascript/" title="我怎样才能漂亮的打印使用JavaScript的JSON？" itemprop="url">我怎样才能漂亮的打印使用JavaScript的JSON？</a>
+      <a href="/2017/11/24/func-delegate-with-no-return-type/" title="Func委托没有返回类型" itemprop="url">Func委托没有返回类型</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-24T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-24</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>如何以易于阅读的格式（针对读者）显示JSON？我主要看缩进和空白，甚至可能是颜色/字体样式/等。</p>
+        <p>所有的Func代表都会返回一个值。什么是.NET代表，可以使用返回无效的方法？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-can-i-pretty-print-json-using-javascript/#more">Read More</a>
+            <a href="/2017/11/24/func-delegate-with-no-return-type/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/11/23/android-drawing-separator-divider-line-in-layout/" title="安卓绘图分隔符/分隔线在布局？" itemprop="url">安卓绘图分隔符/分隔线在布局？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-11-23T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-23</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我想在布局的中间画一条线，把它用作TextView等其他项目的分隔符。有没有这个好的部件。我真的不想使用图像，因为它很难与其他组件匹配。而且我希望它也相对定位。谢谢</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/11/23/android-drawing-separator-divider-line-in-layout/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/11/23/how-to-align-checkboxes-and-their-labels-consistently-cross-browsers/" title="如何使复选框及其标签始终与跨浏览器对齐" itemprop="url">如何使复选框及其标签始终与跨浏览器对齐</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-11-23T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-23</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>这是困扰着我的不小的CSS问题之一。在StackOverflow周围的人们如何垂直对齐<code>checkboxes</code>和他们的<code>labels</code>一贯跨浏览器？每当我在Safari中正确对齐它们（通常在<br><code>vertical-align:
+baseline</code>上使用<code>input</code>），它们在Firefox和IE中完全关闭。修复它在Firefox中，Safari和IE是不可避免的搞砸了。每次我编写一个表格，我都会浪费时间。</p>
+<p>以下是我使用的标准代码：</p>
+<pre><code>&lt;form&gt;
+    &lt;div&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; /&gt; Label text&lt;/label&gt;
+    &lt;/div&gt;
+&lt;/form&gt;
+</code></pre><p>我通常使用Eric Meyer的重置，所以表单元素相对干净的覆盖。期待您提供的任何提示或技巧！</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/11/23/how-to-align-checkboxes-and-their-labels-consistently-cross-browsers/#more">Read More</a>
           
        </p>
     </div>
@@ -457,7 +676,7 @@ obj1.merge(obj2);
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -486,26 +705,27 @@ obj1.merge(obj2);
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-can-i-print-literal-curly-brace-characters-in-python-string-and-also-use-fo/" title="我怎样才能打印文字大括号字符在python字符串，也使用 format呢？" itemprop="url">我怎样才能打印文字大括号字符在python字符串，也使用 format呢？</a>
+      <a href="/2017/11/23/how-to-replace-innerhtml-of-a-div-using-jquery/" title="如何使用jQuery替换div的innerHTML？" itemprop="url">如何使用jQuery替换div的innerHTML？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-23T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-23</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>x = “ { Hello } {0} “<br>    print x.format(42)</p>
-<p>给我：<code>关键错误：Hello \\</code><br>我想打印输出：<code>{你好} 42</code><br>
+        <p>我怎么能做到以下几点：</p>
+<pre><code>document.all.regTitle.innerHTML = &apos;Hello World&apos;;
+</code></pre><p>使用jQuery其中<code>regTitle</code>是我的div ID？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-can-i-print-literal-curly-brace-characters-in-python-string-and-also-use-fo/#more">Read More</a>
+            <a href="/2017/11/23/how-to-replace-innerhtml-of-a-div-using-jquery/#more">Read More</a>
           
        </p>
     </div>
@@ -515,181 +735,7 @@ obj1.merge(obj2);
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-can-i-refresh-a-page-with-jquery/" title="如何使用jQuery刷新页面？" itemprop="url">如何使用jQuery刷新页面？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何使用jQuery刷新页面？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-can-i-refresh-a-page-with-jquery/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-can-i-remove-chomp-a-trailing-newline-in-python/" title="如何删除（chomp）Python中的尾随换行符？" itemprop="url">如何删除（chomp）Python中的尾随换行符？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>什么是Perl的<code>chomp</code>函数的Python等价物，如果它是换行符，它将删除字符串的最后一个字符？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-can-i-remove-chomp-a-trailing-newline-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-can-i-represent-an-enum-in-python/" title="我怎样才能在Python中表示一个 Enum ？" itemprop="url">我怎样才能在Python中表示一个 Enum ？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我主要是一名C＃开发人员，但是我目前正在使用Python开发一个项目。</p>
-<p>我怎样才能代表Python中的Enum等价物？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-can-i-represent-an-enum-in-python/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a><a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -714,7 +760,7 @@ obj1.merge(obj2);
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/138/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/137/">137</a><a class="page-number" href="/page/138/">138</a><span class="page-number current">139</span><a class="page-number" href="/page/140/">140</a><a class="page-number" href="/page/141/">141</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/140/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/138/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/137/">137</a><a class="page-number" href="/page/138/">138</a><span class="page-number current">139</span><a class="page-number" href="/page/140/">140</a><a class="page-number" href="/page/141/">141</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/140/">Next<span></span></a>
   </nav>
 
 </div>
@@ -757,15 +803,11 @@ obj1.merge(obj2);
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -774,10 +816,6 @@ obj1.merge(obj2);
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -790,6 +828,10 @@ obj1.merge(obj2);
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -814,6 +856,8 @@ obj1.merge(obj2);
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

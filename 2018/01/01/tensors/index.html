@@ -1,0 +1,728 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>张量 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="张量如名称所示，TensorFlow是定义和运行计算的框架 涉及张量。张量是向量和矩阵的推广 可能更高的尺寸。在内部，TensorFlow表示张量基本数据类型的n维数组。 编写一个TensorFlow程序时，您操作并传递的主要对象 周围是tf.Tensor。 tf.Tensor对象表示一个部分定义的对象计算，最终会产生一个价值。 TensorFlow程序工作 首先建立tf.Tensor物体的图形，">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="张量">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/tensors/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="张量如名称所示，TensorFlow是定义和运行计算的框架 涉及张量。张量是向量和矩阵的推广 可能更高的尺寸。在内部，TensorFlow表示张量基本数据类型的n维数组。 编写一个TensorFlow程序时，您操作并传递的主要对象 周围是tf.Tensor。 tf.Tensor对象表示一个部分定义的对象计算，最终会产生一个价值。 TensorFlow程序工作 首先建立tf.Tensor物体的图形，">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="张量">
+<meta name="twitter:description" content="张量如名称所示，TensorFlow是定义和运行计算的框架 涉及张量。张量是向量和矩阵的推广 可能更高的尺寸。在内部，TensorFlow表示张量基本数据类型的n维数组。 编写一个TensorFlow程序时，您操作并传递的主要对象 周围是tf.Tensor。 tf.Tensor对象表示一个部分定义的对象计算，最终会产生一个价值。 TensorFlow程序工作 首先建立tf.Tensor物体的图形，">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/tensors/" title="张量" itemprop="url">张量</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">张量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">秩</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">等级0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">等级1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.3.</span> <span class="toc-text">排名较高</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.4.</span> <span class="toc-text">获取tf.Tensor对象的等级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.5.</span> <span class="toc-text">参考tf.Tensor切片</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">形状</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">获取tf.Tensor物体的形状</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">改变tf.Tensor的形状</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">评估张量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">打印张力</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="张量">张量</span></h1><p>如名称所示，TensorFlow是定义和运行计算的框架 涉及张量。张量是向量和矩阵的推广 可能更高的尺寸。在内部，TensorFlow表示张量<br>基本数据类型的n维数组。</p>
+<p>编写一个TensorFlow程序时，您操作并传递的主要对象 周围是<code>tf.Tensor</code>。 <code>tf.Tensor</code>对象表示一个部分定义的对象<br>计算，最终会产生一个价值。 TensorFlow程序工作 首先建立<code>tf.Tensor</code>物体的图形，详细说明每个张量是如何的<br>根据其他可用的张量计算，然后运行其中的一部分 图表来达到预期的效果。</p>
+<p><code>tf.Tensor</code>具有以下特性：</p>
+<p>数据类型（例如，<code>float32</code>，<code>int32</code>或<code>string</code>） 一个形状</p>
+<p>张量中的每个元素具有相同的数据类型，并且数据类型始终为 众所周知。形状（也就是它的尺寸数量和尺寸 维度）可能只是部分已知的。大多数操作产生的张量<br>如果它们的输入形状也是完全已知的，但是是完全已知的形状 有些情况下只能在图执行时找到张量的形状 时间。</p>
+<p>有些类型的张量是特殊的，这些将被其他的覆盖 程序员指南的单位。主要的是：</p>
+<p><code>tf.Variable</code> <code>tf.Constant</code> <code>tf.Placeholder</code> <code>tf.SparseTensor</code></p>
+<p>除了<code>tf.Variable</code>之外，张量的值是不变的 意味着在单个执行张量的情况下只有一个 值。然而，两次评估相同的张量可以返回不同的值;<br>例如张量可以是从磁盘读取数据的结果，或者 生成一个随机数。</p>
+<h2><span id="秩">秩</span></h2><p><code>tf.Tensor</code>对象的等级是它的维数。同义词 排名包括顺序或程度或n维。 请注意，TensorFlow中的排名与数学中的矩阵排名并不相同。<br>如下表所示，TensorFlow中的每个等级对应于a 不同的数学实体：</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Math entity  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Scalar (magnitude only)  </td>
+</tr>
+<tr>
+<td>1</td>
+<td>Vector (magnitude and direction)  </td>
+</tr>
+<tr>
+<td>2</td>
+<td>Matrix (table of numbers)  </td>
+</tr>
+<tr>
+<td>3</td>
+<td>3-Tensor (cube of numbers)  </td>
+</tr>
+<tr>
+<td>n</td>
+<td>n-Tensor (you get the idea)  </td>
+</tr>
+</tbody>
+</table>
+<h3><span id="等级0">等级0</span></h3><p>以下片段演示了创建几个0级变量：</p>
+<pre><code>mammal = tf.Variable(&quot;Elephant&quot;, tf.string)
+ignition = tf.Variable(451, tf.int16)
+floating = tf.Variable(3.14159265359, tf.float64)
+its_complicated = tf.Variable((12.3, -4.85), tf.complex64)
+</code></pre><p>注意：一个字符串在TensorFlow中被视为单个项目，而不是作为一个序列 字符。标量字符串，字符串向量等是可能的</p>
+<h3><span id="等级1">等级1</span></h3><p>要创建1级<code>tf.Tensor</code>对象，可以传递一个项目列表作为 初始值。例如：</p>
+<pre><code>mystr = tf.Variable([&quot;Hello&quot;], tf.string)
+cool_numbers  = tf.Variable([3.14159, 2.71828], tf.float32)
+first_primes = tf.Variable([2, 3, 5, 7, 11], tf.int32)
+its_very_complicated = tf.Variable([(12.3, -4.85), (7.5, -6.23)], tf.complex64)
+</code></pre><h3><span id="排名较高">排名较高</span></h3><p>排名第2的<code>tf.Tensor</code>对象至少由一行组成，至少包含一行 一列：</p>
+<pre><code>mymat = tf.Variable([[7],[11]], tf.int16)
+myxor = tf.Variable([[False, True],[True, False]], tf.bool)
+linear_squares = tf.Variable([[4], [9], [16], [25]], tf.int32)
+squarish_squares = tf.Variable([ [4, 9], [16, 25] ], tf.int32)
+rank_of_squares = tf.rank(squarish_squares)
+mymatC = tf.Variable([[7],[11]], tf.int32)
+</code></pre><p>较高等级的张量同样由一个n维数组组成。例如， 在图像处理过程中，使用了许多等级为4的张量 对应于批量示例，图像宽度，图像高度和颜色通道。</p>
+<pre><code>my_image = tf.zeros([10, 299, 299, 3])  # batch x height x width x color
+</code></pre><h3><span id="获取tftensor对象的等级">获取<code>tf.Tensor</code>对象的等级</span></h3><p>要确定<code>tf.Tensor</code>对象的等级，请调用<code>tf.rank</code>方法。 例如，以下方法以编程方式确定排名 上一节中定义的<code>tf.Tensor</code>：</p>
+<pre><code>r = tf.rank(my3d)
+# After the graph runs, r will hold the value 3.
+</code></pre><h3><span id="参考tftensor切片">参考<code>tf.Tensor</code>切片</span></h3><p>由于<code>tf.Tensor</code>是一个n维的单元阵列，可以访问单个单元 在<code>tf.Tensor</code>中，您需要指定n个索引。</p>
+<p>对于0级张量（标量），没有指数是必要的，因为它已经是一个 单号。</p>
+<p>对于秩1张量（矢量），传递单个索引允许您访问一个 数：</p>
+<pre><code>my_scalar = my_vector[2]
+</code></pre><p>请注意，在<code>[]</code>内部传递的索引本身可以是标量<code>tf.Tensor</code>，如果 你想动态地从矢量中选择一个元素。</p>
+<p>对于等级2或更高的张量，情况更有趣。为一个 等级2的<code>tf.Tensor</code>，按预期传递两个数字返回一个标量：</p>
+<pre><code>my_scalar = my_matrix[1, 2]
+</code></pre><p>但是，传递一个数字将返回一个矩阵的子向量，如下所示：</p>
+<pre><code>my_row_vector = my_matrix[2]
+my_column_vector = my_matrix[:, 3]
+</code></pre><p><code>:</code>符号是“单独保留这个维度”的python切片语法。这个 在较高等级的张量中是有用的，因为它允许你访问它的子矢量， 子矩阵，甚至其他的副手。</p>
+<h2><span id="形状">形状</span></h2><p>张量的形状是每个维度中元素的数量。 图形构建期间，TensorFlow自动推断形状。这些推断 形状可能已知或未知的级别。如果排名是已知的，每个的大小<br>维度可能是已知的或未知的。</p>
+<p>TensorFlow文档使用三个符号约定来描述 张量维数：等级，形状和维数。下表 显示了这些如何相互关联：</p>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Shape</th>
+<th>Dimension number</th>
+<th>Example  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>[]</td>
+<td>0-D</td>
+<td>A 0-D tensor. A scalar.  </td>
+</tr>
+<tr>
+<td>1</td>
+<td>[D0]</td>
+<td>1-D</td>
+<td>A 1-D tensor with shape [5].  </td>
+</tr>
+<tr>
+<td>2</td>
+<td>[D0, D1]</td>
+<td>2-D</td>
+<td>A 2-D tensor with shape [3, 4].  </td>
+</tr>
+<tr>
+<td>3</td>
+<td>[D0, D1, D2]</td>
+<td>3-D</td>
+<td>A 3-D tensor with shape [1, 4, 3].  </td>
+</tr>
+<tr>
+<td>n</td>
+<td>[D0, D1, … Dn-1]</td>
+<td>n-D</td>
+<td>A tensor with shape [D0, D1, … Dn-1].  </td>
+</tr>
+</tbody>
+</table>
+<p>形状可以通过Python列表/元组的int或者 <code>tf.TensorShape</code>。</p>
+<h3><span id="获取tftensor物体的形状">获取<code>tf.Tensor</code>物体的形状</span></h3><p>有两种方法可以访问<code>tf.Tensor</code>的形状。在建设中 图，问什么是已知的张量常常是有用的<br>形状。这可以通过阅读<code>shape</code>对象的<code>tf.Tensor</code>属性来完成。 这个方法返回一个<code>TensorShape</code>对象，这是一个方便的方法<br>表示部分指定的形状（因为在构建图形时不是全部 形状将被完全知道）。</p>
+<p><code>tf.Tensor</code>也可以代表完全定义 另一台<code>tf.Tensor</code>在运行时的形状。这是通过调用<code>tf.shape</code>完成的<br>操作。这样，你可以建立一个图形来处理形状 张量通过建立其他张量依赖于输入的动态形状 <code>tf.Tensor</code>。</p>
+<p>例如，这里是如何做一个与零相同大小的零向量 给定矩阵中的列数：</p>
+<pre><code>zeros = tf.zeros(tf.shape(my_matrix)[1])
+</code></pre><h3><span id="改变tftensor的形状">改变<code>tf.Tensor</code>的形状</span></h3><p>张量元素的数量是其所有尺寸的乘积 形状。标量元素的数量总是<code>1</code>。因为经常有 许多不同的形状有相同数量的元素，通常是这样<br>方便可以改变<code>tf.Tensor</code>的形状，保持其元素 固定。这可以通过<code>tf.reshape</code>完成。</p>
+<p>以下示例演示如何重构张量：</p>
+<pre><code>rank_three_tensor = tf.ones([3, 4, 5])
+matrix = tf.reshape(rank_three_tensor, [6, 10])  # Reshape existing content into
+                                                 # a 6x10 matrix
+matrixB = tf.reshape(matrix, [3, -1])  #  Reshape existing content into a 3x20
+                                       # matrix. -1 tells reshape to calculate
+                                       # the size of this dimension.
+matrixAlt = tf.reshape(matrixB, [4, 3, -1])  # Reshape existing content into a
+                                             #4x3x5 tensor
+
+# Note that the number of elements of the reshaped Tensors has to match the
+# original number of elements. Therefore, the following example generates an
+# error because no possible value for the last dimension will match the number
+# of elements.
+yet_another = tf.reshape(matrixAlt, [13, 2, -1])  # ERROR!
+</code></pre><h2><span id="数据类型">数据类型</span></h2><p>除了维度，张量有一个数据类型。参考 程序员指南中的<code>tf.DataType</code>页面提供了数据类型的完整列表。</p>
+<p>具有多种数据类型的<code>tf.Tensor</code>是不可能的。它是 但是，也可以将任意数据结构序列化为<code>string</code>并存储 那些在<code>tf.Tensor</code>s。</p>
+<p>可以使用<code>tf.Tensor</code>从一种数据类型转换为另一种数据类型 <code>tf.cast</code>：</p>
+<pre><code># Cast a constant integer tensor into floating point.
+float_tensor = tf.cast(tf.constant([1, 2, 3]), dtype=tf.float32)
+</code></pre><p>要检查<code>tf.Tensor</code>的数据类型，请使用<code>Tensor.dtype</code>属性。</p>
+<p>从python对象创建<code>tf.Tensor</code>时，可以选择指定 数据类型。如果你不这样做，TensorFlow会选择一个可以代表你的数据类型 数据。<br>TensorFlow将Python整数转换为<code>tf.int32</code>和python浮动<br>点号到<code>tf.float32</code>。否则，TensorFlow使用相同的规则numpy 转换为数组时使用。</p>
+<h2><span id="评估张量">评估张量</span></h2><p>一旦计算图已经建立，你可以运行计算 生成一个特定的<code>tf.Tensor</code>并获取分配给它的值。这是 通常用于调试以及TensorFlow的许多要求 工作。</p>
+<p>评估张量的最简单方法是使用<code>Tensor.eval</code>方法。对于 例：</p>
+<pre><code>constant = tf.constant([1, 2, 3])
+tensor = constant * constant
+print tensor.eval()
+</code></pre><p><code>eval</code>方法仅适用于默认<code>tf.Session</code>有效时（请参阅 图表和会话了解更多信息）。</p>
+<p><code>Tensor.eval</code>返回与张量相同内容的numpy数组。</p>
+<p>有时无法评估没有上下文的<code>tf.Tensor</code>，因为 其价值可能取决于不可用的动态信息。对于 例如，依赖于<code>Placeholder</code>s的张量不能被评估<br>为<code>Placeholder</code>提供了一个价值。</p>
+<pre><code>p = tf.placeholder(tf.float32)
+t = p + 1.0
+t.eval()  # This will fail, since the placeholder did not get a value.
+t.eval(feed_dict={p:2.0})  # This will succeed because we&apos;re feeding a value
+                           # to the placeholder.
+</code></pre><p>请注意，<code>tf.Tensor</code>是可能的，而不仅仅是占位符。</p>
+<p>其他模型构造可能会使<code>tf.Tensor</code>评估 复杂。 TensorFlow无法直接评估内部定义的<code>tf.Tensor</code><br>功能或内部控制流程结构。如果一个<code>tf.Tensor</code>取决于一个值 从一个队列中，评估<code>tf.Tensor</code>只会有一些工作<br>排队;否则，评估会挂起。在处理队列时，请记住 在评估任何<code>tf.train.start_queue_runners</code>之前请拨打<code>tf.Tensor</code>。</p>
+<h2><span id="打印张力">打印张力</span></h2><p>出于调试目的，您可能需要打印<code>tf.Tensor</code>的值。而  tfdbg提供了高级的调试支持，TensorFlow也有<br>操作直接打印<code>tf.Tensor</code>的值。</p>
+<p>请注意，打印时很少使用以下模式 <code>tf.Tensor</code>：</p>
+<pre><code>t = &lt;&lt;some tensorflow operation&gt;&gt;
+print t  # This will print the symbolic tensor when the graph is being built.
+         # This tensor does not have a value in this context.
+</code></pre><p>此代码打印<code>tf.Tensor</code>对象（表示延迟计算） 而不是它的价值。相反，TensorFlow提供了<code>tf.Print</code>操作<br>返回它的第一个张量参数，同时打印该集合 <code>tf.Tensor</code>s作为第二个参数传递。</p>
+<p>要正确使用<code>tf.Print</code>，必须使用其返回值。看下面的例子</p>
+<pre><code>t = &lt;&lt;some tensorflow operation&gt;&gt;
+tf.Print(t, [t])  # This does nothing
+t = tf.Print(t, [t])  # Here we are using the value returned by tf.Print
+result = t + 1  # Now when result is evaluated the value of `t` will be printed.
+</code></pre><p>当您评估<code>result</code>时，您将评估<code>result</code>所依赖的一切 根据。由于<code>result</code>取决于<code>t</code>，而评估<code>t</code>有副作用<br>打印输入（<code>t</code>的旧值），<code>t</code>打印。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/tensors/" data-title="张量 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/datasets/" title="导入数据">
+  <strong>上一篇：</strong><br/>
+  <span>
+  导入数据</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/beginners/"  title="MN初学者MNIST">
+ <strong>下一篇：</strong><br/> 
+ <span>MN初学者MNIST
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">张量</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">秩</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">等级0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">等级1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.3.</span> <span class="toc-text">排名较高</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.4.</span> <span class="toc-text">获取tf.Tensor对象的等级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.5.</span> <span class="toc-text">参考tf.Tensor切片</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">形状</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">获取tf.Tensor物体的形状</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">改变tf.Tensor的形状</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">评估张量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">打印张力</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -112,118 +112,465 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/09/viewpager-pageradapter-not-updating-the-view/" title="ViewPager PagerAdapter不更新视图" itemprop="url">ViewPager PagerAdapter不更新视图</a>
+      <a href="/2018/04/22/example-communication-between-activity-and-service-using-messaging/" title="示例：使用消息传递的活动和服务之间的通信" itemprop="url">示例：使用消息传递的活动和服务之间的通信</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-09T02:37:13.000Z" itemprop="datePublished"> Published 2018-05-09</time>
+    <time datetime="2018-04-22T02:35:12.000Z" itemprop="datePublished"> Published 2018-04-22</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我正在使用兼容库中的ViewPager。我已经成功地得到它显示几个我可以翻页的意见。</p>
-<p>然而，我很难弄清楚如何用一组新的Views来更新ViewPager。</p>
-<p>我试过各种各样的东西，比如调用<code>mAdapter.notifyDataSetChanged（）</code>，<code>mViewPager.invalidate（）</code>，每次我想使用时都会创建一个全新的适配器一个新的数据列表。</p>
-<p>没有什么帮助，文本视图与原始数据保持不变。</p>
-<p>&lt;强&gt;更新 我做了一个小测试项目，几乎可以更新视图。我将粘贴下面的课程。</p>
-<p>然而，没有出现更新的是第二个视图，“B”仍然存在，按下更新按钮后应该显示“Y”。</p>
-<pre><code>public class ViewPagerBugActivity extends Activity {
+        <p>我找不到任何如何在活动和服务之间发送消息的例子，我花了太多的时间来解决这个问题。这是一个供他人参考的示例项目。</p>
+<p>这个例子允许你直接启动或停止服务，并单独绑定/取消绑定服务。当服务正在运行时，它以10Hz递增一个数字。如果活动绑定到<code>Service</code>，它将显示当前值。数据以Integer形式传输，并以字符串形式传输，这样您就可以看到如何做到这两种不同的方式。活动中还有按钮可将消息发送到服务（更改递增值）。</p>
+<p>&lt;强&gt;截图：</p>
+<p><img src="“https://i.stack.imgur.com/CMPS7.png”alt" alt=""></p>
+<p>&lt;强&gt;的AndroidManifest.xml：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+      package=&quot;com.exampleservice&quot;
+      android:versionCode=&quot;1&quot;
+      android:versionName=&quot;1.0&quot;&gt;
+    &lt;application android:icon=&quot;@drawable/icon&quot; android:label=&quot;@string/app_name&quot;&gt;
+        &lt;activity android:name=&quot;.MainActivity&quot;
+                  android:label=&quot;@string/app_name&quot;&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;
+                &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+    &lt;service android:name=&quot;.MyService&quot;&gt;&lt;/service&gt;
+    &lt;/application&gt;
+    &lt;uses-sdk android:minSdkVersion=&quot;8&quot; /&gt;
+&lt;/manifest&gt;
+</code></pre><p>&lt;强&gt; RES \值\ strings.xml中：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;resources&gt;
+    &lt;string name=&quot;app_name&quot;&gt;ExampleService&lt;/string&gt;
+    &lt;string name=&quot;service_started&quot;&gt;Example Service started&lt;/string&gt;
+    &lt;string name=&quot;service_label&quot;&gt;Example Service Label&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre><p>&lt;强&gt; RES \布局\ main.xml中：</p>
+<pre><code>&lt;RelativeLayout
+    android:id=&quot;@+id/RelativeLayout01&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot; &gt;
 
-    private ViewPager myViewPager;
-    private List&lt;String&gt; data;
+    &lt;Button
+        android:id=&quot;@+id/btnStart&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Start Service&quot; &gt;
+    &lt;/Button&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnStop&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:text=&quot;Stop Service&quot; &gt;
+    &lt;/Button&gt;
+&lt;/RelativeLayout&gt;
+
+&lt;RelativeLayout
+    android:id=&quot;@+id/RelativeLayout02&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot; &gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnBind&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Bind to Service&quot; &gt;
+    &lt;/Button&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnUnbind&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:text=&quot;Unbind from Service&quot; &gt;
+    &lt;/Button&gt;
+&lt;/RelativeLayout&gt;
+
+&lt;TextView
+    android:id=&quot;@+id/textStatus&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;Status Goes Here&quot;
+    android:textSize=&quot;24sp&quot; /&gt;
+
+&lt;TextView
+    android:id=&quot;@+id/textIntValue&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;Integer Value Goes Here&quot;
+    android:textSize=&quot;24sp&quot; /&gt;
+
+&lt;TextView
+    android:id=&quot;@+id/textStrValue&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:text=&quot;String Value Goes Here&quot;
+    android:textSize=&quot;24sp&quot; /&gt;
+
+&lt;RelativeLayout
+    android:id=&quot;@+id/RelativeLayout03&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;wrap_content&quot; &gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnUpby1&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:text=&quot;Increment by 1&quot; &gt;
+    &lt;/Button&gt;
+
+    &lt;Button
+        android:id=&quot;@+id/btnUpby10&quot;
+        android:layout_width=&quot;wrap_content&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_alignParentRight=&quot;true&quot;
+        android:text=&quot;Increment by 10&quot; &gt;
+    &lt;/Button&gt;
+&lt;/RelativeLayout&gt;
+</code></pre><p>&lt;强&gt; SRC \ com.exampleservice \ MainActivity.java：</p>
+<pre><code>package com.exampleservice;
+
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+    Button btnStart, btnStop, btnBind, btnUnbind, btnUpby1, btnUpby10;
+    TextView textStatus, textIntValue, textStrValue;
+    Messenger mService = null;
+    boolean mIsBound;
+    final Messenger mMessenger = new Messenger(new IncomingHandler());
+
+    class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MyService.MSG_SET_INT_VALUE:
+                textIntValue.setText(&quot;Int Message: &quot; + msg.arg1);
+                break;
+            case MyService.MSG_SET_STRING_VALUE:
+                String str1 = msg.getData().getString(&quot;str1&quot;);
+                textStrValue.setText(&quot;Str Message: &quot; + str1);
+                break;
+            default:
+                super.handleMessage(msg);
+            }
+        }
+    }
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            mService = new Messenger(service);
+            textStatus.setText(&quot;Attached.&quot;);
+            try {
+                Message msg = Message.obtain(null, MyService.MSG_REGISTER_CLIENT);
+                msg.replyTo = mMessenger;
+                mService.send(msg);
+            }
+            catch (RemoteException e) {
+                // In this case the service has crashed before we could even do anything with it
+            }
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been unexpectedly disconnected - process crashed.
+            mService = null;
+            textStatus.setText(&quot;Disconnected.&quot;);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        btnStart = (Button)findViewById(R.id.btnStart);
+        btnStop = (Button)findViewById(R.id.btnStop);
+        btnBind = (Button)findViewById(R.id.btnBind);
+        btnUnbind = (Button)findViewById(R.id.btnUnbind);
+        textStatus = (TextView)findViewById(R.id.textStatus);
+        textIntValue = (TextView)findViewById(R.id.textIntValue);
+        textStrValue = (TextView)findViewById(R.id.textStrValue);
+        btnUpby1 = (Button)findViewById(R.id.btnUpby1);
+        btnUpby10 = (Button)findViewById(R.id.btnUpby10);
 
-        data = new ArrayList&lt;String&gt;();
-        data.add(&quot;A&quot;);
-        data.add(&quot;B&quot;);
-        data.add(&quot;C&quot;);
+        btnStart.setOnClickListener(btnStartListener);
+        btnStop.setOnClickListener(btnStopListener);
+        btnBind.setOnClickListener(btnBindListener);
+        btnUnbind.setOnClickListener(btnUnbindListener);
+        btnUpby1.setOnClickListener(btnUpby1Listener);
+        btnUpby10.setOnClickListener(btnUpby10Listener);
 
-        myViewPager = (ViewPager) findViewById(R.id.my_view_pager);
-        myViewPager.setAdapter(new MyViewPagerAdapter(this, data));
+        restoreMe(savedInstanceState);
 
-        Button updateButton = (Button) findViewById(R.id.update_button);
-        updateButton.setOnClickListener(new OnClickListener() {
+        CheckIfServiceIsRunning();
+    }
 
-            @Override
-            public void onClick(View v) {
-                updateViewPager();
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(&quot;textStatus&quot;, textStatus.getText().toString());
+        outState.putString(&quot;textIntValue&quot;, textIntValue.getText().toString());
+        outState.putString(&quot;textStrValue&quot;, textStrValue.getText().toString());
+    }
+    private void restoreMe(Bundle state) {
+        if (state!=null) {
+            textStatus.setText(state.getString(&quot;textStatus&quot;));
+            textIntValue.setText(state.getString(&quot;textIntValue&quot;));
+            textStrValue.setText(state.getString(&quot;textStrValue&quot;));
+        }
+    }
+    private void CheckIfServiceIsRunning() {
+        //If the service is running when the activity starts, we want to automatically bind to it.
+        if (MyService.isRunning()) {
+            doBindService();
+        }
+    }
+
+    private OnClickListener btnStartListener = new OnClickListener() {
+        public void onClick(View v){
+            startService(new Intent(MainActivity.this, MyService.class));
+        }
+    };
+    private OnClickListener btnStopListener = new OnClickListener() {
+        public void onClick(View v){
+            doUnbindService();
+            stopService(new Intent(MainActivity.this, MyService.class));
+        }
+    };
+    private OnClickListener btnBindListener = new OnClickListener() {
+        public void onClick(View v){
+            doBindService();
+        }
+    };
+    private OnClickListener btnUnbindListener = new OnClickListener() {
+        public void onClick(View v){
+            doUnbindService();
+        }
+    };
+    private OnClickListener btnUpby1Listener = new OnClickListener() {
+        public void onClick(View v){
+            sendMessageToService(1);
+        }
+    };
+    private OnClickListener btnUpby10Listener = new OnClickListener() {
+        public void onClick(View v){
+            sendMessageToService(10);
+        }
+    };
+    private void sendMessageToService(int intvaluetosend) {
+        if (mIsBound) {
+            if (mService != null) {
+                try {
+                    Message msg = Message.obtain(null, MyService.MSG_SET_INT_VALUE, intvaluetosend, 0);
+                    msg.replyTo = mMessenger;
+                    mService.send(msg);
+                }
+                catch (RemoteException e) {
+                }
             }
-        });
+        }
     }
 
-    private void updateViewPager() {
-        data.clear();
-        data.add(&quot;X&quot;);
-        data.add(&quot;Y&quot;);
-        data.add(&quot;Z&quot;);
-        myViewPager.getAdapter().notifyDataSetChanged();
+
+    void doBindService() {
+        bindService(new Intent(this, MyService.class), mConnection, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+        textStatus.setText(&quot;Binding.&quot;);
+    }
+    void doUnbindService() {
+        if (mIsBound) {
+            // If we have received the service, and hence registered with it, then now is the time to unregister.
+            if (mService != null) {
+                try {
+                    Message msg = Message.obtain(null, MyService.MSG_UNREGISTER_CLIENT);
+                    msg.replyTo = mMessenger;
+                    mService.send(msg);
+                }
+                catch (RemoteException e) {
+                    // There is nothing special we need to do if the service has crashed.
+                }
+            }
+            // Detach our existing connection.
+            unbindService(mConnection);
+            mIsBound = false;
+            textStatus.setText(&quot;Unbinding.&quot;);
+        }
     }
 
-    private class MyViewPagerAdapter extends PagerAdapter {
-
-        private List&lt;String&gt; data;
-        private Context ctx;
-
-        public MyViewPagerAdapter(Context ctx, List&lt;String&gt; data) {
-            this.ctx = ctx;
-            this.data = data;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            doUnbindService();
         }
-
-        @Override
-        public int getCount() {
-            return data.size();
-        }
-
-        @Override
-        public Object instantiateItem(View collection, int position) {
-            TextView view = new TextView(ctx);
-            view.setText(data.get(position));
-            ((ViewPager)collection).addView(view);
-            return view;
-        }
-
-        @Override
-        public void destroyItem(View collection, int position, Object view) {
-             ((ViewPager) collection).removeView((View) view);
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public Parcelable saveState() {
-            return null;
-        }
-
-        @Override
-        public void restoreState(Parcelable arg0, ClassLoader arg1) {
-        }
-
-        @Override
-        public void startUpdate(View arg0) {
-        }
-
-        @Override
-        public void finishUpdate(View arg0) {
+        catch (Throwable t) {
+            Log.e(&quot;MainActivity&quot;, &quot;Failed to unbind from the service&quot;, t);
         }
     }
 }
-</code></pre><p>
+</code></pre><p>&lt;强&gt; SRC \ com.exampleservice \ MyService.java：</p>
+<pre><code>package com.exampleservice;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.util.Log;
+
+public class MyService extends Service {
+    private NotificationManager nm;
+    private Timer timer = new Timer();
+    private int counter = 0, incrementby = 1;
+    private static boolean isRunning = false;
+
+    ArrayList&lt;Messenger&gt; mClients = new ArrayList&lt;Messenger&gt;(); // Keeps track of all current registered clients.
+    int mValue = 0; // Holds last value set by a client.
+    static final int MSG_REGISTER_CLIENT = 1;
+    static final int MSG_UNREGISTER_CLIENT = 2;
+    static final int MSG_SET_INT_VALUE = 3;
+    static final int MSG_SET_STRING_VALUE = 4;
+    final Messenger mMessenger = new Messenger(new IncomingHandler()); // Target we publish for clients to send messages to IncomingHandler.
+
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mMessenger.getBinder();
+    }
+    class IncomingHandler extends Handler { // Handler of incoming messages from clients.
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MSG_REGISTER_CLIENT:
+                mClients.add(msg.replyTo);
+                break;
+            case MSG_UNREGISTER_CLIENT:
+                mClients.remove(msg.replyTo);
+                break;
+            case MSG_SET_INT_VALUE:
+                incrementby = msg.arg1;
+                break;
+            default:
+                super.handleMessage(msg);
+            }
+        }
+    }
+    private void sendMessageToUI(int intvaluetosend) {
+        for (int i=mClients.size()-1; i&gt;=0; i--) {
+            try {
+                // Send data as an Integer
+                mClients.get(i).send(Message.obtain(null, MSG_SET_INT_VALUE, intvaluetosend, 0));
+
+                //Send data as a String
+                Bundle b = new Bundle();
+                b.putString(&quot;str1&quot;, &quot;ab&quot; + intvaluetosend + &quot;cd&quot;);
+                Message msg = Message.obtain(null, MSG_SET_STRING_VALUE);
+                msg.setData(b);
+                mClients.get(i).send(msg);
+
+            }
+            catch (RemoteException e) {
+                // The client is dead. Remove it from the list; we are going through the list from back to front so this is safe to do inside the loop.
+                mClients.remove(i);
+            }
+        }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.i(&quot;MyService&quot;, &quot;Service Started.&quot;);
+        showNotification();
+        timer.scheduleAtFixedRate(new TimerTask(){ public void run() {onTimerTick();}}, 0, 100L);
+        isRunning = true;
+    }
+    private void showNotification() {
+        nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        // In this sample, we&apos;ll use the same text for the ticker and the expanded notification
+        CharSequence text = getText(R.string.service_started);
+        // Set the icon, scrolling text and timestamp
+        Notification notification = new Notification(R.drawable.icon, text, System.currentTimeMillis());
+        // The PendingIntent to launch our activity if the user selects this notification
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+        // Set the info for the views that show in the notification panel.
+        notification.setLatestEventInfo(this, getText(R.string.service_label), text, contentIntent);
+        // Send the notification.
+        // We use a layout id because it is a unique number.  We use it later to cancel.
+        nm.notify(R.string.service_started, notification);
+    }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(&quot;MyService&quot;, &quot;Received start id &quot; + startId + &quot;: &quot; + intent);
+        return START_STICKY; // run until explicitly stopped.
+    }
+
+    public static boolean isRunning()
+    {
+        return isRunning;
+    }
+
+
+    private void onTimerTick() {
+        Log.i(&quot;TimerTick&quot;, &quot;Timer doing work.&quot; + counter);
+        try {
+            counter += incrementby;
+            sendMessageToUI(counter);
+
+        }
+        catch (Throwable t) { //you should always ultimately catch all exceptions in timer tasks.
+            Log.e(&quot;TimerTick&quot;, &quot;Timer Tick Failed.&quot;, t);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {timer.cancel();}
+        counter=0;
+        nm.cancel(R.string.service_started); // Cancel the persistent notification.
+        Log.i(&quot;MyService&quot;, &quot;Service Stopped.&quot;);
+        isRunning = false;
+    }
+}
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/09/viewpager-pageradapter-not-updating-the-view/#more">Read More</a>
+            <a href="/2018/04/22/example-communication-between-activity-and-service-using-messaging/#more">Read More</a>
           
        </p>
     </div>
@@ -268,26 +615,27 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/09/how-to-set-current-working-directory-to-the-directory-of-the-script/" title="如何将当前工作目录设置为脚本的目录？" itemprop="url">如何将当前工作目录设置为脚本的目录？</a>
+      <a href="/2018/04/22/bash-tool-to-get-nth-line-from-a-file/" title="Bash工具从文件中获得第n行" itemprop="url">Bash工具从文件中获得第n行</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-09T02:10:13.000Z" itemprop="datePublished"> Published 2018-05-09</time>
+    <time datetime="2018-04-22T02:08:06.000Z" itemprop="datePublished"> Published 2018-04-22</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我正在写一个bash脚本。我需要当前的工作目录始终是脚本所在的目录。</p>
-<p>默认行为是脚本中的当前工作目录是我从中运行它的shell的工作目录，但是我不想要这样的行为。</p>
+        <p>有没有一个“规范”的方式呢？我一直在使用<code>head -n |尾巴-1</code>这个技巧，但我一直在想如果有一个Bash工具，专门从文件中提取一行（或一系列的行）。</p>
+<p>“规范”是指主要功能正在这样做的程序。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/09/how-to-set-current-working-directory-to-the-directory-of-the-script/#more">Read More</a>
+            <a href="/2018/04/22/bash-tool-to-get-nth-line-from-a-file/#more">Read More</a>
           
        </p>
     </div>
@@ -297,7 +645,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/bash/">bash</a>
+  <span></span> <a href="/tags/bash/">bash</a><a href="/tags/unix/">unix</a><a href="/tags/shell/">shell</a>
   </div>
 
 </div>
@@ -326,33 +674,158 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/09/while-applying-opacity-to-a-form-should-we-use-a-decimal-or-a-double-value/" title="在对表单应用不透明度的同时，我们应该使用小数还是双精度值？" itemprop="url">在对表单应用不透明度的同时，我们应该使用小数还是双精度值？</a>
+      <a href="/2018/04/22/what-is-the-yield-keyword-used-for-in-c/" title="在C＃中使用的yield关键字是什么？" itemprop="url">在C＃中使用的yield关键字是什么？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-09T01:41:51.000Z" itemprop="datePublished"> Published 2018-05-09</time>
+    <time datetime="2018-04-22T01:39:09.000Z" itemprop="datePublished"> Published 2018-04-22</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想使用一个轨道栏来改变窗体的不透明度。</p>
-<p>这是我的代码：</p>
-<pre><code>decimal trans = trackBar1.Value / 5000;
-this.Opacity = trans;
-</code></pre><p>当我构建应用程序时，会出现以下错误：</p>
+        <p>在<a href="https://stackoverflow.com/questions/39447/how-
+can-i-expose-only-a-fragment-of-ilist" target="_blank" rel="noopener">如何只暴露IList＆lt;片段＆lt; ;＆gt; </a>的问题其中一个答案有以下代码片段：</p>
+<pre><code>IEnumerable&lt;object&gt; FilteredList()
+{
+    foreach( object item in FullList )
+    {
+        if( IsItemInPartialList( item )
+            yield return item;
+    }
+}
+</code></pre><p>yield关键字在那里做什么？我已经在几个地方看到了这个引用，还有一个问题，但是我还没有弄明白它到底在做什么。我习惯于从一个线程向另一个线程屈服的意义上考虑产量，但在这里看起来并不重要。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/22/what-is-the-yield-keyword-used-for-in-c/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/22/whats-the-best-way-to-get-the-last-element-of-an-array-without-deleting-it/" title="获取数组的最后一个元素而不删除它的最好方法是什么？" itemprop="url">获取数组的最后一个元素而不删除它的最好方法是什么？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-22T01:14:10.000Z" itemprop="datePublished"> Published 2018-04-22</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>确定，</p>
+<p>我完全了解<a href="http://www.php.net/array_pop" target="_blank" rel="noopener"> <code>array_pop（）</code></a>，但是删除了最后一个元件。获取数组的最后一个元素而不删除它的最好方法是什么？</p>
+<p>编辑：这是一个奖金：</p>
+<pre><code>$array = array(&apos;a&apos; =&gt; &apos;a&apos;, &apos;b&apos; =&gt; &apos;b&apos;, &apos;c&apos; =&gt; &apos;c&apos;);
+</code></pre><p>甚至</p>
+<pre><code>$array = array(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;);
+unset($array[2]);
+echo $array[sizeof($array) - 1]; // Output: PHP Notice:  Undefined offset:  2 in - on line 4
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/22/whats-the-best-way-to-get-the-last-element-of-an-array-without-deleting-it/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/21/unfortunately-myapp-has-stopped-how-can-i-solve-this/" title="不幸的是，MyApp已经停止。我该如何解决这个问题？" itemprop="url">不幸的是，MyApp已经停止。我该如何解决这个问题？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-21T02:35:11.000Z" itemprop="datePublished"> Published 2018-04-21</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我正在开发一个应用程序，每次运行它时，都会收到消息：</p>
 <blockquote>
-<p>Cannot implicitly convert type <code>&#39;decimal&#39;</code> to <code>&#39;double&#39;</code>.</p>
+<p>Unfortunately, MyApp has stopped.</p>
 </blockquote>
-<p>我尝试使用<code>trans</code>和<code>double</code>，但是这个控件不起作用。这个代码在过去的VB.NET项目中工作得很好。</p>
+<p>我能做些什么来解决这个问题？</p>
+<hr>
+<p>_关于这个问题 - 显然是受到启发的[<br>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/09/while-applying-opacity-to-a-form-should-we-use-a-decimal-or-a-double-value/#more">Read More</a>
+            <a href="/2018/04/21/unfortunately-myapp-has-stopped-how-can-i-solve-this/#more">Read More</a>
           
        </p>
     </div>
@@ -362,7 +835,7 @@ this.Opacity = trans;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -391,27 +864,26 @@ this.Opacity = trans;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/09/how-to-remove-non-alphanumeric-characters/" title="如何删除非字母数字字符？" itemprop="url">如何删除非字母数字字符？</a>
+      <a href="/2018/04/21/how-do-i-pause-my-shell-script-for-a-second-before-continuing/" title="在继续之前，如何暂停我的shell脚本？" itemprop="url">在继续之前，如何暂停我的shell脚本？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-09T01:16:39.000Z" itemprop="datePublished"> Published 2018-05-09</time>
+    <time datetime="2018-04-21T02:08:02.000Z" itemprop="datePublished"> Published 2018-04-21</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我需要从字符串中删除所有不在<code>a-z A-Z 0-9</code>中的字符集或不是空格。</p>
-<p>有没有人有这样做的功能？</p>
-<p>
+        <p>我只找到了如何等待用户输入。不过，我只想暂停，这样我的<code>while true</code>不会使我的计算机崩溃。</p>
+<p>我尝试了<code>pause（1）</code>，但是在意外的标记’1’附近写了<code>-bash：syntax error</code>。怎么做呢？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/09/how-to-remove-non-alphanumeric-characters/#more">Read More</a>
+            <a href="/2018/04/21/how-do-i-pause-my-shell-script-for-a-second-before-continuing/#more">Read More</a>
           
        </p>
     </div>
@@ -421,7 +893,7 @@ this.Opacity = trans;
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/bash/">bash</a><a href="/tags/unix/">unix</a><a href="/tags/shell/">shell</a>
   </div>
 
 </div>
@@ -450,86 +922,32 @@ this.Opacity = trans;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/09/php-shell-exec-vs-exec/" title="php shell_exec（）vs exec（）" itemprop="url">php shell_exec（）vs exec（）</a>
+      <a href="/2018/04/21/in-c-should-i-use-string-empty-or-string-empty-or-to-intitialize-a-string/" title="在C＃中，我应该使用string Empty或String Empty或“”来初始化一个字符串？" itemprop="url">在C＃中，我应该使用string Empty或String Empty或“”来初始化一个字符串？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-09T01:16:18.000Z" itemprop="datePublished"> Published 2018-05-09</time>
+    <time datetime="2018-04-21T01:39:03.000Z" itemprop="datePublished"> Published 2018-04-21</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我正在努力理解<code>shell_exec（）</code>和<code>exec（）</code>之间的区别…</p>
-<p>我总是使用<code>exec（）</code>来执行服务器端命令，何时使用<code>shell_exec（）</code>？</p>
-<p><code></code> shell_exec（）<code>只是</code> exec（）`的缩写。这似乎是用更少的参数相同的事情。</p>
-<p>
+        <p>在C＃中，我想用一个空字符串初始化一个字符串值。</p>
+<p>我应该怎么做？ 什么是正确的方式，为什么？</p>
+<pre><code>string willi = string.Empty;
+</code></pre><p>或</p>
+<pre><code>string willi = String.Empty;
+</code></pre><p>或</p>
+<pre><code>string willi = &quot;&quot;;
+</code></pre><p>还是什么？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/09/php-shell-exec-vs-exec/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/php/">php</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/05/08/set-imageview-width-and-height-programmatically/" title="以编程方式设置ImageView的宽度和高度？" itemprop="url">以编程方式设置ImageView的宽度和高度？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-05-08T02:37:09.000Z" itemprop="datePublished"> Published 2018-05-08</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何以编程方式设置<code>ImageView</code>的宽度和高度？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/05/08/set-imageview-width-and-height-programmatically/#more">Read More</a>
+            <a href="/2018/04/21/in-c-should-i-use-string-empty-or-string-empty-or-to-intitialize-a-string/#more">Read More</a>
           
        </p>
     </div>
@@ -563,143 +981,25 @@ this.Opacity = trans;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/08/exit-shell-script-based-on-process-exit-code/" title="退出基于进程退出代码的Shell脚本" itemprop="url">退出基于进程退出代码的Shell脚本</a>
+      <a href="/2018/04/21/how-to-get-last-key-in-an-array/" title="如何获得数组中的最后一个键？" itemprop="url">如何获得数组中的最后一个键？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-08T02:10:03.000Z" itemprop="datePublished"> Published 2018-05-08</time>
+    <time datetime="2018-04-21T01:14:03.000Z" itemprop="datePublished"> Published 2018-04-21</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个执行许多命令的shell脚本。如果任何命令以非零退出代码退出，如何退出shell脚本？</p>
+        <p>我怎样得到数组的最后一个键？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/08/exit-shell-script-based-on-process-exit-code/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/shell/">shell</a><a href="/tags/bash/">bash</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/05/08/how-do-i-generate-a-stream-from-a-string/" title="如何从字符串生成流？" itemprop="url">如何从字符串生成流？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-05-08T01:41:46.000Z" itemprop="datePublished"> Published 2018-05-08</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我需要编写一个单元测试，以获取来自文本文件的流。我想要做这样的事情：</p>
-<pre><code>Stream s = GenerateStreamFromString(&quot;a,b \n c,d&quot;);
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/05/08/how-do-i-generate-a-stream-from-a-string/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/05/08/how-to-enable-php-short-tags/" title="如何启用PHP短标签？" itemprop="url">如何启用PHP短标签？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-05-08T01:16:31.000Z" itemprop="datePublished"> Published 2018-05-08</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我在Linux服务器上有一个以<code>＆lt;？</code><br>开头的Web应用程序，</p>
-<p>我需要复制这个应用程序到一个Windows环境，一切正常工作，除了一个SQL语句呈现不同。我不知道这是否与<code>＆lt;？php</code>而不是<code>＆lt;？</code>开始的脚本，因为我不知道从哪里启用&lt;代码&gt;＆lt;？<code>，所以我将它改为</code>＆lt;？php <code>我知道这两个语句应该是相同的，但我需要用</code>＆lt;？`来测试它，以确保应用程序完全相同。这样我可以消除另一种可能性。</p>
-<p>由于</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/05/08/how-to-enable-php-short-tags/#more">Read More</a>
+            <a href="/2018/04/21/how-to-get-last-key-in-an-array/#more">Read More</a>
           
        </p>
     </div>
@@ -738,25 +1038,87 @@ this.Opacity = trans;
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/07/get-root-view-from-current-activity/" title="从当前活动获取根视图" itemprop="url">从当前活动获取根视图</a>
+      <a href="/2018/04/21/good-php-orm-library/" title="良好的PHP ORM库？" itemprop="url">良好的PHP ORM库？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-07T02:37:03.000Z" itemprop="datePublished"> Published 2018-05-07</time>
+    <time datetime="2018-04-21T01:13:45.000Z" itemprop="datePublished"> Published 2018-04-21</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我知道如何使用[ View.getRootView（）&lt; / A&gt;。我也可以从按钮的<code>onClick</code>事件中获取视图，其中参数是<a href="“http://developer.android.com/reference/android/view/View.html”">查看</a>。但是，如何在<a href="http://developer.android.com/reference/android/app/Activity.html" target="_blank" rel="noopener">活动</a>中获取<br><strong>视图</strong> ？** p&gt;
+        <p>有没有一个好的PHP对象关系映射库？</p>
+<p>我知道<a href="http://www.php.net/manual/en/intro.pdo.php" target="_blank" rel="noopener"> PDO </a> /<br>ADO，但他们似乎只提供数据库供应商之间差异的抽象，而不是域模型和关系模型之间的实际映射。我正在寻找一个PHP库，其功能与<a href="http://en.wikipedia.org/wiki/Hibernate_%28Java%29" target="_blank" rel="noopener"> Hibernate</a> Java和NHibernate为.NET提供支持。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/07/get-root-view-from-current-activity/#more">Read More</a>
+            <a href="/2018/04/21/good-php-orm-library/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/php/">php</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/20/how-to-install-google-play-services-in-a-genymotion-vm-with-no-drag-and-drop-su/" title="如何在Genymotion虚拟机中安装Google Play服务（不支持拖放）？" itemprop="url">如何在Genymotion虚拟机中安装Google Play服务（不支持拖放）？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-20T02:35:03.000Z" itemprop="datePublished"> Published 2018-04-20</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何在没有拖放支持的Genymotion模拟器中安装Google Play服务？</p>
+<p>我无法像Stack Overflow中提到的那样安装它。<br><em><a href="https://stackoverflow.com/questions/17831990" target="_blank" rel="noopener">如何安装Google框架（Play，Accounts等）在Genymotion虚拟设备上？</a>
+</em> 由于缺乏对拖放安装的支持。</p>
+<p>Genymotion支持一些模拟器的Google Apps，但不支持平板模拟器。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/20/how-to-install-google-play-services-in-a-genymotion-vm-with-no-drag-and-drop-su/#more">Read More</a>
           
        </p>
     </div>
@@ -786,7 +1148,7 @@ this.Opacity = trans;
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/28/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/30/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/28/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/30/">Next<span></span></a>
   </nav>
 
 </div>
@@ -829,15 +1191,11 @@ this.Opacity = trans;
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -846,10 +1204,6 @@ this.Opacity = trans;
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -862,6 +1216,10 @@ this.Opacity = trans;
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -886,6 +1244,8 @@ this.Opacity = trans;
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

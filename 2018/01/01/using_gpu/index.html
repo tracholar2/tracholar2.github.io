@@ -1,0 +1,668 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>使用GPU | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="使用GPU支持的设备在典型的系统上，有多个计算设备。在TensorFlow中， 支持的设备类型是CPU和GPU。它们表示为strings。 例如： &amp;quot;/cpu:0&amp;quot;：您的机器的CPU。 &amp;quot;/device:GPU:0&amp;quot;：您的机器的GPU，如果有的话。&amp;quot;/device:GPU:1&amp;quot;：您机器的第二个GPU等 如果TensorFlow操作同时具有">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用GPU">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/using_gpu/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="使用GPU支持的设备在典型的系统上，有多个计算设备。在TensorFlow中， 支持的设备类型是CPU和GPU。它们表示为strings。 例如： &amp;quot;/cpu:0&amp;quot;：您的机器的CPU。 &amp;quot;/device:GPU:0&amp;quot;：您的机器的GPU，如果有的话。&amp;quot;/device:GPU:1&amp;quot;：您机器的第二个GPU等 如果TensorFlow操作同时具有">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用GPU">
+<meta name="twitter:description" content="使用GPU支持的设备在典型的系统上，有多个计算设备。在TensorFlow中， 支持的设备类型是CPU和GPU。它们表示为strings。 例如： &amp;quot;/cpu:0&amp;quot;：您的机器的CPU。 &amp;quot;/device:GPU:0&amp;quot;：您的机器的GPU，如果有的话。&amp;quot;/device:GPU:1&amp;quot;：您机器的第二个GPU等 如果TensorFlow操作同时具有">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/using_gpu/" title="使用GPU" itemprop="url">使用GPU</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">使用GPU</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">支持的设备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">记录设备的位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">手动设备放置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">允许GPU内存增长</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">在多GPU系统上使用单个GPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">使用多个GPU</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="使用gpu">使用GPU</span></h1><h2><span id="支持的设备">支持的设备</span></h2><p>在典型的系统上，有多个计算设备。在TensorFlow中， 支持的设备类型是<code>CPU</code>和<code>GPU</code>。它们表示为<code>strings</code>。 例如：</p>
+<p><code>&quot;/cpu:0&quot;</code>：您的机器的CPU。 <code>&quot;/device:GPU:0&quot;</code>：您的机器的GPU，如果有的话。<br><code>&quot;/device:GPU:1&quot;</code>：您机器的第二个GPU等</p>
+<p>如果TensorFlow操作同时具有CPU和GPU，则GPU设备 将操作分配给设备时将被赋予优先权。例如，<br><code>matmul</code>具有CPU和GPU内核。在装有<code>cpu:0</code>和CXJ743的系统上 将选择<code>gpu:0</code>，<code>gpu:0</code>来运行<code>matmul</code>。</p>
+<h2><span id="记录设备的位置">记录设备的位置</span></h2><p>要找出您的操作和张量分配给哪些设备，请创建 与<code>log_device_placement</code>配置选项设置为<code>True</code>的会话。</p>
+<pre><code># Creates a graph.
+a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3], name=&apos;a&apos;)
+b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2], name=&apos;b&apos;)
+c = tf.matmul(a, b)
+# Creates a session with log_device_placement set to True.
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+# Runs the op.
+print(sess.run(c))
+</code></pre><p>您应该看到以下输出：</p>
+<pre><code>Device mapping:
+/job:localhost/replica:0/task:0/device:GPU:0 -&gt; device: 0, name: Tesla K40c, pci bus
+id: 0000:05:00.0
+b: /job:localhost/replica:0/task:0/device:GPU:0
+a: /job:localhost/replica:0/task:0/device:GPU:0
+MatMul: /job:localhost/replica:0/task:0/device:GPU:0
+[[ 22.  28.]
+ [ 49.  64.]]
+</code></pre><h2><span id="手动设备放置">手动设备放置</span></h2><p>如果您希望特定的操作在您选择的设备上运行 您可以使用<code>with tf.device</code>，而不是自动为您选择 创建一个设备上下文，以便该上下文中的所有操作都可以<br>具有相同的设备分配。</p>
+<pre><code># Creates a graph.
+with tf.device(&apos;/cpu:0&apos;):
+  a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3], name=&apos;a&apos;)
+  b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2], name=&apos;b&apos;)
+c = tf.matmul(a, b)
+# Creates a session with log_device_placement set to True.
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+# Runs the op.
+print(sess.run(c))
+</code></pre><p>您将看到现在<code>a</code>和<code>b</code>分配给<code>cpu:0</code>。由于设备是 对于<code>MatMul</code>操作没有明确指定，TensorFlow运行时将会<br>根据操作和可用的设备（<code>gpu:0</code>）选择一个 例如），并根据需要在设备之间自动复制张量。</p>
+<pre><code>Device mapping:
+/job:localhost/replica:0/task:0/device:GPU:0 -&gt; device: 0, name: Tesla K40c, pci bus
+id: 0000:05:00.0
+b: /job:localhost/replica:0/task:0/cpu:0
+a: /job:localhost/replica:0/task:0/cpu:0
+MatMul: /job:localhost/replica:0/task:0/device:GPU:0
+[[ 22.  28.]
+ [ 49.  64.]]
+</code></pre><h2><span id="允许gpu内存增长">允许GPU内存增长</span></h2><p>默认情况下，TensorFlow映射几乎所有GPU的GPU内存（受限于 <code>CUDA_VISIBLE_DEVICES</code>）<br>对过程可见。这样做是为了更有效地使用相对 通过减少内存来降低设备上宝贵的GPU内存资源 碎片。</p>
+<p>在某些情况下，过程只需要分配一个子集 可用的内存，或只增加进程所需的内存使用量。<br>TensorFlow在Session上提供了两个Config选项来控制这个选项。</p>
+<p>首先是<code>allow_growth</code>选项，它只尝试分配尽可能多的数据 基于运行时分配的GPU内存：它开始分配很少<br>内存，随着会话的运行和更多的GPU内存的需求，我们扩展GPU 内存区域由TensorFlow进程所需。请注意，我们不释放<br>内存，因为这可能导致更糟糕的内存碎片。要打开这个 选项，在ConfigProto中设置选项：</p>
+<pre><code>config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+session = tf.Session(config=config, ...)
+</code></pre><p>第二种方法是<code>per_process_gpu_memory_fraction</code>选项 确定每个可见GPU的总内存量的一部分<br>应该分配。例如，你可以告诉TensorFlow只分配40％ 每个GPU的内存总量：</p>
+<pre><code>config = tf.ConfigProto()
+config.gpu_options.per_process_gpu_memory_fraction = 0.4
+session = tf.Session(config=config, ...)
+</code></pre><p>如果要真正限制可用的GPU内存量，这非常有用 TensorFlow流程。</p>
+<h2><span id="在多gpu系统上使用单个gpu">在多GPU系统上使用单个GPU</span></h2><p>如果您的系统中有多个GPU，则ID最低的GPU将会是 默认选中。如果你想在不同的GPU上运行，你将需要 明确指定偏好：</p>
+<pre><code># Creates a graph.
+with tf.device(&apos;/device:GPU:2&apos;):
+  a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3], name=&apos;a&apos;)
+  b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2], name=&apos;b&apos;)
+  c = tf.matmul(a, b)
+# Creates a session with log_device_placement set to True.
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+# Runs the op.
+print(sess.run(c))
+</code></pre><p>如果你指定的设备不​​存在，你会得到 <code>InvalidArgumentError</code>：</p>
+<pre><code>InvalidArgumentError: Invalid argument: Cannot assign a device to node &apos;b&apos;:
+Could not satisfy explicit device specification &apos;/device:GPU:2&apos;
+   [[Node: b = Const[dtype=DT_FLOAT, value=Tensor&lt;type: float shape: [3,2]
+   values: 1 2 3...&gt;, _device=&quot;/device:GPU:2&quot;]()]]
+</code></pre><p>如果你想TensorFlow自动选择一个现有和支持 设备运行的情况下，指定的一个不存在，你可以<br>创建时将<code>allow_soft_placement</code>设置为配置选项中的<code>True</code> 会议。</p>
+<pre><code># Creates a graph.
+with tf.device(&apos;/device:GPU:2&apos;):
+  a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3], name=&apos;a&apos;)
+  b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2], name=&apos;b&apos;)
+  c = tf.matmul(a, b)
+# Creates a session with allow_soft_placement and log_device_placement set
+# to True.
+sess = tf.Session(config=tf.ConfigProto(
+      allow_soft_placement=True, log_device_placement=True))
+# Runs the op.
+print(sess.run(c))
+</code></pre><h2><span id="使用多个gpu">使用多个GPU</span></h2><p>如果你想在多个GPU上运行TensorFlow，你可以构建你的 模型在一个多塔的时尚，其中每个塔被分配到不同的GPU。 例如：</p>
+<pre><code># Creates a graph.
+c = []
+for d in [&apos;/device:GPU:2&apos;, &apos;/device:GPU:3&apos;]:
+  with tf.device(d):
+    a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3])
+    b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2])
+    c.append(tf.matmul(a, b))
+with tf.device(&apos;/cpu:0&apos;):
+  sum = tf.add_n(c)
+# Creates a session with log_device_placement set to True.
+sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+# Runs the op.
+print(sess.run(sum))
+</code></pre><p>您将看到以下输出。</p>
+<pre><code>Device mapping:
+/job:localhost/replica:0/task:0/device:GPU:0 -&gt; device: 0, name: Tesla K20m, pci bus
+id: 0000:02:00.0
+/job:localhost/replica:0/task:0/device:GPU:1 -&gt; device: 1, name: Tesla K20m, pci bus
+id: 0000:03:00.0
+/job:localhost/replica:0/task:0/device:GPU:2 -&gt; device: 2, name: Tesla K20m, pci bus
+id: 0000:83:00.0
+/job:localhost/replica:0/task:0/device:GPU:3 -&gt; device: 3, name: Tesla K20m, pci bus
+id: 0000:84:00.0
+Const_3: /job:localhost/replica:0/task:0/device:GPU:3
+Const_2: /job:localhost/replica:0/task:0/device:GPU:3
+MatMul_1: /job:localhost/replica:0/task:0/device:GPU:3
+Const_1: /job:localhost/replica:0/task:0/device:GPU:2
+Const: /job:localhost/replica:0/task:0/device:GPU:2
+MatMul: /job:localhost/replica:0/task:0/device:GPU:2
+AddN: /job:localhost/replica:0/task:0/cpu:0
+[[  44.   56.]
+ [  98.  128.]]
+</code></pre><p>cifar10教程就是一个很好的例子 演示如何使用多个GPU进行训练。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/using_gpu/" data-title="使用GPU | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/seq2seq/" title="神经机器翻译（seq2seq）教程">
+  <strong>上一篇：</strong><br/>
+  <span>
+  神经机器翻译（seq2seq）教程</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/recommended-way-to-embed-pdf-in-html/"  title="推荐将PDF嵌入到HTML中的方法？">
+ <strong>下一篇：</strong><br/> 
+ <span>推荐将PDF嵌入到HTML中的方法？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">使用GPU</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">支持的设备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">记录设备的位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">手动设备放置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">允许GPU内存增长</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">在多GPU系统上使用单个GPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">使用多个GPU</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

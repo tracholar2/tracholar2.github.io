@@ -1,0 +1,712 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>有没有人有基准（代码和结果）比较用Xamarin C＃和Java编写的Android应用程序的性能？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我遇到了Xamarin声称他们在Android和他们的C＃编译的应用程序上的Mono实现比Java代码更快。有没有人在不同的Android平台上对非常相似的Java和C＃代码进行实际的基准测试来验证这些声明，可以发布代码和结果？ Added June 18, 2013既然没有答案，也找不到别人所做的基准，就决定做我自己的测试。不幸的是，我的问题仍然是“锁定”，所以我不能发表这个答案，只能编辑问题。">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有没有人有基准（代码和结果）比较用Xamarin C＃和Java编写的Android应用程序的性能？">
+<meta property="og:url" content="https://www.tracholar.top/2017/12/23/does-anyone-have-benchmarks-code-results-comparing-performance-of-android-ap/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我遇到了Xamarin声称他们在Android和他们的C＃编译的应用程序上的Mono实现比Java代码更快。有没有人在不同的Android平台上对非常相似的Java和C＃代码进行实际的基准测试来验证这些声明，可以发布代码和结果？ Added June 18, 2013既然没有答案，也找不到别人所做的基准，就决定做我自己的测试。不幸的是，我的问题仍然是“锁定”，所以我不能发表这个答案，只能编辑问题。">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="有没有人有基准（代码和结果）比较用Xamarin C＃和Java编写的Android应用程序的性能？">
+<meta name="twitter:description" content="我遇到了Xamarin声称他们在Android和他们的C＃编译的应用程序上的Mono实现比Java代码更快。有没有人在不同的Android平台上对非常相似的Java和C＃代码进行实际的基准测试来验证这些声明，可以发布代码和结果？ Added June 18, 2013既然没有答案，也找不到别人所做的基准，就决定做我自己的测试。不幸的是，我的问题仍然是“锁定”，所以我不能发表这个答案，只能编辑问题。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/23/does-anyone-have-benchmarks-code-results-comparing-performance-of-android-ap/" title="有没有人有基准（代码和结果）比较用Xamarin C＃和Java编写的Android应用程序的性能？" itemprop="url">有没有人有基准（代码和结果）比较用Xamarin C＃和Java编写的Android应用程序的性能？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-23T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-23</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Added June 18, 2013</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Results from my testing</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">HTC Nexus One Android 2.3.7 (API 10) - CyanogenMod ROM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Samsung Galaxy S2 SGH-I777 (Android 4.0.4, API 15) - CyanogenMod ROM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Samsung GT-N7100 (Android 4.1.1 JellyBean, API 16) - Samsung ROM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Emulator - Intel (Android 4.2, API 17)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Emulator - Intel (Android 2.3.7, API 10)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Emulator - Arm (Android 4.0.4, API 15)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Brief discussion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Edit July 8, 2013</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Genymotion emulator - Intel (Android 4.1.1, API 16)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">BN Nook XD+, ARM (Android 4.0)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Samsung Galaxy Note 2 - ARM (Android 4.1.1)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Samsung Galaxy Note 2 - ARM (Android 4.1.1), power saving disabled</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Edit July 12, 2013</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Edit July 15, 2013</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">HTC Nexus One Android 2.3.7 (ARM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Samsung Galaxy Note 2, Android 4.1.1 (ARM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Intel emulator, Android 4.2 (x86)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Update 7/26/2013</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Update 7/30/2013 - better results for dot42</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">7/30/2013 - Dot42 tests with more Java classes in Dot42 C</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Intel emulator, Android 4.2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">ARM, Samsung Galaxy Note 2, power saving off, Android 4.1.1</span></a>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我遇到了Xamarin声称他们在Android和他们的C＃编译的应用程序上的Mono实现比Java代码更快。有没有人在不同的Android平台上对非常相似的Java和C＃代码进行实际的基准测试来验证这些声明，可以发布代码和结果？</p>
+<h3><span id="added-june-18-2013">Added June 18, 2013</span></h3><p>既然没有答案，也找不到别人所做的基准，就决定做我自己的测试。不幸的是，我的问题仍然是“锁定”，所以我不能发表这个答案，只能编辑问题。请投票重新提出这个问题。对于C＃，我使用Xamarin.Android版本。<br>4.7.09001（测试版）源代码，用于测试的所有数据以及已编译的APK软件包位于GitHub上：</p>
+<p>Java：https：//github.com/gregko/TtsSetup_Java</p>
+<p>C＃：https：//github.com/gregko/TtsSetup_C_sharp</p>
+<p>如果有人想在其他设备或模拟器上重复我的测试，我也有兴趣了解结果。</p>
+<h1><span id="results-from-my-testing">Results from my testing</span></h1><p>我将我的句子提取器类移植到C＃（从我的@语音朗读器应用程序），并对英语，俄语，法语，波兰语和捷克语的10个html文件运行一些测试。每个运行在所有10个文件上执行5次，下面列出3个不同设备和一个模拟器的总时间。我只测试了“Release”版本，没有启用调试。</p>
+<h3><span id="htc-nexus-one-android-237-api-10-cyanogenmod-rom">HTC Nexus One Android 2.3.7 (API 10) - CyanogenMod ROM</span></h3><p>Java：总计时间（5次）：12361毫秒，文件读取总数：13304毫秒</p>
+<p>C＃：总计时间（5次）：17504毫秒，文件读取总计：17956毫秒</p>
+<h3><span id="samsung-galaxy-s2-sgh-i777-android-404-api-15-cyanogenmod-rom">Samsung Galaxy S2 SGH-I777 (Android 4.0.4, API 15) - CyanogenMod ROM</span></h3><p>Java：总时间（5次）：8947毫秒，文件读取总数：9186毫秒</p>
+<p>C＃：总时间（5次）：9884毫秒，文件读取总数：10247毫秒</p>
+<h3><span id="samsung-gt-n7100-android-411-jellybean-api-16-samsung-rom">Samsung GT-N7100 (Android 4.1.1 JellyBean, API 16) - Samsung ROM</span></h3><p>Java：总时间（5次）：9742毫秒，文件读取总数：10111毫秒</p>
+<p>C＃：总计时间（5次）：10459毫秒，文件读取总数：10696毫秒</p>
+<h3><span id="emulator-intel-android-42-api-17">Emulator - Intel (Android 4.2, API 17)</span></h3><p>Java：总计时间（5次）：2699毫秒，文件读数总计：3127毫秒</p>
+<p>C＃：总计时间（5次）：2049毫秒，文件读取总计：2182毫秒</p>
+<h3><span id="emulator-intel-android-237-api-10">Emulator - Intel (Android 2.3.7, API 10)</span></h3><p>Java：总计时间（5次）：2992ms，文件读取总数：3591ms</p>
+<p>C＃：总时间（5次运行）：2049毫秒，文件读数总计：2257毫秒</p>
+<h3><span id="emulator-arm-android-404-api-15">Emulator - Arm (Android 4.0.4, API 15)</span></h3><p>Java：总计时间（5次）：41751毫秒，文件读取总数：43866毫秒</p>
+<p>C＃：累计总时间（5次）：44136毫秒，文件读数总计：45109毫秒</p>
+<h1><span id="brief-discussion">Brief discussion</span></h1><p>我的测试代码主要包含文本解析，替换和正则表达式搜索，也许对于其他代码（例如更多数字操作），结果将会不同。在所有使用ARM处理器的设备上，Java比Xamarin<br>C＃代码表现得更好。最大的区别是在Android 2.3下，C＃代码运行在约。 Java速度的70％。</p>
+<p>在英特尔仿真器上（使用英特尔HAX技术，仿真器以快速虚拟模式运行），Xamarin C＃代码运行我的示例代码比Java快得多 -<br>约快1.35倍。也许单声道虚拟机代码和库在英特尔上比在ARM上更好地优化？</p>
+<h1><span id="edit-july-8-2013">Edit July 8, 2013</span></h1><p>我刚刚安装了运行在Oracle VirtualBox中的Genymotion<br>Android模拟器，并且再次使用本机Intel处理器，而不是仿真ARM处理器。与英特尔HAX仿真器一样，C＃在这里运行得更快。这是我的结果：</p>
+<h3><span id="genymotion-emulator-intel-android-411-api-16">Genymotion emulator - Intel (Android 4.1.1, API 16)</span></h3><blockquote>
+<p>Java: Grand total time (5 runs): 2069 ms, with file reading total: 2248 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>C#: Grand total time (5 runs): 1543 ms, with file reading total: 1642 ms</p>
+</blockquote>
+<p>然后我注意到有一个更新Xamarin.Android测试版，版本4.7.11，发行说明提及Mono运行时的一些变化。决定快速测试一些ARM设备，并大吃一惊</p>
+<ul>
+<li>C＃编号改进：</li>
+</ul>
+<h3><span id="bn-nook-xd-arm-android-40">BN Nook XD+, ARM (Android 4.0)</span></h3><blockquote>
+<p>Java: Grand total time (5 runs): 8103 ms, with file reading total: 8569 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>C#: Grand total time (5 runs): 7951 ms, with file reading total: 8161 ms</p>
+</blockquote>
+<p>哇！ C＃现在比Java更好吗？决定在我的Galaxy Note 2上重复测试：</p>
+<h3><span id="samsung-galaxy-note-2-arm-android-411">Samsung Galaxy Note 2 - ARM (Android 4.1.1)</span></h3><blockquote>
+<p>Java: Grand total time (5 runs): 9675 ms, with file reading total: 10028 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>C#: Grand total time (5 runs): 9911 ms, with file reading total: 10104 ms</p>
+</blockquote>
+<p>这里C＃似乎只是稍微慢一些，但这些数字给了我一个暂停：为什么时间比Nook HD +更长，尽管Note<br>2有一个更快的处理器？答案是：省电模式。在角落，它被禁用，在注2 - 启用。决定在禁用省电模式的情况下进行测试（启用时也会限制处理器速度）：</p>
+<h3><span id="samsung-galaxy-note-2-arm-android-411-power-saving-disabled">Samsung Galaxy Note 2 - ARM (Android 4.1.1), power saving disabled</span></h3><blockquote>
+<p>Java: Grand total time (5 runs): 7153 ms, with file reading total: 7459 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>C#: Grand total time (5 runs): 6906 ms, with file reading total: 7070 ms</p>
+</blockquote>
+<p>现在，令人惊讶的是，C＃在ARM处理器上也比Java稍快。大改进！</p>
+<h1><span id="edit-july-12-2013">Edit July 12, 2013</span></h1><p>我们都知道，没有什么比原生代码更快的速度，而且我对Java或C＃中的语句分割器的性能还不满意，特别是我需要改进它（并且因此使其更慢）。决定用C<br>++重新编写它。这是一个小的（比以前的测试文件更小的一组文件，因为其他原因）我的Galaxy Note 2的本机和Java的速度比较，禁用了省电模式：</p>
+<p>Java的： 总时间（5次）：3292毫秒，文件读数总计：3454毫秒</p>
+<p>原生拇指： 总时间（5次）：537毫秒，文件读数总计：657毫秒</p>
+<p>原住民手臂： 总时间（5次）：458毫秒，文件读数总计：587毫秒</p>
+<p>看起来像我的特定测试，本机代码比Java快6到7倍。警告：不能在Android上使用std ::<br>regex类，所以不得不编写我自己的搜索段落分隔符或html标签的特殊例程。我使用正则表达式在PC上对同一代码进行的初始测试比Java快4到5倍。</p>
+<p>唷！用char <em>或wchar </em>指针再次唤醒原始内存，我立刻感觉到了20岁！ :)</p>
+<h1><span id="edit-july-15-2013">Edit July 15, 2013</span></h1><p>（请参阅下文，编辑2013年7月30日，与Dot42更好的结果）</p>
+<p>有一些困难，我试图把我的C＃测试移植到Dot42（版本1.0.1.71测试版），Android的另一个C＃平台。初步结果显示，在英特尔Android仿真器上，Dot42代码比Xamarin<br>C＃（v.4.7.11）慢3倍（3倍）。一个问题是，Dot42中的System.Text.RegularExpressions类没有在Xamarin测试中使用的Split（）函数，所以我使用了Java.Util.Regex类，而使用了Java.Util.Regex.Pattern.Split<br>），所以在代码中的这个特定的地方有这个小的区别。应该不是一个大问题。<br>Dot42编译为Dalvik（DEX）代码，所以它本身就和Android上的Java配合，不需要像Xamarin那样从C＃到Java的昂贵的interop。</p>
+<p>仅仅为了比较，我也在ARM设备上运行测试 - 这里Dot42代码比Xamarin C＃只“慢”2倍。这是我的结果：</p>
+<h3><span id="htc-nexus-one-android-237-arm">HTC Nexus One Android 2.3.7 (ARM)</span></h3><blockquote>
+<p>Java: Grand total time (5 runs): 12187 ms, with file reading total: 13200 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Xamarin C#: Grand total time (5 runs): 13935 ms, with file reading total:<br>14465 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Dot42 C#: Grand total time (5 runs): 26000 ms, with file reading total:<br>27168 ms</p>
+</blockquote>
+<h3><span id="samsung-galaxy-note-2-android-411-arm">Samsung Galaxy Note 2, Android 4.1.1 (ARM)</span></h3><blockquote>
+<p>Java: Grand total time (5 runs): 6895 ms, with file reading total: 7275 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Xamarin C#: Grand total time (5 runs): 6466 ms, with file reading total:<br>6720 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Dot42 C#: Grand total time (5 runs): 11185 ms, with file reading total:<br>11843 ms</p>
+</blockquote>
+<h3><span id="intel-emulator-android-42-x86">Intel emulator, Android 4.2 (x86)</span></h3><blockquote>
+<p>Java: Grand total time (5 runs): 2389 ms, with file reading total: 2770 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Xamarin C#: Grand total time (5 runs): 1748 ms, with file reading total:<br>1933 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Dot42 C#: Grand total time (5 runs): 5150 ms, with file reading total: 5459<br>ms</p>
+</blockquote>
+<p>对我来说，有趣的是在新的ARM设备上Xamarin C＃比Java稍微快一些，而旧版的Nexus<br>One稍慢一些。如果有人想要运行这些测试，请让我知道，我会更新GitHub上的来源。使用英特尔处理器的真实Android设备的结果将是特别有趣的。</p>
+<h2><span id="update-7262013">Update 7/26/2013</span></h2><p>只是一个快速更新，由基准应用程序与最新的Xamarin.Android 4.8，以及今天发布的dot42 1.0.1.72更新重新编译 -<br>没有从以前的报告结果的重大变化。</p>
+<h2><span id="update-7302013-better-results-for-dot42">Update 7/30/2013 - better results for dot42</span></h2><p>用我的Java代码的Robert（从dot42制造商）端口重新测试Dot42到C＃。在我最初为Xamarin完成的C＃端口中，我用一些本地Java类（如ListArray）和C＃原生的List类替换了它们。Robert没有我的Dot42源代码，所以他再次从Java移植它，并使用原始Java类这些地方，有利于Dot42，我猜是因为它运行在Dalvik虚拟机，像Java，而不是单声道，如Xamarin。现在Dot42的结果好多了。以下是我测试的日志：</p>
+<blockquote>
+<h2><span id="7302013-dot42-tests-with-more-java-classes-in-dot42-c">7/30/2013 - Dot42 tests with more Java classes in Dot42 C</span></h2></blockquote>
+<p>&gt;</p>
+<blockquote>
+<h2><span id="intel-emulator-android-42">Intel emulator, Android 4.2</span></h2></blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Dot42, Greg’s Code using StringBuilder.Replace() (as in Xamarin):<br> Grand total time (5 runs): 3646 ms, with file reading total: 3830 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Dot42, Greg’s Code using String.Replace() (as in Java and Robert’s code):<br> Grand total time (5 runs): 3027 ms, with file reading total: 3206 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Dot42, Robert’s Code:<br> Grand total time (5 runs): 1781 ms, with file reading total: 1999 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Xamarin:<br> Grand total time (5 runs): 1373 ms, with file reading total: 1505 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Java:<br> Grand total time (5 runs): 1841 ms, with file reading total: 2044 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<h2><span id="arm-samsung-galaxy-note-2-power-saving-off-android-411">ARM, Samsung Galaxy Note 2, power saving off, Android 4.1.1</span></h2></blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Dot42, Greg’s Code using StringBuilder.Replace() (as in Xamarin):<br> Grand total time (5 runs): 10875 ms, with file reading total: 11280 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Dot42, Greg’s Code using String.Replace() (as in Java and Robert’s code):<br> Grand total time (5 runs): 9710 ms, with file reading total: 10097 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Dot42, Robert’s Code:<br> Grand total time (5 runs): 6279 ms, with file reading total: 6622 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Xamarin:<br> Grand total time (5 runs): 6201 ms, with file reading total: 6476 ms</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Java:<br> Grand total time (5 runs): 7141 ms, with file reading total: 7479 ms</p>
+</blockquote>
+<p>我仍然认为Dot42还有很长的路要走。拥有类似Java的类（例如ArrayList）以及它们的良好性能，将使从Java移植到C＃的代码稍微容易一些。不过，这是我不太可能做的事情。我宁愿要使用现有的C＃代码（库等），这将使用本机的C＃类（例如List），这将使用当前的dot42代码缓慢执行，并与Xamarin很好。</p>
+<p>格雷格</p>
+<a id="more"></a>
+<p>是的，Xamarin的Mono虚拟机比谷歌在Android上使用的Dalvik更令人印象深刻。我已经测试了HTC Flyer和Acer Iconia<br>Tab平板电脑，通过Mono针对Java<br>Dalvik基准测试了Android的C＃端口，以及Android的C＃实现，真正打破了基于Java的Dalvik。</p>
+<pre><code>I came across this interesting post
+</code></pre><p><a href="https://medium.com/@harrycheung/mobile-app-performance-redux-" target="_blank" rel="noopener">https://medium.com/@harrycheung/mobile-app-performance-redux-</a><br>e512be94f976#.kfbauchtz</p>
+<p>希望这个信息有帮助。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2017/12/23/does-anyone-have-benchmarks-code-results-comparing-performance-of-android-ap/" data-title="有没有人有基准（代码和结果）比较用Xamarin C＃和Java编写的Android应用程序的性能？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/12/23/close-hide-the-android-soft-keyboard/" title="关闭/隐藏Android软键盘">
+  <strong>上一篇：</strong><br/>
+  <span>
+  关闭/隐藏Android软键盘</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/12/23/how-do-i-auto-resize-an-image-to-fit-a-div-container/"  title="如何自动调整图像大小以适合div容器">
+ <strong>下一篇：</strong><br/> 
+ <span>如何自动调整图像大小以适合div容器
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Added June 18, 2013</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Results from my testing</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">HTC Nexus One Android 2.3.7 (API 10) - CyanogenMod ROM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Samsung Galaxy S2 SGH-I777 (Android 4.0.4, API 15) - CyanogenMod ROM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Samsung GT-N7100 (Android 4.1.1 JellyBean, API 16) - Samsung ROM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Emulator - Intel (Android 4.2, API 17)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">Emulator - Intel (Android 2.3.7, API 10)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">Emulator - Arm (Android 4.0.4, API 15)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Brief discussion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Edit July 8, 2013</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Genymotion emulator - Intel (Android 4.1.1, API 16)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">BN Nook XD+, ARM (Android 4.0)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Samsung Galaxy Note 2 - ARM (Android 4.1.1)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">Samsung Galaxy Note 2 - ARM (Android 4.1.1), power saving disabled</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Edit July 12, 2013</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Edit July 15, 2013</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">HTC Nexus One Android 2.3.7 (ARM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">Samsung Galaxy Note 2, Android 4.1.1 (ARM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">Intel emulator, Android 4.2 (x86)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Update 7/26/2013</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Update 7/30/2013 - better results for dot42</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">7/30/2013 - Dot42 tests with more Java classes in Dot42 C</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">Intel emulator, Android 4.2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number"></span> <span class="toc-text">ARM, Samsung Galaxy Note 2, power saving off, Android 4.1.1</span></a>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

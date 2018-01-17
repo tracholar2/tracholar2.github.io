@@ -1,0 +1,785 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>图像识别 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="图像识别我们的大脑让视觉看起来很容易。人类不需要付出任何努力 分辨一只狮子和一只捷豹，读一个标志，或者辨认一个人的脸。但是，这些实际上是用计算机解决的难题：只有他们 看起来很容易，因为我们的大脑非常善于理解图像。 在过去的几年中，机器学习领域取得了巨大成就 在解决这些难题方面取得进展。特别是，我们已经 发现一种叫做“深”的模式 卷积神经网络可以在硬视觉识别任务上达到合理的性能 - 在某些领域匹配或">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像识别">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/image_recognition/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="图像识别我们的大脑让视觉看起来很容易。人类不需要付出任何努力 分辨一只狮子和一只捷豹，读一个标志，或者辨认一个人的脸。但是，这些实际上是用计算机解决的难题：只有他们 看起来很容易，因为我们的大脑非常善于理解图像。 在过去的几年中，机器学习领域取得了巨大成就 在解决这些难题方面取得进展。特别是，我们已经 发现一种叫做“深”的模式 卷积神经网络可以在硬视觉识别任务上达到合理的性能 - 在某些领域匹配或">
+<meta property="og:image" content="https://www.tensorflow.org/images/AlexClassification.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/cropped_panda.jpg">
+<meta property="og:image" content="https://www.tensorflow.org/images/grace_hopper.jpg">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图像识别">
+<meta name="twitter:description" content="图像识别我们的大脑让视觉看起来很容易。人类不需要付出任何努力 分辨一只狮子和一只捷豹，读一个标志，或者辨认一个人的脸。但是，这些实际上是用计算机解决的难题：只有他们 看起来很容易，因为我们的大脑非常善于理解图像。 在过去的几年中，机器学习领域取得了巨大成就 在解决这些难题方面取得进展。特别是，我们已经 发现一种叫做“深”的模式 卷积神经网络可以在硬视觉识别任务上达到合理的性能 - 在某些领域匹配或">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/AlexClassification.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/image_recognition/" title="图像识别" itemprop="url">图像识别</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">图像识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">与Python API一起使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">与C ++ API一起使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">学习更多的资源</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="图像识别">图像识别</span></h1><p>我们的大脑让视觉看起来很容易。人类不需要付出任何努力 分辨一只狮子和一只捷豹，读一个标志，或者辨认一个人的脸。<br>但是，这些实际上是用计算机解决的难题：只有他们 看起来很容易，因为我们的大脑非常善于理解图像。</p>
+<p>在过去的几年中，机器学习领域取得了巨大成就 在解决这些难题方面取得进展。特别是，我们已经 发现一种叫做“深”的模式 卷积神经网络<br>可以在硬视觉识别任务上达到合理的性能 - 在某些领域匹配或超过人的表现。</p>
+<p>研究人员已经证明了稳定的进展 在计算机视觉中通过验证他们的工作 ImageNet - 计算机视觉的学术基准。 连续的模型继续表现出改进，每次都实现<br>一个新的最新的结果： QuocNet，AlexNet，Inception（GoogLeNet），BN-Inception-v2。<br>Google内部和外部的研究人员已经发表了描述所有内容的论文 这些模型但结果仍难以重现。 我们现在正在通过释放运行图像识别的代码来进行下一步<br>在我们最新的模型上，Inception-v3。</p>
+<p>Inception-v3针对ImageNet大型视觉识别挑战进行了培训 使用2012年的数据。这是计算机视觉的标准任务， 模型试图分类整个<br>图像分为1000个类，如“斑马”，“达尔马提亚”和“洗碗机”。 例如，下面是AlexNet对一些图像进行分类的结果：</p>
+<p><img src="https://www.tensorflow.org/images/AlexClassification.png" alt=""></p>
+<p>为了比较模型，我们检查模型无法预测的频率 正确的答案作为他们的前5个猜测之一 - 被称为“前5的错误率”。<br>AlexNet通过在2012年设置15.3％的前5个错误率来实现 验证数据集;初始（GoogLeNet）达到6.67％; BN-Inception-<br>v2达到4.9％; Inception-v3达到3.46％。</p>
+<blockquote>
+<p>人类在ImageNet挑战上的表现如何？有一个博客帖子 试图衡量他自己的表现的Andrej Karpathy。他到了 5.1％前5的错误率。</p>
+</blockquote>
+<p>本教程将教你如何使用Inception-v3。你将学习如何 在Python或C ++中将图像分类为1000个类。我们也将讨论如何<br>从这个模型中提取更高层次的特征，可以重用其他特征 视觉任务。</p>
+<p>我们很高兴看到社区将如何使用这个模型。</p>
+<h2><span id="与python-api一起使用">与Python API一起使用</span></h2><p><code>classify_image.py</code>从<code>tensorflow.org</code>下载训练有素的型号 当程序第一次运行。你将需要大约200M的可用空间<br>可用在您的硬盘上。</p>
+<p>首先克隆GitHub的TensorFlow模型回购。运行以下命令：</p>
+<pre><code>cd models/tutorials/image/imagenet
+python classify_image.py
+</code></pre><p>上述命令将分类提供的一只熊猫的图像。</p>
+<p><img src="https://www.tensorflow.org/images/cropped_panda.jpg" alt=""></p>
+<p>如果模型正确运行，脚本将产生以下输出：</p>
+<pre><code>giant panda, panda, panda bear, coon bear, Ailuropoda melanoleuca (score = 0.88493)
+indri, indris, Indri indri, Indri brevicaudatus (score = 0.00878)
+lesser panda, red panda, panda, bear cat, cat bear, Ailurus fulgens (score = 0.00317)
+custard apple (score = 0.00149)
+earthstar (score = 0.00127)
+</code></pre><p>如果您想提供其他JPEG图像，可以通过编辑来完成 <code>--image_file</code>的说法。</p>
+<blockquote>
+<p>如果您将模型数据下载到不同的目录中，您 需要将<code>--model_dir</code>指向所使用的目录。</p>
+</blockquote>
+<h2><span id="与c-api一起使用">与C ++ API一起使用</span></h2><p>您可以在C ++中运行相同的Inception-v3模型以用于生产 环境。您可以下载包含定义的GraphDef的存档<br>像这样的模型（从TensorFlow的根目录运行 库）：</p>
+<pre><code>curl -L &quot;https://storage.googleapis.com/download.tensorflow.org/models/inception_v3_2016_08_28_frozen.pb.tar.gz&quot; |
+  tar -C tensorflow/examples/label_image/data -xz
+</code></pre><p>接下来，我们需要编译C ++二进制文件，其中包含加载和运行图形的代码。 如果你跟着 说明下载TensorFlow的源码安装<br>对于您的平台，您应该可以通过构建示例 从你的shell终端运行这个命令：</p>
+<pre><code>bazel build tensorflow/examples/label_image/...
+</code></pre><p>这应该创建一个二进制可执行文件，然后可以像这样运行：</p>
+<pre><code>bazel-bin/tensorflow/examples/label_image/label_image
+</code></pre><p>这使用框架附带的默认示例图像，应该 输出类似这样的东西：</p>
+<pre><code>I tensorflow/examples/label_image/main.cc:206] military uniform (653): 0.834306
+I tensorflow/examples/label_image/main.cc:206] mortarboard (668): 0.0218692
+I tensorflow/examples/label_image/main.cc:206] academic gown (401): 0.0103579
+I tensorflow/examples/label_image/main.cc:206] pickelhaube (716): 0.00800814
+I tensorflow/examples/label_image/main.cc:206] bulletproof vest (466): 0.00535088
+</code></pre><p>在这种情况下，我们使用的默认图像 格雷斯霍珀将军，你可以 看到网络正确识别她身着军装，身高很高 得分为0.8。</p>
+<p><img src="https://www.tensorflow.org/images/grace_hopper.jpg" alt=""></p>
+<p>接下来，通过提供–image =参数（例如，</p>
+<pre><code>bazel-bin/tensorflow/examples/label_image/label_image --image=my_image.png
+</code></pre><p>如果你看<code>tensorflow/examples/label_image/main.cc</code> 文件，你可以找到<br>怎么运行的。我们希望这个代码能帮助你将TensorFlow集成到 您自己的应用程序，所以我们将一步一步通过主要功能：</p>
+<p>命令行标志控制文件的加载位置，以及输入图像的属性。 该模型预计将得到正方形299x299 RGB图像，所以那些是<code>input_width</code><br>和<code>input_height</code>标志。我们还需要从整数中缩放像素值 在图形操作的浮点值的0到255之间。<br>我们用<code>input_mean</code>和<code>input_std</code>标志来控制缩放比例：我们先减去<br><code>input_mean</code>从每个像素值，然后用<code>input_std</code>分开。</p>
+<p>这些值可能看起来有些神奇，但是它们只是被定义的 基于他/她想用作输入图像的原始模型作者 训练。如果你有自己训练过的图表，你只需要<br>调整值以匹配您在训练过程中使用的任何值。</p>
+<p>你可以看到它们是如何应用到图像中的 <code>ReadTensorFromImageFile()</code> 功能。</p>
+<pre><code>// Given an image file name, read in the data, try to decode it as an image,
+// resize it to the requested size, and then scale the values as desired.
+Status ReadTensorFromImageFile(string file_name, const int input_height,
+                               const int input_width, const float input_mean,
+                               const float input_std,
+                               std::vector&lt;Tensor&gt;* out_tensors) {
+  tensorflow::GraphDefBuilder b;
+</code></pre><p>我们首先创建一个<code>GraphDefBuilder</code>，这是一个我们可以使用的对象 指定要运行或加载的模型。</p>
+<pre><code>string input_name = &quot;file_reader&quot;;
+string output_name = &quot;normalized&quot;;
+tensorflow::Node* file_reader =
+    tensorflow::ops::ReadFile(tensorflow::ops::Const(file_name, b.opts()),
+                              b.opts().WithName(input_name));
+</code></pre><p>然后，我们开始为我们想要运行的小模型创建节点 加载，调整大小和缩放像素值，以获得主模型的结果<br>希望成为其投入。我们创建的第一个节点只是一个<code>Const</code>操作，它拥有一个 张量与我们想要加载的图像的文件名称。然后通过了 首先输入到<code>ReadFile</code><br>op。您可能会注意到我们正在通过<code>b.opts()</code>作为最后一个 所有创建函数的参数。参数确保节点被添加到<br>模型定义在<code>GraphDefBuilder</code>中。我们也命名<code>ReadFile</code> 通过拨打<code>WithName()</code>呼叫<code>b.opts()</code>。这给节点一个名字，<br>这是不必要的，因为如果你不这样做，会自动分配一个名字 这样做，但它确实使调试更容易一些。</p>
+<pre><code>// Now try to figure out what kind of file it is and decode it.
+const int wanted_channels = 3;
+tensorflow::Node* image_reader;
+if (tensorflow::StringPiece(file_name).ends_with(&quot;.png&quot;)) {
+  image_reader = tensorflow::ops::DecodePng(
+      file_reader,
+      b.opts().WithAttr(&quot;channels&quot;, wanted_channels).WithName(&quot;png_reader&quot;));
+} else {
+  // Assume if it&apos;s not a PNG then it must be a JPEG.
+  image_reader = tensorflow::ops::DecodeJpeg(
+      file_reader,
+      b.opts().WithAttr(&quot;channels&quot;, wanted_channels).WithName(&quot;jpeg_reader&quot;));
+}
+// Now cast the image data to float so we can do normal math on it.
+tensorflow::Node* float_caster = tensorflow::ops::Cast(
+    image_reader, tensorflow::DT_FLOAT, b.opts().WithName(&quot;float_caster&quot;));
+// The convention for image ops in TensorFlow is that all images are expected
+// to be in batches, so that they&apos;re four-dimensional arrays with indices of
+// [batch, height, width, channel]. Because we only have a single image, we
+// have to add a batch dimension of 1 to the start with ExpandDims().
+tensorflow::Node* dims_expander = tensorflow::ops::ExpandDims(
+    float_caster, tensorflow::ops::Const(0, b.opts()), b.opts());
+// Bilinearly resize the image to fit the required dimensions.
+tensorflow::Node* resized = tensorflow::ops::ResizeBilinear(
+    dims_expander, tensorflow::ops::Const({input_height, input_width},
+                                          b.opts().WithName(&quot;size&quot;)),
+    b.opts());
+// Subtract the mean and divide by the scale.
+tensorflow::ops::Div(
+    tensorflow::ops::Sub(
+        resized, tensorflow::ops::Const({input_mean}, b.opts()), b.opts()),
+    tensorflow::ops::Const({input_std}, b.opts()),
+    b.opts().WithName(output_name));
+</code></pre><p>然后，我们继续添加更多的节点，将文件数据解码为图像，来投射 整数转换为浮点值，重新调整它，然后最后运行 对像素值进行减法和除法运算。</p>
+<pre><code>// This runs the GraphDef network definition that we&apos;ve just constructed, and
+// returns the results in the output tensor.
+tensorflow::GraphDef graph;
+TF_RETURN_IF_ERROR(b.ToGraphDef(&amp;graph));
+</code></pre><p>在这个结尾我们有 存储在b变量中的模型定义，我们将其转化为完整的图形 用<code>ToGraphDef()</code>功能定义。</p>
+<pre><code>std::unique_ptr&lt;tensorflow::Session&gt; session(
+    tensorflow::NewSession(tensorflow::SessionOptions()));
+TF_RETURN_IF_ERROR(session-&gt;Create(graph));
+TF_RETURN_IF_ERROR(session-&gt;Run({}, {output_name}, {}, out_tensors));
+return Status::OK();
+</code></pre><p>然后我们创建一个<code>tf.Session</code> 对象，这是实际运行图形的接口，并运行它， 指定我们想要从哪个节点获得输出，以及在哪里放置 输出数据。</p>
+<p>这给了我们一个<code>Tensor</code>对象的矢量，在这种情况下，我们知道只会是一个 单个对象很长。您可以将<code>Tensor</code>视为一个多维数组<br>上下文，它拥有299像素高，299像素宽，3通道图像作为浮点 值。如果你已经在你的产品中有你自己的图像处理框架，那么你 应该可以使用它，只要你应用相同的转换<br>将图像输入主图之前</p>
+<p>这是一个在C ++中动态创建一个小型TensorFlow图形的简单例子， 但是对于预先训练的Inception模型，我们希望从中加载更大的定义<br>一份文件。您可以在<code>LoadGraph()</code>功能中看到我们如何做到这一点。</p>
+<pre><code>// Reads a model graph definition from disk, and creates a session object you
+// can use to run it.
+Status LoadGraph(string graph_file_name,
+                 std::unique_ptr&lt;tensorflow::Session&gt;* session) {
+  tensorflow::GraphDef graph_def;
+  Status load_graph_status =
+      ReadBinaryProto(tensorflow::Env::Default(), graph_file_name, &amp;graph_def);
+  if (!load_graph_status.ok()) {
+    return tensorflow::errors::NotFound(&quot;Failed to load compute graph at &apos;&quot;,
+                                        graph_file_name, &quot;&apos;&quot;);
+  }
+</code></pre><p>如果你已经看过图像加载代码，很多的术语应该看起来很熟悉。而不是<br>使用<code>GraphDefBuilder</code>生成一个<code>GraphDef</code>对象，我们加载一个protobuf文件 直接包含<code>GraphDef</code>。</p>
+<pre><code>  session-&gt;reset(tensorflow::NewSession(tensorflow::SessionOptions()));
+  Status session_create_status = (*session)-&gt;Create(graph_def);
+  if (!session_create_status.ok()) {
+    return session_create_status;
+  }
+  return Status::OK();
+}
+</code></pre><p>然后我们从<code>GraphDef</code>创建一个Session对象 把它传回给调用者，以便以后可以运行它。</p>
+<p>除了在这种情况下，<code>GetTopLabels()</code>功能与图像加载非常相似 我们想要运行主图的结果，并把它变成一个排序列表<br>的得分最高的标签。就像图像加载器一样，它创建一个 <code>GraphDefBuilder</code>，增加了一些节点，然后运行短图得到一个<br>输出张量对。在这种情况下，他们代表排序的分数和指数 最高的结果的位置。</p>
+<pre><code>// Analyzes the output of the Inception graph to retrieve the highest scores and
+// their positions in the tensor, which correspond to categories.
+Status GetTopLabels(const std::vector&lt;Tensor&gt;&amp; outputs, int how_many_labels,
+                    Tensor* indices, Tensor* scores) {
+  tensorflow::GraphDefBuilder b;
+  string output_name = &quot;top_k&quot;;
+  tensorflow::ops::TopK(tensorflow::ops::Const(outputs[0], b.opts()),
+                        how_many_labels, b.opts().WithName(output_name));
+  // This runs the GraphDef network definition that we&apos;ve just constructed, and
+  // returns the results in the output tensors.
+  tensorflow::GraphDef graph;
+  TF_RETURN_IF_ERROR(b.ToGraphDef(&amp;graph));
+  std::unique_ptr&lt;tensorflow::Session&gt; session(
+      tensorflow::NewSession(tensorflow::SessionOptions()));
+  TF_RETURN_IF_ERROR(session-&gt;Create(graph));
+  // The TopK node returns two outputs, the scores and their original indices,
+  // so we have to append :0 and :1 to specify them both.
+  std::vector&lt;Tensor&gt; out_tensors;
+  TF_RETURN_IF_ERROR(session-&gt;Run({}, {output_name + &quot;:0&quot;, output_name + &quot;:1&quot;},
+                                  {}, &amp;out_tensors));
+  *scores = out_tensors[0];
+  *indices = out_tensors[1];
+  return Status::OK();
+</code></pre><p><code>PrintTopLabels()</code>功能将这些分类结果打印出来并打印出来 友好的方式。 <code>CheckTopLabel()</code>功能非常相似，但只是确保<br>为了调试目的，最高标签是我们期望的。</p>
+<p>最后，<code>main()</code> 把所有这些电话联系在一起。</p>
+<pre><code>int main(int argc, char* argv[]) {
+  // We need to call this to set up global state for TensorFlow.
+  tensorflow::port::InitMain(argv[0], &amp;argc, &amp;argv);
+  Status s = tensorflow::ParseCommandLineFlags(&amp;argc, argv);
+  if (!s.ok()) {
+    LOG(ERROR) &lt;&lt; &quot;Error parsing command line flags: &quot; &lt;&lt; s.ToString();
+    return -1;
+  }
+
+  // First we load and initialize the model.
+  std::unique_ptr&lt;tensorflow::Session&gt; session;
+  string graph_path = tensorflow::io::JoinPath(FLAGS_root_dir, FLAGS_graph);
+  Status load_graph_status = LoadGraph(graph_path, &amp;session);
+  if (!load_graph_status.ok()) {
+    LOG(ERROR) &lt;&lt; load_graph_status;
+    return -1;
+  }
+</code></pre><p>我们加载主图。</p>
+<pre><code>// Get the image from disk as a float array of numbers, resized and normalized
+// to the specifications the main graph expects.
+std::vector&lt;Tensor&gt; resized_tensors;
+string image_path = tensorflow::io::JoinPath(FLAGS_root_dir, FLAGS_image);
+Status read_tensor_status = ReadTensorFromImageFile(
+    image_path, FLAGS_input_height, FLAGS_input_width, FLAGS_input_mean,
+    FLAGS_input_std, &amp;resized_tensors);
+if (!read_tensor_status.ok()) {
+  LOG(ERROR) &lt;&lt; read_tensor_status;
+  return -1;
+}
+const Tensor&amp; resized_tensor = resized_tensors[0];
+</code></pre><p>加载，调整大小和处理输入图像。</p>
+<pre><code>// Actually run the image through the model.
+std::vector&lt;Tensor&gt; outputs;
+Status run_status = session-&gt;Run({ {FLAGS_input_layer, resized_tensor}},
+                                 {FLAGS_output_layer}, {}, &amp;outputs);
+if (!run_status.ok()) {
+  LOG(ERROR) &lt;&lt; &quot;Running model failed: &quot; &lt;&lt; run_status;
+  return -1;
+}
+</code></pre><p>在这里，我们运行加载的图形作为输入图像。</p>
+<pre><code>// This is for automated testing to make sure we get the expected result with
+// the default settings. We know that label 866 (military uniform) should be
+// the top label for the Admiral Hopper image.
+if (FLAGS_self_test) {
+  bool expected_matches;
+  Status check_status = CheckTopLabel(outputs, 866, &amp;expected_matches);
+  if (!check_status.ok()) {
+    LOG(ERROR) &lt;&lt; &quot;Running check failed: &quot; &lt;&lt; check_status;
+    return -1;
+  }
+  if (!expected_matches) {
+    LOG(ERROR) &lt;&lt; &quot;Self-test failed!&quot;;
+    return -1;
+  }
+}
+</code></pre><p>出于测试目的，我们可以检查以确保我们得到我们期望的输出。</p>
+<pre><code>// Do something interesting with the results we&apos;ve generated.
+Status print_status = PrintTopLabels(outputs, FLAGS_labels);
+</code></pre><p>最后我们打印我们找到的标签。</p>
+<pre><code>if (!print_status.ok()) {
+  LOG(ERROR) &lt;&lt; &quot;Running print failed: &quot; &lt;&lt; print_status;
+  return -1;
+}
+</code></pre><p>这里的错误处理是使用TensorFlow的<code>Status</code> 对象，这是非常方便的，因为它让你知道是否有任何错误<br>与<code>ok()</code>检查器一起发生，然后可以打印出来以提供可读的错误 信息。</p>
+<p>在这种情况下，我们正在展示对象识别，但你应该能够 在自己找到或训练过的其他模型上使用非常类似的代码 所有<br>种类的域名。我们希望这个小例子给你一些关于如何使用的想法 您自己的产品中的TensorFlow。</p>
+<blockquote>
+<p>练习：转移学习是一个想法，如果你知道如何解决一个好的任务，你 应该能够把一些理解转移到解决相关的问题 问题。执行转移学习的一种方法是删除最终的<br>网络的分类层和提取 CNN的倒数第二层，在这种情况下是2048维向量。 在how-to部分有一个指导。</p>
+</blockquote>
+<h2><span id="学习更多的资源">学习更多的资源</span></h2><p>一般来说，要学习神经网络，Michael Nielsen的 免费在线书 是一个很好的资源。对于卷积神经网络来说， 克里斯·奥拉有一些 漂亮的博客文章，<br>而Michael Nielsen的书有一个 伟大的篇章 覆盖他们。</p>
+<p>要了解有关执行卷积神经网络的更多信息，可以跳转 到TensorFlow深度卷积网络教程， 或者用我们的轻轻一点开始 ML初学者或ML专家<br>MNIST初学者教程。最后，如果你想加快研究速度 在这方面，你可以 阅读本教程中引用的所有论文的最新工作。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/image_recognition/" data-title="图像识别 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/layers/" title="TF层指南：建立卷积神经网络">
+  <strong>上一篇：</strong><br/>
+  <span>
+  TF层指南：建立卷积神经网络</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/image_retraining/"  title="如何重新开始新类别的最后一层">
+ <strong>下一篇：</strong><br/> 
+ <span>如何重新开始新类别的最后一层
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">图像识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">与Python API一起使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">与C ++ API一起使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">学习更多的资源</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

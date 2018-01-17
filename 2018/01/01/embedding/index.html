@@ -1,0 +1,635 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>的嵌入 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="的嵌入本文档介绍了嵌入的概念，给出了一个简单的例子 如何在TensorFlow中训练嵌入，并解释如何查看嵌入与TensorBoard嵌入式投影仪。前两部分针对新人 机器学习或TensorFlow，和嵌入式投影机的方法是 各级用户。 嵌入是从离散对象（例如单词）到矢量的映射 的实数。例如，一个300维嵌入英文单词 可能包括： blue:  (0.01359, 0.00075997, 0.24608,">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="的嵌入">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/embedding/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="的嵌入本文档介绍了嵌入的概念，给出了一个简单的例子 如何在TensorFlow中训练嵌入，并解释如何查看嵌入与TensorBoard嵌入式投影仪。前两部分针对新人 机器学习或TensorFlow，和嵌入式投影机的方法是 各级用户。 嵌入是从离散对象（例如单词）到矢量的映射 的实数。例如，一个300维嵌入英文单词 可能包括： blue:  (0.01359, 0.00075997, 0.24608,">
+<meta property="og:image" content="https://www.tensorflow.org/images/embedding-
+nearest-points.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/embedding-custom-
+controls.png">
+<meta property="og:image" content="https://www.tensorflow.org/images
+/embedding-custom-projection.png">
+<meta property="og:image" content="https://www.tensorflow.org/images/embedding-bookmark.png">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="的嵌入">
+<meta name="twitter:description" content="的嵌入本文档介绍了嵌入的概念，给出了一个简单的例子 如何在TensorFlow中训练嵌入，并解释如何查看嵌入与TensorBoard嵌入式投影仪。前两部分针对新人 机器学习或TensorFlow，和嵌入式投影机的方法是 各级用户。 嵌入是从离散对象（例如单词）到矢量的映射 的实数。例如，一个300维嵌入英文单词 可能包括： blue:  (0.01359, 0.00075997, 0.24608,">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/embedding-
+nearest-points.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/embedding/" title="的嵌入" itemprop="url">的嵌入</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">的嵌入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">在TensorFlow中嵌入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">可视化嵌入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">勘探</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.3.</span> <span class="toc-text">元数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">迷你常见问题解答</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="的嵌入">的嵌入</span></h1><p>本文档介绍了嵌入的概念，给出了一个简单的例子 如何在TensorFlow中训练嵌入，并解释如何查看嵌入<br>与TensorBoard嵌入式投影仪。前两部分针对新人 机器学习或TensorFlow，和嵌入式投影机的方法是 各级用户。</p>
+<p>嵌入是从离散对象（例如单词）到矢量的映射 的实数。例如，一个300维嵌入英文单词 可能包括：</p>
+<pre><code>blue:  (0.01359, 0.00075997, 0.24608, ..., -0.2524, 1.0048, 0.06259)
+blues:  (0.01396, 0.11887, -0.48963, ..., 0.033483, -0.10007, 0.1158)
+orange:  (-0.24776, -0.12359, 0.20986, ..., 0.079717, 0.23865, -0.014213)
+oranges:  (-0.35609, 0.21854, 0.080944, ..., -0.35413, 0.38511, -0.070976)
+</code></pre><p>这些向量中的各个维度通常没有固有的意义。 相反，它是矢量之间的位置和距离的整体模式 机器学习利用。</p>
+<p>嵌入对于机器学习的输入非常重要。分类器和神经 更普遍的网络，工作向量的实数。他们训练得最好 密集的向量，其中所有的值都有助于定义一个对象。但是，很多<br>机器学习的重要投入，如文字的话，没有一个 自然向量表示。嵌入功能是标准和 有效的方法将这些离散的输入对象转化为有用的 连续矢量。</p>
+<p>嵌入作为机器学习的输出也是有价值的。因为嵌入 将对象映射到向量，应用程序可以使用向量空间中的相似性（for 欧几里德距离或矢量之间的夹角）作为一个鲁棒的和<br>对象相似度的灵活度量。一个常见的用途是找到最近的 邻居。例如，使用与上面相同的词嵌入，这里是 每个单词的三个最近的邻居和相应的角度：</p>
+<pre><code>blue:  (red, 47.6°), (yellow, 51.9°), (purple, 52.4°)
+blues:  (jazz, 53.3°), (folk, 59.1°), (bluegrass, 60.6°)
+orange:  (yellow, 53.5°), (colored, 58.0°), (bright, 59.9°)
+oranges:  (apples, 45.3°), (lemons, 48.3°), (mangoes, 50.4°)
+</code></pre><p>这将告诉一个应用程序，苹果和橙子在某种程度上更多 与柠檬和桔子（间隔48.3°）相似（相距45.3°）。</p>
+<h2><span id="在tensorflow中嵌入">在TensorFlow中嵌入</span></h2><p>为了在TensorFlow中创建词嵌入，我们首先将文本分成单词 然后为词汇表中的每个单词分配一个整数。让我们假设<br>这已经完成了，<code>word_ids</code>是这些整数的向量。 例如，“我有一只猫”这个句子可以被分成两部分 <code>[&quot;I&quot;, &quot;have&quot;, &quot;a&quot;, &quot;cat&quot;,
+&quot;.&quot;]</code>和相应的<code>word_ids</code>张量 将形成<code>[5]</code>并由5个整数组成。映射这些单词ID 对于向量，我们需要创建嵌入变量并使用<br><code>tf.nn.embedding_lookup</code>的功能如下：</p>
+<pre><code>word_embeddings = tf.get_variable(&quot;word_embeddings&quot;,
+    [vocabulary_size, embedding_size])
+embedded_word_ids = tf.nn.embedding_lookup(word_embeddings, word_ids)
+</code></pre><p>在此之后，张量器<code>embedded_word_ids</code>将具有形状<code>[5, embedding_size]</code> 在我们的例子中，并包含每个5的嵌入（密集向量）<br>话。在训练结束时，<code>word_embeddings</code>将包含嵌入 为词汇中的所有单词。</p>
+<p>嵌入可以训练许多网络类型，并有各种损失 功能和数据集。例如，可以使用循环神经网络 来预测下一个词从前一个给定的大语料库<br>句子，或者可以训练两个网络进行多语言翻译。 这些方法在“矢量表示”中有描述 教程。</p>
+<h2><span id="可视化嵌入">可视化嵌入</span></h2><p>TensorBoard包括嵌入式投影仪，这个工具可以让你 交互式地显示嵌入。这个工具可以读取你的嵌入 模型并在二维或三维中渲染它们。</p>
+<p>嵌入式投影机有三个面板：</p>
+<p>在左上方的数据面板中，您可以选择运行，嵌入   可变数据列和数据列来为点添加颜色和标签。 在左下角的投影面板，您可以在其中选择类型   投影。<br>在右侧的检查面板，在那里你可以搜索特定的   点，看看最近的邻居列表。</p>
+<h3><span id="预测">预测</span></h3><p>嵌入式投影机提供三种方法来降低a 数据集。</p>
+<p>T-SNE：   非线性非确定性算法（T-分布随机邻居）   嵌入），试图在数据中保存当地的社区，通常在   扭曲全球结构的代价。你可以选择是否计算<br>二维或三维投影。 PCA：   线性确定性算法（主成分分析）试图   在尽可能少的维度上捕获尽可能多的数据可变性。 PCA<br>往往会突出数据的大规模结构，但会扭曲局部   邻里。嵌入式投影机计算前10名委托人   组件，您可以从中选择两个或三个来查看。<br>自定义：对您的水平和垂直轴进行线性投影   在数据中指定使用标签。你可以定义水平轴   实例，通过给“左”和“右”的文本模式。嵌入<br>投影机查找标签与“左”模式相匹配的所有点   计算该集合的质心;类似的“右”。线路通过   通过这两个质心定义横轴。垂直轴是<br>同样根据与“上”和“下”匹配的点的质心计算，   文本模式。</p>
+<p>其他有用的文章是 如何有效地使用t-SNE 主成分分析直观解释。</p>
+<h3><span id="勘探">勘探</span></h3><p>您可以通过使用自然缩放，旋转和平移进行视觉探索 点击并拖动手势。将鼠标悬停在某个点上会显示任何内容 这一点的元数据。你也可以检查最近的邻居<br>子集。单击一个点会导致右窗格列出最近的 邻居，以及与当前点的距离。最近的邻居 在投影中也突出了点。</p>
+<p>将视图限制为点的一个子集并执行有时是有用的 只在这些点上进行预测。为此，您可以选择多个点 方法：</p>
+<p>点击一个点后，最近的邻居也被选中。 搜索后，选择与查询匹配的点。 启用选择，单击一个点并拖动定义一个选择   领域。</p>
+<p>然后单击“检查器”窗格顶部的“隔离nnn点”按钮 在右手侧。下图显示了101个已选择和准备好的点 供用户点击“隔离101分”：</p>
+<p><img src="https://www.tensorflow.org/images/embedding-
+nearest-points.png" alt="Selection of nearest neighbors"></p>
+<p>在嵌入数据集的单词中选择“重要”的最近邻居。</p>
+<p>高级提示：使用自定义投影进行过滤可能会很强大下面，我们 过滤了“政治”最近的100个邻居，并把它们投射到了“ “最差” - “最好”的矢量作为x轴。<br>y轴是随机的。结果，一个 找到右边的“思想”，“科学”，“视角”，“新闻”等等 左“危机”，“暴力”和“冲突”。</p>
+<p><img src="https://www.tensorflow.org/images/embedding-custom-
+controls.png" alt="Custom controls panel"> |  <img src="https://www.tensorflow.org/images
+/embedding-custom-projection.png" alt="Custom projection"><br>—|—<br>Custom projection controls.  |  Custom projection of neighbors of “politics”<br>onto “best” - “worst” vector.  </p>
+<p>要分享您的发现，您可以使用右下方的书签面板 保存当前状态（包括计算出的坐标） 投影）作为一个小文件。投影机可以被指向一组<br>或更多这些文件，生产下面的面板。其他用户可以走 通过一系列书签。</p>
+<p><img src="https://www.tensorflow.org/images/embedding-bookmark.png" alt="Bookmark panel"></p>
+<h3><span id="元数据">元数据</span></h3><p>如果你正在使用嵌入，你可能会想要附加 标签/图像到数据点。您可以通过生成元数据文件来完成此操作 包含每个点的标签并点击数据面板中的“加载数据” 嵌入式投影机</p>
+<p>元数据可以是标签或图像，也可以是 存储在一个单独的文件。对于标签，格式应该 成为TSV文件 （制表符以红色显示），其第一行包含列标题<br>（以粗体显示）和后续行包含元数据值。例如：</p>
+<p>Word \ Frequency Airplane \ t345 Car \ t241 …</p>
+<p>元数据文件中行的顺序被假定为匹配顺序 嵌入变量中的矢量，除了标题。因此， （i + 1）行对应于嵌入的第i行<br>变量。如果TSV元数据文件只有一个列，那么我们不这样做 期望一个标题行，并假设每行是嵌入的标签。我们 包括这个例外，因为它匹配了常用的“vocab文件”<br>格式。</p>
+<p>要将图像用作元数据，您必须生成一个 精灵图像， 由小缩略图组成，每个矢量在嵌入中一个。该 精灵应该按行先存储缩略图：放置第一个数据点<br>在左上角，最后一个数据点在右下角，尽管是最后一个 行不必填写，如下所示。</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>4</td>
+<td>5  </td>
+</tr>
+<tr>
+<td>6</td>
+<td>7</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>按照这个链接 在嵌入式投影仪中查看缩略图的有趣示例。</p>
+<h2><span id="迷你常见问题解答">迷你常见问题解答</span></h2><p>是“嵌入”一个行动还是一个事物？ 都。人们谈论嵌入在向量空间（行动）和关于词 产生词嵌入（东西）。两者共同的是嵌入的概念<br>作为从离散对象到矢量的映射。创建或应用它 映射是一个动作，但映射本身是一件事情。</p>
+<p>是嵌入高维或低维？ 这取决于。例如，单词和短语的300维向量空间， 通常被称为低维（和密集）相比，数百万 它可以包含的单词和短语。但数学上它是高维的，<br>展示了许多与我们的人类大不相同的特性 直觉了解了二维和三维空间。</p>
+<p>嵌入层是否与嵌入层相同？ 没有。嵌入层是神经网络的一部分，但嵌入是一个更多 一般的概念。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/embedding/" data-title="的嵌入 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/estimator/" title="tf.estimator快速入门">
+  <strong>上一篇：</strong><br/>
+  <span>
+  tf.estimator快速入门</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/tensorboard_histograms/"  title="TensorBoard直方图仪表板">
+ <strong>下一篇：</strong><br/> 
+ <span>TensorBoard直方图仪表板
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">的嵌入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">在TensorFlow中嵌入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">可视化嵌入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">勘探</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.3.</span> <span class="toc-text">元数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">迷你常见问题解答</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

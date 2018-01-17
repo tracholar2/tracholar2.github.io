@@ -1,0 +1,639 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>何时使用结构？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="什么时候应该在C＃中使用struct而不是类？我的概念模型是，当项目仅仅是一个值类型的集合的时候，使用结构体。从逻辑上把它们连在一起成为一个有凝聚力的整体。 我在这里遇到了这些规则： 结构应该代表一个单一的 值。 一个结构应该有一个内存 足迹小于16个字节。 一个结构不应该改变之后 创建。 这些规则是否有效？什么是一个结构意味着语义？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="何时使用结构？">
+<meta property="og:url" content="https://www.tracholar.top/2017/10/08/when-to-use-struct/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="什么时候应该在C＃中使用struct而不是类？我的概念模型是，当项目仅仅是一个值类型的集合的时候，使用结构体。从逻辑上把它们连在一起成为一个有凝聚力的整体。 我在这里遇到了这些规则： 结构应该代表一个单一的 值。 一个结构应该有一个内存 足迹小于16个字节。 一个结构不应该改变之后 创建。 这些规则是否有效？什么是一个结构意味着语义？">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="何时使用结构？">
+<meta name="twitter:description" content="什么时候应该在C＃中使用struct而不是类？我的概念模型是，当项目仅仅是一个值类型的集合的时候，使用结构体。从逻辑上把它们连在一起成为一个有凝聚力的整体。 我在这里遇到了这些规则： 结构应该代表一个单一的 值。 一个结构应该有一个内存 足迹小于16个字节。 一个结构不应该改变之后 创建。 这些规则是否有效？什么是一个结构意味着语义？">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/10/08/when-to-use-struct/" title="何时使用结构？" itemprop="url">何时使用结构？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-10-08T02:00:00.000Z" itemprop="datePublished"> Published 2017-10-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Microsoft consistently violates those rules</span></a></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>什么时候应该在C＃中使用struct而不是类？我的概念模型是，当项目仅仅是一个值类型的集合的时候，使用结构体。从逻辑上把它们连在一起成为一个有凝聚力的整体。</p>
+<p>我在这里遇到了这些规则：</p>
+<p>结构应该代表一个单一的 值。 一个结构应该有一个内存 足迹小于16个字节。 一个结构不应该改变之后 创建。</p>
+<p>这些规则是否有效？什么是一个结构意味着语义？</p>
+<a id="more"></a>
+<p>OP引用的源码有一些可信度…但是微软呢 - 结构使用的立场是什么？我向微软寻求了一些额外的学习，下面是我发现的：</p>
+<blockquote>
+<p><strong>Consider defining a structure instead of a class if instances of the type<br>are small and commonly short-lived or are commonly embedded in other<br>objects.</strong></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p><strong>Do not define a structure unless the type has all of the following<br>characteristics:</strong></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<ul>
+<li><p>It logically represents a single value, similar to primitive types<br>(integer, double, and so on).</p>
+</li>
+<li><p>It has an instance size smaller than 16 bytes.</p>
+</li>
+<li><p>It is immutable.</p>
+</li>
+<li><p>It will not have to be boxed frequently.</p>
+</li>
+</ul>
+</blockquote>
+<p>&gt;</p>
+<h2><span id="microsoft-consistently-violates-those-rules">Microsoft consistently violates those rules</span></h2><p>好的，无论如何，＃2和＃3。我们心爱的字典有两个内部结构：</p>
+<pre><code>[StructLayout(LayoutKind.Sequential)]  // default for structs
+private struct Entry  //&lt;Tkey, TValue&gt;
+{
+    //  View code at *Reference Source
+}
+
+[Serializable, StructLayout(LayoutKind.Sequential)]
+public struct Enumerator : 
+    IEnumerator&lt;KeyValuePair&lt;TKey, TValue&gt;&gt;, IDisposable, 
+    IDictionaryEnumerator, IEnumerator
+{
+    //  View code at *Reference Source
+}
+</code></pre><p>*参考源</p>
+<p>“JonnyCantCode.com”的来源得到了4分之3 - 相当可原谅，因为＃4可能不会是一个问题。如果你发现自己装一个结构，重新考虑你的架构。</p>
+<p>我们来看看为什么微软会使用这些结构：</p>
+<p>每个结构<code>Entry</code>和<code>Enumerator</code>表示单个值。 速度<br><code>Entry</code>永远不会作为Dictionary类之外的参数传递。进一步的调查显示，为了满足IEnumerable的实现，Dictionary使用<code>Enumerator</code>结构，每次请求枚举器时都会复制它…这是合理的。<br>在Dictionary类的内部。<br><code>Enumerator</code>是公有的，因为Dictionary是可枚举的，并且必须具有对IEnumerator接口实现的平等可访问性。 IEnumerator<br>getter。</p>
+<p>更新 -<br>另外，当一个结构像Enumerator一样实现一个接口并且被转换为实现类型时，结构变成了一个引用类型并被移动到堆中。在Dictionary类的内部，Enumerator仍然是一个值类型。但是，只要方法调用<code>GetEnumerator()</code>，就会返回引用类型<code>IEnumerator</code>。</p>
+<p>我们在这里没有看到任何企图或证明需要保持结构不变或保持实例大小只有16个字节或更少：</p>
+<p>上面的结构中没有声明<code>readonly</code> - 不是不可变的 这些结构的大小可以超过16个字节<br><code>Entry</code>具有未确定的生命周期（从<code>Add()</code>到<code>Remove()</code>，<code>Clear()</code>或垃圾收集）;</p>
+<p>而且…  4.两个结构都存储了TKey和TValue，我们都知道它们很有参考类型的能力（额外的奖励信息）</p>
+<p>尽管有散列键，字典也是快速的，因为实例化一个结构比引用类型快。在这里，我有一个<code>Dictionary&lt;int,
+int&gt;</code>存储300,000随机整数与按顺序递增的键。</p>
+<blockquote>
+<p>Capacity: 312874<br> MemSize: 2660827 bytes<br> Completed Resize: 5ms<br> Total time to fill: 889ms</p>
+</blockquote>
+<p>容量：内部数组必须调整大小之前可用的元素数量。</p>
+<p>MemSize：通过将字典序列化到MemoryStream中并获取字节长度（对于我们的目的足够精确）来确定。</p>
+<p>完成调整大小：将内部数组从150862个元素调整为312874个元素所需的时间。当你发现每个元素都是通过<code>Array.CopyTo()</code>顺序复制的，那不是太简单。</p>
+<p>总填充时间：由于日志记录和我添加到源文件中的<code>OnResize</code>事件，肯定是歪斜的;然而，在操作过程中调整15次的同时，仍然能够填充30万个整数。只是出于好奇，如果我已经知道这个容量，那么总共需要多长时间呢？<br>13毫秒</p>
+<p>那么，现在呢，如果<code>Entry</code>是一个类呢？这些时间或指标真的会有所不同吗？</p>
+<blockquote>
+<p>Capacity: 312874<br> MemSize: 2660827 bytes<br> Completed Resize: 26ms<br> Total time to fill: 964ms</p>
+</blockquote>
+<p>显然，差别在于调整大小。如果字典是与容量初始化有什么区别？不够关心… 12ms。</p>
+<p>会发生什么是因为<code>Entry</code>是一个结构，它不需要像引用类型的初始化。这既是价值型的美丽又是祸害。为了使用<code>Entry</code>作为参考类型，我不得不插入下面的代码：</p>
+<pre><code>/*
+ *  Added to satisfy initialization of entry elements --
+ *  this is where the extra time is spent resizing the Entry array
+ * **/
+for (int i = 0 ; i &lt; prime ; i++)
+{
+    destinationArray[i] = new Entry( );
+}
+/*  *********************************************** */  
+</code></pre><p>我必须初始化每个数组元素<code>Entry</code>作为参考类型的原因可以在MSDN：结构设计中找到。简而言之：</p>
+<blockquote>
+<p><strong>Do not provide a default constructor for a structure.</strong></p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>If a structure defines a default constructor, when arrays of the structure<br>are created, the common language runtime automatically executes the default<br>constructor on each array element.</p>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<p>Some compilers, such as the C# compiler, do not allow structures to have<br>default constructors.</p>
+</blockquote>
+<p>其实很简单，我们将从阿西莫夫的“机器人三定律”</p>
+<p>该结构必须安全使用 结构必须有效地执行它的功能，除非这会违反规则＃1 该结构在使用过程中必须保持完整，除非其破坏需要满足规则＃1</p>
+<p>…我们从中拿走了什么：简而言之，要对价值类型的使用负责。他们是快速和有效的，但如果没有妥善维护（即无意的副本），有能力引起许多意想不到的行为。</p>
+<p>每当你不需要多态时，需要值语义，并且希望避免堆分配和相关的垃圾回收开销。但是，需要注意的是，结构（任意大）比类参考（通常是一个机器词）更昂贵，所以类在实践中最终可能会更快。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2017/10/08/when-to-use-struct/" data-title="何时使用结构？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/10/08/get-int-value-from-enum-in-c-sharp/" title="在C＃中从枚举中获取int值">
+  <strong>上一篇：</strong><br/>
+  <span>
+  在C＃中从枚举中获取int值</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/10/08/findviewbyid-in-fragment/"  title="在片段中找到ViewById">
+ <strong>下一篇：</strong><br/> 
+ <span>在片段中找到ViewById
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">Microsoft consistently violates those rules</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

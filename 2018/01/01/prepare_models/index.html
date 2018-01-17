@@ -1,0 +1,605 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>为移动部署准备模型 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="为移动部署准备模型训练期间存储模型信息的要求非常高 与您想要将其作为移动应用程序的一部分发布时不同。本节 涵盖了从训练模型转换到某种东西所涉及的工具 在生产中可释放。 什么是所有不同的保存文件格式？你可能会发现自己被所有不同的方式所困惑 TensorFlow可以保存图表。为了帮助，这里是一些破解 不同的组件，以及它们的用途。对象大都是定义的并作为协议缓冲区序列化： NodeDef：   定义模型中">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为移动部署准备模型">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/prepare_models/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="为移动部署准备模型训练期间存储模型信息的要求非常高 与您想要将其作为移动应用程序的一部分发布时不同。本节 涵盖了从训练模型转换到某种东西所涉及的工具 在生产中可释放。 什么是所有不同的保存文件格式？你可能会发现自己被所有不同的方式所困惑 TensorFlow可以保存图表。为了帮助，这里是一些破解 不同的组件，以及它们的用途。对象大都是定义的并作为协议缓冲区序列化： NodeDef：   定义模型中">
+<meta property="og:image" content="https://www.tensorflow.org/images/inception_input.png">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为移动部署准备模型">
+<meta name="twitter:description" content="为移动部署准备模型训练期间存储模型信息的要求非常高 与您想要将其作为移动应用程序的一部分发布时不同。本节 涵盖了从训练模型转换到某种东西所涉及的工具 在生产中可释放。 什么是所有不同的保存文件格式？你可能会发现自己被所有不同的方式所困惑 TensorFlow可以保存图表。为了帮助，这里是一些破解 不同的组件，以及它们的用途。对象大都是定义的并作为协议缓冲区序列化： NodeDef：   定义模型中">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/inception_input.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/prepare_models/" title="为移动部署准备模型" itemprop="url">为移动部署准备模型</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">为移动部署准备模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">什么是所有不同的保存文件格式？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">你如何得到一个你可以在手机上使用的模型？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">使用图形变换工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">删除仅限培训的节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">你应该在手机上包含哪些操作？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.1.</span> <span class="toc-text">找到实施</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.2.</span> <span class="toc-text">将实现添加到构建</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="为移动部署准备模型">为移动部署准备模型</span></h1><p>训练期间存储模型信息的要求非常高 与您想要将其作为移动应用程序的一部分发布时不同。本节 涵盖了从训练模型转换到某种东西所涉及的工具 在生产中可释放。</p>
+<h2><span id="什么是所有不同的保存文件格式">什么是所有不同的保存文件格式？</span></h2><p>你可能会发现自己被所有不同的方式所困惑 TensorFlow可以保存图表。为了帮助，这里是一些破解 不同的组件，以及它们的用途。对象大都是定义的<br>并作为协议缓冲区序列化：</p>
+<p>NodeDef：   定义模型中的单个操作。它有一个独特的名字，一个名单   它从其中获取输入的其他节点的名称，它实现的操作类型<br>（例如<code>Add</code>或<code>Mul</code>）以及控制所需的任何属性   那个操作。这是TensorFlow的基本计算单位<br>通过遍历这些节点的网络来完成工作，应用每个节点   反过来。 <code>Const</code>是一款值得了解的特殊操作类型，<br>因为这持有关于常数的信息。这可能是一个单一的标量   数字或字符串，但它也可以保存整个多维张量   阵列。<br><code>Const</code>的值存储在<code>NodeDef</code>内部，如此大   序列化时，常量会占用很多空间。 检查点。另一个<br>存储模型值的方法是使用<code>Variable</code>操作系统。与<code>Const</code>不同   ops，它们不把它们的内容存储为<code>NodeDef</code>的一部分，所以它们占用了<br><code>GraphDef</code>文件中的空间很小。相反，他们的价值观被保留在   计算正在运行的RAM，然后作为检查点保存到磁盘<br>文件定期。这通常发生在一个神经网络正在   训练和权重更新，所以这是一个时间关键的操作，它可能   发生在许多工作人员的分布式，所以文件格式必须<br>既快又灵活。它们被存储为多个检查点文件，   以及描述包含内容的元数据文件   检查站。当你指的是API中的检查点（例如，<br>当传递一个文件名作为命令行参数），你将使用通用的   一组相关文件的前缀。如果你有这些文件： /tmp/model/model-<br>chkpt-1000.data-00000-of-00002 /tmp/model/model-chkpt-1000.data-00001-of-00002<br>/tmp/model/model-chkpt-1000.index /tmp/model/model-chkpt-1000.meta<br>你可以把它们称为<code>/tmp/model/chkpt-1000</code>。 GraphDef：   有一个<code>NodeDefs</code>的列表，它们一起定义了计算图<br>执行。在训练期间，其中一些节点将是<code>Variables</code>，如果是这样的话   你想有一个完整的图表，你可以运行，包括权重，你会的<br>需要调用恢复操作来从中提取这些值   检查站。因为检查点加载必须灵活处理所有   培训要求，这可能是棘手的实施在移动和<br>嵌入式设备，特别是那些没有适当的文件系统可用   iOS版。这是哪里   该   <code>freeze_graph.py</code>脚本<br>派上用场。如上所述，<code>Const</code>操作将其值存储为一部分   <code>NodeDef</code>，所以如果所有的<code>Variable</code>砝码都转换成<code>Const</code>节点，<br>那么我们只需要一个<code>GraphDef</code>文件来保存模型架构   重量。冻结图形处理加载的过程<br>检查点，然后将所有Consts转换为Variables。你可以加载   生成的文件在一次调用中，而不必恢复变量值<br>从检查站。有一件事要注意与<code>GraphDef</code>文件是   有时它们以文本格式存储以便于检查。这些版本<br>通常有一个’.pbtxt’文件名后缀，而二进制文件结尾   “.pb”。 FunctionDefLibrary：<br>这出现在<code>GraphDef</code>中，实际上是一组子图，每个子图都带有   有关他们的输入和输出节点的信息。每个子图都可以<br>在主图中作为op使用，允许不同的实例化   节点，类似于函数如何封装其他语言的代码。 MetaGraphDef：<br>一个普通的<code>GraphDef</code>只有关于计算网络的信息，但是   没有关于模型的任何额外的信息或者它是如何的   用过的。<br><code>MetaGraphDef</code>包含<code>GraphDef</code>定义的计算部分   模型，还包括像“签名”这样的信息   关于您可能想要调用模型的输入和输出的建议<br>与关于如何和在哪里检查点文件被保存的数据以及便利性   将ops分组在一起以便于使用的标签。 SavedModel：<br>想要拥有依赖于a的不同版本的图形是很常见的   常见的一组变量检查点。例如，你可能需要一个GPU和一个   相同图形的CPU版本，但保持相同的权重。你可以<br>还需要一些额外的文件（如标签名称）作为你的一部分   模型。该   SavedModel格式   通过让您保存同一图形的多个版本来满足这些需求<br>没有重复的变量，也存储在同一个资产文件   束。在引擎盖下，它使用<code>MetaGraphDef</code>和检查点文件   与额外的元数据文件。这是你想要使用的格式<br>例如，使用TensorFlow Serving部署Web API。</p>
+<h2><span id="你如何得到一个你可以在手机上使用的模型">你如何得到一个你可以在手机上使用的模型？</span></h2><p>在大多数情况下，用TensorFlow训练一个模型会给你一个文件夹 包含<code>GraphDef</code>文件（通常以<code>.pb</code>或<code>.pbtxt</code>扩展结尾）和<br>一组检查点文件。你需要的移动或嵌入式部署是一个 单个<code>GraphDef</code>文件被“冻结”，或将其变量转换为<br>内联常量，所以一切都在一个文件中。为了处理转换，你会的 需要使用<code>freeze_graph.py</code>脚本<br><code>tensorflow/python/tools/freeze_graph.py</code>。你会像这样运行它：</p>
+<pre><code>bazel build tensorflow/tools:freeze_graph
+bazel-bin/tensorflow/tools/freeze_graph \
+--input_graph=/tmp/model/my_graph.pb \
+--input_checkpoint=/tmp/model/model.ckpt-1000 \
+--output_graph=/tmp/frozen_graph.pb \
+--output_node_names=output_node \
+</code></pre><p><code>input_graph</code>参数应指向<code>GraphDef</code>文件 模型建筑。您的<code>GraphDef</code>可能已存储在文本中<br>格式化，在这种情况下，可能会以<code>.pbtxt</code>而不是<code>.pb</code>结束， 您应该为命令添加一个额外的<code>--input_binary=false</code>标志。</p>
+<p><code>input_checkpoint</code>应该是最近保存的检查点。如上所述 在检查点部分，你需要给这个集合赋予通用前缀 检查点在这里，而不是一个完整的文件名。</p>
+<p><code>output_graph</code>定义了冷冻<code>GraphDef</code>的位置 保存。因为它可能包含很多重量值，占用一个<br>文本格式的大量空间，它总是保存为一个二进制protobuf。</p>
+<p><code>output_node_names</code>是要提取的节点的名称列表 从你的图形的结果。这是需要的，因为冻结过程 需要了解图的哪些部分实际上是需要的，哪些是<br>训练过程中的文物，如汇总操作。只有那个 有助于计算给定的输出节点将被保留。如果你知道如何 你的图将被使用，这些应该只是你的节点的名字<br>作为您的抓取目标传入<code>Session::Run()</code>。最简单的方法来找到 节点名称是检查节点对象，同时在python中构建图形。<br>在TensorBoard中检查图形是另一种简单的方法。你可以得到一些 通过运行<code>summarize_graph</code>工具可能的输出建议。</p>
+<p>由于TensorFlow的输出格式随着时间的推移而变化，所以有一个 其他各种不太常用的标志也可用，如<code>input_saver</code>，但是<br>希望你不应该需要这些在与现代版本的训练图 框架。</p>
+<h2><span id="使用图形变换工具">使用图形变换工具</span></h2><p>在设备上高效运行模型需要做很多事情 通过图形变换可用 工具。这个 命令行工具将输入<code>GraphDef</code>文件，应用该套重写<br>你要求的规则，然后把结果写成<code>GraphDef</code>。看到了 文档了解如何构建和运行此工具的更多信息。</p>
+<h3><span id="删除仅限培训的节点">删除仅限培训的节点</span></h3><p>培训代码所生产的TensorFlow <code>GraphDefs</code>包含了所有的功能 计算也是反向传播和权重更新所需要的<br>作为输入的排队和解码，以及节省检查点。所有的 这些节点在推理过程中不再需要，还有一些操作 像检查点保存甚至在移动平台上都不支持。创建一个<br>模型文件，你可以加载设备上，你需要删除那些不需要的 通过在图形变换工具中运行<code>strip_unused_nodes</code>规则进行操作。</p>
+<p>这个过程中最棘手的部分是找出你的节点名称 希望在推理期间用作输入和输出。无论如何，你将需要这些 一旦你开始推理，但你也需要在这里这样的<br>变换可以计算哪些节点是不需要的只是推论 路径。这些可能不是显而易见的训练码。最简单的方法 确定节点名称是用TensorBoard来浏览图形。</p>
+<p>请记住，移动应用程序通常从传感器收集数据 将其作为内存中的数组，而培训通常涉及加载和 解码存储在磁盘上的数据的表示。 Inception v3的情况<br>例如，在设计的图表开始处有一个<code>DecodeJpeg</code>操作 从磁盘检索的文件中获取JPEG编码的数据并将其转换为<br>任意大小的图像。之后，有一个<code>BilinearResize</code>可以调整 预期的大小，其次是一些转换字节数据的其他操作<br>进入浮动状态，并按照图形的其余部分缩放值的大小 预计。一个典型的移动应用程序将跳过这些步骤的大部分，因为它越来越<br>它直接从一个实时摄像机输入，所以你实际上是输入节点 在这种情况下，<code>Mul</code>节点的输出将是输出。</p>
+<p><img src="https://www.tensorflow.org/images/inception_input.png" alt=""></p>
+<p>你需要做一个类似的检查过程来找出正确的 输出节点。</p>
+<p>如果您刚刚获得一个冷冻<code>GraphDef</code>文件，并不确定 内容，请尝试使用<code>summarize_graph</code>工具打印出信息<br>关于它从图结构中找到的输入和输出。这是一个 例如原始的Inception v3文件：</p>
+<pre><code>bazel run tensorflow/tools/graph_transforms:summarize_graph -- 
+--in_graph=tensorflow_inception_graph.pb
+</code></pre><p>一旦你了解了输入和输出节点的内容，你可以喂它们 进入图形转换工具<code>--input_names</code>和<code>--output_names</code><br>参数，并调用<code>strip_unused_nodes</code>变换，如下所示：</p>
+<pre><code>bazel run tensorflow/tools/graph_transforms:transform_graph --
+--in_graph=tensorflow_inception_graph.pb
+--out_graph=optimized_inception_graph.pb --inputs=&apos;Mul&apos; --outputs=&apos;softmax&apos;
+--transforms=&apos;
+  strip_unused_nodes(type=float, shape=&quot;1,299,299,3&quot;)
+  fold_constants(ignore_errors=true)
+  fold_batch_norms
+  fold_old_batch_norms&apos;
+</code></pre><p>有一点需要注意的是，你需要指定大小和类型 你想要你的投入。这是因为你想要的任何值 作为输入推理需要被送到特殊的<code>Placeholder</code>操作<br>节点，如果它们不存在，转换可能需要创建它们。在 例如，以Inception v3为例，<code>Placeholder</code>节点取代了旧的<br><code>Mul</code>节点，用于输出调整大小和重新调整大小的图像数组，因为我们是 在我们称之为TensorFlow之前，我们会自己处理这个过程。它使<br>原来的名字，这就是为什么我们总是在输入到<code>Mul</code>时，我们 使用我们修改后的Inception图表运行一个会话。</p>
+<p>运行这个过程之后，你将会看到一个只包含实际的图表 您需要运行预测过程的节点。这是它的地方 在图上运行指标变得有用，所以值得运行<br><code>summarize_graph</code>再次了解你的模型是什么。</p>
+<h2><span id="你应该在手机上包含哪些操作">你应该在手机上包含哪些操作？</span></h2><p>TensorFlow中有数百个操作，每个都有 针对不同数据类型的多个实现。在移动平台上，大小 编译后产生的可执行二进制文件的重要性，因为<br>应用程序下载捆绑包需要尽可能小，以供最好的用户使用 经验。如果所有操作和数据类型都被编译到TensorFlow中 库，那么编译的库的总大小可以是几十兆，所以<br>默认情况下只包含ops和数据类型的一个子集。</p>
+<p>这意味着如果您加载在桌面上受过训练的模型文件 机器，您可能会看到错误“没有OpKernel被注册为支持操作”时<br>你在手机上加载它。首先要尝试的是确保你已经剥离 在任何只有训练的节点上，因为错误会在加载时发生，即使是 op从不执行。如果一旦完成，您仍然遇到同样的问题，<br>您需要考虑将操作添加到构建的库中。</p>
+<p>包括操作和类型的标准分为几类：</p>
+<p>它们仅在反向传播中用于渐变吗？由于移动是   重点推断，我们不包括这些。 它们主要用于其他培训需求，如检查点保存？   这些我们离开了。<br>他们是否依赖并不总是在移动设备上提供的框架，比如   libjpeg的？为了避免额外的依赖，我们不包括像<code>DecodeJpeg</code>这样的操作系统。<br>有没有经常使用的类型？我们不包含布尔变量   例如ops，因为我们在典型的推理中没有看到太多的用处   图表。</p>
+<p>这些操作被默认设置为优化，以便在移动设备上进行推理 可能改变一些构建文件来改变默认值。交替之后<br>建立文件，你将需要重新编译TensorFlow。请参阅下面的更多细节 在如何做到这一点，也看到优化 更多关于减少你的二进制大小。</p>
+<h3><span id="找到实施">找到实施</span></h3><p>操作分为两部分。首先是op的定义，哪个 声明操作的签名，输入，输出和属性 它有。这些占用的空间非常小，所以默认情况下都包含在内。该<br>操作计算的实现是在内核中完成的 <code>tensorflow/core/kernels</code>文件夹。您需要编译包含的C ++文件 你需要的库的内核实现。弄清楚<br>哪个文件即可以搜索源中的操作名称 文件。</p>
+<p>这里是一个在github中的示例搜索。</p>
+<p>你会发现这个搜索正在寻找<code>Mul</code>的操作实现 在<code>tensorflow/core/kernels/cwise_op_mul_1.cc</code>中找到它。你需要寻找<br>以<code>REGISTER</code>开头的宏，以你所关心的op名称作为其中之一 字符串参数。</p>
+<p>在这种情况下，这些实现实际上是在多个<code>.cc</code>上分解的 文件，所以你需要在你的版本中包含所有的文件。如果你更多<br>舒服的使用命令行进行代码搜索，这里是一个grep命令 如果从TensorFlow的根目录运行它，也会找到正确的文件 库：</p>
+<p><code>grep &#39;REGISTER.*&quot;Mul&quot;&#39; tensorflow/core/kernels/*.cc</code></p>
+<h3><span id="将实现添加到构建">将实现添加到构建</span></h3><p>如果您使用Bazel，并为Android构建，则需要添加这些文件 你已经找到了 该 <code>android_extended_ops_group1</code>或<br><code>android_extended_ops_group2</code>目标。您 可能还需要包含它们依赖的任何.cc文件。如果构建 抱怨缺少头文件，添加需要的.h’s 该<br><code>android_extended_ops</code>目标。</p>
+<p>如果您使用的是面向iOS，树莓派等的makefile，请转到 <code>tensorflow/contrib/makefile/tf_op_files.txt</code>和<br>在那里添加正确的实现文件。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/prepare_models/" data-title="为移动部署准备模型 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/pros/" title="专家的深度MNIST">
+  <strong>上一篇：</strong><br/>
+  <span>
+  专家的深度MNIST</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/optimizing/"  title="针对移动设备进行优化">
+ <strong>下一篇：</strong><br/> 
+ <span>针对移动设备进行优化
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">为移动部署准备模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">什么是所有不同的保存文件格式？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">你如何得到一个你可以在手机上使用的模型？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">使用图形变换工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">删除仅限培训的节点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">你应该在手机上包含哪些操作？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.1.</span> <span class="toc-text">找到实施</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.2.</span> <span class="toc-text">将实现添加到构建</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

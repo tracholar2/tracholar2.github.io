@@ -112,31 +112,44 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/05/make-xampp-apache-serve-file-outside-of-htdocs/" title="使XAMPP / Apache服务文件在htdocs之外[关闭]" itemprop="url">使XAMPP / Apache服务文件在htdocs之外[关闭]</a>
+      <a href="/2018/04/18/list-of-big-o-for-php-functions/" title="用于PHP函数的Big-O列表" itemprop="url">用于PHP函数的Big-O列表</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-05T01:16:05.000Z" itemprop="datePublished"> Published 2018-05-05</time>
+    <time datetime="2018-04-18T01:13:05.000Z" itemprop="datePublished"> Published 2018-04-18</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>是否可以配置<a href="http://www.apachefriends.org/en/xampp.html" target="_blank" rel="noopener"> xampp </a>提供&lt;代码外的文件&gt; htdocs<br>`目录？</p>
-<p>例如，说我有一个文件位于如下：</p>
-<p>&lt;代码&gt; C：\项目\ transitCalculator \树干\ TransitCalculator.php</p>
-<p>我的<a href="http://www.apachefriends.org/en/xampp.html" target="_blank" rel="noopener"> xampp </a>档案通常是从以下地方送出：</p>
-<p>&lt;代码&gt; C：\ XAMPP \ htdocs中\</p>
-<p>（因为这是默认配置）有什么方法可以让Apache识别并提供我的<code>TransitCalculator.php</code>文件，而不必在<code>htdocs</code>下移动它。最好是我希望Apache提供/访问项目目录的全部内容，而且我不想移动<code>htdocs</code>下的项目目录。</p>
-<p>编辑：编辑添加Apache的问题标题，使Q / A更“可搜索”</p>
+        <p>现在使用PHP一段时间后，我注意到并不是所有的PHP都像预期的那样快速地构建函数。考虑以下两种可能的函数实现，使用缓存的素数阵列来查找数字是否为素数。</p>
+<pre><code>//very slow for large $prime_array
+$prime_array = array( 2, 3, 5, 7, 11, 13, .... 104729, ... );
+$result_array = array();
+foreach( $prime_array =&gt; $number ) {
+    $result_array[$number] = in_array( $number, $large_prime_array );
+}
+
+//speed is much less dependent on size of $prime_array, and runs much faster.
+$prime_array =&gt; array( 2 =&gt; NULL, 3 =&gt; NULL, 5 =&gt; NULL, 7 =&gt; NULL,
+                       11 =&gt; NULL, 13 =&gt; NULL, .... 104729 =&gt; NULL, ... );
+foreach( $prime_array =&gt; $number ) {
+    $result_array[$number] = array_key_exists( $number, $large_prime_array );
+}
+</code></pre><p>这是因为in_array是通过线性搜索O（n）来实现的，它会随着<code>$ prime_array</code>的增长而线性减速。其中<code>array_key_exists</code>函数是使用散列查找O（1）实现的，除非散列表被极度填充（在这种情况下，它只是O（n）），否则它不会变慢。</p>
+<p>到目前为止，我不得不通过反复试验来发现这个大O，偶尔也会发现这个大O的实现。 -on-the-c-level“&gt;查看源代码。现在的问题…</p>
+<hr>
+<p>*或者至少有趣的</p>
+<p>例如，很难预测列出的函数是什么，因为可能的实现依赖于PHP的未知核心数据结构：array_merge，array_merge_recursive，array_reverse，array_intersect，array_combine，str_replace（带数组输入）等等。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/05/make-xampp-apache-serve-file-outside-of-htdocs/#more">Read More</a>
+            <a href="/2018/04/18/list-of-big-o-for-php-functions/#more">Read More</a>
           
        </p>
     </div>
@@ -186,255 +199,41 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/04/how-to-create-recyclerview-with-multiple-view-type/" title="如何创建多个视图类型的RecyclerView？" itemprop="url">如何创建多个视图类型的RecyclerView？</a>
+      <a href="/2018/04/18/how-to-sort-an-array-of-associative-arrays-by-value-of-a-given-key-in-php/" title="如何通过PHP中的给定键的值来对关联数组的数组进行排序？" itemprop="url">如何通过PHP中的给定键的值来对关联数组的数组进行排序？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-04T02:36:47.000Z" itemprop="datePublished"> Published 2018-05-04</time>
+    <time datetime="2018-04-18T01:12:31.000Z" itemprop="datePublished"> Published 2018-04-18</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>从[ <a href="https://developer.android.com/preview/material/ui-widgets.html" target="_blank" rel="noopener">https://developer.android.com/preview/material/ui-widgets.html</a> &lt; / A&gt;</p>
-<p>当我们创建<code>RecyclerView.Adapter</code>时，我们必须指定<code>ViewHolder</code>来绑定这个适配器。</p>
-<pre><code>public class MyAdapter extends RecyclerView.Adapter&lt;MyAdapter.ViewHolder&gt; {
+        <p>给定这个数组：</p>
+<pre><code>$inventory = array(
 
-    private String[] mDataset;
+   array(&quot;type&quot;=&gt;&quot;fruit&quot;, &quot;price&quot;=&gt;3.50),
+   array(&quot;type&quot;=&gt;&quot;milk&quot;, &quot;price&quot;=&gt;2.90),
+   array(&quot;type&quot;=&gt;&quot;pork&quot;, &quot;price&quot;=&gt;5.43),
 
-    public MyAdapter(String[] myDataset) {
-        mDataset = myDataset;
-    }
+);
+</code></pre><p>我想按价格 <strong>对<code>$ inventory</code>元素进行排序</strong> 以获得：</p>
+<pre><code>$inventory = array(
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
-        public ViewHolder(TextView v) {
-            super(v);
-            mTextView = v;
-        }
-    }
+   array(&quot;type&quot;=&gt;&quot;pork&quot;, &quot;price&quot;=&gt;5.43),
+   array(&quot;type&quot;=&gt;&quot;fruit&quot;, &quot;price&quot;=&gt;3.50),
+   array(&quot;type&quot;=&gt;&quot;milk&quot;, &quot;price&quot;=&gt;2.90),
 
-    @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.some_layout, parent, false);
-
-        //findViewById...
-
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(mDataset[position]);
-    }
-
-    @Override
-    public int getItemCount() {
-        return mDataset.length;
-    }
-}
-</code></pre><p>那么，是否有可能用多种视图类型创建<code>RecyclerView</code>？</p>
-<p>
+);
+</code></pre><p>我该怎么做？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/04/how-to-create-recyclerview-with-multiple-view-type/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/05/04/how-do-i-get-curl-to-not-show-the-progress-bar/" title="如何获得cURL不显示进度条？" itemprop="url">如何获得cURL不显示进度条？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-05-04T02:09:37.000Z" itemprop="datePublished"> Published 2018-05-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我正在试图在脚本中使用cURL，并使其 <strong><em>而不是</em> </strong> 显示进度条。</p>
-<p>我试过了<code>-s</code>，<code>-silent</code>，<code>-S</code>和<code>-quiet</code>选项，但没有一个能工作。</p>
-<p>以下是我尝试的一个典型命令：</p>
-<pre><code>curl -s http://google.com &gt; temp.html
-</code></pre><p>我只在推送到文件时才得到进度条，所以<code>curl -s http://google.com</code>没有进度条，但是<code>curl -s http
-：//google.com＆gt; temp.html</code>。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/05/04/how-do-i-get-curl-to-not-show-the-progress-bar/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a><a href="/tags/unix/">unix</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/05/04/how-to-convert-a-unix-timestamp-to-datetime-and-vice-versa/" title="如何将Unix时间戳转换为DateTime，反之亦然？" itemprop="url">如何将Unix时间戳转换为DateTime，反之亦然？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-05-04T01:41:07.000Z" itemprop="datePublished"> Published 2018-05-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>有这个示例代码，但它开始谈论毫秒/纳秒问题。</p>
-<p>同样的问题在MSDN上， <em><a href="http://blogs.msdn.com/brada/archive/2004/03/20/93332.aspx" target="_blank" rel="noopener"> Seconds since<br>C＃中的Unix时代</a> </em> 。</p>
-<p>这就是我到目前为止：</p>
-<pre><code>public Double CreatedEpoch
-{
-  get
-  {
-    DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime();
-    TimeSpan span = (this.Created.ToLocalTime() - epoch);
-    return span.TotalSeconds;
-  }
-  set
-  {
-    DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime();
-    this.Created = epoch.AddSeconds(value);
-  }
-}
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/05/04/how-to-convert-a-unix-timestamp-to-datetime-and-vice-versa/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/unix/">unix</a><a href="/tags/c-sharp/">c-sharp</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/05/04/best-practices-for-custom-helpers-on-laravel-5/" title="在Laravel 5上定制帮助程序的最佳实践" itemprop="url">在Laravel 5上定制帮助程序的最佳实践</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-05-04T01:15:31.000Z" itemprop="datePublished"> Published 2018-05-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我想创建一些帮助器（函数）来避免在一些视图之间重复使用L5风格的代码：</p>
-<p><em>view.blade.php</em></p>
-<pre><code>&lt;p&gt;Foo Formated text: {{ fooFormatText($text) }}&lt;/p&gt;
-</code></pre><p>他们基本上是文本格式功能。在哪里以及如何将这些功能放在一个文件？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/05/04/best-practices-for-custom-helpers-on-laravel-5/#more">Read More</a>
+            <a href="/2018/04/18/how-to-sort-an-array-of-associative-arrays-by-value-of-a-given-key-in-php/#more">Read More</a>
           
        </p>
     </div>
@@ -473,43 +272,31 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/03/how-to-call-a-method-after-a-delay-in-android/" title="如何在Android中延迟后调用方法" itemprop="url">如何在Android中延迟后调用方法</a>
+      <a href="/2018/04/17/how-do-i-put-a-border-around-an-android-textview/" title="如何在Android的textview中添加边框？" itemprop="url">如何在Android的textview中添加边框？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-03T02:36:46.000Z" itemprop="datePublished"> Published 2018-05-03</time>
+    <time datetime="2018-04-17T02:34:07.000Z" itemprop="datePublished"> Published 2018-04-17</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我希望能够在指定的延迟后调用下面的方法。  在目标c中有这样的：</p>
-<pre><code>[self performSelector:@selector(DoSomething) withObject:nil afterDelay:5];
-</code></pre><p>在java中有没有这个方法在android中的等价物？ 例如，我需要能够在5秒后调用方法。</p>
-<pre><code>public void DoSomething()
-{
-     //do something here
-}
-</code></pre><p>
+        <p>是否可以在textview中绘制边框？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/03/how-to-call-a-method-after-a-delay-in-android/#more">Read More</a>
+            <a href="/2018/04/17/how-do-i-put-a-border-around-an-android-textview/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
 
 </div>
 
@@ -537,42 +324,40 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/03/git-bash-is-extremely-slow-in-windows-7-x64/" title="Git / Bash在Windows 7 x64中速度非常慢" itemprop="url">Git / Bash在Windows 7 x64中速度非常慢</a>
+      <a href="/2018/04/17/how-can-i-add-numbers-in-a-bash-script/" title="如何在bash脚本中添加数字" itemprop="url">如何在bash脚本中添加数字</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-03T02:09:28.000Z" itemprop="datePublished"> Published 2018-05-03</time>
+    <time datetime="2018-04-17T02:07:31.000Z" itemprop="datePublished"> Published 2018-04-17</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在一个小型项目的开发过程中，我一直在Windows和Ubuntu上使用Git，经常在两者之间来回翻转。我遇到的问题是Git /<br>Bash一直变慢。当我说慢时，我的意思是运行<code>cd</code>需要8-25秒，运行<code>git</code>命令需要5-20秒，而` ls<br>对我而言，暂时性的解决方案之一就是禁用我的网络连接（如<a href="“https://stackoverflow.com/questions/2835775
-/msysgit-bash-is-
-可怕的">这个答案</a>），启动git，然后重新连接。有时在这样做后的几天里，它会继续快速运行，但是性能总是最终降低。我已经通过msysgit讨论组，SO，msysgit问题列表等拖延了几个星期，但我一直无法打开解决方案的工作。</p>
-<p>到目前为止，我已经尝试过：</p>
-<ul>
-<li>加入git＆amp;项目文件夹到病毒扫描程序的排除列表</li>
-<li>彻底禁用我的病毒扫描程序（Kaspersky IS 2011）</li>
-<li>确保Outlook未运行（Outlook 2007）</li>
-<li>关闭所有其他应用程序</li>
-<li>以管理员身份运行git </li>
-<li>禁用网络连接，启动git并禁用连接</li>
-<li>禁用网络连接，启动git，重新启用连接（仅偶尔使用）</li>
-<li>运行git gc </li>
-<li>以上的组合</li>
-</ul>
-<p>我读过一些人已经成功地禁止了bash的完成，但理想情况下，我想保持这种活跃。<br>msysgit的版本是1.7.3.1-preview20101002＆amp;操作系统是Windows 7<br>x64。在Linux上运行相同的东西，可以预见，闪电般快。我会专门使用Linux，但是我也需要在Windows中运行一些东西（某些应用程序，测试等）。</p>
-<p>有没有人遇到类似的问题？如果是这样，底层的问题是什么，解决方案是什么（如果有的话）？</p>
-<p>编辑：这超出了只是git仓库，但仅供参考，我已经使用git的回购已经很小：最多4-50个文件</p>
+        <p>我有这个bash脚本，并且在第16行有一个问题。 我怎样才能把第15行的以前的结果，并添加 它到第16行的变量？</p>
+<pre><code>#!/bin/bash
+
+num=0
+metab=0
+
+for ((i=1; i&lt;=2; i++)); do      
+    for j in `ls output-$i-*`; do
+        echo &quot;$j&quot;
+
+        metab=$(cat $j|grep EndBuffer|awk &apos;{sum+=$2} END { print sum/120}&apos;) (line15)
+        num= $num + $metab   (line16)
+    done
+    echo &quot;$num&quot;
+ done
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/03/git-bash-is-extremely-slow-in-windows-7-x64/#more">Read More</a>
+            <a href="/2018/04/17/how-can-i-add-numbers-in-a-bash-script/#more">Read More</a>
           
        </p>
     </div>
@@ -611,63 +396,139 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/03/best-way-to-repeat-a-character-in-c-sharp/" title="在C＃中重复一个字符的最佳方法" itemprop="url">在C＃中重复一个字符的最佳方法</a>
+      <a href="/2018/04/17/easiest-way-to-split-a-string-on-newlines-in-net/" title="在 NET中换行符的最简单的方法是什么？" itemprop="url">在 NET中换行符的最简单的方法是什么？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-03T01:40:58.000Z" itemprop="datePublished"> Published 2018-05-03</time>
+    <time datetime="2018-04-17T01:38:37.000Z" itemprop="datePublished"> Published 2018-04-17</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在C＃中生成<code>\ t</code>字符串的最好方法是什么？</p>
-<p>我正在学习C＃并尝试用不同的方式来表达同样的事情。</p>
-<p><code>标签（uint t）</code>是一个函数，它返回一个带有<code>t</code>的<code>\ t</code>的字符串`小号</p>
-<p>例如<code>Tabs（3）</code>返回<code>“\ t \ t \ t”</code><br>这三种实现<code>Tabs（uint numTabs）</code>的方法中哪一种最好？</p>
-<p>当然，这取决于“最好”的含义。</p>
-<ul>
-<li>LINQ版本只有两行，这很好。但是，是否需要重复和聚合不必要的时间/资源消耗呢？</li>
-</ul>
-<p><code>StringBuilder</code>版本非常清晰，但StringBuilder `类有点慢吗？</p>
-<p><code>string</code>版本是基本的，这意味着很容易理解。</p>
-<ul>
-<li>没关系吗？他们都是平等的吗？</li>
-</ul>
-<p>这些都是帮助我更好地感受C＃的问题。</p>
-<pre><code>private string Tabs(uint numTabs)
-{
-    IEnumerable&lt;string&gt; tabs = Enumerable.Repeat(&quot;\t&quot;, (int) numTabs);
-    return (numTabs &gt; 0) ? tabs.Aggregate((sum, next) =&gt; sum + next) : &quot;&quot;; 
-}  
-
-private string Tabs(uint numTabs)
-{
-    StringBuilder sb = new StringBuilder();
-    for (uint i = 0; i &lt; numTabs; i++)
-        sb.Append(&quot;\t&quot;);
-
-    return sb.ToString();
-}  
-
-private string Tabs(uint numTabs)
-{
-    string output = &quot;&quot;;
-    for (uint i = 0; i &lt; numTabs; i++)
-    {
-        output += &apos;\t&apos;;
-    }
-    return output; 
-}
-</code></pre><p>
+        <p>我需要在.NET中将字符串拆分成换行符，而我知道拆分字符串的唯一方法是使用<a href="“https://msdn.microsoft.com/en-
+us/library/system”。"> Split </a>方法。然而，这不会让我（很容易）分裂一个换行符，那么最好的办法是什么呢？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/03/best-way-to-repeat-a-character-in-c-sharp/#more">Read More</a>
+            <a href="/2018/04/17/easiest-way-to-split-a-string-on-newlines-in-net/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/16/what-does-androidlayout-weight-mean/" title="android：layout_weight是什么意思？" itemprop="url">android：layout_weight是什么意思？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-16T02:33:57.000Z" itemprop="datePublished"> Published 2018-04-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我不明白如何使用这个属性。任何人都可以告诉我更多关于它的信息吗？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/16/what-does-androidlayout-weight-mean/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/16/command-not-found-error-in-bash-variable-assignment/" title="在Bash变量赋值中找不到命令错误" itemprop="url">在Bash变量赋值中找不到命令错误</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-16T02:07:22.000Z" itemprop="datePublished"> Published 2018-04-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有一个名为test.sh的脚本：</p>
+<pre><code>#!/bin/bash
+STR = &quot;Hello World&quot;
+echo $STR
+</code></pre><p>当我运行<code>sh test.sh</code>时，我得到这个：</p>
+<pre><code>test.sh: line 2: STR: command not found
+</code></pre><p>我做错了什么？我在网上看到非常基本的/初学者的bash脚本教程，这是他们如何声明变量…所以我不知道我在做什么错了。</p>
+<p>我在Ubuntu Server 9.10上。是的，bash位于<code>/ bin / bash</code>。</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/16/command-not-found-error-in-bash-variable-assignment/#more">Read More</a>
           
        </p>
     </div>
@@ -677,7 +538,7 @@ private string Tabs(uint numTabs)
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  <span></span> <a href="/tags/bash/">bash</a><a href="/tags/shell/">shell</a>
   </div>
 
 </div>
@@ -706,135 +567,122 @@ private string Tabs(uint numTabs)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/03/showing-all-errors-and-warnings/" title="显示所有错误和警告" itemprop="url">显示所有错误和警告</a>
+      <a href="/2018/04/16/distinct-with-lambda/" title="独特（）与lambda？" itemprop="url">独特（）与lambda？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-03T01:15:44.000Z" itemprop="datePublished"> Published 2018-05-03</time>
+    <time datetime="2018-04-16T01:38:28.000Z" itemprop="datePublished"> Published 2018-04-16</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><strong>更新2：</strong></p>
-<p>现在我已经从.php文件中删除了以下内容：</p>
-<pre><code>&lt;?php error_reporting( E_ALL ); ?&gt;
-</code></pre><p>我已经在php.ini中设置了display_erros，如下所示：</p>
+        <p>正确的，所以我有一个枚举，并希望从它得到不同的值。</p>
+<p>使用<code>System.Linq</code>，当然有一个叫做<code>Distinct</code>的扩展方法。在简单的情况下，它可以使用没有参数，如：</p>
+<pre><code>var distinctValues = myStringList.Distinct();
+</code></pre><p>好的，但如果我有一个对象，我需要指定相等的唯一可用的重载：</p>
+<pre><code>var distinctValues = myCustomerList.Distinct(someEqualityComparer);
+</code></pre><p>相等比较参数必须是<code>IEqualityComparer＆lt; T＆gt;</code>的实例。当然，我可以做到这一点，但是有些冗长，而且很滑稽。</p>
+<p>我所期望的是一个需要lambda的重载，比如Func＆lt; T，T，bool＆gt;：</p>
+<pre><code>var distinctValues
+    = myCustomerList.Distinct((c1, c2) =&gt; c1.CustomerId == c2.CustomerId);
+</code></pre><p>任何人都知道，如果有一些这样的扩展存在，或一些相当的解决方法？或者我错过了什么？</p>
+<p>另外，有没有一种方法来指定一个IEqualityComparer inline（不理我）呢？</p>
+<p>&lt;强&gt;更新</p>
+<p>我发现了Anders Hejlsberg的一个回复<a href="“http://social.msdn.microsoft.com/Forums/en-
+US/linqprojectgeneral/thread/6834054e-e1c1-49db-970c-
+370a9012c675”rel">张贴</a>在这个主题的MSDN论坛。他说：</p>
 <blockquote>
-<p>display_errors = On</p>
+<p>The problem you’re going to run into is that when two objects compare equal<br>they must have the same GetHashCode return value (or else the hash table used<br>internally by Distinct will not function correctly). We use IEqualityComparer<br>because it packages compatible implementations of Equals and GetHashCode into<br>a single interface.</p>
 </blockquote>
-<p>错误报告在php.ini中设置为</p>
-<blockquote>
-<p>error_reporting = E_ALL | E_STRICT</p>
-</blockquote>
-<p>重新启动apache后，我仍然没有任何错误/警告。</p>
-<p><strong>更新1：</strong></p>
-<p>我从php.ini中更改了error_reporting：</p>
-<blockquote>
-<p>error_reporting = E_ALL &amp; ~E_DEPRECATED</p>
-</blockquote>
-<p>到</p>
-<blockquote>
-<p>error_reporting = E_ALL | E_STRICT</p>
-</blockquote>
-<p>之后，我重新启动apache，例如</p>
-<blockquote>
-<p>/etc/init.d/apache2 restart</p>
-</blockquote>
-<p>但是页面仍然不会显示任何错误/警告。</p>
-<p><strong>原始问题：</strong></p>
-<p>以下脚本正在生成警告，因为$<br>err在if语句中。为什么这个警告不会显示在网页浏览器的PHP页面上？我必须看看Apache日志，看看警告。此外，如果我delibrately更改“插入到”“删除到”，它不会显示错误的PHP页面上。为什么这些错误不会显示在实际的php页面上？</p>
-<pre><code>&lt;?php
-    error_reporting( E_ALL );
-?&gt;
-
-&lt;html&gt;
-    &lt;head&gt;
-        &lt;title&gt;&lt;/title&gt;
-        &lt;link rel=&quot;icon&quot; type=&quot;image/png&quot; href=&quot;favicon.ico&quot;&gt;
-
-        &lt;?php
-            if( $_SERVER[&apos;REQUEST_METHOD&apos;]==&apos;POST&apos; ) {
-                $err = array();
-
-                if( empty( $_POST[&apos;display_name&apos;] ) ) $err[] = &quot;display name field is required&quot;;
-                if( empty( $_POST[&apos;email&apos;] ) ) $err[] = &quot;email field is required&quot;;
-                if( empty( $_POST[&apos;password&apos;] ) ) $err[] = &quot;password field is required&quot;;
-
-                if( !$err ) {
-                    try {
-                        $DBH = new PDO( &quot;mysql:host=localhost;dbname=database1&quot;, &quot;user&quot;, &quot;pass&quot; );
-                        $DBH -&gt; setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-                        $STH = $DBH -&gt; prepare( &quot;delete into table1 (display_name, email, password) values ( :display_name, :email, :password )&quot; );
-
-                        $STH -&gt; bindParam( &apos;:display_name&apos;, $_POST[&apos;display_name&apos;], PDO::PARAM_STR, 100 );
-                        $STH -&gt; bindParam( &apos;:email&apos;, $_POST[&apos;email&apos;], PDO::PARAM_STR, 100 );
-                        $STH -&gt; bindParam( &apos;:password&apos;, $_POST[&apos;password&apos;], PDO::PARAM_STR, 100 );
-
-                        $STH -&gt; execute();
-
-                        $STH = $DBH -&gt; prepare( &quot;delete into table2 ( username, status, users_id ) values ( :username, :status, :users_id )&quot; );
-
-                        $strStatus = 1;
-
-                        $STH -&gt; bindParam( &apos;:username&apos;, $_POST[&apos;display_name&apos;], PDO::PARAM_STR, 100 );
-                        $STH -&gt; bindParam( &apos;:status&apos;, $strStatus, PDO::PARAM_INT, 1 );
-                        $STH -&gt; bindParam( &apos;:users_id&apos;, $_POST[&apos;referer&apos;], PDO::PARAM_INT, 1 );
-
-                        $STH -&gt; execute();
-
-                        $DBH = null;
-                    } catch( PDOException $e ) {
-                        echo $e -&gt; getMessage();
-                    }
-
-                    header( &quot;Location: &quot;.$_SERVER[&apos;PHP_SELF&apos;] );
-                    exit;
-                } else {
-                    foreach( $_POST as $key =&gt; $val ) {
-                        $form[$key] = htmlspecialchars($val);
-                    }
-                }
-            } else {
-                $form[&apos;display_name&apos;] = $form[&apos;email&apos;] = $form[&apos;password&apos;] = &apos;&apos;;
-            }
-        ?&gt;
-    &lt;/head&gt;
-
-    &lt;body&gt;
-        &lt;?php foreach( $err as $line ) { ?&gt;
-        &lt;div style=&quot;error&quot;&gt;&lt;?php echo $line; ?&gt;&lt;/div&gt;
-        &lt;?php } ?&gt;
-
-        &lt;h1&gt;register&lt;/h1&gt;
-
-        &lt;form method=&quot;post&quot;&gt;
-            referers id:&lt;br /&gt;
-            &lt;input type=&quot;text&quot; name=&quot;referer&quot; /&gt;&lt;br /&gt;&lt;br /&gt;
-
-            name:&lt;br /&gt;
-            &lt;input type=&quot;text&quot; name=&quot;display_name&quot; value=&quot;&lt;?php echo $form[&apos;display_name&apos;]; ?&gt;&quot; /&gt;&lt;br /&gt;&lt;br /&gt;
-
-            email:&lt;br /&gt;
-            &lt;input type=&quot;text&quot; name=&quot;email&quot; value=&quot;&lt;?php echo $form[&apos;email&apos;]; ?&gt;&quot; /&gt;&lt;br /&gt;&lt;br /&gt;
-
-            password:&lt;br /&gt;
-            &lt;input type=&quot;text&quot; name=&quot;password&quot; value=&quot;&lt;?php echo $form[&apos;password&apos;]; ?&gt;&quot; /&gt;&lt;br /&gt;&lt;br /&gt;
-
-            &lt;input type=&quot;submit&quot; value=&quot;register&quot; /&gt;
-        &lt;/form&gt;
-    &lt;/body&gt;
-&lt;/html&gt;
-</code></pre><p>
+<p>我想这是有道理的。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/03/showing-all-errors-and-warnings/#more">Read More</a>
+            <a href="/2018/04/16/distinct-with-lambda/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/16/exploitable-php-functions/" title="可开发的PHP函数" itemprop="url">可开发的PHP函数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-16T01:12:02.000Z" itemprop="datePublished"> Published 2018-04-16</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我试图建立一个可用于任意代码执行的函数列表。目的不是列出应被列入黑名单或不允许的功能。相反，当搜索受感染服务器的后门时，我希望有一个<code>grep</code>可用的<br><em>red-flag</em> 关键字列表。</p>
+<p>这个想法是，如果你想建立一个多用途的恶意PHP脚本 - 比如c99或r57等“web<br>shell”脚本，你将不得不使用一个或多个相对较小的脚本文件中某处的一组函数，以便允许用户执行任意代码。搜索这些函数可以帮助您更快速地将数以万计的PHP文件的大堆缩小到需要仔细检查的相对较小的脚本集。</p>
+<p>显然，举例来说，以下任何一种都会被认为是恶意的（或可怕的编码）：</p>
+<pre><code>&lt;? eval($_GET[&apos;cmd&apos;]); ?&gt;
+
+&lt;? system($_GET[&apos;cmd&apos;]); ?&gt;
+
+&lt;? preg_replace(&apos;/.*/e&apos;,$_POST[&apos;code&apos;]); ?&gt;
+</code></pre><p>等等。</p>
+<p>前几天通过一个被攻破的网站搜索，我没有注意到一个恶意代码，因为我没有意识到<code>preg_replace</code>可能会被<code>/ e</code>标志（<br><em>哪个，严重吗？为什么是那个</em> ？）。还有其他的我错过了吗？</p>
+<p>到目前为止，这是我的列表：</p>
+<p><strong>壳牌执行</strong></p>
+<ul>
+<li>&lt;代码&gt;系统</li>
+<li>&lt;代码&gt; EXEC </li>
+<li>&lt;代码&gt; POPEN </li>
+<li><em><code>反向运算符</code> </em></li>
+<li>&lt;代码&gt; pcntl_exec </li>
+</ul>
+<p><strong>PHP执行</strong></p>
+<ul>
+<li>&lt;代码&gt;评估</li>
+<li><code>preg_replace</code>（使用<code>/ e</code>修饰符）</li>
+<li>&lt;代码&gt; create_function </li>
+<li><code>include</code> [<code>_once</code>] / <code>require</code> [<code>_once</code>]（ _&gt;利用细节）</li>
+</ul>
+<p>有一个能够修改文件的函数列表也许是有用的，但我想99％的时间利用代码将至少包含上述功能之一。但是如果你有一个能够编辑或输出文件的所有功能的列表，发布它，我会在这里包括它。<br>（而且我不会统计<code>mysql_execute</code>，因为这是另一类漏洞利用的一部分。）</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/04/16/exploitable-php-functions/#more">Read More</a>
           
        </p>
     </div>
@@ -873,208 +721,52 @@ private string Tabs(uint numTabs)
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/05/03/doctrine2-best-way-to-handle-many-to-many-with-extra-columns-in-reference-table/" title="Doctrine2：在参考表中用多余的列来处理多对多的最佳方式" itemprop="url">Doctrine2：在参考表中用多余的列来处理多对多的最佳方式</a>
+      <a href="/2018/04/15/how-to-pass-an-object-from-one-activity-to-another-on-android/" title="如何在Android上将对象从一个活动传递给另一个活动" itemprop="url">如何在Android上将对象从一个活动传递给另一个活动</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-05-03T01:15:15.000Z" itemprop="datePublished"> Published 2018-05-03</time>
+    <time datetime="2018-04-15T02:33:56.000Z" itemprop="datePublished"> Published 2018-04-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想知道在Doctrine2中，什么是最好，最干净，最简单的与多对多关系的工作方式。</p>
-<p>假设我们有一个像<a href="http://www.last.fm/music/Metallica/Master+of+Puppets" target="_blank" rel="noopener"> <em>木偶大师</em> 由几个轨道的Metallica</a>。但请注意，一个曲目可能出现在更多的专辑中，如<a href="http://www.last.fm/music/Metallica/Master+of+Puppets/Battery" target="_blank" rel="noopener">Metallica的 __ </a><br>- 三张专辑正在播放这首歌曲。</p>
-<p>因此，我需要的是专辑和曲目之间的多对多关系，使用第三张表和一些附加列（如指定专辑中曲目的位置）。实际上，正如Doctrine的文档所建议的那样，我必须使用双重一对多关系来实现这个功能。</p>
-<pre><code>/** @Entity() */
-class Album {
-    /** @Id @Column(type=&quot;integer&quot;) */
-    protected $id;
+        <p>我正在尝试从一个<code>Activity</code>发送我的 <em>customer</em> 类的对象，并将其显示在另一个<code>Activity</code>中。</p>
+<p>&gt;</p>
+<p>客户类的代码：</p>
+<pre><code>public class Customer {
 
-    /** @Column() */
-    protected $title;
+    private String firstName, lastName, Address;
+    int Age;
 
-    /** @OneToMany(targetEntity=&quot;AlbumTrackReference&quot;, mappedBy=&quot;album&quot;) */
-    protected $tracklist;
+    public Customer(String fname, String lname, int age, String address) {
 
-    public function __construct() {
-        $this-&gt;tracklist = new \Doctrine\Common\Collections\ArrayCollection();
+        firstName = fname;
+        lastName = lname;
+        Age = age;
+        Address = address;
     }
 
-    public function getTitle() {
-        return $this-&gt;title;
-    }
+    public String printValues() {
 
-    public function getTracklist() {
-        return $this-&gt;tracklist-&gt;toArray();
-    }
-}
+        String data = null;
 
-/** @Entity() */
-class Track {
-    /** @Id @Column(type=&quot;integer&quot;) */
-    protected $id;
+        data = &quot;First Name :&quot; + firstName + &quot; Last Name :&quot; + lastName
+        + &quot; Age : &quot; + Age + &quot; Address : &quot; + Address;
 
-    /** @Column() */
-    protected $title;
-
-    /** @Column(type=&quot;time&quot;) */
-    protected $duration;
-
-    /** @OneToMany(targetEntity=&quot;AlbumTrackReference&quot;, mappedBy=&quot;track&quot;) */
-    protected $albumsFeaturingThisTrack; // btw: any idea how to name this relation? :)
-
-    public function getTitle() {
-        return $this-&gt;title;
-    }
-
-    public function getDuration() {
-        return $this-&gt;duration;
+        return data;
     }
 }
-
-/** @Entity() */
-class AlbumTrackReference {
-    /** @Id @Column(type=&quot;integer&quot;) */
-    protected $id;
-
-    /** @ManyToOne(targetEntity=&quot;Album&quot;, inversedBy=&quot;tracklist&quot;) */
-    protected $album;
-
-    /** @ManyToOne(targetEntity=&quot;Track&quot;, inversedBy=&quot;albumsFeaturingThisTrack&quot;) */
-    protected $track;
-
-    /** @Column(type=&quot;integer&quot;) */
-    protected $position;
-
-    /** @Column(type=&quot;boolean&quot;) */
-    protected $isPromoted;
-
-    public function getPosition() {
-        return $this-&gt;position;
-    }
-
-    public function isPromoted() {
-        return $this-&gt;isPromoted;
-    }
-
-    public function getAlbum() {
-        return $this-&gt;album;
-    }
-
-    public function getTrack() {
-        return $this-&gt;track;
-    }
-}
-</code></pre><p>示例数据：</p>
-<pre><code>             Album
-+----+--------------------------+
-| id | title                    |
-+----+--------------------------+
-|  1 | Master of Puppets        |
-|  2 | The Metallica Collection |
-+----+--------------------------+
-
-               Track
-+----+----------------------+----------+
-| id | title                | duration |
-+----+----------------------+----------+
-|  1 | Battery              | 00:05:13 |
-|  2 | Nothing Else Matters | 00:06:29 |
-|  3 | Damage Inc.          | 00:05:33 |
-+----+----------------------+----------+
-
-              AlbumTrackReference
-+----+----------+----------+----------+------------+
-| id | album_id | track_id | position | isPromoted |
-+----+----------+----------+----------+------------+
-|  1 |        1 |        2 |        2 |          1 |
-|  2 |        1 |        3 |        1 |          0 |
-|  3 |        1 |        1 |        3 |          0 |
-|  4 |        2 |        2 |        1 |          0 |
-+----+----------+----------+----------+------------+
-</code></pre><p>现在我可以显示与他们相关的专辑和曲目列表：</p>
-<pre><code>$dql = &apos;
-    SELECT   a, tl, t
-    FROM     Entity\Album a
-    JOIN     a.tracklist tl
-    JOIN     tl.track t
-    ORDER BY tl.position ASC
-&apos;;
-
-$albums = $em-&gt;createQuery($dql)-&gt;getResult();
-
-foreach ($albums as $album) {
-    echo $album-&gt;getTitle() . PHP_EOL;
-
-    foreach ($album-&gt;getTracklist() as $track) {
-        echo sprintf(&quot;\t#%d - %-20s (%s) %s\n&quot;, 
-            $track-&gt;getPosition(),
-            $track-&gt;getTrack()-&gt;getTitle(),
-            $track-&gt;getTrack()-&gt;getDuration()-&gt;format(&apos;H:i:s&apos;),
-            $track-&gt;isPromoted() ? &apos; - PROMOTED!&apos; : &apos;&apos;
-        );
-    }   
-}
-</code></pre><p>结果是我所期望的，也就是说：一张专辑列表，它们的曲目按照适当的顺序排列，并且被提升的曲目被标记为提升。</p>
-<pre><code>The Metallica Collection
-    #1 - Nothing Else Matters (00:06:29) 
-Master of Puppets
-    #1 - Damage Inc.          (00:05:33) 
-    #2 - Nothing Else Matters (00:06:29)  - PROMOTED!
-    #3 - Battery              (00:05:13) 
-</code></pre><h2 id="So-what’s-wrong"><a href="#So-what’s-wrong" class="headerlink" title="So what’s wrong?"></a>So what’s wrong?</h2><p>这段代码演示了什么是错的：</p>
-<pre><code>foreach ($album-&gt;getTracklist() as $track) {
-    echo $track-&gt;getTrack()-&gt;getTitle();
-}
-</code></pre><p>相册:: getTracklist（）<code>返回一个</code> AlbumTrackReference <code>对象而不是</code> Track<br><code>对象的数组。我无法创建代理方法会导致如果</code> Album <code>和</code> Track <code>两者都有</code> getTitle（）<code>方法？我可以在</code> Album ::<br>getTracklist（）`方法中做一些额外的处理，但最简单的方法是什么？我被迫写这样的东西吗？</p>
-<pre><code>public function getTracklist() {
-    $tracklist = array();
-
-    foreach ($this-&gt;tracklist as $key =&gt; $trackReference) {
-        $tracklist[$key] = $trackReference-&gt;getTrack();
-
-        $tracklist[$key]-&gt;setPosition($trackReference-&gt;getPosition());
-        $tracklist[$key]-&gt;setPromoted($trackReference-&gt;isPromoted());
-    }
-
-    return $tracklist;
-}
-
-// And some extra getters/setters in Track class
-</code></pre><h1 id="EDIT"><a href="#EDIT" class="headerlink" title="EDIT"></a>EDIT</h1><p>@beberlei建议使用代理方法：</p>
-<pre><code>class AlbumTrackReference {
-    public function getTitle() {
-        return $this-&gt;getTrack()-&gt;getTitle()
-    }
-}
-</code></pre><p>这是一个好主意，但是我使用了两个参考对象：<code>$ album-＆gt; getTracklist（）[12] - ＆gt; getTitle（）</code>和<code>$
-track-＆gt; getAlbums（）[1] - ＆gt; getTitle（）</code>，所以<code>getTitle（）</code>方法应该根据调用的上下文返回不同的数据。</p>
-<p>我将不得不这样做：</p>
-<pre><code>getTracklist() {
-    foreach ($this-&gt;tracklist as $trackRef) { $trackRef-&gt;setContext($this); }
-}
-
-// ....
-
-getAlbums() {
-    foreach ($this-&gt;tracklist as $trackRef) { $trackRef-&gt;setContext($this); }
-}
-
-// ...
-
-AlbumTrackRef::getTitle() {
-     return $this-&gt;{$this-&gt;context}-&gt;getTitle();
-}
-</code></pre><p>这不是一个很干净的方式。</p>
+</code></pre><p>我想从一个<code>Activity</code>发送它的对象到另一个，然后在另一个<code>Activity</code>上显示数据。</p>
+<p>我怎么能做到这一点？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/05/03/doctrine2-best-way-to-handle-many-to-many-with-extra-columns-in-reference-table/#more">Read More</a>
+            <a href="/2018/04/15/how-to-pass-an-object-from-one-activity-to-another-on-android/#more">Read More</a>
           
        </p>
     </div>
@@ -1084,7 +776,7 @@ AlbumTrackRef::getTitle() {
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -1109,7 +801,7 @@ AlbumTrackRef::getTitle() {
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/30/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/32/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/30/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><a class="page-number" href="/page/33/">33</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/32/">Next<span></span></a>
   </nav>
 
 </div>
@@ -1152,15 +844,11 @@ AlbumTrackRef::getTitle() {
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -1169,10 +857,6 @@ AlbumTrackRef::getTitle() {
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -1185,6 +869,10 @@ AlbumTrackRef::getTitle() {
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -1209,6 +897,8 @@ AlbumTrackRef::getTitle() {
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

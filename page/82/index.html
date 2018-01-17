@@ -112,25 +112,51 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/redirect-from-an-html-page/" title="从HTML页面重定向" itemprop="url">从HTML页面重定向</a>
+      <a href="/2018/01/14/how-to-upload-files-to-server-using-jsp-servlet/" title="如何使用JSP / Servlet将文件上传到服务器？" itemprop="url">如何使用JSP / Servlet将文件上传到服务器？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>是否可以设置一个基本的<code>HTML</code>页面来重定向到另一个页面？</p>
+        <p>如何使用JSP / Servlet将文件上传到服务器？我试过这个：</p>
+<pre><code>&lt;form action=&quot;upload&quot; method=&quot;post&quot;&gt;
+    &lt;input type=&quot;text&quot; name=&quot;description&quot; /&gt;
+    &lt;input type=&quot;file&quot; name=&quot;file&quot; /&gt;
+    &lt;input type=&quot;submit&quot; /&gt;
+&lt;/form&gt;
+</code></pre><p>不过，我只获取文件名，而不是文件内容。当我将<code>enctype =“multipart / form-data”</code>添加到<code>＆lt; form＆gt;</code>时，request.getParameter（）<code>返回</code>空。</p>
+<p>在研究中，我偶然发现了<a href="http://commons.apache.org/fileupload" target="_blank" rel="noopener"> Apache Common FileUpload</a>。我试过这个：</p>
+<pre><code>FileItemFactory factory = new DiskFileItemFactory();
+ServletFileUpload upload = new ServletFileUpload(factory);
+List items = upload.parseRequest(request); // This line is where it died.
+</code></pre><p>不幸的是，这个servlet抛出一个没有明确信息和原因的异常。这里是stacktrace：</p>
+<pre><code>SEVERE: Servlet.service() for servlet UploadServlet threw exception
+javax.servlet.ServletException: Servlet execution threw an exception
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:313)
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+    at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+    at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+    at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+    at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+    at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+    at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
+    at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
+    at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
+    at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
+    at java.lang.Thread.run(Thread.java:637)
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/redirect-from-an-html-page/#more">Read More</a>
+            <a href="/2018/01/14/how-to-upload-files-to-server-using-jsp-servlet/#more">Read More</a>
           
        </p>
     </div>
@@ -140,7 +166,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/html/">html</a>
+  <span></span> <a href="/tags/java/">java</a>
   </div>
 
 </div>
@@ -180,439 +206,30 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/how-can-i-use-a-notfirst-child-selector/" title="我怎样才能使用一个不是：第一个孩子的选择器？" itemprop="url">我怎样才能使用一个不是：第一个孩子的选择器？</a>
+      <a href="/2018/01/14/how-do-i-detect-a-click-outside-an-element/" title="如何检测元素外的点击？" itemprop="url">如何检测元素外的点击？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有<code>包含多个</code> ul <code>标签的div</code>标签。</p>
-<p>如果我只为第一个<code>ul</code>标记设置CSS属性，并且此代码有效：</p>
-<pre><code>div ul:first-child {
-    background-color: #900;
-}
-</code></pre><p>当我想为每个<code>ul</code>标签设置除第一个之外的CSS属性时，我试过了这个：</p>
-<pre><code>div ul:not:first-child {
-    background-color: #900;
-}
-</code></pre><p>还有这个：</p>
-<pre><code>div ul:not(:first-child) {
-    background-color: #900;
-}
-</code></pre><p>和这个：</p>
-<pre><code>div ul:first-child:after {
-    background-color: #900;
-}
-</code></pre><p>但是没有效果。我怎么一定要用CSS写“每一个元素，除了第一个”？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/how-can-i-use-a-notfirst-child-selector/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/button-vs-input-type-button-which-to-use/" title="按钮与输入类型=“按钮”/。使用哪个？" itemprop="url">按钮与输入类型=“按钮”/。使用哪个？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>看大多数网站（包括SO）时，大多数网站使用：</p>
-<pre><code>&lt;input type=&quot;button&quot; /&gt;
-</code></pre><p>而不是：</p>
-<pre><code>&lt;button&gt;&lt;/button&gt;
-</code></pre><ul>
-<li>两者之间的主要区别是什么？</li>
-<li>是否有正当理由使用一个而不是另一个？</li>
-<li>是否有合理的理由使用它们？</li>
-<li>使用<code>＆lt;按钮＆gt;</code>是否带有兼容性问题，看不到它被广泛使用？</li>
-</ul>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/button-vs-input-type-button-which-to-use/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/determine-a-users-timezone/" title="确定用户的时区[复制]" itemprop="url">确定用户的时区[复制]</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This question already has an answer here:</p>
-<ul>
-<li><a href="/questions/22618056/javascript-timezone-information-how-to-get-america-los-angeles-or-equivalent">JavaScript timezone information how to get America/Los_Angeles (or equivalent)</a> 1 answer </li>
-</ul>
-<p>Web服务器是否有任何标准的方法来确定用户在网页中的时区？也许从HTTP标头或部分用户代理字符串？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/determine-a-users-timezone/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/how-to-detect-if-javascript-is-disabled/" title="如何检测JavaScript是否被禁用？" itemprop="url">如何检测JavaScript是否被禁用？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>今天早上有一个帖子询问有多少人禁用JavaScript。然后我开始想知道用什么技术来确定用户是否禁用了它。</p>
-<p>有没有人知道一些简单的方法来检测JavaScript是否被禁用？我的意图是给出一个警告：如果浏览器没有启用JS，网站将无法正常运行。</p>
-<p>最后，我想将它们重定向到能够在没有JS的情况下工作的内容，但是我需要将此检测作为占位符来启动。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/how-to-detect-if-javascript-is-disabled/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/vertical-alignment-of-elements-in-a-div/" title="元素在一个div中的垂直对齐" itemprop="url">元素在一个div中的垂直对齐</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有一个div有两个图像和一个<code>h1</code>。所有这些都需要在div内相互垂直对齐。</p>
-<p>其中一个图像需要在div内定位<code>absolute</code><br>在所有普通浏览器上使用这个CSS所需的CSS是什么？</p>
-<pre><code>&lt;div id=&quot;header&quot;&gt;
-    &lt;img src=&quot;..&quot; &gt;&lt;/img&gt;
-    &lt;h1&gt;testing...&lt;/h1&gt;
-    &lt;img src=&quot;...&quot;&gt;&lt;/img&gt;
-&lt;/div&gt;
-</code></pre><p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/vertical-alignment-of-elements-in-a-div/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/vertical-align-with-bootstrap-3/" title="与Bootstrap 3垂直对齐" itemprop="url">与Bootstrap 3垂直对齐</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我正在使用Twitter Bootstrap 3，并且当我想垂直对齐两个<code>div</code>时遇到问题，例如 - <a href="“http://jsfiddle.net/corinem">JSFiddle链接</a>：</p>
-<pre><code>&lt;!-- Latest compiled and minified CSS --&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css&quot;&gt;
-
-&lt;!-- Optional theme --&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css&quot;&gt;
-
-&lt;!-- Latest compiled and minified JavaScript --&gt;
-&lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
-&lt;div class=&quot;row&quot;&gt;
-  &lt;div class=&quot;col-xs-5&quot;&gt;
-    &lt;div style=&quot;height:5em;border:1px solid #000&quot;&gt;Big&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;col-xs-5&quot;&gt;
-    &lt;div style=&quot;height:3em;border:1px solid #F00&quot;&gt;Small&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-</code></pre><p>Bootstrap中的网格系统使用<code>float：left</code>，而不是<code>display：inline-block</code>，所以属性<code>vertical-
-align</code>不工作。我尝试使用<code>margin-top</code>来解决这个问题，但我认为这不是一个很好的解决方案。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/15/vertical-align-with-bootstrap-3/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/15/what-is-sr-only-in-bootstrap-3/" title="什么是sr-only Bootstrap 3？" itemprop="url">什么是sr-only Bootstrap 3？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>什么是class <code>sr-only</code>用于？它是重要的还是我可以删除它？没有工作正常。</p>
-<p>这是我的例子：</p>
-<pre><code>&lt;div class=&quot;btn-group&quot;&gt;
-    &lt;button type=&quot;button&quot; class=&quot;btn btn-info btn-md&quot;&gt;Departments&lt;/button&gt;
-    &lt;button type=&quot;button&quot; class=&quot;btn btn-info dropdown-toggle btn-md&quot; data-toggle=&quot;dropdown&quot;&gt;
-    &lt;span class=&quot;caret&quot;&gt;&lt;/span&gt;
-    &lt;span class=&quot;sr-only&quot;&gt;Toggle Dropdown&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;ul class=&quot;dropdown-menu&quot; role=&quot;menu&quot;&gt;
-        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Sales&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Technical&lt;/a&gt;&lt;/li&gt;
-        &lt;li class=&quot;divider&quot;&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Show all&lt;/a&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-&lt;/div&gt;
+        <p>我有一些HTML菜单，当用户点击这些菜单的头部时，我会完全显示这些菜单。当用户点击菜单区域外时，我想要隐藏这些元素。</p>
+<p>这是jQuery可能的事情吗？</p>
+<pre><code>$(&quot;#menuscontainer&quot;).clickOutsideThisElement(function() {
+    // Hide the menus
+});
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/what-is-sr-only-in-bootstrap-3/#more">Read More</a>
+            <a href="/2018/01/14/how-do-i-detect-a-click-outside-an-element/#more">Read More</a>
           
        </p>
     </div>
@@ -622,7 +239,7 @@ align</code>不工作。我尝试使用<code>margin-top</code>来解决这个问
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
   </div>
 
 </div>
@@ -651,44 +268,25 @@ align</code>不工作。我尝试使用<code>margin-top</code>来解决这个问
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/what-is-the-purpose-of-the-role-attribute-in-html/" title="HTML中“角色”属性的用途是什么？" itemprop="url">HTML中“角色”属性的用途是什么？</a>
+      <a href="/2018/01/14/what-is-the-difference-between-staticmethod-and-classmethod-in-python/" title="Python中的@staticmethod和@classmethod有什么区别？" itemprop="url">Python中的@staticmethod和@classmethod有什么区别？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我在一些人的工作中不断看到角色属性。我也使用它，但我不确定它的效果。</p>
-<p>例如：</p>
-<pre><code>&lt;header id=&quot;header&quot; role=&quot;banner&quot;&gt;
-    Header stuff in here
-&lt;/header&gt;
-</code></pre><p>或者：</p>
-<pre><code>&lt;section id=&quot;facebook&quot; role=&quot;contentinfo&quot;&gt;
-    Facebook stuff in here
-&lt;/section&gt;
-</code></pre><p>或者：</p>
-<pre><code>&lt;section id=&quot;main&quot; role=&quot;main&quot;&gt;
-     Main content stuff in here
-&lt;/section&gt;
-</code></pre><p>这个角色属性是否必要？</p>
-<p>这个属性更适合语义吗？</p>
-<p>它改善SEO吗？</p>
-<p>角色列表可以在<a href="http://www.w3.org/TR/2007/WD-xhtml-
-role-20071004/" target="_blank" rel="noopener">这里</a>找到，但是我看到一些人自己做了。是否允许或正确使用角色属性？</p>
-<p>有什么想法吗？</p>
-<p>
+        <p>用<a href="http://docs.python.org/library/functions.html#staticmethod" target="_blank" rel="noopener"> <code>@staticmethod</code>装饰的功能有什么区别？</a>，并使用<a href="http://docs.python.org/library/functions.html#classmethod" target="_blank" rel="noopener"> <code>@classmethod</code></a>进行装饰？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/what-is-the-purpose-of-the-role-attribute-in-html/#more">Read More</a>
+            <a href="/2018/01/14/what-is-the-difference-between-staticmethod-and-classmethod-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -698,7 +296,7 @@ role-20071004/" target="_blank" rel="noopener">这里</a>找到，但是我看�
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/html/">html</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -727,27 +325,25 @@ role-20071004/" target="_blank" rel="noopener">这里</a>找到，但是我看�
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/15/how-to-disable-a-link-using-only-css/" title="如何禁用仅使用CSS的链接？" itemprop="url">如何禁用仅使用CSS的链接？</a>
+      <a href="/2018/01/14/convert-inputstream-to-byte-array-in-java/" title="在Java中将InputStream转换为字节数组" itemprop="url">在Java中将InputStream转换为字节数组</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>有什么办法可以禁用使用CSS的链接吗？</p>
-<p>我有一个叫做<code>current-page</code>的类，并且希望这个类的链接被禁用，这样点击时就不会发生任何操作。</p>
-<p>
+        <p>如何将整个<code>InputStream</code>读入一个字节数组？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/15/how-to-disable-a-link-using-only-css/#more">Read More</a>
+            <a href="/2018/01/14/convert-inputstream-to-byte-array-in-java/#more">Read More</a>
           
        </p>
     </div>
@@ -757,7 +353,588 @@ role-20071004/" target="_blank" rel="noopener">这里</a>找到，但是我看�
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/fastest-way-to-determine-if-an-integers-square-root-is-an-integer/" title="最快的方法来确定一个整数的平方根是一个整数" itemprop="url">最快的方法来确定一个整数的平方根是一个整数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我正在寻找最快的方法来确定一个<code>long</code>值是否是一个完美的正方形（即其平方根是另一个整数）。我已经通过使用内置的Math.sqrt（）函数简单的方法做到了这一点，但是我想知道是否有办法通过将自己限制在只有整数的域来更快地实现。维护一个查找表是不切实际的（因为有大约2<br>31.5 整数的平方小于2 <63>）。</63></p>
+<p>这是我现在做的非常简单直接的方式：</p>
+<pre><code>public final static boolean isPerfectSquare(long n)
+{
+  if (n &lt; 0)
+    return false;
+
+  long tst = (long)(Math.sqrt(n) + 0.5);
+  return tst*tst == n;
+}
+</code></pre><hr>
+<p>注：我在许多<a href="http://projecteuler.net/" target="_blank" rel="noopener"> Project Euler</a>问题中使用了这个函数。所以没有人会永远保持这个代码。而这种微观优化实际上可能会有所作为，因为挑战的一部分就是在一分钟内完成所有的算法，而这个功能在一些问题中需要被调用数百万次。_</p>
+<hr>
+<p><strong>更新2</strong> ：由[发布的新解决方案。事实证明，雷克斯更快。在前10亿个整数的运行中，解决方案只需要使用原始解决方案的34％。虽然约翰·卡马克黑客对于<br><em>n </em>的小值有点更好，但与此解决方案相比的好处却相当小。</p>
+<p>A. rex解决方案，转换为Java：</p>
+<pre><code>private final static boolean isPerfectSquare(long n)
+{
+  // Quickfail
+  if( n &lt; 0 || ((n&amp;2) != 0) || ((n &amp; 7) == 5) || ((n &amp; 11) == 8) )
+    return false;
+  if( n == 0 )
+    return true;
+
+  // Check mod 255 = 3 * 5 * 17, for fun
+  long y = n;
+  y = (y &amp; 0xffffffffL) + (y &gt;&gt; 32);
+  y = (y &amp; 0xffffL) + (y &gt;&gt; 16);
+  y = (y &amp; 0xffL) + ((y &gt;&gt; 8) &amp; 0xffL) + (y &gt;&gt; 16);
+  if( bad255[(int)y] )
+      return false;
+
+  // Divide out powers of 4 using binary search
+  if((n &amp; 0xffffffffL) == 0)
+      n &gt;&gt;= 32;
+  if((n &amp; 0xffffL) == 0)
+      n &gt;&gt;= 16;
+  if((n &amp; 0xffL) == 0)
+      n &gt;&gt;= 8;
+  if((n &amp; 0xfL) == 0)
+      n &gt;&gt;= 4;
+  if((n &amp; 0x3L) == 0)
+      n &gt;&gt;= 2;
+
+  if((n &amp; 0x7L) != 1)
+      return false;
+
+  // Compute sqrt using something like Hensel&apos;s lemma
+  long r, t, z;
+  r = start[(int)((n &gt;&gt; 3) &amp; 0x3ffL)];
+  do {
+    z = n - r * r;
+    if( z == 0 )
+      return true;
+    if( z &lt; 0 )
+      return false;
+    t = z &amp; (-z);
+    r += (z &amp; t) &gt;&gt; 1;
+    if( r &gt; (t  &gt;&gt; 1) )
+    r = t - r;
+  } while( t &lt;= (1L &lt;&lt; 33) );
+  return false;
+}
+
+private static boolean[] bad255 =
+{
+   false,false,true ,true ,false,true ,true ,true ,true ,false,true ,true ,true ,
+   true ,true ,false,false,true ,true ,false,true ,false,true ,true ,true ,false,
+   true ,true ,true ,true ,false,true ,true ,true ,false,true ,false,true ,true ,
+   true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,false,true ,false,
+   true ,true ,true ,false,true ,true ,true ,true ,false,true ,true ,true ,false,
+   true ,false,true ,true ,false,false,true ,true ,true ,true ,true ,false,true ,
+   true ,true ,true ,false,true ,true ,false,false,true ,true ,true ,true ,true ,
+   true ,true ,true ,false,true ,true ,true ,true ,true ,false,true ,true ,true ,
+   true ,true ,false,true ,true ,true ,true ,false,true ,true ,true ,false,true ,
+   true ,true ,true ,false,false,true ,true ,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,true ,false,false,true ,true ,true ,true ,true ,true ,
+   true ,false,false,true ,true ,true ,true ,true ,false,true ,true ,false,true ,
+   true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,false,true ,true ,
+   false,true ,false,true ,true ,false,true ,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,false,true ,true ,false,true ,true ,true ,true ,true ,
+   false,false,true ,true ,true ,true ,true ,true ,true ,false,false,true ,true ,
+   true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,false,false,
+   true ,true ,true ,true ,false,true ,true ,true ,false,true ,true ,true ,true ,
+   false,true ,true ,true ,true ,true ,false,true ,true ,true ,true ,true ,false,
+   true ,true ,true ,true ,true ,true ,true ,true ,false,false,true ,true ,false,
+   true ,true ,true ,true ,false,true ,true ,true ,true ,true ,false,false,true ,
+   true ,false,true ,false,true ,true ,true ,false,true ,true ,true ,true ,false,
+   true ,true ,true ,false,true ,false,true ,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,true ,false,true ,false,true ,true ,true ,false,true ,
+   true ,true ,true ,false,true ,true ,true ,false,true ,false,true ,true ,false,
+   false,true ,true ,true ,true ,true ,false,true ,true ,true ,true ,false,true ,
+   true ,false,false,true ,true ,true ,true ,true ,true ,true ,true ,false,true ,
+   true ,true ,true ,true ,false,true ,true ,true ,true ,true ,false,true ,true ,
+   true ,true ,false,true ,true ,true ,false,true ,true ,true ,true ,false,false,
+   true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,
+   false,false,true ,true ,true ,true ,true ,true ,true ,false,false,true ,true ,
+   true ,true ,true ,false,true ,true ,false,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,true ,false,true ,true ,false,true ,false,true ,true ,
+   false,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,true ,false,
+   true ,true ,false,true ,true ,true ,true ,true ,false,false,true ,true ,true ,
+   true ,true ,true ,true ,false,false,true ,true ,true ,true ,true ,true ,true ,
+   true ,true ,true ,true ,true ,true ,false,false,true ,true ,true ,true ,false,
+   true ,true ,true ,false,true ,true ,true ,true ,false,true ,true ,true ,true ,
+   true ,false,true ,true ,true ,true ,true ,false,true ,true ,true ,true ,true ,
+   true ,true ,true ,false,false
+};
+
+private static int[] start =
+{
+  1,3,1769,5,1937,1741,7,1451,479,157,9,91,945,659,1817,11,
+  1983,707,1321,1211,1071,13,1479,405,415,1501,1609,741,15,339,1703,203,
+  129,1411,873,1669,17,1715,1145,1835,351,1251,887,1573,975,19,1127,395,
+  1855,1981,425,453,1105,653,327,21,287,93,713,1691,1935,301,551,587,
+  257,1277,23,763,1903,1075,1799,1877,223,1437,1783,859,1201,621,25,779,
+  1727,573,471,1979,815,1293,825,363,159,1315,183,27,241,941,601,971,
+  385,131,919,901,273,435,647,1493,95,29,1417,805,719,1261,1177,1163,
+  1599,835,1367,315,1361,1933,1977,747,31,1373,1079,1637,1679,1581,1753,1355,
+  513,1539,1815,1531,1647,205,505,1109,33,1379,521,1627,1457,1901,1767,1547,
+  1471,1853,1833,1349,559,1523,967,1131,97,35,1975,795,497,1875,1191,1739,
+  641,1149,1385,133,529,845,1657,725,161,1309,375,37,463,1555,615,1931,
+  1343,445,937,1083,1617,883,185,1515,225,1443,1225,869,1423,1235,39,1973,
+  769,259,489,1797,1391,1485,1287,341,289,99,1271,1701,1713,915,537,1781,
+  1215,963,41,581,303,243,1337,1899,353,1245,329,1563,753,595,1113,1589,
+  897,1667,407,635,785,1971,135,43,417,1507,1929,731,207,275,1689,1397,
+  1087,1725,855,1851,1873,397,1607,1813,481,163,567,101,1167,45,1831,1205,
+  1025,1021,1303,1029,1135,1331,1017,427,545,1181,1033,933,1969,365,1255,1013,
+  959,317,1751,187,47,1037,455,1429,609,1571,1463,1765,1009,685,679,821,
+  1153,387,1897,1403,1041,691,1927,811,673,227,137,1499,49,1005,103,629,
+  831,1091,1449,1477,1967,1677,697,1045,737,1117,1737,667,911,1325,473,437,
+  1281,1795,1001,261,879,51,775,1195,801,1635,759,165,1871,1645,1049,245,
+  703,1597,553,955,209,1779,1849,661,865,291,841,997,1265,1965,1625,53,
+  1409,893,105,1925,1297,589,377,1579,929,1053,1655,1829,305,1811,1895,139,
+  575,189,343,709,1711,1139,1095,277,993,1699,55,1435,655,1491,1319,331,
+  1537,515,791,507,623,1229,1529,1963,1057,355,1545,603,1615,1171,743,523,
+  447,1219,1239,1723,465,499,57,107,1121,989,951,229,1521,851,167,715,
+  1665,1923,1687,1157,1553,1869,1415,1749,1185,1763,649,1061,561,531,409,907,
+  319,1469,1961,59,1455,141,1209,491,1249,419,1847,1893,399,211,985,1099,
+  1793,765,1513,1275,367,1587,263,1365,1313,925,247,1371,1359,109,1561,1291,
+  191,61,1065,1605,721,781,1735,875,1377,1827,1353,539,1777,429,1959,1483,
+  1921,643,617,389,1809,947,889,981,1441,483,1143,293,817,749,1383,1675,
+  63,1347,169,827,1199,1421,583,1259,1505,861,457,1125,143,1069,807,1867,
+  2047,2045,279,2043,111,307,2041,597,1569,1891,2039,1957,1103,1389,231,2037,
+  65,1341,727,837,977,2035,569,1643,1633,547,439,1307,2033,1709,345,1845,
+  1919,637,1175,379,2031,333,903,213,1697,797,1161,475,1073,2029,921,1653,
+  193,67,1623,1595,943,1395,1721,2027,1761,1955,1335,357,113,1747,1497,1461,
+  1791,771,2025,1285,145,973,249,171,1825,611,265,1189,847,1427,2023,1269,
+  321,1475,1577,69,1233,755,1223,1685,1889,733,1865,2021,1807,1107,1447,1077,
+  1663,1917,1129,1147,1775,1613,1401,555,1953,2019,631,1243,1329,787,871,885,
+  449,1213,681,1733,687,115,71,1301,2017,675,969,411,369,467,295,693,
+  1535,509,233,517,401,1843,1543,939,2015,669,1527,421,591,147,281,501,
+  577,195,215,699,1489,525,1081,917,1951,2013,73,1253,1551,173,857,309,
+  1407,899,663,1915,1519,1203,391,1323,1887,739,1673,2011,1585,493,1433,117,
+  705,1603,1111,965,431,1165,1863,533,1823,605,823,1179,625,813,2009,75,
+  1279,1789,1559,251,657,563,761,1707,1759,1949,777,347,335,1133,1511,267,
+  833,1085,2007,1467,1745,1805,711,149,1695,803,1719,485,1295,1453,935,459,
+  1151,381,1641,1413,1263,77,1913,2005,1631,541,119,1317,1841,1773,359,651,
+  961,323,1193,197,175,1651,441,235,1567,1885,1481,1947,881,2003,217,843,
+  1023,1027,745,1019,913,717,1031,1621,1503,867,1015,1115,79,1683,793,1035,
+  1089,1731,297,1861,2001,1011,1593,619,1439,477,585,283,1039,1363,1369,1227,
+  895,1661,151,645,1007,1357,121,1237,1375,1821,1911,549,1999,1043,1945,1419,
+  1217,957,599,571,81,371,1351,1003,1311,931,311,1381,1137,723,1575,1611,
+  767,253,1047,1787,1169,1997,1273,853,1247,413,1289,1883,177,403,999,1803,
+  1345,451,1495,1093,1839,269,199,1387,1183,1757,1207,1051,783,83,423,1995,
+  639,1155,1943,123,751,1459,1671,469,1119,995,393,219,1743,237,153,1909,
+  1473,1859,1705,1339,337,909,953,1771,1055,349,1993,613,1393,557,729,1717,
+  511,1533,1257,1541,1425,819,519,85,991,1693,503,1445,433,877,1305,1525,
+  1601,829,809,325,1583,1549,1991,1941,927,1059,1097,1819,527,1197,1881,1333,
+  383,125,361,891,495,179,633,299,863,285,1399,987,1487,1517,1639,1141,
+  1729,579,87,1989,593,1907,839,1557,799,1629,201,155,1649,1837,1063,949,
+  255,1283,535,773,1681,461,1785,683,735,1123,1801,677,689,1939,487,757,
+  1857,1987,983,443,1327,1267,313,1173,671,221,695,1509,271,1619,89,565,
+  127,1405,1431,1659,239,1101,1159,1067,607,1565,905,1755,1231,1299,665,373,
+  1985,701,1879,1221,849,627,1465,789,543,1187,1591,923,1905,979,1241,181
+};
+</code></pre><hr>
+<p><strong>更新</strong> ：我尝试了下面介绍的不同解决方案。</p>
+<ul>
+<li>经过详尽的测试，我发现在Math.sqrt（）的结果中加入<code>0.5</code>是没有必要的，至少不是在我的机器上。</li>
+<li><a href="http://www.codemaestro.com/reviews/9" target="_blank" rel="noopener"> John Carmack黑客</a>速度更快，但是从n = 410881开始的结果却不正确。然而，正如<a href="https://stackoverflow.com/users/38426/bobbyshaftoe" target="_blank" rel="noopener"> BobbyShaftoe </a>所建议的那样，我们可以使用Carmack hack来进行n＆lt; 410881。</li>
+<li>牛顿的方法比<code>Math.sqrt（）</code>慢了一点。这可能是因为<code>Math.sqrt（）</code>使用类似于牛顿方法的东西，但在硬件中实现，因此比Java更快。此外，牛顿的方法仍然需要使用双打。</li>
+<li>修改后的牛顿方法使用了一些技巧，只涉及整数运算，所以需要一些黑客来避免溢出（我希望这个函数能够处理所有正整数的64位有符号整数），而且它仍然比&lt;代码&gt; Math.sqrt（）<br>二元印章更慢。这是有道理的，因为二进制斩将平均需要16遍才能找到一个64位数的平方根。</li>
+</ul>
+<p>有一个建议显示了改进是由<a href="https://stackoverflow.com/users/25188/john-d-cook" target="_blank" rel="noopener">约翰D.库克</a>。您可以观察到完美平方的最后一个十六进制数字（即最后4位）必须是0,1,4或9.这意味着可以立即消除75％的数字作为可能的正方形。实施这个解决方案导致运行时间减少了大约50％。</p>
+<p>根据John的建议，我研究了完美正方形的最后一个 <em>n</em><br>位的属性。通过分析最后6位，我发现最后6位只有64个值中的12个是可能的。这意味着81％的数值可以在不使用任何数学的情况下被消除。实施这个解决方案使运行时间减少了8％（与我的原始算法相比）。分析多于6位会导致可能的结束位列表太大而不可行。</p>
+<p>这里是我使用的代码，它运行在原始算法所需时间的42％（基于对前1亿个整数的运行）。对于 <em>n</em> 小于410881的值，它只运行原始算法所需时间的29％。</p>
+<pre><code>private final static boolean isPerfectSquare(long n)
+{
+  if (n &lt; 0)
+    return false;
+
+  switch((int)(n &amp; 0x3F))
+  {
+  case 0x00: case 0x01: case 0x04: case 0x09: case 0x10: case 0x11:
+  case 0x19: case 0x21: case 0x24: case 0x29: case 0x31: case 0x39:
+    long sqrt;
+    if(n &lt; 410881L)
+    {
+      //John Carmack hack, converted to Java.
+      // See: http://www.codemaestro.com/reviews/9
+      int i;
+      float x2, y;
+
+      x2 = n * 0.5F;
+      y  = n;
+      i  = Float.floatToRawIntBits(y);
+      i  = 0x5f3759df - ( i &gt;&gt; 1 );
+      y  = Float.intBitsToFloat(i);
+      y  = y * ( 1.5F - ( x2 * y * y ) );
+
+      sqrt = (long)(1.0F/y);
+    }
+    else
+    {
+      //Carmack hack gives incorrect answer for n &gt;= 410881.
+      sqrt = (long)Math.sqrt(n);
+    }
+    return sqrt*sqrt == n;
+
+  default:
+    return false;
+  }
+}
+</code></pre><p>**备注 ：</p>
+<ul>
+<li>根据John的测试，在C ++中使用<code>或语句比使用</code>开关<code>更快，但在Java和C＃中，</code>或<code>和</code> switch `。</li>
+<li>我也尝试做一个查找表（作为一个私有的64个布尔值的静态数组）。然后，而不是开关或<code>或语句，我只是说</code> if（lookup [（int）（n＆amp; 0x3F）]）{test} else return false; `。令我吃惊的是，这只是（稍微）慢一点。 <del>我不知道为什么。</del> 这是因为[数组边界。 </li>
+</ul>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/fastest-way-to-determine-if-an-integers-square-root-is-an-integer/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/convert-javascript-string-to-be-all-lower-case/" title="转换JavaScript字符串是全部小写？" itemprop="url">转换JavaScript字符串是全部小写？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>如何将JavaScript字符串值转换为全部小写字母？</p>
+<p>例如：“您的姓名”改为“您的姓名”</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/convert-javascript-string-to-be-all-lower-case/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-to-use-threading-in-python/" title="如何在Python中使用线程？" itemprop="url">如何在Python中使用线程？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我试图理解Python中的线程。我已经看了文档和例子，但坦率地说，很多例子都非常复杂，而且我很难理解它们。</p>
+<p>你如何清楚地显示被划分为多线程的任务？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-to-use-threading-in-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-do-i-download-a-file-over-http-using-python/" title="如何使用Python通过HTTP下载文件？" itemprop="url">如何使用Python通过HTTP下载文件？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>我有一个小工具，用来从网站上下载一个MP3，然后建立/更新一个播客XML文件，我明明已经加入了iTunes。</p>
+<p>创建/更新XML文件的文本处理是用Python编写的。我在Windows <code>.bat</code>文件中使用wget来下载实际的MP3。我宁愿用Python编写整个实用程序。</p>
+<p>我努力找到一种方法来实际下载Python中的文件，为什么我使用<code>wget</code>。</p>
+<p>那么，如何使用Python下载文件？</p>
+<p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-do-i-download-a-file-over-http-using-python/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/http/">http</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/delete-an-item-from-a-dictionary/" title="从字典中删除一个项目" itemprop="url">从字典中删除一个项目</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>有没有办法从Python中的字典中删除项目？</p>
+<p>我知道我可以在字典上调用<code>.pop</code>，但会返回被删除的项目。我正在寻找的是返回字典 <em>minus</em> 元素的问题。</p>
+<p>目前我有一个帮助函数，接受有问题的字典作为参数，然后返回一个字典，其中的项目被删除，是否有一个更优雅的解决方案？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/delete-an-item-from-a-dictionary/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/what-is-the-difference-between-range-and-xrange-functions-in-python-2-x/" title="Python 2 X中的range和xrange函数有什么区别？" itemprop="url">Python 2 X中的range和xrange函数有什么区别？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>显然xrange是更快的，但我不知道为什么它更快（除了轶事迄今没有证据，它是更快），或除此之外是什么不同的</p>
+<pre><code>for i in range(0, 20):
+for i in xrange(0, 20):
+</code></pre><p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/what-is-the-difference-between-range-and-xrange-functions-in-python-2-x/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -782,7 +959,7 @@ role-20071004/" target="_blank" rel="noopener">这里</a>找到，但是我看�
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/81/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="page-number" href="/page/81/">81</a><span class="page-number current">82</span><a class="page-number" href="/page/83/">83</a><a class="page-number" href="/page/84/">84</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/83/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/81/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/80/">80</a><a class="page-number" href="/page/81/">81</a><span class="page-number current">82</span><a class="page-number" href="/page/83/">83</a><a class="page-number" href="/page/84/">84</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/83/">Next<span></span></a>
   </nav>
 
 </div>
@@ -825,15 +1002,11 @@ role-20071004/" target="_blank" rel="noopener">这里</a>找到，但是我看�
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -842,10 +1015,6 @@ role-20071004/" target="_blank" rel="noopener">这里</a>找到，但是我看�
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -858,6 +1027,10 @@ role-20071004/" target="_blank" rel="noopener">这里</a>找到，但是我看�
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -882,6 +1055,8 @@ role-20071004/" target="_blank" rel="noopener">这里</a>找到，但是我看�
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

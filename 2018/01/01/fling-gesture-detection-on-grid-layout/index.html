@@ -1,0 +1,649 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>在网格布局上进行手势检测 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我想要得到fling手势检测工作在我的Android应用程序。 我有一个GridLayout，其中包含9个ImageViews。来源可以在这里找到：罗曼人的网格布局。 我拿的文件是从罗曼盖伊的Photostream应用程序，只有轻微的适应。 对于简单的点击情况，我只需要为每个onClickListener设置ImageView，我将其添加为实现activity的主要View.OnClickList">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在网格布局上进行手势检测">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/fling-gesture-detection-on-grid-layout/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我想要得到fling手势检测工作在我的Android应用程序。 我有一个GridLayout，其中包含9个ImageViews。来源可以在这里找到：罗曼人的网格布局。 我拿的文件是从罗曼盖伊的Photostream应用程序，只有轻微的适应。 对于简单的点击情况，我只需要为每个onClickListener设置ImageView，我将其添加为实现activity的主要View.OnClickList">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在网格布局上进行手势检测">
+<meta name="twitter:description" content="我想要得到fling手势检测工作在我的Android应用程序。 我有一个GridLayout，其中包含9个ImageViews。来源可以在这里找到：罗曼人的网格布局。 我拿的文件是从罗曼盖伊的Photostream应用程序，只有轻微的适应。 对于简单的点击情况，我只需要为每个onClickListener设置ImageView，我将其添加为实现activity的主要View.OnClickList">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/fling-gesture-detection-on-grid-layout/" title="在网格布局上进行手势检测" itemprop="url">在网格布局上进行手势检测</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我想要得到<code>fling</code>手势检测工作在我的Android应用程序。</p>
+<p>我有一个<code>GridLayout</code>，其中包含9个<code>ImageView</code>s。来源可以在这里找到：罗曼人的网格布局。</p>
+<p>我拿的文件是从罗曼盖伊的Photostream应用程序，只有轻微的适应。</p>
+<p>对于简单的点击情况，我只需要为每个<code>onClickListener</code>设置<code>ImageView</code>，我将其添加为实现<code>activity</code>的主要<code>View.OnClickListener</code>。实现能识别<code>fling</code>的东西似乎是无限复杂的。我想这是因为它可能跨越<code>views</code>？</p>
+<p>如果我的活动实施 <code>OnGestureListener</code>我不知道如何 设置为手势监听器 <code>Grid</code>或<code>Image</code>的意见，我 加。<br>公共类SelectFilterActivity扩展了Activity实现    View.OnClickListener，OnGestureListener<br>{… 如果我的活动实施 <code>OnTouchListener</code>然后我没有 <code>onFling</code>方法到<code>override</code>（它有 两个事件作为允许我的参数<br>以确定是否是一扔 值得注意的）。 公共类SelectFilterActivity扩展了Activity实现<br>View.OnClickListener，OnTouchListener {…<br>如果我做一个自定义<code>View</code>，就像<code>GestureImageView</code>扩展<code>ImageView</code>我不知道如何告诉活动，从视图<code>fling</code>已经发生。无论如何，我试过这个，当我触摸屏幕的时候，方法并没有被调用。</p>
+<p>我真的只是需要一个具体的例子，跨视图工作。什么，何时以及如何附加这个<code>listener</code>？我需要能够检测到单击也。</p>
+<pre><code>// Gesture detection
+mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        int dx = (int) (e2.getX() - e1.getX());
+        // don&apos;t accept the fling if it&apos;s too short
+        // as it may conflict with a button push
+        if (Math.abs(dx) &gt; MAJOR_MOVE &amp;&amp; Math.abs(velocityX) &gt; Math.absvelocityY)) {
+            if (velocityX &gt; 0) {
+                moveRight();
+            } else {
+                moveLeft();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+});
+</code></pre><p>是否可以在屏幕上方放置一个透明视图来捕捉掠过？</p>
+<p>如果我选择不从<code>inflate</code>我的孩子图像视图从XML我可以传递<code>GestureDetector</code>作为构造函数参数创建<code>ImageView</code>新的子类？</p>
+<p>这是我试图让<code>fling</code>检测工作的非常简单的活动：SelectFilterActivity（从照片流改编）。</p>
+<p>我一直在看这些来源：</p>
+<p>检测手势 - 教程 SDK文档 计算器代码</p>
+<p>到目前为止，没有任何工作为我工作，我希望得到一些指示。</p>
+<a id="more"></a>
+<p>感谢Code Shogun，它的代码适应了我的情况。</p>
+<p>让你的活动像往常一样实现<code>OnClickListener</code>：</p>
+<pre><code>public class SelectFilterActivity extends Activity implements OnClickListener {
+
+  private static final int SWIPE_MIN_DISTANCE = 120;
+  private static final int SWIPE_MAX_OFF_PATH = 250;
+  private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+  private GestureDetector gestureDetector;
+  View.OnTouchListener gestureListener;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    /* ... */
+
+    // Gesture detection
+    gestureDetector = new GestureDetector(this, new MyGestureDetector());
+    gestureListener = new View.OnTouchListener() {
+      public boolean onTouch(View v, MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+      }
+    };
+
+  }
+
+  class MyGestureDetector extends SimpleOnGestureListener {
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+      try {
+        if (Math.abs(e1.getY() - e2.getY()) &gt; SWIPE_MAX_OFF_PATH)
+          return false;
+        // right to left swipe
+        if(e1.getX() - e2.getX() &gt; SWIPE_MIN_DISTANCE &amp;&amp; Math.abs(velocityX) &gt; SWIPE_THRESHOLD_VELOCITY) {
+          Toast.makeText(SelectFilterActivity.this, &quot;Left Swipe&quot;, Toast.LENGTH_SHORT).show();
+        } else if (e2.getX() - e1.getX() &gt; SWIPE_MIN_DISTANCE &amp;&amp; Math.abs(velocityX) &gt; SWIPE_THRESHOLD_VELOCITY) {
+          Toast.makeText(SelectFilterActivity.this, &quot;Right Swipe&quot;, Toast.LENGTH_SHORT).show();
+        }
+      } catch (Exception e) {
+         // nothing
+      }
+      return false;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+      return true;
+    }
+  }
+}
+</code></pre><p>将您的手势监听器附加到您添加到主布局的所有视图;</p>
+<pre><code>// Do this for each view added to the grid
+imageView.setOnClickListener(SelectFilterActivity.this); 
+imageView.setOnTouchListener(gestureListener);
+</code></pre><p>敬请关注您重写的方法，包括活动的<code>onClick(View v)</code>和手势监听器的<code>onFling</code>。</p>
+<pre><code>public void onClick(View v) {
+  Filter f = (Filter) v.getTag();
+  FilterFullscreenActivity.show(this, input, f);
+}
+</code></pre><p>“扔”舞是可选的，但鼓励。</p>
+<p>上面的答案之一提到处理不同的像素密度，但建议手动计算滑动参数。值得注意的是，您实际上可以使用<code>ViewConfiguration</code>类从系统中获得缩放的合理值：</p>
+<pre><code>final ViewConfiguration vc = ViewConfiguration.get(getContext());
+final int swipeMinDistance = vc.getScaledPagingTouchSlop();
+final int swipeThresholdVelocity = vc.getScaledMinimumFlingVelocity();
+final int swipeMaxOffPath = vc.getScaledTouchSlop();
+// (there is also vc.getScaledMaximumFlingVelocity() one could check against)
+</code></pre><p>我注意到，使用这些值会导致应用程序和系统其他部分之间的“感觉”更加一致。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/fling-gesture-detection-on-grid-layout/" data-title="在网格布局上进行手势检测 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/beginners/" title="MN初学者MNIST">
+  <strong>上一篇：</strong><br/>
+  <span>
+  MN初学者MNIST</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/android_build/"  title="在Android上构建TensorFlow">
+ <strong>下一篇：</strong><br/> 
+ <span>在Android上构建TensorFlow
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

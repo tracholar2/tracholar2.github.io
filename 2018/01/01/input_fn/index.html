@@ -1,0 +1,784 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>用tf.estimator构建输入函数 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="用tf.estimator构建输入函数本教程将向您介绍如何在tf.estimator中创建输入函数。 您将了解如何构建input_fn以进行预处理和馈送数据进入你的模型。然后，你将实施一个input_fn， 评估和预测数据组合成神经网络回归器进行预测 中间房屋价值。 用input_fn自定义输入管道input_fn用于将特征和目标数据传送到train， evaluate，以及predict的Est">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用tf.estimator构建输入函数">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/input_fn/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="用tf.estimator构建输入函数本教程将向您介绍如何在tf.estimator中创建输入函数。 您将了解如何构建input_fn以进行预处理和馈送数据进入你的模型。然后，你将实施一个input_fn， 评估和预测数据组合成神经网络回归器进行预测 中间房屋价值。 用input_fn自定义输入管道input_fn用于将特征和目标数据传送到train， evaluate，以及predict的Est">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用tf.estimator构建输入函数">
+<meta name="twitter:description" content="用tf.estimator构建输入函数本教程将向您介绍如何在tf.estimator中创建输入函数。 您将了解如何构建input_fn以进行预处理和馈送数据进入你的模型。然后，你将实施一个input_fn， 评估和预测数据组合成神经网络回归器进行预测 中间房屋价值。 用input_fn自定义输入管道input_fn用于将特征和目标数据传送到train， evaluate，以及predict的Est">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/input_fn/" title="用tf.estimator构建输入函数" itemprop="url">用tf.estimator构建输入函数</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">用tf.estimator构建输入函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">用input_fn自定义输入管道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">解剖一个input_fn</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">将要素数据转换为张量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.3.</span> <span class="toc-text">将input_fn数据传递给您的模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.4.</span> <span class="toc-text">波士顿房屋价值的神经网络模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">建立</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">导入住房数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">定义FeatureColumns并创建回归器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.3.</span> <span class="toc-text">建立input_fn</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.4.</span> <span class="toc-text">培训减压阀</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.5.</span> <span class="toc-text">评估模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.6.</span> <span class="toc-text">做预测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">其他资源</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="用tfestimator构建输入函数">用tf.estimator构建输入函数</span></h1><p>本教程将向您介绍如何在tf.estimator中创建输入函数。 您将了解如何构建<code>input_fn</code>以进行预处理和馈送<br>数据进入你的模型。然后，你将实施一个<code>input_fn</code>， 评估和预测数据组合成神经网络回归器进行预测 中间房屋价值。</p>
+<h2><span id="用input_fn自定义输入管道">用input_fn自定义输入管道</span></h2><p><code>input_fn</code>用于将特征和目标数据传送到<code>train</code>， <code>evaluate</code>，以及<code>predict</code>的<code>Estimator</code>方法。<br>用户可以在<code>input_fn</code>内进行特征设计或预处理。 以下是从tf.estimator快速入门教程中获取的示例：</p>
+<pre><code>import numpy as np
+
+training_set = tf.contrib.learn.datasets.base.load_csv_with_header(
+    filename=IRIS_TRAINING, target_dtype=np.int, features_dtype=np.float32)
+
+train_input_fn = tf.estimator.inputs.numpy_input_fn(
+    x={&quot;x&quot;: np.array(training_set.data)},
+    y=np.array(training_set.target),
+    num_epochs=None,
+    shuffle=True)
+
+classifier.train(input_fn=train_input_fn, steps=2000)
+</code></pre><h3><span id="解剖一个input_fn">解剖一个input_fn</span></h3><p>以下代码说明了输入函数的基本框架：</p>
+<pre><code>def my_input_fn():
+
+    # Preprocess your data here...
+
+    # ...then return 1) a mapping of feature columns to Tensors with
+    # the corresponding feature data, and 2) a Tensor containing labels
+    return feature_cols, labels
+</code></pre><p>输入函数的主体包含预处理的特定逻辑 你的输入数据，如清理不好的例子或 功能缩放。</p>
+<p>输入函数必须返回以下两个包含最终值的值 功能和标签数据输入到您的模型中（如上面的代码所示） 骨架）：</p>
+<p><code>feature_cols</code></p>
+<pre><code>A dict containing key/value pairs that map feature column names to `Tensor`s (or `SparseTensor`s) containing the corresponding feature data.
+</code></pre><p><code>labels</code></p>
+<pre><code>A `Tensor` containing your label (target) values: the values your model aims to predict.
+</code></pre><h3><span id="将要素数据转换为张量">将要素数据转换为张量</span></h3><p>如果你的特征/标签数据是一个Python数组或存储在 熊猫数据框或 numpy数组，你可以使用下面的方法来 构建体<code>input_fn</code>：</p>
+<pre><code>import numpy as np
+# numpy input_fn.
+my_input_fn = tf.estimator.inputs.numpy_input_fn(
+    x={&quot;x&quot;: np.array(x_data)},
+    y=np.array(y_data),
+    ...)
+
+
+
+import pandas as pd
+# pandas input_fn.
+my_input_fn = tf.estimator.inputs.pandas_input_fn(
+    x=pd.DataFrame({&quot;x&quot;: x_data}),
+    y=pd.Series(y_data),
+    ...)
+</code></pre><p>对于稀疏的分类数据 （数据的大部分值是0），你会改为填充一个 <code>SparseTensor</code>，它有三个参数实例化：</p>
+<p><code>dense_shape</code></p>
+<pre><code>The shape of the tensor. Takes a list indicating the number of elements in each dimension. For example, `dense_shape=[3,6]` specifies a two-dimensional 3x6 tensor, `dense_shape=[2,3,4]` specifies a three-dimensional 2x3x4 tensor, and `dense_shape=[9]` specifies a one-dimensional tensor with 9 elements.
+</code></pre><p><code>indices</code></p>
+<pre><code>The indices of the elements in your tensor that contain nonzero values. Takes a list of terms, where each term is itself a list containing the index of a nonzero element. (Elements are zero-indexed--i.e., [0,0] is the index value for the element in the first column of the first row in a two-dimensional tensor.) For example, `indices=[[1,3], [2,4]]` specifies that the elements with indexes of [1,3] and [2,4] have nonzero values.
+</code></pre><p><code>values</code></p>
+<pre><code>A one-dimensional tensor of values. Term `i` in `values` corresponds to term `i` in `indices` and specifies its value. For example, given `indices=[[1,3], [2,4]]`, the parameter `values=[18, 3.6]` specifies that element [1,3] of the tensor has a value of 18, and element [2,4] of the tensor has a value of 3.6.
+</code></pre><p>下面的代码定义了一个三维和五维的二维<code>SparseTensor</code> 列。索引[0,1]的元素的值为6，元素的值为<br>索引[2,4]的值为0.5（所有其他值为0）：</p>
+<pre><code>sparse_tensor = tf.SparseTensor(indices=[[0,1], [2,4]],
+                                values=[6, 0.5],
+                                dense_shape=[3, 5])
+</code></pre><p>这对应于下面的稠密张量：</p>
+<pre><code>[[0, 6, 0, 0, 0]
+ [0, 0, 0, 0, 0]
+ [0, 0, 0, 0, 0.5]]
+</code></pre><p>有关<code>SparseTensor</code>的更多信息，请参阅<code>tf.SparseTensor</code>。</p>
+<h3><span id="将input_fn数据传递给您的模型">将input_fn数据传递给您的模型</span></h3><p>要将数据提供给您的模型进行培训，只需传递输入函数即可 您创建的<code>train</code>的操作值为<code>input_fn</code> 参数，例如：</p>
+<pre><code>classifier.train(input_fn=my_input_fn, steps=2000)
+</code></pre><p>请注意，<code>input_fn</code>参数必须接收一个功能对象（即， <code>input_fn=my_input_fn</code>），而不是函数调用的返回值<br>（<code>input_fn=my_input_fn()</code>）。这意味着如果你尝试传递参数给 在<code>input_fn</code>调用中使用<code>train</code>，如以下代码所示，将导致<br><code>TypeError</code>：</p>
+<pre><code>classifier.train(input_fn=my_input_fn(training_set), steps=2000)
+</code></pre><p>但是，如果你想能够参数化你的输入功能，那么有 其他方法这样做。你可以使用不包含的包装函数 作为<code>input_fn</code>的参数，并用它来调用你的输入功能<br>与所需的参数。例如：</p>
+<pre><code>def my_input_fn(data_set):
+  ...
+
+def my_input_fn_training_set():
+  return my_input_fn(training_set)
+
+classifier.train(input_fn=my_input_fn_training_set, steps=2000)
+</code></pre><p>或者，您可以使用Python的<code>functools.partial</code> 函数来构建一个固定了所有参数值的新函数对象：</p>
+<pre><code>classifier.train(
+    input_fn=functools.partial(my_input_fn, data_set=training_set),
+    steps=2000)
+</code></pre><p>第三个选项是将<code>input_fn</code>调用包装在一个 <code>lambda</code> 并传递给<code>input_fn</code>参数：</p>
+<pre><code>classifier.train(input_fn=lambda: my_input_fn(training_set), steps=2000)
+</code></pre><p>设计输入流水线的一大优势就是如上所示 - 接受一个 参数数据集 - 是你可以通过相同的<code>input_fn</code>到<code>evaluate</code><br>和<code>predict</code>操作，只需更改数据集参数，例如：</p>
+<pre><code>classifier.evaluate(input_fn=lambda: my_input_fn(test_set), steps=2000)
+</code></pre><p>这种方法增强了代码的可维护性：不需要定义多个<br><code>input_fn</code>（例如<code>input_fn_train</code>，<code>input_fn_test</code>，<code>input_fn_predict</code>） 操作类型。</p>
+<p>最后，您可以使用<code>tf.estimator.inputs</code>中的方法创建<code>input_fn</code> 从numpy或pandas数据集。额外的好处是你可以使用<br>更多的参数，如<code>num_epochs</code>和<code>shuffle</code>来控制<code>input_fn</code> 迭代数据：</p>
+<pre><code>import pandas as pd
+
+def get_input_fn_from_pandas(data_set, num_epochs=None, shuffle=True):
+  return tf.estimator.inputs.pandas_input_fn(
+      x=pdDataFrame(...),
+      y=pd.Series(...),
+      num_epochs=num_epochs,
+      shuffle=shuffle)
+
+
+
+import numpy as np
+
+def get_input_fn_from_numpy(data_set, num_epochs=None, shuffle=True):
+  return tf.estimator.inputs.numpy_input_fn(
+      x={...},
+      y=np.array(...),
+      num_epochs=num_epochs,
+      shuffle=shuffle)
+</code></pre><h3><span id="波士顿房屋价值的神经网络模型">波士顿房屋价值的神经网络模型</span></h3><p>在本教程的其余部分中，您将为其编写一个输入函数 预处理从UCI住房数据中提取的一部分波士顿房屋数据 设置并使用它来提供数据<br>用于预测房屋中值的神经网络回归器。</p>
+<p>您将使用波士顿CSV数据集来训练您的神经网络 包含以下内容 特征数据 对于波士顿郊区：</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CRIM</td>
+<td>Crime rate per capita  </td>
+</tr>
+<tr>
+<td>ZN</td>
+<td>Fraction of residential land zoned to permit 25,000+ sq ft lots  </td>
+</tr>
+<tr>
+<td>INDUS</td>
+<td>Fraction of land that is non-retail business  </td>
+</tr>
+<tr>
+<td>NOX</td>
+<td>Concentration of nitric oxides in parts per 10 million  </td>
+</tr>
+<tr>
+<td>RM</td>
+<td>Average Rooms per dwelling  </td>
+</tr>
+<tr>
+<td>AGE</td>
+<td>Fraction of owner-occupied residences built before 1940  </td>
+</tr>
+<tr>
+<td>DIS</td>
+<td>Distance to Boston-area employment centers  </td>
+</tr>
+<tr>
+<td>TAX</td>
+<td>Property tax rate per $10,000  </td>
+</tr>
+<tr>
+<td>PTRATIO</td>
+<td>Student-teacher ratio  </td>
+</tr>
+</tbody>
+</table>
+<p>而你的模型预测的标签是MEDV，中值 自住住房以千美元计。</p>
+<h2><span id="建立">建立</span></h2><p>下载以下数据集： boston_train.csv， boston_test.csv和 boston_predict.csv。</p>
+<p>以下各节将逐步介绍如何创建一个 输入功能，将这些数据集输入到神经网络回归器，训练器 评估模型，并做房屋价值预测。完整的，最终的代码是可用的 这里。</p>
+<h3><span id="导入住房数据">导入住房数据</span></h3><p>首先，设置您的导入（包括<code>pandas</code>和<code>tensorflow</code>），并设置日志记录的详细程度 <code>INFO</code>更详细的日志输出：</p>
+<pre><code>from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import itertools
+
+import pandas as pd
+import tensorflow as tf
+
+tf.logging.set_verbosity(tf.logging.INFO)
+</code></pre><p>定义<code>COLUMNS</code>中数据集的列名。区分特征 从标签上也定义了<code>FEATURES</code>和<code>LABEL</code>。然后阅读三个CSV （<code>tf.train</code>，<br><code>tf.test</code>，和 预测）熊猫 <code>DataFrame</code>s：</p>
+<pre><code>COLUMNS = [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;, &quot;age&quot;,
+           &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;, &quot;medv&quot;]
+FEATURES = [&quot;crim&quot;, &quot;zn&quot;, &quot;indus&quot;, &quot;nox&quot;, &quot;rm&quot;,
+            &quot;age&quot;, &quot;dis&quot;, &quot;tax&quot;, &quot;ptratio&quot;]
+LABEL = &quot;medv&quot;
+
+training_set = pd.read_csv(&quot;boston_train.csv&quot;, skipinitialspace=True,
+                           skiprows=1, names=COLUMNS)
+test_set = pd.read_csv(&quot;boston_test.csv&quot;, skipinitialspace=True,
+                       skiprows=1, names=COLUMNS)
+prediction_set = pd.read_csv(&quot;boston_predict.csv&quot;, skipinitialspace=True,
+                             skiprows=1, names=COLUMNS)
+</code></pre><h3><span id="定义featurecolumns并创建回归器">定义FeatureColumns并创建回归器</span></h3><p>接下来，正式为输入数据创建一个<code>FeatureColumn</code>的列表 指定用于训练的一组功能。因为所有的功能 住房数据集包含连续值，您可以创建自己的<br><code>FeatureColumn</code>使用<code>tf.contrib.layers.real_valued_column()</code>功能：</p>
+<pre><code>feature_cols = [tf.feature_column.numeric_column(k) for k in FEATURES]
+</code></pre><p>注：有关功能列的更深入的概述，请参阅 这个介绍， 并举例说明如何定义<code>FeatureColumns</code> 分类数据，请参阅线性模型教程。</p>
+<p>现在，将<code>DNNRegressor</code>实例化为神经网络回归模型。 您需要在这里提供两个参数：<code>hidden_units</code>，一个超参数<br>指定每个隐藏层（这里是两个隐藏层）中的节点数量 每个节点有10个节点）和<code>feature_columns</code>（包含该节点的列表）<br>您刚刚定义的<code>FeatureColumns</code>：</p>
+<pre><code>regressor = tf.estimator.DNNRegressor(feature_columns=feature_cols,
+                                      hidden_units=[10, 10],
+                                      model_dir=&quot;/tmp/boston_model&quot;)
+</code></pre><h3><span id="建立input_fn">建立input_fn</span></h3><p>要将输入数据传递到<code>regressor</code>，请编写一个工厂方法，接受一个 大熊猫<code>Dataframe</code>，并返回<code>input_fn</code>：</p>
+<pre><code>def get_input_fn(data_set, num_epochs=None, shuffle=True):
+  return tf.estimator.inputs.pandas_input_fn(
+      x=pd.DataFrame({k: data_set[k].values for k in FEATURES}),
+      y = pd.Series(data_set[LABEL].values),
+      num_epochs=num_epochs,
+      shuffle=shuffle)
+</code></pre><p>请注意，输入数据在<code>input_fn</code>参数中传递给<code>data_set</code>， 这意味着该功能可以处理您导入的任何<code>DataFrame</code>：<br><code>training_set</code>，<code>test_set</code>和<code>prediction_set</code>。</p>
+<p>提供了另外两个参数：  <code>num_epochs</code>：控制的数量   时代迭代数据。对于培训，请将此设置为<code>None</code>，这样的话<br><code>input_fn</code>不断返回数据，直到所需的列车步数为止   到达。为了评估和预测，设置为1，所以<code>input_fn</code>将会<br>重复数据一次，然后提出<code>OutOfRangeError</code>。那个错误会的   指示<code>Estimator</code>停止评估或预测。<br><code>shuffle</code>：是否洗牌数据。为了评估和预测，将其设置为   <code>False</code>，所以<code>input_fn</code>依次迭代数据。对于火车，   设置为<code>True</code>。</p>
+<h3><span id="培训减压阀">培训减压阀</span></h3><p>使用<code>train</code>运行<code>training_set</code>，训练神经网络回归器 按如下方式传给<code>input_fn</code>：</p>
+<pre><code>regressor.train(input_fn=get_input_fn(training_set), steps=5000)
+</code></pre><p>您应该看到类似于以下内容的日志输出，这会报告培训损失 每100步：</p>
+<pre><code>INFO:tensorflow:Step 1: loss = 483.179
+INFO:tensorflow:Step 101: loss = 81.2072
+INFO:tensorflow:Step 201: loss = 72.4354
+...
+INFO:tensorflow:Step 1801: loss = 33.4454
+INFO:tensorflow:Step 1901: loss = 32.3397
+INFO:tensorflow:Step 2001: loss = 32.0053
+INFO:tensorflow:Step 4801: loss = 27.2791
+INFO:tensorflow:Step 4901: loss = 27.2251
+INFO:tensorflow:Saving checkpoints for 5000 into /tmp/boston_model/model.ckpt.
+INFO:tensorflow:Loss for final step: 27.1674.
+</code></pre><h3><span id="评估模型">评估模型</span></h3><p>接下来，看看训练的模型如何针对测试数据集执行。跑 <code>evaluate</code>，这次将<code>test_set</code>传递给<code>input_fn</code>：</p>
+<pre><code>ev = regressor.evaluate(
+    input_fn=get_input_fn(test_set, num_epochs=1, shuffle=False))
+</code></pre><p>从<code>ev</code>结果中检索损失并打印输出：</p>
+<pre><code>loss_score = ev[&quot;loss&quot;]
+print(&quot;Loss: {0:f}&quot;.format(loss_score))
+</code></pre><p>您应该看到类似于以下的结果：</p>
+<pre><code>INFO:tensorflow:Eval steps [0,1) for training step 5000.
+INFO:tensorflow:Saving evaluation summary for 5000 step: loss = 11.9221
+Loss: 11.922098
+</code></pre><h3><span id="做预测">做预测</span></h3><p>最后，您可以使用该模型来预测房屋的中位数值 <code>prediction_set</code>，其中包含功能数据，但没有标签的六个例子：</p>
+<pre><code>y = regressor.predict(
+    input_fn=get_input_fn(prediction_set, num_epochs=1, shuffle=False))
+# .predict() returns an iterator of dicts; convert to a list and print
+# predictions
+predictions = list(p[&quot;predictions&quot;] for p in itertools.islice(y, 6))
+print(&quot;Predictions: {}&quot;.format(str(predictions)))
+</code></pre><p>你的结果应该包含六千美元的房屋价值预测， 例如：</p>
+<pre><code>Predictions: [ 33.30348587  17.04452896  22.56370163  34.74345398  14.55953979
+  19.58005714]
+</code></pre><h2><span id="其他资源">其他资源</span></h2><p>本教程着重于为神经网络回归器创建<code>input_fn</code>。 要了解有关将<code>input_fn</code>用于其他类型型号的更多信息，请查看 以下资源：</p>
+<p>具有张量流的大型线性模型：这个     在TensorFlow中引入线性模型提供了一个高层次的概述     用于转换输入数据的特征列和技术。<br>TensorFlow线性模型教程：本教程涵盖     创建<code>FeatureColumn</code>和<code>input_fn</code>进行线性分类<br>根据人口普查数据预测收入范围的模型。 TensorFlow广泛和深度学习教程：建立在     线性模型教程，本教程涵盖<br><code>FeatureColumn</code>和<code>input_fn</code>创造了一个“宽而深”的模型     结合了线性模型和神经网络的使用<br><code>DNNLinearCombinedClassifier</code>。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/input_fn/" data-title="用tf.estimator构建输入函数 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/linking_libs/" title="集成TensorFlow库">
+  <strong>上一篇：</strong><br/>
+  <span>
+  集成TensorFlow库</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/version_compat/"  title="TensorFlow版本兼容性">
+ <strong>下一篇：</strong><br/> 
+ <span>TensorFlow版本兼容性
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">用tf.estimator构建输入函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">用input_fn自定义输入管道</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.1.</span> <span class="toc-text">解剖一个input_fn</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.2.</span> <span class="toc-text">将要素数据转换为张量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.3.</span> <span class="toc-text">将input_fn数据传递给您的模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.4.</span> <span class="toc-text">波士顿房屋价值的神经网络模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">建立</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">导入住房数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">定义FeatureColumns并创建回归器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.3.</span> <span class="toc-text">建立input_fn</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.4.</span> <span class="toc-text">培训减压阀</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.5.</span> <span class="toc-text">评估模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.6.</span> <span class="toc-text">做预测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">其他资源</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

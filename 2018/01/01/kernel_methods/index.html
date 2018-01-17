@@ -1,0 +1,741 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>用显式核方法改进线性模型 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="用显式核方法改进线性模型在本教程中，我们将演示如何组合（显式）的内核方法 线性模型可以大大提高后者的预测质量 而不会显着增加训练和推理时间。不像双重内核方法，显式（原始）内核方法可以很好地扩展 训练数据集在训练/推理时间和方面 内存要求。 目标读者：即使我们提供了概念的高层次概述 与显式内核方法相关，本教程主要针对读者 已经至少有内核方法和支持向量的基本知识机器（SVM）。如果您对内核方法不熟悉，">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用显式核方法改进线性模型">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/kernel_methods/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="用显式核方法改进线性模型在本教程中，我们将演示如何组合（显式）的内核方法 线性模型可以大大提高后者的预测质量 而不会显着增加训练和推理时间。不像双重内核方法，显式（原始）内核方法可以很好地扩展 训练数据集在训练/推理时间和方面 内存要求。 目标读者：即使我们提供了概念的高层次概述 与显式内核方法相关，本教程主要针对读者 已经至少有内核方法和支持向量的基本知识机器（SVM）。如果您对内核方法不熟悉，">
+<meta property="og:image" content="https://www.tensorflow.org/versions/master/images/kernel_mapping.png">
+<meta property="og:image" content="https://www.tensorflow.org/versions/master/images/acc_vs_outdim.png">
+<meta property="og:image" content="https://www.tensorflow.org/versions/master/images/acc-vs-
+trn_time.png">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用显式核方法改进线性模型">
+<meta name="twitter:description" content="用显式核方法改进线性模型在本教程中，我们将演示如何组合（显式）的内核方法 线性模型可以大大提高后者的预测质量 而不会显着增加训练和推理时间。不像双重内核方法，显式（原始）内核方法可以很好地扩展 训练数据集在训练/推理时间和方面 内存要求。 目标读者：即使我们提供了概念的高层次概述 与显式内核方法相关，本教程主要针对读者 已经至少有内核方法和支持向量的基本知识机器（SVM）。如果您对内核方法不熟悉，">
+<meta name="twitter:image" content="https://www.tensorflow.org/versions/master/images/kernel_mapping.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/kernel_methods/" title="用显式核方法改进线性模型" itemprop="url">用显式核方法改进线性模型</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">用显式核方法改进线性模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">加载并准备MNIST数据进行分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">培训一个简单的线性模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">使用线性模型的显式核映射。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">技术细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">内核分类器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">STDDEV</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.4.</span> <span class="toc-text">输出维度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">概要</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="用显式核方法改进线性模型">用显式核方法改进线性模型</span></h1><p>在本教程中，我们将演示如何组合（显式）的内核方法 线性模型可以大大提高后者的预测质量 而不会显着增加训练和推理时间。不像双重<br>内核方法，显式（原始）内核方法可以很好地扩展 训练数据集在训练/推理时间和方面 内存要求。</p>
+<p>目标读者：即使我们提供了概念的高层次概述 与显式内核方法相关，本教程主要针对读者 已经至少有内核方法和支持向量的基本知识<br>机器（SVM）。如果您对内核方法不熟悉，请参阅以下任一内核方法 以下来源介绍：</p>
+<p>如果你有一个强大的数学背景： 机器学习中的核心方法 内核方法维基百科页面</p>
+<p>目前，TensorFlow仅支持密集特征的显式核心映射; TensorFlow将在稍后的版本中提供对稀疏功能的支持。</p>
+<p>本教程使用tf.contrib.learn （TensorFlow的高级机器学习API）我们的ML模型的估计器。<br>如果你不熟悉这个API，tf.estimator快速入门 是一个开始的好地方。我们将使用MNIST数据集。教程包括 以下步骤：</p>
+<p>加载并准备MNIST数据进行分类。 构建一个简单的线性模型，对其进行训练，并在评估数据上进行评估。 用线性模型替换线性模型，重新训练和 重新评估。</p>
+<h2><span id="加载并准备mnist数据进行分类">加载并准备MNIST数据进行分类</span></h2><p>运行以下实用程序命令加载MNIST数据集：</p>
+<pre><code>data = tf.contrib.learn.datasets.mnist.load_mnist()
+</code></pre><p>上述方法加载整个MNIST数据集（包含70K个样本）和 将其分为55K，5K和10K样本的训练，验证和测试数据<br>分别。每个拆分包含一个numpy阵列的图像（与形状 [sample_size，784]），另一个用于标签（形状为[sample_size，1]）。在这<br>教程，我们只使用火车和验证分组来训练和评估我们的 模型。</p>
+<p>为了将数据提供给tf.contrib.learn估算器，转换是有帮助的 它对张量。为此，我们将使用添加Ops的<code>input function</code><br>TensorFlow图表，当执行时，创建要使用的小批量的张量 下游。有关输入功能的更多背景信息，请检查 用tf.contrib.learn构建输入函数。在这<br>例如，我们将使用除转换之外的<code>tf.train.shuffle_batch</code> Op num数组到Tensors，允许我们指定batch_size和是否<br>每次执行input_fn Ops时随机化输入（随机化 通常在训练期间加速收敛）。完整的代码加载和 准备数据显示在下面的代码片段中。在这个例子中，我们使用<br>256个小批量培训和整个样本（5K条目） 评价。随意尝试不同的批量大小。</p>
+<pre><code>import numpy as np
+import tensorflow as tf
+
+def get_input_fn(dataset_split, batch_size, capacity=10000, min_after_dequeue=3000):
+
+  def _input_fn():
+    images_batch, labels_batch = tf.train.shuffle_batch(
+        tensors=[dataset_split.images, dataset_split.labels.astype(np.int32)],
+        batch_size=batch_size,
+        capacity=capacity,
+        min_after_dequeue=min_after_dequeue,
+        enqueue_many=True,
+        num_threads=4)
+    features_map = {&apos;images&apos;: images_batch}
+    return features_map, labels_batch
+
+  return _input_fn
+
+data = tf.contrib.learn.datasets.mnist.load_mnist()
+
+train_input_fn = get_input_fn(data.train, batch_size=256)
+eval_input_fn = get_input_fn(data.validation, batch_size=5000)
+</code></pre><h2><span id="培训一个简单的线性模型">培训一个简单的线性模型</span></h2><p>现在我们可以在MNIST数据集上训练一个线性模型。我们将使用 <code>tf.contrib.learn.LinearClassifier</code>估计器有10个类代表<br>10位数字。输入特征形成一个784维密集的矢量，可以 具体说明如下：</p>
+<pre><code>image_column = tf.contrib.layers.real_valued_column(&apos;images&apos;, dimension=784)
+</code></pre><p>用于构建，训练和评估LinearClassifier的完整代码 估算器如下：</p>
+<pre><code>import time
+
+# Specify the feature(s) to be used by the estimator.
+image_column = tf.contrib.layers.real_valued_column(&apos;images&apos;, dimension=784)
+estimator = tf.contrib.learn.LinearClassifier(feature_columns=[image_column], n_classes=10)
+
+# Train.
+start = time.time()
+estimator.fit(input_fn=train_input_fn, steps=2000)
+end = time.time()
+print(&apos;Elapsed time: {} seconds&apos;.format(end - start))
+
+# Evaluate and report metrics.
+eval_metrics = estimator.evaluate(input_fn=eval_input_fn, steps=1)
+print(eval_metrics)
+</code></pre><p>下表总结了评估数据的结果。</p>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>value  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loss</td>
+<td>0.25 to 0.30  </td>
+</tr>
+<tr>
+<td>accuracy</td>
+<td>92.5%  </td>
+</tr>
+<tr>
+<td>training time</td>
+<td>~25 seconds on my machine  </td>
+</tr>
+</tbody>
+</table>
+<p>注意：度量标准会根据各种因素而有所不同。</p>
+<p>除了尝试（培训）批量大小和数量 训练步骤，还有其他一些可以调整的参数。 例如，您可以更改用于最小化损失的优化方法 通过显式选择集合中的另一个优化器<br>可用的优化器。 作为一个例子，下面的代码构造了一个LinearClassifier估计器 使用遵循正则化领导者（FTRL）的优化策略<br>具体学习率和L2正则化。</p>
+<pre><code>optimizer = tf.train.FtrlOptimizer(learning_rate=5.0, l2_regularization_strength=1.0)
+estimator = tf.contrib.learn.LinearClassifier(
+    feature_columns=[image_column], n_classes=10, optimizer=optimizer)
+</code></pre><p>无论参数的值如何，最大精度都是一个线性模型 可以在这个数据集上达到93％左右。</p>
+<h2><span id="使用线性模型的显式核映射">使用线性模型的显式核映射。</span></h2><p>MNIST上线性模型的相对较高的误差（〜7％）表明 输入数据不是线性可分的。我们将使用显式的内核映射 减少分类错误。</p>
+<p>直觉：高层次的想法是使用非线性映射来转换 输入空间到另一个特征空间（可能更高的维度） （变换）的特征是（几乎）线性可分的，然后应用一个线性的<br>模型映射的功能。如下图所示：</p>
+<p><img src="https://www.tensorflow.org/versions/master/images/kernel_mapping.png" alt=""></p>
+<h3><span id="技术细节">技术细节</span></h3><p>在这个例子中，我们将使用随机傅立叶特征，在中引入 “大规模内核机器的随机特性” 由Rahimi和Recht撰写的论文来绘制输入数据。随机傅立叶特征映射a<br>（\ mathbf {x} \ in \ mathbb {R} ^ d \）到\（\ mathbf {x’} \ in \ mathbb {R} ^ D<br>\） 通过以下映射：</p>
+<p>$$ RFFM(\cdot): \mathbb{R}^d \to \mathbb{R}^D, \quad RFFM(\mathbf{x}) =<br>\cos(\mathbf{\Omega} \cdot \mathbf{x}+ \mathbf{b}) $$</p>
+<p>其中\（\ mathbf {\ Omega} \ in \ mathbb {R} ^ {D \ times d} \）， \（\ mathbf {x} \<br>in \ mathbb {R} ^ d，\）\（\ mathbf {b} \ in \ mathbb {R} ^ D \）和 余弦应用于元素明智的。</p>
+<p>在这个例子中，\（\ mathbf {\ Omega} \）和\（\ mathbf {b} \）的条目是 从分布取样，使映射满足以下内容 属性：</p>
+<p>$$ RFFM(\mathbf{x})^T \cdot RFFM(\mathbf{y}) \approx e^{-\frac{|\mathbf{x} -<br>\mathbf{y}|^2}{2 \sigma^2}} $$</p>
+<p>上面表达式的右边的量被称为RBF（或 高斯）核函数。这个函数是使用最广泛的内核之一 在机器学习中的功能并且隐含地测量不同的， 比原来的尺寸高得多。看到<br>径向基函数内核 更多细节。</p>
+<h3><span id="内核分类器">内核分类器</span></h3><p><code>tf.contrib.kernel_methods.KernelLinearClassifier</code>是预包装的<br><code>tf.contrib.learn</code>估算器结合了显式核映射的功能 与线性模型。它的构造函数几乎和 LinearClassifier估计器与附加选项指定的列表<br>明确的内核映射被应用到分类器使用的每个特征。该 以下代码片段演示了如何用LinearClassifier替换 KernelLinearClassifier。</p>
+<pre><code># Specify the feature(s) to be used by the estimator. This is identical to the
+# code used for the LinearClassifier.
+image_column = tf.contrib.layers.real_valued_column(&apos;images&apos;, dimension=784)
+optimizer = tf.train.FtrlOptimizer(
+   learning_rate=50.0, l2_regularization_strength=0.001)
+
+kernel_mapper = tf.contrib.kernel_methods.RandomFourierFeatureMapper(
+  input_dim=784, output_dim=2000, stddev=5.0, name=&apos;rffm&apos;)
+kernel_mappers = {image_column: [kernel_mapper]}
+estimator = tf.contrib.kernel_methods.KernelLinearClassifier(
+   n_classes=10, optimizer=optimizer, kernel_mappers=kernel_mappers)
+
+# Train.
+start = time.time()
+estimator.fit(input_fn=train_input_fn, steps=2000)
+end = time.time()
+print(&apos;Elapsed time: {} seconds&apos;.format(end - start))
+
+# Evaluate and report metrics.
+eval_metrics = estimator.evaluate(input_fn=eval_input_fn, steps=1)
+print(eval_metrics)
+</code></pre><p>传递给<code>KernelLinearClassifier</code>的唯一附加参数是字典 从feature_columns到要应用于内核映射的列表<br>对应的功能栏。以下几行指示分类器 首先将初始784维图像映射到2000维矢量 随机傅立叶特征，然后学习转换后的线性模型 向量：</p>
+<pre><code>kernel_mapper = tf.contrib.kernel_methods.RandomFourierFeatureMapper(
+  input_dim=784, output_dim=2000, stddev=5.0, name=&apos;rffm&apos;)
+kernel_mappers = {image_column: [kernel_mapper]}
+estimator = tf.contrib.kernel_methods.KernelLinearClassifier(
+   n_classes=10, optimizer=optimizer, kernel_mappers=kernel_mappers)
+</code></pre><p>注意<code>stddev</code>参数。这是标准偏差（\（\ sigma \））的 近似的RBF核和控制中使用的相似性度量 分类。<br><code>stddev</code>通常通过超参数调整来确定。</p>
+<p>运行上述代码的结果汇总在下表中。 我们可以通过增加输出尺寸来进一步提高精度 映射和调整标准偏差。</p>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>value  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loss</td>
+<td>0.10  </td>
+</tr>
+<tr>
+<td>accuracy</td>
+<td>97%  </td>
+</tr>
+<tr>
+<td>training time</td>
+<td>~35 seconds on my machine  </td>
+</tr>
+</tbody>
+</table>
+<h3><span id="stddev">STDDEV</span></h3><p>分类质量对stddev的值非常敏感。该 下表显示了分类器在eval数据上的准确性 不同的stddev值。最佳值是stddev = 5.0。注意也是如此<br>小或太高的stddev值可以大大降低的准确性 分类。</p>
+<table>
+<thead>
+<tr>
+<th>stddev</th>
+<th>eval accuracy  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0</td>
+<td>0.1362  </td>
+</tr>
+<tr>
+<td>2.0</td>
+<td>0.4764  </td>
+</tr>
+<tr>
+<td>4.0</td>
+<td>0.9654  </td>
+</tr>
+<tr>
+<td>5.0</td>
+<td>0.9766  </td>
+</tr>
+<tr>
+<td>8.0</td>
+<td>0.9714  </td>
+</tr>
+<tr>
+<td>16.0</td>
+<td>0.8878  </td>
+</tr>
+</tbody>
+</table>
+<h3><span id="输出维度">输出维度</span></h3><p>直观地说，映射的输出维数越大， 两个映射向量的内积近似于内核，这通常是 转换为更好的分类准确性。另一种思考方式是 输出维数等于线性模型的权数;该<br>这个尺寸越大，模型的“自由度”就越大。 但是，经过一定的门槛后，产出规模越来越大 准确度很低，同时使训练需要更多的时间。这显示在<br>下面的两幅图描绘了作为一个函数的评估精度 输出维数和训练时间。</p>
+<p><img src="https://www.tensorflow.org/versions/master/images/acc_vs_outdim.png" alt="image"><br><img src="https://www.tensorflow.org/versions/master/images/acc-vs-
+trn_time.png" alt="image"></p>
+<h2><span id="概要">概要</span></h2><p>显式核映射将非线性模型的预测能力与 线性模型的可扩展性。与传统的双核方法不同， 显式的内核方法可以扩展到数百万甚至数亿<br>样本。在使用显式内核映射时，请考虑以下提示：</p>
+<p>随机傅立叶特征可以对密集的数据集特别有效 特征。 内核映射的参数通常是数据相关的。模型质量 可以对这些参数非常敏感。使用超参数调整来查找 最佳值。<br>如果你有多个数字特征，把它们连成一个单一的 多维特征并将内核映射应用到串联 向量。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/kernel_methods/" data-title="用显式核方法改进线性模型 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/image_retraining/" title="如何重新开始新类别的最后一层">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何重新开始新类别的最后一层</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/audio_recognition/"  title="简单的音频识别">
+ <strong>下一篇：</strong><br/> 
+ <span>简单的音频识别
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">用显式核方法改进线性模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">加载并准备MNIST数据进行分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">培训一个简单的线性模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">使用线性模型的显式核映射。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">技术细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">内核分类器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">STDDEV</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.4.</span> <span class="toc-text">输出维度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">概要</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

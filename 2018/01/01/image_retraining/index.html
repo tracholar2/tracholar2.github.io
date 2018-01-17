@@ -1,0 +1,621 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何重新开始新类别的最后一层 | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="如何重新开始新类别的最后一层现代物体识别模型具有数百万个参数，可能需要数周时间 充分训练。转移学习是一个捷径，很多这个技术 通过为ImageNet等一系列类别提供完整的模型从现有的新班级重新训练。在这个例子中，我们将会 重新训练最后一层，同时保持所有其他层不变。 有关可以看到的方法的更多信息 本文关于Decaf。 虽然这不如完整的训练，但这是非常有效的 对于许多应用程序，并可以运行在一个小小的三十">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何重新开始新类别的最后一层">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/image_retraining/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="如何重新开始新类别的最后一层现代物体识别模型具有数百万个参数，可能需要数周时间 充分训练。转移学习是一个捷径，很多这个技术 通过为ImageNet等一系列类别提供完整的模型从现有的新班级重新训练。在这个例子中，我们将会 重新训练最后一层，同时保持所有其他层不变。 有关可以看到的方法的更多信息 本文关于Decaf。 虽然这不如完整的训练，但这是非常有效的 对于许多应用程序，并可以运行在一个小小的三十">
+<meta property="og:image" content="https://www.tensorflow.org/images/daisies.jpg">
+<meta property="og:image" content="https://www.tensorflow.org/images/folder_structure.png">
+<meta property="og:updated_time" content="2018-01-16T12:42:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何重新开始新类别的最后一层">
+<meta name="twitter:description" content="如何重新开始新类别的最后一层现代物体识别模型具有数百万个参数，可能需要数周时间 充分训练。转移学习是一个捷径，很多这个技术 通过为ImageNet等一系列类别提供完整的模型从现有的新班级重新训练。在这个例子中，我们将会 重新训练最后一层，同时保持所有其他层不变。 有关可以看到的方法的更多信息 本文关于Decaf。 虽然这不如完整的训练，但这是非常有效的 对于许多应用程序，并可以运行在一个小小的三十">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/daisies.jpg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/image_retraining/" title="如何重新开始新类别的最后一层" itemprop="url">如何重新开始新类别的最后一层</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">如何重新开始新类别的最后一层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">对花的培训</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">瓶颈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">用TensorBoard可视化再训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">使用再培训模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">根据自己的类别进行培训</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">创建一组训练图像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.8.</span> <span class="toc-text">培训步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.9.</span> <span class="toc-text">扭曲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.10.</span> <span class="toc-text">超参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.</span> <span class="toc-text">培训，验证和测试集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.12.</span> <span class="toc-text">其他模型架构</span></a></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="如何重新开始新类别的最后一层">如何重新开始新类别的最后一层</span></h1><p>现代物体识别模型具有数百万个参数，可能需要数周时间 充分训练。转移学习是一个捷径，很多这个技术 通过为ImageNet等一系列类别提供完整的模型<br>从现有的新班级重新训练。在这个例子中，我们将会 重新训练最后一层，同时保持所有其他层不变。 有关可以看到的方法的更多信息 本文关于Decaf。</p>
+<p>虽然这不如完整的训练，但这是非常有效的 对于许多应用程序，并可以运行在一个小小的三十分钟 笔记本电脑，而不需要GPU。本教程将向您展示如何运行<br>在你自己的图像上的脚本示例，并将解释你的一些选项 帮助控制培训过程。</p>
+<p>注意：本教程的这个版本主要使用bazel。一个bazel免费版本是 也提供 作为codelab。</p>
+<h2><span id="对花的培训">对花的培训</span></h2><p><img src="https://www.tensorflow.org/images/daisies.jpg" alt="Daisies by Kelly Sikkema"></p>
+<p>图片由凯利Sikkema</p>
+<p>在开始任何培训之前，您需要一组图像来教授网络 关于你想要认识的新课程。有一个后面的部分 解释如何准备自己的图像，但为了让我们轻松创建一个<br>最初使用的创作共享许可花照片档案。为了得到 花卉照片集，运行这些命令：</p>
+<pre><code>cd ~
+curl -O http://download.tensorflow.org/example_images/flower_photos.tgz
+tar xzf flower_photos.tgz
+</code></pre><p>一旦你有了这些图像，你可以从根本上像这样建立一个修剪器 您的TensorFlow源代码目录：</p>
+<pre><code>bazel build tensorflow/examples/image_retraining:retrain
+</code></pre><p>如果你有一台支持的机器 AVX指令集 （在过去几年中生产的x86 CPU中很常见），您可以改善运行<br>通过建筑物的再培训速度，就像这样（在<code>configure</code>中选择合适的选项后）：</p>
+<pre><code>bazel build --config opt tensorflow/examples/image_retraining:retrain
+</code></pre><p>然后可以这样运行retrainer：</p>
+<pre><code>bazel-bin/tensorflow/examples/image_retraining/retrain --image_dir ~/flower_photos
+</code></pre><p>该脚本加载预先训练的Inception v3模型，删除旧的顶层， 并在您下载的花卉照片上训练一个新的。没有一朵花<br>物种是在完整的网络培训的原始ImageNet类。 转移学习的魔力是经过训练的较低层次 区分一些对象可以重复用于许多识别任务 没有任何改动。</p>
+<h2><span id="瓶颈">瓶颈</span></h2><p>脚本可能需要30分钟或更长时间才能完成，具体取决于速度 的机器。第一阶段分析磁盘上的所有图像并进行计算 他们每个人的瓶颈值。 “瓶颈”是一个非正式的术语<br>经常用于实际上最终输出层之前的层 分类。这个倒数第二层已被训练输出一组 值足以让分类器用来区分全部 它被要求承认的课程。这意味着它必须是一个有意义的<br>和图像的紧凑总结，因为它必须包含足够的信息 为分类器在一个非常小的值集合中做出一个好的选择。该 原因是我们的最后一层再培训可以在新班上工作，事实证明<br>需要的信息种类区分了所有1000个类别 ImageNet通常也可以用来区分新类型的对象。</p>
+<p>因为在训练和计算过程中每个图像都被多次重复使用 每个瓶颈都需要花费大量的时间，这会加快速度 将这些瓶颈值缓存在磁盘上，这样就不必重复<br>重新计算。默认情况下，它们存储在<code>/tmp/bottleneck</code>目录中 如果你重新运行脚本，他们将被重用，所以你不必等待 部分再次。</p>
+<h2><span id="训练">训练</span></h2><p>一旦瓶颈完成，最后一层的实际培训 网络开始。你会看到一系列的步骤输出，每个输出显示训练 准确性，验证准确性和交叉熵。训练的准确性<br>显示当前培训批次中使用的图像的百分比 标有正确的类。验证的准确性是a的精度 随机选择一组不同的图像。关键的区别是 训练的准确性是基于网络已经能够的图像<br>学习如此，网络可以适应训练数据中的噪声。一个 衡量网络性能的真正措施就是衡量其性能 一个没有包含在训练数据中的数据集 - 这是由<br>验证准确性。如果列车的准确度高但验证的准确性 仍然很低，这意味着网络过度配合和记忆特别 训练图像中的特征通常没有帮助。交叉<br>熵是一个损失函数，它可以窥见学习的好坏 进程正在进行中。培训的目标是使损失如此小 可能的，所以你可以通过密切关注学习是否有效<br>损失是否继续下降，忽略了短期的噪音。</p>
+<p>默认情况下，这个脚本将运行4000个训练步骤。每一步选择十个 随机从训练集中找到图像，从缓存中找到它们的瓶颈， 并将它们馈送到最后一层以获得预测。那些预言是<br>然后与实际标签进行比较以更新最终图层的权重 通过反向传播过程。随着过程的继续，你应该看到 报告的准确性提高，毕竟所有的步骤都完成了，最后的测试<br>准确性评估运行在与训练分开的一组图像上 并验证图片。这个测试评估是如何的最好的估计 训练好的模型将在分类任务上执行。你应该看到一个<br>准确度在90％到95％之间，但确切的数值会随着运行而变化 因为在训练过程中存在随机性。这个数字是基于 测试集中图像的百分比是正确的标签 模型完成训练后。</p>
+<h2><span id="用tensorboard可视化再训练">用TensorBoard可视化再训练</span></h2><p>该脚本包含TensorBoard摘要，使得更容易理解，调试和优化再培训。例如，您可以将图形和统计信息可视化，例如在训练期间权重或准确性如何变化。</p>
+<p>要启动TensorBoard，请在再培训期间或之后运行此命令：</p>
+<pre><code>tensorboard --logdir /tmp/retrain_logs
+</code></pre><p>一旦TensorBoard正在运行，浏览您的网络浏览器到<code>localhost:6006</code>来查看TensorBoard。</p>
+<p>该脚本默认将TensorBoard摘要记录到<code>/tmp/retrain_logs</code>。您可以使用<code>--summaries_dir</code>标志更改目录。</p>
+<p>TensorBoard的GitHub有更多关于TensorBoard使用的信息，包括提示和技巧以及调试信息。</p>
+<h2><span id="使用再培训模式">使用再培训模式</span></h2><p>该脚本将写出一个版本的Inception v3网络与决赛 层重新训练到您的类别/tmp/output_graph.pb和一个文本文件<br>包含标签到/tmp/output_labels.txt。这些都是在一个格式 C ++和Python图像分类的例子<br>可以阅读，所以你可以立即开始使用你的新模型。既然你已经 替换顶层，您将需要在脚本中指定新名称<br>如果您使用的是label_image，则使用<code>--output_layer=final_result</code>标志。</p>
+<p>下面是一个如何构建和运行label_image示例的例子 再培训图表：</p>
+<pre><code>bazel build tensorflow/examples/image_retraining:label_image &amp;&amp; \
+bazel-bin/tensorflow/examples/image_retraining/label_image \
+--graph=/tmp/output_graph.pb --labels=/tmp/output_labels.txt \
+--output_layer=final_result:0 \
+--image=$HOME/flower_photos/daisy/21652746_cc379e0eea_m.jpg
+</code></pre><p>你应该看到一个花标签列表，在大多数情况下菊花在上面 （虽然每个重新训练的模型可能略有不同）。你可以更换<br><code>--image</code>参数与您自己的图像来尝试这些，并使用C ++代码 作为与您自己的应用程序集成的模板。</p>
+<p>如果你想在自己的Python程序中使用再培训的模型，那么 以上 <code>label_image</code>脚本 是一个合理的出发点。</p>
+<p>如果您发现默认的Inception v3模型对您来说太大或太慢 应用程序，看看其他模型体系结构部分 下面的选项可以加快你的网络。</p>
+<h2><span id="根据自己的类别进行培训">根据自己的类别进行培训</span></h2><p>如果你已经设法让脚本在花图像上工作，你 可以开始看教学，以识别你关心的类别。 从理论上讲，你需要做的就是把它指向一组子文件夹，每个文件夹都被命名<br>在你的一个类别之后，只包含那个类别的图片。如果 你这样做，并传递子目录的根文件夹作为参数 <code>--image_dir</code>，剧本应该像对待花一样训练。</p>
+<p>以下是鲜花档案的文件夹结构的样子，给你 以及脚本所寻找布局的例子：</p>
+<p><img src="https://www.tensorflow.org/images/folder_structure.png" alt="Folder Structure"></p>
+<p>在实践中，可能需要一些工作来获得所需的准确性。我会尝试 指导您解决下面可能遇到的一些常见问题。</p>
+<h2><span id="创建一组训练图像">创建一组训练图像</span></h2><p>从第一个开始就是看你收集的图像，因为 我们在培训中看到的最常见的问题来自所馈入的数据。</p>
+<p>为了使训练工作顺利，你至少应该收集一百张照片 你想认识的对象。你能收集的越多，越好 你的训练模型的准确性可能是。你还需要确保<br>照片是您的应用程序实际上的一个很好的代表 遭遇。例如，如果你把所有的照片都放在室内的墙上 而你的用户正试图识别户外的物体，你可能不会看到 当你部署好结果。</p>
+<p>另一个要避免的缺陷是学习过程会随时随地进行 标记的图像彼此有共同的，如果你不是 小心这可能是没有用的东西。例如，如果你拍照<br>一种是蓝色的房间，另一种是绿色的，然后是模型 最终将基于其背景颜色的预测，而不是 你真正关心的对象。为了避免这种情况，请尝试使用as拍照<br>尽可能地在不同的时间和不同的情况下尽可能地处理各种情况 设备。如果你想知道更多关于这个问题，你可以阅读关于这个问题 经典（也可能是杜撰的） 坦克识别问题。</p>
+<p>您可能还想考虑您使用的类别。这可能是值得的 将涵盖许多不同物理形式的大类分成几类 较小的那些在视觉上更明显。例如，而不是“车辆”<br>你可以使用“汽车”，“摩托车”和“卡车”。这也值得思考 无论你是“封闭的世界”还是“开放的世界”问题。在封闭的世界里，<br>你将被要求分类的唯一的东西是你的对象类 知道关于。这可能适用于您认识用户的植物识别应用程序 很可能会拍摄一朵花，所以你所要做的就是决定<br>哪些物种。相比之下，漫游机器人可能会看到各种各样的不同 通过它的相机，当它在世界各地漫游。在这种情况下，你会的<br>要分类器报告，如果它不知道它看到了什么。这可以 很难做好，但如果你经常收集大量典型的“背景” 没有相关对象的照片，您可以将它们添加到额外的“未知”<br>在你的图像文件夹中的类。</p>
+<p>这也是值得检查，以确保所有的图像被标记 正确。为了我们的目的，用户生成的标签通常是不可靠的 例如使用#daisy为一个叫Daisy的人拍照。如果你经历过<br>你的图像，并剔除它可以做你的整体奇迹的任何错误 准确性。</p>
+<h2><span id="培训步骤">培训步骤</span></h2><p>如果您对自己的图片感到满意，可以考虑改善效果 通过改变学习过程的细节。最简单的尝试是<br><code>--how_many_training_steps</code>。这默认为4,000，但如果你增加到 8000将训练两倍的时间。准确度提高的速度<br>减慢你训练的时间，并在某个时刻完全停止，但你 可以试验一下，看看你什么时候达到你的模型的极限。</p>
+<h2><span id="扭曲">扭曲</span></h2><p>改善图像训练结果的常用方法是变形， 裁剪或以随机方式使训练输入增亮。这有 有利于扩大培训数据的有效规模 相同图像的可能变化，并倾向于帮助网络学习<br>应付所有在现实生活中会出现的扭曲现象 分类。在我们的脚本中使这些扭曲最大的缺点 是瓶颈缓存不再有用，因为输入图像永远不会<br>完全重用。这意味着培训过程需要更长的时间，所以我 建议尝试这种方式来微调你的模型，一旦你有一个 你相当满意。</p>
+<p>您可以通过<code>--random_crop</code>，<code>--random_scale</code>和 <code>--random_brightness</code>到脚本。这些都是百分比值<br>控制每个图像应用了多少失真。它的 合理的，从他们每个人的5或10的值开始，然后进行实验 看看他们中的哪些人帮助您的应用程序。<br><code>--flip_left_right</code>将会 随机镜像一半的水平，这是有道理的，只要 这些反转可能发生在您的应用程序中。例如它<br>如果你试图识别字母，就不是一个好主意，因为翻转 他们破坏了他们的意思。</p>
+<h2><span id="超参数">超参数</span></h2><p>还有其他几个参数可以尝试调整，看看他们是否有帮助 你的结果。 <code>--learning_rate</code>控制更新的大小 训练期间的最后一层。直观地说，如果这比学习小<br>将需要更长的时间，但最终可能会帮助整体精度。那不是 总是这样，所以你需要仔细试验，看看有什么作品 为你的情况。<br><code>--train_batch_size</code>控制检查的图像数量 在一个训练步骤中，并且因为学习速率是每批应用的 如果您有更大的批次以获得相同的整体，则需要减少它<br>影响。</p>
+<h2><span id="培训验证和测试集">培训，验证和测试集</span></h2><p>当您将脚本指向文件夹时，脚本将在其中进行引导 的图像被分成三个不同的集合。最大的是通常 训练集是培训期间输入网络的所有图像，<br>结果用于更新模型的权重。你可能想知道我们为什么 不要使用所有的图像进行培训？我们正在做的一个很大的潜在问题 机器学习是我们的模型可能只是记住不相关的细节<br>培训图像拿出正确的答案。例如，你可以 想象一下，在每张照片背景中记住一个图案的网络 显示，并使用它来匹配标签与对象。它可以产生好的<br>结果在训练期间之前看到的所有图像，但是然后失败 图像，因为它没有学习对象的一般特征，只是 记住训练图像的不重要的细节。</p>
+<p>这个问题被称为overfitting，为了避免它，我们保留了一些我们的数据 脱离训练过程，使模型不能记住它们。我们然后使用<br>这些图像作为检查，以确保过度配合不发生，因为如果 我们看到他们很好的准确性，这是一个好的迹象，网络不是过度配合。该<br>通常的分割是将80％的图像放入主训练集中，保持10％ 除了在培训期间经常作为验证运行，然后最终有10％ 作为一个测试集来预测真实世界的性能，使用较少<br>的分类器。这些比例可以使用 <code>--testing_percentage</code>和<code>--validation_percentage</code>标志。一般来说<br>你应该能够将这些值保留在默认值，因为你不会 通常找到任何有利于培训来调整他们。</p>
+<p>请注意，该脚本使用图像文件名（而不是一个完全随机的 功能）在训练，验证和测试集之间划分图像。 这样做是为了确保图像不会在训练和测试之间移动<br>设置不同的运行，因为这可能是一个问题，如果图像已经 用于训练模型随后用于验证集合中。</p>
+<p>您可能会注意到验证准确性在迭代中波动。许多 这种波动起因于验证随机子集的事实 每个验证准确度测量选择一组。波动可以<br>大大减少了，而以一些训练时间的增加为代价，通过选择 <code>--validation_batch_size=-1</code>，它使用整个验证集 准确性计算。</p>
+<p>一旦培训完成，您可能会发现审查错误分类的洞察力 测试集中的图像。这可以通过添加标志来完成<br><code>--print_misclassified_test_images</code>。这可能会帮助你得到一个感觉 图像的类型最容易混淆的模型，以及哪些类别<br>最难区分。例如，你可能会发现一些 特定类别的子类型，或一些不寻常的照片角度 很难确定，这可能会鼓励你添加更多的训练图像<br>那个亚型。通常情况下，检查错误的图像也可以指向 输入数据集中的错误，如错误标记，低质量或含糊不清 图片。但是，通常应该避免在个别错误中加入点<br>测试集，因为它们很可能仅仅反映更为普遍的问题 （更大的）训练集。</p>
+<h2><span id="其他模型架构">其他模型架构</span></h2><p>默认情况下，脚本使用Inception v3模型的预训练版本 建筑。这是一个很好的开始，因为它提供了高精度 结果，但如果你打算在移动设备或其他部署你的模型<br>资源受限的环境中，您可能需要权衡一些准确性 对于更小的文件或更快的速度。为了帮助，这个 retrain.py脚本<br>在Mobilenet架构上支持32种不同的变体。</p>
+<p>这些比Inception v3精确一点，但可能会导致很多 较小的文件大小（小于一兆字节），可以快很多倍<br>跑步。用这些模型之一进行训练，通过<code>--architecture</code>标志， 例如：</p>
+<pre><code>python tensorflow/examples/image_retraining/retrain.py \
+    --image_dir ~/flower_photos --architecture mobilenet_0.25_128_quantized
+</code></pre><p>这将在<code>/tmp/output_graph.pb</code>中创建一个941KB的模型文件，占25％<br>完整的Mobilenet的参数，采取128x128大小的输入图像，并与 它的权重量化到磁盘上的八位。你可以选择’1.0’，’0.75’，<br>‘0.50’或’0.25’来控制权重参数的数量等等文件 大小（在一定程度上是速度），“224”，“192”，“160”或“128”<br>图像大小，更小的尺寸提供更快的速度，并可选 在最后“_quantized”来指示文件是否应该包含8位或 32位浮点权重。</p>
+<p>速度和尺寸的优势当然会损失精度，但对于许多人来说 这个目的并不重要。他们也可以有所抵消，改善 训练数据。例如，扭曲训练使我能够达到80％以上<br>即使使用上述的0.25 / 128 /量化图，花数据集也是精确的。</p>
+<p>如果你打算在label_image中使用Mobilenet模型或者你自己的模型 程序，您需要将指定大小的图像转换为<br>将范围浮动到“输入”张量中。通常24位图像在范围内 [0,255]，你必须将它们转换为[-1,1]所预期的浮点范围 型号为<code>(image -
+128.)/128.</code>。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/image_retraining/" data-title="如何重新开始新类别的最后一层 | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/image_recognition/" title="图像识别">
+  <strong>上一篇：</strong><br/>
+  <span>
+  图像识别</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/kernel_methods/"  title="用显式核方法改进线性模型">
+ <strong>下一篇：</strong><br/> 
+ <span>用显式核方法改进线性模型
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">如何重新开始新类别的最后一层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">对花的培训</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">瓶颈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">用TensorBoard可视化再训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">使用再培训模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.6.</span> <span class="toc-text">根据自己的类别进行培训</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.7.</span> <span class="toc-text">创建一组训练图像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.8.</span> <span class="toc-text">培训步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.9.</span> <span class="toc-text">扭曲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.10.</span> <span class="toc-text">超参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.11.</span> <span class="toc-text">培训，验证和测试集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.12.</span> <span class="toc-text">其他模型架构</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

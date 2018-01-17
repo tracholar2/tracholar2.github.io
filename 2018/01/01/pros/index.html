@@ -1,0 +1,684 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>专家的深度MNIST | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="专家的深度MNISTTensorFlow是进行大规模数值计算的强大库。 它擅长的任务之一是实施和训练深层神经 网络。在本教程中，我们将学习a的基本构建块TensorFlow模型，同时构建一个深度卷积MNIST分类器。 这个介绍假定熟悉神经网络和MNIST 数据集。如果你没有 与他们的背景，检查出 初学者介绍。务必 在开始之前安装TensorFlow。 关于本教程本教程的第一部分解释了正在发生的事情">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="专家的深度MNIST">
+<meta property="og:url" content="https://www.tracholar.top/2018/01/01/pros/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="专家的深度MNISTTensorFlow是进行大规模数值计算的强大库。 它擅长的任务之一是实施和训练深层神经 网络。在本教程中，我们将学习a的基本构建块TensorFlow模型，同时构建一个深度卷积MNIST分类器。 这个介绍假定熟悉神经网络和MNIST 数据集。如果你没有 与他们的背景，检查出 初学者介绍。务必 在开始之前安装TensorFlow。 关于本教程本教程的第一部分解释了正在发生的事情">
+<meta property="og:image" content="https://www.tensorflow.org/images/mnist_deep.png">
+<meta property="og:updated_time" content="2018-01-16T14:34:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="专家的深度MNIST">
+<meta name="twitter:description" content="专家的深度MNISTTensorFlow是进行大规模数值计算的强大库。 它擅长的任务之一是实施和训练深层神经 网络。在本教程中，我们将学习a的基本构建块TensorFlow模型，同时构建一个深度卷积MNIST分类器。 这个介绍假定熟悉神经网络和MNIST 数据集。如果你没有 与他们的背景，检查出 初学者介绍。务必 在开始之前安装TensorFlow。 关于本教程本教程的第一部分解释了正在发生的事情">
+<meta name="twitter:image" content="https://www.tensorflow.org/images/mnist_deep.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/01/pros/" title="专家的深度MNIST" itemprop="url">专家的深度MNIST</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-01T02:00:00.000Z" itemprop="datePublished"> Published 2018-01-01</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">专家的深度MNIST</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">关于本教程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">建立</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">加载MNIST数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">启动TensorFlow InteractiveSession</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">计算图</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">建立一个Softmax回归模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">占位符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">预测类和损失函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">训练模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.1.</span> <span class="toc-text">评估模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">构建一个多层卷积网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.1.</span> <span class="toc-text">重量初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.2.</span> <span class="toc-text">卷积和汇集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.3.</span> <span class="toc-text">第一卷积层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.</span> <span class="toc-text">第二卷积层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.5.</span> <span class="toc-text">密集连接层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.5.1.</span> <span class="toc-text">退出</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.6.</span> <span class="toc-text">读出层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.7.</span> <span class="toc-text">训练和评估模型</span></a></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<h1><span id="专家的深度mnist">专家的深度MNIST</span></h1><p>TensorFlow是进行大规模数值计算的强大库。 它擅长的任务之一是实施和训练深层神经 网络。在本教程中，我们将学习a的基本构建块<br>TensorFlow模型，同时构建一个深度卷积MNIST分类器。</p>
+<p>这个介绍假定熟悉神经网络和MNIST 数据集。如果你没有 与他们的背景，检查出 初学者介绍。务必 在开始之前安装TensorFlow。</p>
+<h2><span id="关于本教程">关于本教程</span></h2><p>本教程的第一部分解释了正在发生的事情 mnist_softmax.py 代码，这是一个Tensorflow模型的基本实现。第二部分<br>显示了一些提高准确性的方法。</p>
+<p>您可以将本教程中的每个代码片段复制并粘贴到Python中 环境跟随，或者你可以下载完全实施的深网 来自mnist_deep.py 。</p>
+<p>我们将在本教程中完成的任务：</p>
+<p>创建一个softmax回归函数，该函数是识别MNIST的模型   数字，基于查看图像中的每个像素 使用Tensorflow来训练模型，通过“看”来识别数字<br>数以千计的例子（并运行我们的第一个Tensorflow会话来这样做） 用我们的测试数据检查模型的准确性 建立，训练和测试一个多层卷积神经网络来改善   结果</p>
+<h2><span id="建立">建立</span></h2><p>在我们创建模型之前，我们将首先加载MNIST数据集，然后启动一个 TensorFlow会议。</p>
+<h3><span id="加载mnist数据">加载MNIST数据</span></h3><p>如果您正在复制和粘贴本教程中的代码，请从此处开始 这两行代码将自动下载并读取数据：</p>
+<pre><code>from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets(&apos;MNIST_data&apos;, one_hot=True)
+</code></pre><p>这里<code>mnist</code>是一个轻量级的存储培训，验证和 测试设置为NumPy数组。它还提供了一个遍历的函数 数据minibatches，我们将在下面使用。</p>
+<h3><span id="启动tensorflow-interactivesession">启动TensorFlow InteractiveSession</span></h3><p>TensorFlow依靠高效的C ++后端来完成它的计算。该 连接到这个后端被称为一个会话。 TensorFlow的常见用法<br>程序是先创建一个图形，然后在会话中启动它。</p>
+<p>在这里，我们使用方便的<code>InteractiveSession</code>类，这使得 TensorFlow对于如何构建代码更灵活。它允许你 交错操作，建立一个 计算图<br>与那些运行图表。这在工作时特别方便 交互式上下文如IPython。如果你不使用一个 <code>InteractiveSession</code>，那么你应该建立之前的整个计算图<br>开始会议和 启动图表。</p>
+<pre><code>import tensorflow as tf
+sess = tf.InteractiveSession()
+</code></pre><h4><span id="计算图">计算图</span></h4><p>为了在Python中进行高效的数值计算，我们通常使用像 NumPy做矩阵等昂贵的操作 在Python之外进行乘法，使用在其中实现的高效代码<br>另一种语言。不幸的是，还是会有很多开销 切换回Python的每一个操作。如果你这个开销特别糟糕 想要在GPU上运行计算或以分布式方式运行，在哪里可以<br>传输数据的成本很高。</p>
+<p>TensorFlow也在Python之外做了繁重的工作，但是它需要一些东西 进一步避免这种开销。而不是运行一个昂贵的<br>独立于Python的操作，TensorFlow让我们描述一个图 完全在Python之外运行的交互操作。这种方法是 类似于Theano或火炬中使用的。</p>
+<p>Python代码的作用是建立这个外部计算 图表，并规定应该运行计算图的哪个部分。看到 计算图 有关TensorFlow入门的更多详细信息。</p>
+<h2><span id="建立一个softmax回归模型">建立一个Softmax回归模型</span></h2><p>在本节中，我们将建立一个单线性的softmax回归模型 层。在下一节中，我们将扩展到softmax的情况 回归多层卷积网络。</p>
+<h3><span id="占位符">占位符</span></h3><p>我们通过创建节点来开始构建计算图 输入图像和目标输出类。</p>
+<pre><code>x = tf.placeholder(tf.float32, shape=[None, 784])
+y_ = tf.placeholder(tf.float32, shape=[None, 10])
+</code></pre><p>这里<code>x</code>和<code>y_</code>不是特定的值。相反，它们都是<code>placeholder</code> - 我们要求TensorFlow运行计算时输入的值。</p>
+<p>输入图像<code>x</code>将由浮点数的二维张量组成。 <code>shape</code> <code>[None, 784]</code>是<code>784</code>的维度<br>单个28×28像素的MNIST图像，而<code>None</code>则表明了这一点 第一维度，对应于批量大小，可以是任何大小。该<br>目标输出类别<code>y_</code>也将包含一个二维张量，其中每一行是一个 指示哪个数字类（零到九）的一个热点10维向量， 对应的MNIST图像属于。</p>
+<p><code>shape</code>的<code>placeholder</code>参数是可选的，但它允许TensorFlow 自动捕捉源自不一致张量形状的错误。</p>
+<h3><span id="变量">变量</span></h3><p>我们现在定义的重量<code>W</code>和<code>b</code>偏向于我们的模型。我们可以想象 对待这些额外的投入，但TensorFlow有一个更好的办法 处理它们：<code>Variable</code>。<br><code>Variable</code>是一个生活在TensorFlow中的价值 计算图。它可以被使用，甚至被计算修改。在 机器学习应用程序，一般具有模型参数<br><code>Variable</code>s。</p>
+<pre><code>W = tf.Variable(tf.zeros([784,10]))
+b = tf.Variable(tf.zeros([10]))
+</code></pre><p>我们将呼叫中每个参数的初始值传递给<code>tf.Variable</code>。在 在这种情况下，我们将<code>W</code>和<code>b</code>初始化为满零的张量。 <code>W</code>是一款<br>784x10矩阵（因为我们有784个输入功能和10个输出）和<code>b</code>是一个 10维矢量（因为我们有10个类）。</p>
+<p>在会话中可以使用<code>Variable</code>之前，必须使用初始化 会议。这一步取初始值（在这种情况下，张量满了 零）已经被指定，并分配给每个 <code>Variable</code>。<br><code>Variables</code>可以一次完成：</p>
+<pre><code>sess.run(tf.global_variables_initializer())
+</code></pre><h3><span id="预测类和损失函数">预测类和损失函数</span></h3><p>我们现在可以实现我们的回归模型。只需要一行！我们乘 向量化的输入图像<code>x</code>由权重矩阵<code>W</code>添加偏置<code>b</code>。</p>
+<pre><code>y = tf.matmul(x,W) + b
+</code></pre><p>我们可以很容易地指定一个损失函数。损失表明有多糟糕 模型的预测就是一个例子。我们尽量减少这一点 培训所有的例子。在这里，我们的损失函数是交叉熵<br>目标和应用于模型的softmax激活函数之间 预测。正如在初学者教程中，我们使用稳定的公式：</p>
+<pre><code>cross_entropy = tf.reduce_mean(
+    tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
+</code></pre><p>请注意<code>tf.nn.softmax_cross_entropy_with_logits</code>内部应用 softmax模型的非标准模型预测和总和<br><code>tf.reduce_mean</code>取平均值。</p>
+<h2><span id="训练模型">训练模型</span></h2><p>现在我们已经定义了我们的模型和训练损失函数了 直接训练使用TensorFlow。因为TensorFlow知道整个 计算图，它可以使用自动分化来找到梯度<br>相对于每个变量的损失。 TensorFlow有多种 内置的优化算法。 对于这个例子，我们将使用最陡的梯度下降，步长为 0.5，下降交叉熵。</p>
+<pre><code>train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
+</code></pre><p>TensorFlow在这一行中实际上做了什么是增加新的操作 计算图。这些操作包括计算梯度的操作， 计算参数更新步骤，并将更新步骤应用于参数。</p>
+<p>运行的返回操作<code>train_step</code>将应用梯度下降 更新参数。训练模型可以通过 反复运行<code>train_step</code>。</p>
+<pre><code>for _ in range(1000):
+  batch = mnist.train.next_batch(100)
+  train_step.run(feed_dict={x: batch[0], y_: batch[1]})
+</code></pre><p>我们在每次训练迭代中加载100个训练样例。我们然后运行 <code>train_step</code>操作，用<code>feed_dict</code>代替<code>placeholder</code>张力器<br><code>x</code>和<code>y_</code>。请注意，您可以替换任何张量 在使用<code>feed_dict</code>的计算图表中 - 并不仅限于此 <code>placeholder</code>s。</p>
+<h3><span id="评估模型">评估模型</span></h3><p>我们的模型有多好？</p>
+<p>首先我们要弄清楚我们在哪里预测了正确的标签。 <code>tf.argmax</code>是一款 非常有用的功能，它给你一个最高的条目索引<br>张量沿一些轴。例如，<code>tf.argmax(y,1)</code>是我们的型号的标签 认为是最有可能的每个输入，而<code>tf.argmax(y_,1)</code>是真实的<br>标签。我们可以使用<code>tf.equal</code>来检查我们的预测是否符合事实。</p>
+<pre><code>correct_prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))
+</code></pre><p>这给了我们一个布尔的列表。为了确定什么部分是正确的，我们 投到浮点数，然后取平均值。例如， <code>[True, False, True,
+True]</code>将成为<code>[1,0,1,1]</code>，成为<code>0.75</code>。</p>
+<pre><code>accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+</code></pre><p>最后，我们可以评估我们的测试数据的准确性。这应该是关于 92％正确。</p>
+<pre><code>print(accuracy.eval(feed_dict={x: mnist.test.images, y_: mnist.test.labels}))
+</code></pre><h2><span id="构建一个多层卷积网络">构建一个多层卷积网络</span></h2><p>在MNIST上获得92％的准确性是不好的。这几乎是令人尴尬的坏事。在这 部分，我们将解决这个问题，从一个非常简单的模型跳到某个东西<br>中等复杂度：一个小的卷积神经网络。这将得到我们 达到99.2％左​​右的精确度 - 而不是技术水平，但相当可观。</p>
+<p>下面是一个用TensorBoard创建的关于我们将要构建的模型的图表：</p>
+<p><img src="https://www.tensorflow.org/images/mnist_deep.png" alt=""></p>
+<h3><span id="重量初始化">重量初始化</span></h3><p>要创建这个模型，我们需要创建很多权重和偏见。 一般应该用少量的噪音初始化权重 对称性破坏，并防止0梯度。因为我们正在使用 ReLU神经元，它是<br>也是一个良好的做法初始化他们有一个稍微积极的初始偏见 避免“死神经元”。在我们建立模型的时候，而不是重复地做这个， 让我们创建两个方便的函数来为我们做。</p>
+<pre><code>def weight_variable(shape):
+  initial = tf.truncated_normal(shape, stddev=0.1)
+  return tf.Variable(initial)
+
+def bias_variable(shape):
+  initial = tf.constant(0.1, shape=shape)
+  return tf.Variable(initial)
+</code></pre><h3><span id="卷积和汇集">卷积和汇集</span></h3><p>TensorFlow也为我们提供了很多卷积和合并的灵活性 操作。我们如何处理边界？我们的步幅是多少？ 在这个例子中，我们总是选择香草版本。<br>我们的卷积使用了一个步幅，并且是零填充的 输出与输入大小相同。我们的池是老式的最大池 超过2×2块。为了保持我们的代码更清晰，我们也抽象这些操作 进入功能。</p>
+<pre><code>def conv2d(x, W):
+  return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding=&apos;SAME&apos;)
+
+def max_pool_2x2(x):
+  return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
+                        strides=[1, 2, 2, 1], padding=&apos;SAME&apos;)
+</code></pre><h3><span id="第一卷积层">第一卷积层</span></h3><p>我们现在可以实现我们的第一层。它将包括卷积，其次 通过最大池。卷积将为每个5x5补丁计算32个特征。 其重量张量将具有<code>[5, 5, 1,
+32]</code>的形状。前两个 尺寸是补丁大小，下一个是输入通道的数量， 最后是输出通道的数量。我们也将有一个偏向量 每个输出通道的组件。</p>
+<pre><code>W_conv1 = weight_variable([5, 5, 1, 32])
+b_conv1 = bias_variable([32])
+</code></pre><p>为了应用该层，我们首先将<code>x</code>重塑为4d张量，第二张和 第三个尺寸对应的图像宽度和高度，和最后 尺寸对应于颜色通道的数量。</p>
+<pre><code>x_image = tf.reshape(x, [-1, 28, 28, 1])
+</code></pre><p>然后我们将<code>x_image</code>与重量张量进行叠加，加上 偏差，应用ReLU功能，最后是最大池。 <code>max_pool_2x2</code>方法将会<br>将图像尺寸缩小到14x14。</p>
+<pre><code>h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
+h_pool1 = max_pool_2x2(h_conv1)
+</code></pre><h3><span id="第二卷积层">第二卷积层</span></h3><p>为了建立一个深层网络，我们堆叠了这种类型的几个层。该 第二层将为每个5x5补丁有64个功能。</p>
+<pre><code>W_conv2 = weight_variable([5, 5, 32, 64])
+b_conv2 = bias_variable([64])
+
+h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
+h_pool2 = max_pool_2x2(h_conv2)
+</code></pre><h3><span id="密集连接层">密集连接层</span></h3><p>现在图像大小已经减小到7x7，我们添加一个完全连接的图层 有1024个神经元允许在整个图像上进行处理。我们重塑张量 从池层到一批载体，<br>乘以权重矩阵，添加偏差，并应用ReLU。</p>
+<pre><code>W_fc1 = weight_variable([7 * 7 * 64, 1024])
+b_fc1 = bias_variable([1024])
+
+h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
+h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
+</code></pre><h4><span id="退出">退出</span></h4><p>为了减少过拟合，我们将在读出层之前应用丢失。 我们创建一个<code>placeholder</code>，用于保持神经元输出的概率<br>在辍学。这可以让我们在训练过程中变成辍学的，并将其转变 在测试期间关闭。 TensorFlow的<code>tf.nn.dropout</code>可自动处理缩放神经元输出<br>除了掩盖他们，所以辍学只是没有任何额外的工作 scaling.1</p>
+<pre><code>keep_prob = tf.placeholder(tf.float32)
+h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
+</code></pre><h3><span id="读出层">读出层</span></h3><p>最后，我们添加一个图层，就像一个图层softmax回归一样 以上。</p>
+<pre><code>W_fc2 = weight_variable([1024, 10])
+b_fc2 = bias_variable([10])
+
+y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
+</code></pre><h3><span id="训练和评估模型">训练和评估模型</span></h3><p>这个模型有多好？为了训练和评估，我们将使用代码 几乎与上面简单的一层SoftMax网络相同。</p>
+<p>不同之处在于：</p>
+<p>我们将更换最陡的梯度下降优化器   复杂的ADAM优化器。 我们将在<code>keep_prob</code>中增加额外的参数<code>feed_dict</code>进行控制   辍学率。<br>我们将在训练过程中每100次迭代添加一次记录。</p>
+<p>我们也将使用tf.Session而不是tf.InteractiveSession。这个更好 分离创建图形（模型说明）的过程和<br>评估图的过程（模型拟合）。它通常使更清洁 码。 tf.Session是在<code>with</code>模块中创建的 所以一旦块被退出，它就会被自动销毁。</p>
+<p>随意运行这个代码。请注意，它会进行20,000次训练迭代 并可能需要一段时间（可能长达半小时），这取决于您的处理器。</p>
+<pre><code>cross_entropy = tf.reduce_mean(
+    tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
+train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+with tf.Session() as sess:
+  sess.run(tf.global_variables_initializer())
+  for i in range(20000):
+    batch = mnist.train.next_batch(50)
+    if i % 100 == 0:
+      train_accuracy = accuracy.eval(feed_dict={
+          x: batch[0], y_: batch[1], keep_prob: 1.0})
+      print(&apos;step %d, training accuracy %g&apos; % (i, train_accuracy))
+    train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+
+  print(&apos;test accuracy %g&apos; % accuracy.eval(feed_dict={
+      x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
+</code></pre><p>运行此代码后的最终测试集精度应该约为99.2％。</p>
+<p>我们已经学会了如何快速，轻松地构建，培训和评估一个 使用TensorFlow的相当复杂的深度学习模型。</p>
+<p>1：对于这个小卷积网络，性能实际上几乎是相同的，没有丢失。辍学对于减少过度劳累通常是非常有效的，但是在训练非常大的神经网络时它是最有用的。 ↩</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/机器学习/">机器学习</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2018/01/01/pros/" data-title="专家的深度MNIST | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/01/01/mandelbrot/" title="Mandelbrot集合">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Mandelbrot集合</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/01/01/prepare_models/"  title="为移动部署准备模型">
+ <strong>下一篇：</strong><br/> 
+ <span>为移动部署准备模型
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">专家的深度MNIST</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.1.</span> <span class="toc-text">关于本教程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.</span> <span class="toc-text">建立</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.1.</span> <span class="toc-text">加载MNIST数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.</span> <span class="toc-text">启动TensorFlow InteractiveSession</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">计算图</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.</span> <span class="toc-text">建立一个Softmax回归模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.1.</span> <span class="toc-text">占位符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.2.</span> <span class="toc-text">变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.3.3.</span> <span class="toc-text">预测类和损失函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.</span> <span class="toc-text">训练模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.4.1.</span> <span class="toc-text">评估模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.</span> <span class="toc-text">构建一个多层卷积网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.1.</span> <span class="toc-text">重量初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.2.</span> <span class="toc-text">卷积和汇集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.3.</span> <span class="toc-text">第一卷积层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.4.</span> <span class="toc-text">第二卷积层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.5.</span> <span class="toc-text">密集连接层</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.5.1.</span> <span class="toc-text">退出</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.6.</span> <span class="toc-text">读出层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.5.7.</span> <span class="toc-text">训练和评估模型</span></a></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

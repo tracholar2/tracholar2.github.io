@@ -112,59 +112,45 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/23/create-generic-method-constraining-t-to-an-enum/" title="创建泛型方法约束T到一个枚举" itemprop="url">创建泛型方法约束T到一个枚举</a>
+      <a href="/2018/01/15/how-do-i-give-text-or-an-image-a-transparent-background-using-css/" title="我如何使用CSS给文本或图像一个透明的背景？" itemprop="url">我如何使用CSS给文本或图像一个透明的背景？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-23T01:30:51.000Z" itemprop="datePublished"> Published 2018-02-23</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我正在构建一个扩展Enum.Parse概念的函数</p>
-<ul>
-<li>如果找不到Enum值，则允许解析默认值</li>
-<li>不区分大小写</li>
-</ul>
-<p>所以我写了下面的内容：</p>
-<pre><code>public static T GetEnumFromString&lt;T&gt;(string value, T defaultValue) where T : Enum
-{
-    if (string.IsNullOrEmpty(value)) return defaultValue;
-    foreach (T item in Enum.GetValues(typeof(T)))
-    {
-        if (item.ToString().ToLower().Equals(value.Trim().ToLower())) return item;
-    }
-    return defaultValue;
+        <p>是否有可能仅使用CSS来使元素的<code>background</code>半透明，但是元素的内容（文本和图像）是不透明的？</p>
+<p>我想在不将文本和背景作为两个单独元素的情况下完成此任务。</p>
+<p>尝试时：</p>
+<pre><code>p {
+  position: absolute;
+  background-color: green;
+  filter: alpha(opacity=60);
+  opacity: 0.6;
 }
-</code></pre><p>我得到一个错误约束不能是特殊类’System.Enum’。</p>
-<p>足够公平的，但有一个解决方法，以允许通用枚举，或者我将不得不模仿解析函数和传递一个类型作为属性，这迫使丑陋的拳击要求到您的代码。</p>
-<p><strong>编辑</strong> 下面的所有建议都非常感谢，谢谢。</p>
-<p>已经解决了（我已经离开了循环来保持区分大小写 - 我在解析XML时使用了这个）</p>
-<pre><code>public static class EnumUtils
-{
-    public static T ParseEnum&lt;T&gt;(string value, T defaultValue) where T : struct, IConvertible
-    {
-        if (!typeof(T).IsEnum) throw new ArgumentException(&quot;T must be an enumerated type&quot;);
-        if (string.IsNullOrEmpty(value)) return defaultValue;
 
-        foreach (T item in Enum.GetValues(typeof(T)))
-        {
-            if (item.ToString().ToLower().Equals(value.Trim().ToLower())) return item;
-        }
-        return defaultValue;
-    }
+span {
+  color: white;
+  filter: alpha(opacity=100);
+  opacity: 1;
 }
-</code></pre><p>编辑：**（2015年2月16日）Julien<br>Lebosquain最近发布了<a href="https://stackoverflow.com/a/8086788" target="_blank" rel="noopener">编译器在MSIL中强制执行类型安全的通用解决方案或F＃</a>下面，这是非常值得一看，并upvote。如果解决方案在页面上进一步起泡，我将删除此编辑。</p>
-<p>
+
+
+&lt;p&gt;
+  &lt;span&gt;Hello world&lt;/span&gt;
+&lt;/p&gt;
+</code></pre><p>它看起来像子元素受到其父母的不透明性，所以<code>opacity：1</code>与parent的<code>opacity：0.6</code>是相对的。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/23/create-generic-method-constraining-t-to-an-enum/#more">Read More</a>
+            <a href="/2018/01/15/how-do-i-give-text-or-an-image-a-transparent-background-using-css/#more">Read More</a>
           
        </p>
     </div>
@@ -174,7 +160,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -214,27 +200,38 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/23/is-there-a-function-to-make-a-copy-of-a-php-array-to-another/" title="有没有一个函数来创建一个PHP数组的副本？" itemprop="url">有没有一个函数来创建一个PHP数组的副本？</a>
+      <a href="/2018/01/15/angularjs-ngclass-conditional/" title="AngularJS ngClass条件" itemprop="url">AngularJS ngClass条件</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-23T01:05:28.000Z" itemprop="datePublished"> Published 2018-02-23</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>是否有一个将PHP数组的副本复制到另一个的功能？</p>
-<p>我已经烧了几次试图复制PHP数组。我想将一个对象中定义的数组复制到它外面的全局中。</p>
+        <p>有什么办法可以让一个像ngClass这样的表达式成为一个条件表达式。例如，我已经尝试了以下内容：</p>
+<pre><code>&lt;span ng-class=&quot;{test: &apos;obj.value1 == \&apos;someothervalue\&apos;&apos;}&quot;&gt;test&lt;/span&gt;
+</code></pre><p>这个代码的问题是，不管obj.value1是什么，类测试总是被应用到元素。这样做：</p>
+<pre><code>&lt;span ng-class=&quot;{test: obj.value2}&quot;&gt;test&lt;/span&gt;
+</code></pre><p>只要obj.value2不等于真值，这个类就不会被应用。现在我可以在第一个例子中解决这个问题了：</p>
+<pre><code>&lt;span ng-class=&quot;{test: checkValue1()}&quot;&gt;test&lt;/span&gt;
+</code></pre><p>其中checkValue1函数如下所示：</p>
+<pre><code>$scope.checkValue1 = function() {
+  return $scope.obj.value === &apos;somevalue&apos;;
+}
+</code></pre><p>我只是想知道这是不是ngClass应该如何工作。我也正在建立一个自定义指令，我想要做类似的事情。然而，我找不到一种方法来观看表达式（也许这是不可能的，也是这样的原因）。</p>
+<p>这是一个显示我意思的plnkr：</p>
+<p><a href="http://plnkr.co/edit/iSh0t8swDEyGbh7ylZg2?p=preview" target="_blank" rel="noopener"> http://plnkr.co/edit/iSh0t8swDEyGbh7ylZg2?p=preview</a></p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/23/is-there-a-function-to-make-a-copy-of-a-php-array-to-another/#more">Read More</a>
+            <a href="/2018/01/15/angularjs-ngclass-conditional/#more">Read More</a>
           
        </p>
     </div>
@@ -244,7 +241,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -273,177 +270,161 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/22/whats-toolscontext-in-android-layout-files/" title="Android布局文件中的“工具：上下文”是什么？" itemprop="url">Android布局文件中的“工具：上下文”是什么？</a>
+      <a href="/2018/01/15/why-do-browsers-match-css-selectors-from-right-to-left/" title="为什么浏览器从右到左匹配CSS选择器？" itemprop="url">为什么浏览器从右到左匹配CSS选择器？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-22T02:26:40.000Z" itemprop="datePublished"> Published 2018-02-22</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>从最近的一个新版本的ADT开始，我注意到了这个布局XML文件的新属性，例如：</p>
-<pre><code>&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    xmlns:tools=&quot;http://schemas.android.com/tools&quot;
-    android:orientation=&quot;vertical&quot;
-    android:layout_width=&quot;fill_parent&quot;
-    android:layout_height=&quot;fill_parent&quot;
-    tools:context=&quot;.MainActivity&quot; /&gt;
-</code></pre><p><strong>什么是“工具：上下文”用于？</strong></p>
-<p>它怎么知道写在那里的活动的确切路径？它是否在清单中查看应用程序的包？</p>
-<p>是否仅限于扩展Context或只有活动的类？它可用于ListView项目等？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/02/22/whats-toolscontext-in-android-layout-files/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/xml/">xml</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/02/22/listing-only-directories-using-ls-in-bash-an-examination/" title="在bash中仅列出使用ls的目录：检查" itemprop="url">在bash中仅列出使用ls的目录：检查</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-02-22T02:00:11.000Z" itemprop="datePublished"> Published 2018-02-22</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>该命令列出当前路径中的目录：<code>ls -d * /</code><br>模式<code>* /</code>究竟干什么？</p>
-<p>我们如何在上面的命令中给出绝对路径（例如<code>ls -d / home / alice / Documents</code>）来仅列出那个路径中的目录？</p>
-<p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/02/22/listing-only-directories-using-ls-in-bash-an-examination/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/bash/">bash</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/" title="简单的英语中的Ukkonen后缀树算法" itemprop="url">简单的英语中的Ukkonen后缀树算法</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-02-22T01:30:38.000Z" itemprop="datePublished"> Published 2018-02-22</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>在这一点上我感觉有点厚。我已经花了好几天的时间想把自己的头完全包裹在后缀树的构造中，但是因为我没有数学背景，所以很多的解释都是在我开始过度使用数学符号的时候解决的。最接近我找到的一个很好的解释是<br><em><a href="http://marknelson.us/1996/08/01/suffix-trees/" target="_blank" rel="noopener">带后缀的快速字符串搜索树</a> </em><br>，但他掩盖了各种各样的点，算法的某些方面仍然不清楚。</p>
-<p>这个关于Stack Overflow的这个算法的一步一步的解释对于除了我以外的其他许多人来说是非常宝贵的，我相信。</p>
-<p>作为参考，这里是关于算法的Ukkonen的论文：<a href="http://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf" target="_blank" rel="noopener"> http：// www。<br>cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf</a></p>
-<p>到目前为止，我的基本了解：</p>
+        <p>CSS选择器由右到左的浏览器引擎进行匹配。所以他们首先找到孩子，然后检查他们的父母，看他们是否符合规则的其余部分。</p>
 <ul>
-<li>我需要迭代给定字符串T的每个前缀P </li>
-<li>我需要遍历前缀P中的每个后缀S并将其添加到树中</li>
-<li>要为树添加后缀S，我需要遍历S中的每个字符，迭代包括沿着以S中相同的一组字符C开头的现有分支进行迭代，并且可能将边分割为后代当我在后缀中达到不同的字符时，或者如果没有匹配的边缘向下走，则返回节点。如果找不到匹配的边缘C，则会为C创建一个新的边缘。</li>
+<li>这是为什么？</li>
+<li>仅仅是因为规范说明了吗？</li>
+<li>如果从左到右进行评估，是否会影响最终版式？</li>
 </ul>
-<p>基本算法似乎是O（n  2 ），正如在大多数解释中指出的那样，因为我们需要遍历所有的前缀，那么我们需要遍历每一个每个前缀的后缀。<br>Ukkonen的算法显然是独一无二的，因为他使用了后缀指针技术，但我认为_是我无法理解的。</p>
-<p>我也很难理解：</p>
+<p>对我来说，最简单的方法是使用元素数最少的选择器。所以ID首先（因为他们应该只返回1元素）。然后可能是类或节点数最少的元素 -<br>例如在页面上可能只有一个跨度，因此可以使用任何引用跨度的规则直接进入该节点。</p>
+<p>以下是一些支持我的声明的链接</p>
 <ul>
-<li>恰好在何时以及如何分配，使用和更改“活动点”</li>
-<li>算法的标准化方面正在发生什么</li>
-<li>为什么我看到的实现需要“修复”正在使用的变量</li>
+<li><a href="http://code.google.com/speed/page-speed/docs/rendering.html" target="_blank" rel="noopener"> http://code.google.com/speed/page-速度/文档/ rendering.html </a></li>
+<li><a href="https://developer.mozilla.org/en/Writing_Efficient_CSS" target="_blank" rel="noopener"> https://developer.mozilla.org/zh/Writing_Efficient_CSS </a></li>
 </ul>
 <hr>
-<p>这是完整的 <strong>C＃</strong> 源代码。它不仅能够正常工作，而且支持自动封装，并呈现更好看的输出文本图形。源代码和示例输出在：</p>
-<blockquote>
-<p><strong><a href="https://gist.github.com/2373868" target="_blank" rel="noopener">https://gist.github.com/2373868</a></strong></p>
-</blockquote>
-<hr>
-<p><strong>更新2017-11-04</strong></p>
-<p>多年以后，我发现了一个新的后缀树，并在 <strong>JavaScript</strong> 中实现了这个算法。 Gist在下面。它应该是无bug的。将它转储到一个js文件中，<code>npm install chalk</code>从相同的位置运行，然后运行node.js以查看一些丰富多彩的输出。在同一个Gist中有一个精简版，没有任何调试代码。</p>
-<blockquote>
-<p><strong><a href="https://gist.github.com/axefrog/c347bf0f5e0723cbd09b1aaed6ec6fc6" target="_blank" rel="noopener">https://gist.github.com/axefrog/c347bf0f5e0723cbd09b1aaed6ec6fc6</a></strong></p>
-</blockquote>
+<p>听起来好像是这样做的，以避免必须查看所有的父母的孩子（可能是很多），而不是所有的孩子的父母必须是一个。即使DOM很深，它也只能在RTL匹配中查看每个级别的一个节点，而不是多个节点。<br><a href="https://stackoverflow.com/questions/4130045/is-it-
+easier-faster-to-parse-css-selectors-ltr-or-rtl" target="_blank" rel="noopener">评估CSS选择器LTR更容易/更快或RTL？</a></p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/why-do-browsers-match-css-selectors-from-right-to-left/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/why-dont-self-closing-script-tags-work/" title="为什么不能自动关闭脚本标签？" itemprop="url">为什么不能自动关闭脚本标签？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>浏览器不能正确识别的原因是：</p>
+<pre><code>&lt;script src=&quot;foobar.js&quot; /&gt; &lt;!-- self-closing script tag --&gt;
+</code></pre><p>只有这个被认可：</p>
+<pre><code>&lt;script src=&quot;foobar.js&quot;&gt;&lt;/script&gt;
+</code></pre><p>这是否打破了XHTML支持的概念？</p>
+<p>注意：至少对于所有的IE（6-8 beta 2）这个说法是正确的。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/why-dont-self-closing-script-tags-work/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/invoking-javascript-code-in-an-iframe-from-the-parent-page/" title="在父页面的iframe中调用JavaScript代码" itemprop="url">在父页面的iframe中调用JavaScript代码</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>基本上，我有一个嵌入在页面中的iframe，iframe有一些<a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank" rel="noopener"> JavaScript</a>例程需要从父页面调用。</p>
+<p>现在，相反很简单，因为你只需要调用<code>parent.functionName（）</code>，但不幸的是我需要完全相反的。</p>
+<p>请注意，我的问题并未改变iframe的来源<a href="http://en.wikipedia.org/wiki/Uniform_Resource_Locator" target="_blank" rel="noopener">网址</a>，而是调用函数在iframe中定义。</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/22/ukkonens-suffix-tree-algorithm-in-plain-english/#more">Read More</a>
+            <a href="/2018/01/15/invoking-javascript-code-in-an-iframe-from-the-parent-page/#more">Read More</a>
           
        </p>
     </div>
@@ -453,7 +434,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/c-sharp/">c-sharp</a>
+  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -482,27 +463,26 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/22/formatting-a-number-with-leading-zeros-in-php/" title="在PHP中用前导零来格式化一个数字" itemprop="url">在PHP中用前导零来格式化一个数字</a>
+      <a href="/2018/01/15/set-the-table-column-width-constant-regardless-of-the-amount-of-text-in-its-cell/" title="无论单元格中文本的数量如何，表格列的宽度是不变的？" itemprop="url">无论单元格中文本的数量如何，表格列的宽度是不变的？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-22T01:04:58.000Z" itemprop="datePublished"> Published 2018-02-22</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个变量，它包含值<code>1234567</code>。</p>
-<p>我希望它包含8位数字，即<code>01234567</code>。</p>
-<p>有一个PHP函数吗？</p>
+        <p>在我的表中，我将列中第一个单元格的宽度设置为<code>100px</code>。<br>但是，如果此列中某个单元格中的文本太长，则列的宽度将超过<code>100px</code>。我怎么能禁用这个扩展？</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/22/formatting-a-number-with-leading-zeros-in-php/#more">Read More</a>
+            <a href="/2018/01/15/set-the-table-column-width-constant-regardless-of-the-amount-of-text-in-its-cell/#more">Read More</a>
           
        </p>
     </div>
@@ -512,7 +492,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -541,83 +521,46 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/21/android-studio-rename-package/" title="Android Studio重命名包" itemprop="url">Android Studio重命名包</a>
+      <a href="/2018/01/15/why-not-use-tables-for-layout-in-html/" title="为什么不在HTML中使用表格进行布局？ [关闭]" itemprop="url">为什么不在HTML中使用表格进行布局？ [关闭]</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-21T02:26:31.000Z" itemprop="datePublished"> Published 2018-02-21</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>有没有自动重构？</p>
-<p>我想做批量重构，但我不知道如何。我在eclipse上工作了2年，在eclipse中是一次点击操作。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/02/21/android-studio-rename-package/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/02/21/redirect-all-output-to-file/" title="重定向所有输出到文件" itemprop="url">重定向所有输出到文件</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-02-21T02:00:03.000Z" itemprop="datePublished"> Published 2018-02-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>This question already has an answer here:</p>
+        <p>这似乎是[一般意见</p>
+<p>a&gt;表格不应该用于HTML中的布局。</p>
+<p>为什么？</p>
+<p>我从来没有（或很少说实话）看到这个好的论点。通常的答案是：</p>
 <ul>
-<li><a href="/questions/876239/how-can-i-redirect-and-append-both-stdout-and-stderr-to-a-file-with-bash">How can I redirect and append both stdout and stderr to a file with Bash?</a> 6 answers </li>
+<li>这是很好的<a href="https://stackoverflow.com/questions/82391/should-tables-be-avoided-in-html-at-any-cost#82422" target="_blank" rel="noopener">单独的内容布局</a><br>但这是一个错误的论点; <a href="http://www.don-lindsay-
+archive.org/skeptic/arguments.html#cliche" target="_blank" rel="noopener"> Cliche Thinking </a>。我想这是真的，使用表格元素的布局与表格数据很少。所以呢？我的老板照顾吗？我的用户关心吗？  </li>
 </ul>
-<p>我知道，在Linux中，为了将输出从屏幕重定向到文件，我可以使用<code>＆gt;</code>或<code>tee</code>。但是，我不知道为什么部分输出仍然输出到屏幕上，而不是写入文件。</p>
-<p>有没有办法将所有输出重定向到文件？</p>
+<p>也许我或我的开发人员必须维护一个网页关心…是不是一个表维护？我认为使用表比<a href="https://stackoverflow.com/questions/82391
+/should-tables-be-avoided-in-html-at-any-
+cost#82571" target="_blank" rel="noopener">更容易</a>使用div和CSS。顺便说一句…为什么要使用div或跨度很好的分离内容从布局和表格不是？只有div才能获得良好的布局，往往需要大量的嵌套div。</p>
+<ul>
+<li>代码的可读性 - 我认为这是相反的方式。大多数人理解HTML，很少理解CSS。</li>
+<li><p>SEO最好不要使用表格<br>为什么？有人可以证明这是一个证据吗？或者谷歌的声明表示，从SEO的角度来看是不鼓励的？</p>
+</li>
+<li><p>表格较慢。<br>必须插入一个额外的tbody元素。这是现代网页浏览器的花生。给我看一些使用表格显着减慢页面速度的基准。</p>
+</li>
+<li><p>如果没有表格，布局检查更容易，请参阅<a href="http://csszengarden.com/" target="_blank" rel="noopener"> css Zen Garden </a>。<br>大多数网站需要升级需要新的内容（HTML）。新版本的网站只需要一个新的CSS文件的情况不太可能。禅园是一个不错的网站，但有点理论。更不用说它的[滥用CSS了。</p>
+</li>
+</ul>
+<p>我对使用div + CSS而不是表格的好理由感兴趣。</p>
+<p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/21/redirect-all-output-to-file/#more">Read More</a>
+            <a href="/2018/01/15/why-not-use-tables-for-layout-in-html/#more">Read More</a>
           
        </p>
     </div>
@@ -627,7 +570,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/bash/">bash</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -656,26 +599,35 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/21/what-is-the-difference-between-const-and-readonly/" title="const和readonly有什么区别？" itemprop="url">const和readonly有什么区别？</a>
+      <a href="/2018/01/15/why-does-css-work-with-fake-elements/" title="为什么CSS使用假元素？" itemprop="url">为什么CSS使用假元素？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-21T01:30:29.000Z" itemprop="datePublished"> Published 2018-02-21</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p><strong><code>const</code> </strong> 与 <strong><code>只读</code> </strong> 之间有什么不同？您是否使用另一个？</p>
-<p>
+        <p>在我的课堂上，我在玩耍，发现CSS使用了构成元素</p>
+<p>示例：</p>
+<pre><code>imsocool {
+    color:blue;
+}
+
+
+&lt;imsocool&gt;HELLO&lt;/imsocool&gt;
+</code></pre><p>当我的教授第一次看到我使用这个，他有点惊讶，化妆元素的工作，并建议我只是改变我所有的元素编号段的ID。</p>
+<p>为什么我的教授不想让我使用化妆元素？他们有效地工作。</p>
+<p>另外，为什么他不知道构成元素存在和使用CSS。他们是不是很普遍？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/21/what-is-the-difference-between-const-and-readonly/#more">Read More</a>
+            <a href="/2018/01/15/why-does-css-work-with-fake-elements/#more">Read More</a>
           
        </p>
     </div>
@@ -685,7 +637,7 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/c-sharp/">c-sharp</a><a href="/tags/dot-net/">dot-net</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -714,30 +666,33 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/02/21/fatal-error-allowed-memory-size-of-134217728-bytes-exhausted-codeigniter-xml/" title="致命错误：允许134217728字节的内存大小用尽（CodeIgniter + XML-RPC）" itemprop="url">致命错误：允许134217728字节的内存大小用尽（CodeIgniter + XML-RPC）</a>
+      <a href="/2018/01/15/should-i-put-input-tags-inside-a-label-tag/" title="我应该把标签标签内的输入标签吗？" itemprop="url">我应该把标签标签内的输入标签吗？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-02-21T01:05:09.000Z" itemprop="datePublished"> Published 2018-02-21</time>
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一大堆客户销售点（POS）系统，它们定期将新的销售数据发送到一个集中的数据库，这个数据库将数据存储到一个大数据库中生成报告。</p>
-<p>客户端POS基于PHPPOS，并且我已经实现了一个使用标准的XML-RPC库来将销售数据发送到服务的模块。服务器系统建立在CodeIgniter之上<br>，并为Web服务组件使用XML-RPC和XML-<br>RPCS库。每当我发送大量的销售数据（从销售表中只有50行，销售中每个项目的sales_items中的单个行），我得到以下错误：</p>
-<pre><code>Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 54 bytes)
-</code></pre><p>128M是<code>php.ini</code>中的默认值，但我认为这是一个巨大的数字。事实上，我甚至试图将这个值设置为1024M，而且所做的只是花费更长时间才能出错。</p>
-<p>至于我采取的步骤，我已经尝试禁用服务器端的所有处理，并已经操纵它返回一个罐头响应，无论输入。但是，我认为问题在于数据的实际发送。我甚至尝试禁用PHP的最大脚本执行时间，但仍然出错。</p>
-<p>
+        <p>我只是想知道是否有关于标签和输入标签的最佳做法：</p>
+<p>经典之道：</p>
+<pre><code>&lt;label for=&quot;myinput&quot;&gt;My Text&lt;/label&gt;
+&lt;input type=&quot;text&quot; id=&quot;myinput&quot; /&gt;
+</code></pre><p>或</p>
+<pre><code>&lt;label for=&quot;myinput&quot;&gt;My Text
+   &lt;input type=&quot;text&quot; id=&quot;myinput&quot; /&gt;
+&lt;/label&gt;
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/02/21/fatal-error-allowed-memory-size-of-134217728-bytes-exhausted-codeigniter-xml/#more">Read More</a>
+            <a href="/2018/01/15/should-i-put-input-tags-inside-a-label-tag/#more">Read More</a>
           
        </p>
     </div>
@@ -747,7 +702,73 @@ var _hmt = _hmt || [];
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/php/">php</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/html5/">html5</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/15/is-it-possible-to-set-the-equivalent-of-a-src-attribute-of-an-img-tag-in-css/" title="有没有可能在CSS中设置一个img标签的src属性的等价物？" itemprop="url">有没有可能在CSS中设置一个img标签的src属性的等价物？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-15T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-15</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>是否可以在CSS中设置<code>src</code>属性值？目前，我正在做的是：</p>
+<pre><code>&lt;img src=&quot;pathTo/myImage.jpg&quot;/&gt;
+</code></pre><p>我希望它是这样的</p>
+<pre><code>&lt;img class=&quot;myClass&quot; /&gt;
+
+
+
+.myClass {
+    some-src-property: url(&quot;pathTo/myImage.jpg&quot;);
+</code></pre><p>我想在CSS中使用<code>background</code>或<code>background-image：</code>属性来执行 <em>**</em> 。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/15/is-it-possible-to-set-the-equivalent-of-a-src-attribute-of-an-img-tag-in-css/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -772,7 +793,7 @@ var _hmt = _hmt || [];
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/60/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/59/">59</a><a class="page-number" href="/page/60/">60</a><span class="page-number current">61</span><a class="page-number" href="/page/62/">62</a><a class="page-number" href="/page/63/">63</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/62/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/60/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/59/">59</a><a class="page-number" href="/page/60/">60</a><span class="page-number current">61</span><a class="page-number" href="/page/62/">62</a><a class="page-number" href="/page/63/">63</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/62/">Next<span></span></a>
   </nav>
 
 </div>
@@ -815,15 +836,11 @@ var _hmt = _hmt || [];
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -832,10 +849,6 @@ var _hmt = _hmt || [];
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -848,6 +861,10 @@ var _hmt = _hmt || [];
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -872,6 +889,8 @@ var _hmt = _hmt || [];
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

@@ -1,0 +1,576 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>如何避免反向工程的APK文件？ | 智子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="zhizi">
+    
+
+    
+    <meta name="description" content="我正在开发Android的付款处理应用程序，我想阻止黑客访问APK文件中的任何资源，资产或源代码。 如果有人将.apk扩展名更改为.zip，那么他们可以将其解压缩并轻松访问所有应用程序的资源和资产，并使用dex2jar和Java反编译器，还可以访问源代码。这是一个非常简单的反向工程AndroidAPK文件 - 欲了解更多信息，请参阅堆栈溢出问题反向工程从APK文件到项目。 我已经使用了Androi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何避免反向工程的APK文件？">
+<meta property="og:url" content="https://www.tracholar.top/2017/12/20/how-to-avoid-reverse-engineering-of-an-apk-file/index.html">
+<meta property="og:site_name" content="智子">
+<meta property="og:description" content="我正在开发Android的付款处理应用程序，我想阻止黑客访问APK文件中的任何资源，资产或源代码。 如果有人将.apk扩展名更改为.zip，那么他们可以将其解压缩并轻松访问所有应用程序的资源和资产，并使用dex2jar和Java反编译器，还可以访问源代码。这是一个非常简单的反向工程AndroidAPK文件 - 欲了解更多信息，请参阅堆栈溢出问题反向工程从APK文件到项目。 我已经使用了Androi">
+<meta property="og:updated_time" content="2018-01-15T16:12:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何避免反向工程的APK文件？">
+<meta name="twitter:description" content="我正在开发Android的付款处理应用程序，我想阻止黑客访问APK文件中的任何资源，资产或源代码。 如果有人将.apk扩展名更改为.zip，那么他们可以将其解压缩并轻松访问所有应用程序的资源和资产，并使用dex2jar和Java反编译器，还可以访问源代码。这是一个非常简单的反向工程AndroidAPK文件 - 欲了解更多信息，请参阅堆栈溢出问题反向工程从APK文件到项目。 我已经使用了Androi">
+
+    
+    <link rel="alternative" href="/atom.xml" title="智子" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- ad start -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6300557868920774",
+    enable_page_level_ads: true
+  });
+</script>
+
+    <!-- ad end -->
+
+    <!--  stat -->
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4036f580b1119e720db871571faa68cc";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-78529611-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-78529611-1');
+</script>
+
+    <!-- end stat -->
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="智子">智子</a></h1>
+				<h2 class="blog-motto">智子之家</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:www.tracholar.top">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody">
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/20/how-to-avoid-reverse-engineering-of-an-apk-file/" title="如何避免反向工程的APK文件？" itemprop="url">如何避免反向工程的APK文件？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-20T02:00:00.000Z" itemprop="datePublished"> Published 2017-12-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			
+		
+		</div>
+		
+
+        <ins class="adsbygoogle"
+     style="display:block; text-align:center; overflow:hidden;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="6882414849"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p>我正在开发Android的付款处理应用程序，我想阻止黑客访问APK文件中的任何资源，资产或源代码。</p>
+<p>如果有人将.apk扩展名更改为.zip，那么他们可以将其解压缩并轻松访问所有应用程序的资源和资产，并使用dex2jar和Java反编译器，还可以访问源代码。这是一个非常简单的反向工程Android<br>APK文件 - 欲了解更多信息，请参阅堆栈溢出问题反向工程从APK文件到项目。</p>
+<p>我已经使用了Android<br>SDK提供的Proguard工具。当我使用签名的密钥库和Proguard对生成的APK文件进行反向工程时，我得到了混淆的代码。但是，Android组件的名称保持不变，某些代码（如应用程序中使用的键值）保持不变。根据Proguard文档，该工具不能混淆清单文件中提到的组件。</p>
+<p>现在我的问题是：</p>
+<p>我怎样才能完全避免Android APK的逆向工程？这可能吗？ 我怎样才能保护所有的应用程序的资源，资产和源代码，使黑客无法以任何方式破解APK文件？<br>有没有办法使黑客更加困难，甚至不可能？我还能做些什么来保护我的APK文件中的源代码？</p>
+<a id="more"></a>
+<blockquote>
+<p> 1. How can I completely avoid reverse engineering of an Android APK? Is<br>this possible?</p>
+</blockquote>
+<p>AFAIK，完全避免逆向工程没有任何窍门。</p>
+<p>而且@inazaruk也说得很对：无论你对代码做什么，潜在的攻击者都可以用任何可能的方式来改变它。你基本上不能保护你的应用程序不被修改。而且你放在那里的任何保护都可以禁用/删除。</p>
+<blockquote>
+<p> 2. How can I protect all the app’s resources, assets and source code so<br>that hackers can’t hack the APK file in any way?</p>
+</blockquote>
+<p>你可以做不同的技巧，使黑客更难。例如，使用混淆（如果它是Java代码）。这通常会显着减缓逆向工程。</p>
+<blockquote>
+<p> 3. Is there a way to make hacking more tough or even impossible? What more<br>can I do to protect the source code in my APK file?</p>
+</blockquote>
+<p>正如大家所说，也许你知道，没有100％的安全。但是，Google已经建立起来的Android平台是ProGuard。如果您可以选择包含共享库，则可以在C<br>++中包含所需的代码来验证文件大小，集成， 等等。如果您需要将外部本机库添加到每个版本的APK库文件夹中， 那么你可以通过下面的建议来使用它。</p>
+<p>将库放在默认为“libs”的本机库路径中 你的项目文件夹。如果你建立了“armeabi”目标的本地代码，然后把它 在libs / armeabi下<br>。如果它是用armeabi-v7a构建的，那就把它放在下面 库/ armeabi-V7A。</p>
+<pre><code>&lt;project&gt;/libs/armeabi/libstuff.so
+</code></pre><p>AFAIK，你不能保护/ res目录中的文件，而不是保护它们。</p>
+<p>但是，您可以采取一些措施来保护您的源代码，或者至少如果不是所有的事情都可以采取措施。</p>
+<p>使用ProGuard之类的工具。这些会混淆你的代码，反编译时难以阅读，如果不是不可能的话。<br>将服务的最关键部分从应用程序移出，然后放入一个web服务，隐藏在服务器端语言（如PHP）后面。例如，如果你有一个算法，你花了一百万美元来写。你显然不希望有人偷你的应用程序。移动算法，让它在远程服务器上处理数据，并使用应用程序简单地提供数据。或者使用NDK将它们本地写入到.so文件中，这些文件比反编译的可能性要小得多。我不认为.so文件的反编译器现在甚至还存在（即使这样做，也不会像Java反编译器那样好）。另外，正如评论中提到的@nikolay，你应该在服务器和设备之间进行交互时使用SSL。<br>在设备上存储值时，不要以原始格式存储它们。例如，如果您有一个游戏，并且您正在SharedPreferences中存储用户所拥有的游戏货币数量。我们假设它是<code>10000</code>硬币。直接保存<code>10000</code>，而不是使用像<code>((currency*2)+1)/13</code>这样的算法保存。所以，而不是<code>10000</code>，您将<code>1538.53846154</code>保存到SharedPreferences中。然而，上面的例子并不完美，你必须努力想出一个方程，不会失去舍去错误等的货币。<br>您可以为服务器端任务做类似的事情。现在举一个例子，让我们来看看您的付款处理应用程序。假设用户必须支付<code>$200</code>。而不是发送一个原始的<code>$200</code>值到服务器，发送一系列较小，预定义的值，加起来<code>$200</code>。例如，在您的服务器上有一个文件或表格，将文字与值相等。所以我们假设<code>Charlie</code>对应<code>$47</code>，<code>John</code>对应<code>$3</code>。因此，不要发送<code>$200</code>，您可以发送四次<code>Charlie</code>和四次发送<code>John</code>。在服务器上，解释他们的意思，并把它加起来。这可以防止黑客发送任意值到你的服务器，因为他们不知道什么字对应什么值。作为安全措施的附加措施，您也可以有类似于第3点的公式，并每隔1天更改一次关键字。<br>最后，你可以插入随机无用的源代码到你的应用程序，以便黑客在干草堆中寻找针。插入随机类，包含来自互联网的片段，或者只是用于计算随机事件的函数，如斐波那契数列。确保这些类被编译，但不被应用程序的实际功能使用。添加足够的这些错误的类，黑客会很难找到你真正的代码。</p>
+<p>总而言之，没有办法保护你的应用程序100％。你可以让它更难，但不是不可能的。您的网络服务器可能会受到攻击，黑客可以通过监控多个交易金额和您发送的关键字来计算出您的关键字，黑客可以通过源代码精心查找哪个代码是虚拟的。</p>
+<p>你只能反击，但永远不会赢。</p>
+
+
+        <p style="margin-top:2em; text-align:left; font-weight:bold; font-style: italic;">未经作者同意，本文严禁转载，违者必究！</p>
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://www.tracholar.top/2017/12/20/how-to-avoid-reverse-engineering-of-an-apk-file/" data-title="如何避免反向工程的APK文件？ | 智子" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/12/21/how-to-calculate-the-difference-between-two-dates-using-php/" title="如何计算使用PHP的两个日期之间的差异？">
+  <strong>上一篇：</strong><br/>
+  <span>
+  如何计算使用PHP的两个日期之间的差异？</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/12/20/is-there-a-reason-for-cs-reuse-of-the-variable-in-a-foreach/"  title="是否有一个C＃在foreach中重用该变量的原因？">
+ <strong>下一篇：</strong><br/> 
+ <span>是否有一个C＃在foreach中重用该变量的原因？
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>
+
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ 
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- side-bar-ad -->
+<ins class="adsbygoogle"
+     style="display:block; overflow:hidden;"
+     data-ad-client="ca-pub-6300557868920774"
+     data-ad-slot="2232545787"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+  
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/javascript/" title="javascript">javascript<sup>207</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>205</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html/" title="html">html<sup>203</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/php/" title="php">php<sup>197</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/shell/" title="shell">shell<sup>78</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/jquery/" title="jquery">jquery<sup>61</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/unix/" title="unix">unix<sup>30</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>17</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/html5/" title="html5">html5<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/xml/" title="xml">xml<sup>13</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/http/" title="http">http<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
+			
+		
+			
+		
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://tracholar.github.io" target="_blank" title="个人博客">个人博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+
+    </div>
+    <footer><div id="footer" >
+	
+	
+	<section class="info">
+		<p> To be or not to be, that is a question. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		版权所有 © 2018 本站文章未经同意，禁止转载！作者：
+		
+		<a href="/about" target="_blank" title="zhizi">zhizi</a>
+		
+
+
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

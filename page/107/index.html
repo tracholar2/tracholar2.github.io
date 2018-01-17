@@ -112,7 +112,7 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-upload-files-to-server-using-jsp-servlet/" title="如何使用JSP / Servlet将文件上传到服务器？" itemprop="url">如何使用JSP / Servlet将文件上传到服务器？</a>
+      <a href="/2018/01/14/understanding-python-super-with-init-methods/" title="用__init __（）方法理解Python super（）方法[duplicate]" itemprop="url">用__init __（）方法理解Python super（）方法[duplicate]</a>
   </h1>
   <p class="article-author">By
        
@@ -125,38 +125,32 @@ var _hmt = _hmt || [];
 </header>
     <div class="article-content">
         
-        <p>如何使用JSP / Servlet将文件上传到服务器？我试过这个：</p>
-<pre><code>&lt;form action=&quot;upload&quot; method=&quot;post&quot;&gt;
-    &lt;input type=&quot;text&quot; name=&quot;description&quot; /&gt;
-    &lt;input type=&quot;file&quot; name=&quot;file&quot; /&gt;
-    &lt;input type=&quot;submit&quot; /&gt;
-&lt;/form&gt;
-</code></pre><p>不过，我只获取文件名，而不是文件内容。当我将<code>enctype =“multipart / form-data”</code>添加到<code>＆lt; form＆gt;</code>时，request.getParameter（）<code>返回</code>空。</p>
-<p>在研究中，我偶然发现了<a href="http://commons.apache.org/fileupload" target="_blank" rel="noopener"> Apache Common FileUpload</a>。我试过这个：</p>
-<pre><code>FileItemFactory factory = new DiskFileItemFactory();
-ServletFileUpload upload = new ServletFileUpload(factory);
-List items = upload.parseRequest(request); // This line is where it died.
-</code></pre><p>不幸的是，这个servlet抛出一个没有明确信息和原因的异常。这里是stacktrace：</p>
-<pre><code>SEVERE: Servlet.service() for servlet UploadServlet threw exception
-javax.servlet.ServletException: Servlet execution threw an exception
-    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:313)
-    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
-    at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
-    at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
-    at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
-    at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
-    at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
-    at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:298)
-    at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:852)
-    at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:588)
-    at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:489)
-    at java.lang.Thread.run(Thread.java:637)
+        <p>This question already has an answer here:</p>
+<ul>
+<li><a href="/questions/222877/what-does-super-do-in-python">What does ‘super’ do in Python?</a> 5 answers </li>
+</ul>
+<p>我试图理解<code>super（）</code>的用法。从外观上看，这两个子类都可以创建，就好了。</p>
+<p>我很想知道以下两个子类的实际区别。</p>
+<pre><code>class Base(object):
+    def __init__(self):
+        print &quot;Base created&quot;
+
+class ChildA(Base):
+    def __init__(self):
+        Base.__init__(self)
+
+class ChildB(Base):
+    def __init__(self):
+        super(ChildB, self).__init__()
+
+ChildA() 
+ChildB()
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-upload-files-to-server-using-jsp-servlet/#more">Read More</a>
+            <a href="/2018/01/14/understanding-python-super-with-init-methods/#more">Read More</a>
           
        </p>
     </div>
@@ -166,7 +160,7 @@ javax.servlet.ServletException: Servlet execution threw an exception
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -206,7 +200,7 @@ javax.servlet.ServletException: Servlet execution threw an exception
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-tell-jackson-to-ignore-a-field-during-serialization-if-its-value-is-null/" title="如果杰克逊在序列化过程中忽略某个字段的值是否为空，该怎么办？" itemprop="url">如果杰克逊在序列化过程中忽略某个字段的值是否为空，该怎么办？</a>
+      <a href="/2018/01/14/how-does-pythons-super-work-with-multiple-inheritance/" title="Python的super（）如何处理多重继承？" itemprop="url">Python的super（）如何处理多重继承？</a>
   </h1>
   <p class="article-author">By
        
@@ -219,19 +213,27 @@ javax.servlet.ServletException: Servlet execution threw an exception
 </header>
     <div class="article-content">
         
-        <p>杰克逊如何配置为在序列化期间忽略字段值，如果该字段的值为空。</p>
-<p>例如：</p>
-<pre><code>public class SomeClass {
-   // what jackson annotation causes jackson to skip over this value if it is null but will 
-   // serialize it otherwise 
-   private String someValue; 
-}
-</code></pre><p>
+        <p>在Python面向对象的编程中，我非常新，而且我遇到了麻烦 理解<code>super（）</code>函数（新样式类），特别是在涉及多重继承的时候。</p>
+<p>例如，如果你有类似的东西：</p>
+<pre><code>class First(object):
+    def __init__(self):
+        print &quot;first&quot;
+
+class Second(object):
+    def __init__(self):
+        print &quot;second&quot;
+
+class Third(First, Second):
+    def __init__(self):
+        super(Third, self).__init__()
+        print &quot;that&apos;s it&quot;
+</code></pre><p>我不明白的是：<code>Third（）</code>类会继承两个构造方法吗？如果是，那么将使用super（）运行哪一个？为什么？</p>
+<p>如果你想运行另一个呢？我知道这与Python方法解析顺序有关（<a href="http://en.wikipedia.org/wiki/C3_linearization" target="_blank" rel="noopener"> MRO</a>）。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-tell-jackson-to-ignore-a-field-during-serialization-if-its-value-is-null/#more">Read More</a>
+            <a href="/2018/01/14/how-does-pythons-super-work-with-multiple-inheritance/#more">Read More</a>
           
        </p>
     </div>
@@ -241,7 +243,7 @@ javax.servlet.ServletException: Servlet execution threw an exception
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -270,7 +272,7 @@ javax.servlet.ServletException: Servlet execution threw an exception
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-split-a-string-in-java/" title="如何在Java中分割字符串" itemprop="url">如何在Java中分割字符串</a>
+      <a href="/2018/01/14/remove-element-by-id/" title="通过ID删除元素" itemprop="url">通过ID删除元素</a>
   </h1>
   <p class="article-author">By
        
@@ -283,17 +285,16 @@ javax.servlet.ServletException: Servlet execution threw an exception
 </header>
     <div class="article-content">
         
-        <p>我有一个字符串<code>“004-034556”</code>，我想分成两个字符串：</p>
-<pre><code>string1=004
-string2=034556
-</code></pre><p>这意味着第一个字符串将包含<code>&#39; - &#39;</code>之前的字符，第二个字符串将包含<code>&#39; - &#39;</code>之后的字符。我也想检查字符串中是否有<code>&#39; -
-&#39;</code>。如果没有，我会抛出一个异常。我该怎么做？</p>
+        <p>使用标准JavaScript去除元素时，必须首先转到其父元素：</p>
+<pre><code>var element = document.getElementById(&quot;element-id&quot;);
+element.parentNode.removeChild(element);
+</code></pre><p>首先到父节点看起来有点奇怪，是否有这样一个原因JavaScript的作品呢？</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-split-a-string-in-java/#more">Read More</a>
+            <a href="/2018/01/14/remove-element-by-id/#more">Read More</a>
           
        </p>
     </div>
@@ -303,7 +304,7 @@ string2=034556
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/javascript/">javascript</a>
   </div>
 
 </div>
@@ -332,7 +333,7 @@ string2=034556
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-round-a-number-to-n-decimal-places-in-java/" title="如何在Java中将数字四舍五入到小数点后n位" itemprop="url">如何在Java中将数字四舍五入到小数点后n位</a>
+      <a href="/2018/01/14/understanding-kwargs-in-python/" title="在Python中理解kwargs" itemprop="url">在Python中理解kwargs</a>
   </h1>
   <p class="article-author">By
        
@@ -345,30 +346,15 @@ string2=034556
 </header>
     <div class="article-content">
         
-        <p>我想要的是将double转换为使用half-up方法舍入的字符串的方法 -<br>即，如果舍入的小数是5，则它总是舍入到前一个数字。这是大多数人在大多数情况下所期望的四舍五入的标准方法。</p>
-<p>我也只想显示有效数字 - 即不应有任何尾随零。</p>
-<p>我知道这样做的一个方法是使用<code>String.format</code>方法：</p>
-<pre><code>String.format(&quot;%.5g%n&quot;, 0.912385);
-</code></pre><p>返回：</p>
-<pre><code>0.91239
-</code></pre><p>这很棒，但是它总是显示5位小数的数字，即使它们不显着：</p>
-<pre><code>String.format(&quot;%.5g%n&quot;, 0.912300);
-</code></pre><p>返回：</p>
-<pre><code>0.91230
-</code></pre><p>另一种方法是使用<code>DecimalFormatter</code>：</p>
-<pre><code>DecimalFormat df = new DecimalFormat(&quot;#.#####&quot;);
-df.format(0.912385);
-</code></pre><p>返回：</p>
-<pre><code>0.91238
-</code></pre><p>然而，正如你所看到的，这使用半双舍入。如果前面的数字是偶数的话，那么它将会下降。我想要的是这个：</p>
-<pre><code>0.912385 -&gt; 0.91239
-0.912300 -&gt; 0.9123
-</code></pre><p>在Java中实现这个最好的方法是什么？</p>
+        <p>Python中<code>** kwargs</code>有什么用途？</p>
+<p>我知道你可以在表上做一个<code>objects.filter</code>，并传入一个<code>** kwargs</code>参数。</p>
+<p>我也可以这样做来指定time deltas，即<code>timedelta（hours = time1）</code>？</p>
+<p>它究竟如何工作？它是类作为“拆包”？像<code>a，b = 1,2</code>？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-round-a-number-to-n-decimal-places-in-java/#more">Read More</a>
+            <a href="/2018/01/14/understanding-kwargs-in-python/#more">Read More</a>
           
        </p>
     </div>
@@ -378,7 +364,7 @@ df.format(0.912385);
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -407,7 +393,7 @@ df.format(0.912385);
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-reference-a-method-in-javadoc/" title="如何在javadoc中引用一个方法？" itemprop="url">如何在javadoc中引用一个方法？</a>
+      <a href="/2018/01/14/differences-between-hashmap-and-hashtable/" title="HashMap和Hashtable的区别？" itemprop="url">HashMap和Hashtable的区别？</a>
   </h1>
   <p class="article-author">By
        
@@ -420,86 +406,15 @@ df.format(0.912385);
 </header>
     <div class="article-content">
         
-        <p>如何使用<code>@link</code>标记链接到某个方法？</p>
-<p>我想改变</p>
-<pre><code>/**
- * Returns the Baz object owned by the Bar object owned by Foo owned by this.
- * A convenience method, equivalent to getFoo().getBar().getBaz()
- * @return baz
- */
-public Baz fooBarBaz()
-</code></pre><p>到</p>
-<pre><code>/**
- * Returns the Baz object owned by the Bar object owned by Foo owned by this.
- * A convenience method, equivalent to {@link getFoo()}.{@link getBar()}.{@link getBaz()}
- * @return baz
- */
-public Baz fooBarBaz()
-</code></pre><p>但我不知道如何正确格式化<code>@link</code>标签。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-to-reference-a-method-in-javadoc/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-to-read-a-large-text-file-line-by-line-using-java/" title="如何使用Java逐行读取大型文本文件？" itemprop="url">如何使用Java逐行读取大型文本文件？</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我需要使用Java逐行读取大约5-6 GB的大文本文件。</p>
-<p>我怎样才能快速做到这一点？</p>
+        <p><a href="http://docs.oracle.com/javase/8/docs/api/index.html?java/util/HashMap.html" target="_blank" rel="noopener">有什么区别<code>HashMap</code></a>和<a href="“http://docs.oracle.com/javase/8/docs/api/index.html?java/util/Hashtable.html”rel"><code>Hashtable</code></a>在Java？</p>
+<p>中</p>
+<p>对于非线程应用程序更有效率</p>
 <p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-read-a-large-text-file-line-by-line-using-java/#more">Read More</a>
+            <a href="/2018/01/14/differences-between-hashmap-and-hashtable/#more">Read More</a>
           
        </p>
     </div>
@@ -538,7 +453,7 @@ public Baz fooBarBaz()
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-parse-json/" title="如何解析JSON" itemprop="url">如何解析JSON</a>
+      <a href="/2018/01/14/remove-items-from-a-list-while-iterating/" title="迭代时从列表中删除项目" itemprop="url">迭代时从列表中删除项目</a>
   </h1>
   <p class="article-author">By
        
@@ -551,31 +466,205 @@ public Baz fooBarBaz()
 </header>
     <div class="article-content">
         
-        <p>我有以下的JSON文本，我需要解析得到<code>pageName</code>，<code>pagePic</code>，<code>post_id</code>等。</p>
-<p>需要的代码是什么？</p>
-<pre><code>{
-   &quot;pageInfo&quot;: {
-         &quot;pageName&quot;: &quot;abc&quot;,
-         &quot;pagePic&quot;: &quot;http://example.com/content.jpg&quot;
-    }
-    &quot;posts&quot;: [             {
-              &quot;post_id&quot;: &quot;123456789012_123456789012&quot;,
-              &quot;actor_id&quot;: &quot;1234567890&quot;,
-              &quot;picOfPersonWhoPosted&quot;: &quot;http://example.com/photo.jpg&quot;,
-              &quot;nameOfPersonWhoPosted&quot;: &quot;Jane Doe&quot;,
-              &quot;message&quot;: &quot;Sounds cool. Can&apos;t wait to see it!&quot;,
-              &quot;likesCount&quot;: &quot;2&quot;,
-              &quot;comments&quot;: [],
-              &quot;timeOfPost&quot;: &quot;1234567890&quot;
-         }
-    ]
+        <p>我正在遍历Python中的元组列表，并试图在符合特定条件时将其删除。</p>
+<pre><code>for tup in somelist:
+    if determine(tup):
+         code_to_remove_tup
+</code></pre><p>我应该用什么来代替<code>code_to_remove_tup</code>？我不知道如何以这种方式删除项目。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/remove-items-from-a-list-while-iterating/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/uncatchable-chucknorrisexception/" title="不可捕捉的ChuckNorrisException" itemprop="url">不可捕捉的ChuckNorrisException</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>是否可以在<a href="http://en.wikipedia.org/wiki/Java_%28programming_language%29" target="_blank" rel="noopener"> Java</a>中构建一段代码，这会构成一个假设的<code>java.lang.ChuckNorrisException</code>不可捕捉？</p>
+<p>想到的想法是使用拦截器或<a href="http://en.wikipedia.org/wiki/Aspect-
+oriented_programming" target="_blank" rel="noopener">面向方面的编程</a>。</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/uncatchable-chucknorrisexception/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/how-does-the-java-for-each-loop-work/" title="Java为每个循环如何工作？" itemprop="url">Java为每个循环如何工作？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>考虑：</p>
+<pre><code>List&lt;String&gt; someList = new ArrayList&lt;String&gt;();
+// add &quot;monkey&quot;, &quot;donkey&quot;, &quot;skeleton key&quot; to someList
+
+
+
+for (String item : someList) {
+    System.out.println(item);
 }
+</code></pre><p>为什么对于<code>循环，等价的</code>看起来像不用每个<em>语法的 </em>？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2018/01/14/how-does-the-java-for-each-loop-work/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/01/14/removing-duplicates-in-lists/" title="删除列表中的重复项" itemprop="url">删除列表中的重复项</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>几乎我需要编写一个程序来检查一个列表是否有任何重复，如果它删除，并返回一个新的列表与我们不重复/删除的项目。这是我的，但说实话，我不知道该怎么做。</p>
+<pre><code>def remove_duplicates():
+    t = [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;]
+    t2 = [&apos;a&apos;, &apos;c&apos;, &apos;d&apos;]
+    for t in t2:
+        t.append(t.remove())
+    return t
 </code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-parse-json/#more">Read More</a>
+            <a href="/2018/01/14/removing-duplicates-in-lists/#more">Read More</a>
           
        </p>
     </div>
@@ -585,7 +674,7 @@ public Baz fooBarBaz()
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/java/">java</a>
+  <span></span> <a href="/tags/python/">python</a>
   </div>
 
 </div>
@@ -614,7 +703,7 @@ public Baz fooBarBaz()
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-to-make-mock-to-void-methods-with-mockito/" title="如何使模拟无效方法与mockito" itemprop="url">如何使模拟无效方法与mockito</a>
+      <a href="/2018/01/14/removing-whitespace-from-strings-in-java/" title="在Java中删除字符串中的空格" itemprop="url">在Java中删除字符串中的空格</a>
   </h1>
   <p class="article-author">By
        
@@ -627,166 +716,17 @@ public Baz fooBarBaz()
 </header>
     <div class="article-content">
         
-        <p>如何用void返回类型来模拟方法？</p>
-<p>我实现了Observer模式，但我不能用Mockito来嘲笑它，因为我不知道如何。</p>
-<p>我试图在互联网上找到一个例子，但没有成功。</p>
-<p>我的课程看起来像</p>
-<pre><code>public class World {
-
-    List&lt;Listener&gt; listeners;
-
-    void addListener(Listener item) {
-        listeners.add(item);
-    }
-
-    void doAction(Action goal,Object obj) {
-        setState(&quot;i received&quot;);
-        goal.doAction(obj);
-        setState(&quot;i finished&quot;);
-    }
-
-    private string state;
-    //setter getter state
-} 
-
-public class WorldTest implements Listener {
-
-    @Test public void word{
-    World  w= mock(World.class);
-    w.addListener(this);
-    ...
-    ...
-
-    }
-}
-
-interface Listener {
-    void doAction();
-}
-</code></pre><p>系统不是用模拟触发的。 =（ 我想显示上面提到的系统状态。并根据他们断言。</p>
+        <p>我有这样的字符串：</p>
+<pre><code>mysz = &quot;name=john age=13 year=2001&quot;;
+</code></pre><p>我想删除字符串中的空格。我试过<code>trim（）</code>，但是这样只删除整个字符串前后的空格。我也尝试了<code>replaceAll（“\\ W”，“”）</code>，但是<code>=</code>也被移除了。</p>
+<p>我怎样才能得到一个字符串：</p>
+<pre><code>mysz2 = &quot;name=johnage=13year=2001&quot;
+</code></pre><p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-to-make-mock-to-void-methods-with-mockito/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-to-make-a-new-list-in-java/" title="如何在Java中创建一个新的List" itemprop="url">如何在Java中创建一个新的List</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我们创建一个<code>Set</code>为：</p>
-<pre><code>Set myset = new HashSet()
-</code></pre><p>我们如何在Java中创建<code>List</code>？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-to-make-a-new-list-in-java/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/java/">java</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-to-get-a-class-instance-of-generics-type-t/" title="如何获得泛型类型T的类实例" itemprop="url">如何获得泛型类型T的类实例</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>我有一个泛型类，<code>Foo＆lt; T＆gt;</code>。在<code>Foo</code>的方法中，我想获得类型T的类实例，但是我不能调用<code>T.class</code>。</p>
-<p>使用<code>T.class</code>？</p>
-<p>解决它的首选方法是什么？
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-to-get-a-class-instance-of-generics-type-t/#more">Read More</a>
+            <a href="/2018/01/14/removing-whitespace-from-strings-in-java/#more">Read More</a>
           
        </p>
     </div>
@@ -821,7 +761,7 @@ interface Listener {
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/106/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/105/">105</a><a class="page-number" href="/page/106/">106</a><span class="page-number current">107</span><a class="page-number" href="/page/108/">108</a><a class="page-number" href="/page/109/">109</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/108/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/106/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/105/">105</a><a class="page-number" href="/page/106/">106</a><span class="page-number current">107</span><a class="page-number" href="/page/108/">108</a><a class="page-number" href="/page/109/">109</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/108/">Next<span></span></a>
   </nav>
 
 </div>
@@ -864,15 +804,11 @@ interface Listener {
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -881,10 +817,6 @@ interface Listener {
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -897,6 +829,10 @@ interface Listener {
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -921,6 +857,8 @@ interface Listener {
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			

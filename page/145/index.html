@@ -112,89 +112,32 @@ var _hmt = _hmt || [];
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-you-return-multiple-values-in-python/" title="你如何返回Python中的多个值？" itemprop="url">你如何返回Python中的多个值？</a>
+      <a href="/2017/11/09/lazy-load-of-images-in-listview/" title="在ListView中延迟加载图像" itemprop="url">在ListView中延迟加载图像</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-09T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-09</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在支持它的语言中返回多个值的规范方法通常是<a href="“https://stackoverflow.com/questions/38508/whats-
-the-best-way-to-return-multiple-values-从-A-功能合蟒“">几倍</a>。</p>
-<h3 id="Option-Using-a-tuple"><a href="#Option-Using-a-tuple" class="headerlink" title="Option: Using a tuple"></a>Option: Using a tuple</h3><p>考虑这个简单的例子：</p>
-<pre><code>def f(x):
-  y0 = x + 1
-  y1 = x * 3
-  y2 = y0 ** y3
-  return (y0,y1,y2)
-</code></pre><p>然而，随着返回值的数量增加，这很快就会出现问题。如果你想返回四个或五个值呢？当然，你可以继续打扰他们，但是很容易忘记哪个价值在哪里。将它们解包到任何你想接收的地方也是相当难看的。</p>
-<h3 id="Option-Using-a-dictionary"><a href="#Option-Using-a-dictionary" class="headerlink" title="Option: Using a dictionary"></a>Option: Using a dictionary</h3><p>下一个合乎逻辑的步骤似乎是引入某种“记录符号”。在python中，执行此操作的显而易见的方式是通过<code>dict</code>。</p>
-<p>考虑以下几点：</p>
-<pre><code>def g(x):
-  y0 = x + 1
-  y1 = x * 3
-  y2 = y0 ** y3
-  return {&apos;y0&apos;:y0, &apos;y1&apos;:y1 ,&apos;y2&apos;:y2 }
-</code></pre><p>（编辑 - 只是要清楚，y0，y1和y2只是作为抽象标识符。正如指出的那样，实际上你会使用有意义的标识符）</p>
-<p>现在，我们有一个机制，我们可以投射出返回对象的特定成员。例如，</p>
-<pre><code>result[&apos;y0&apos;]
-</code></pre><h3 id="Option-Using-a-class"><a href="#Option-Using-a-class" class="headerlink" title="Option: Using a class"></a>Option: Using a class</h3><p>不过，还有另外一个选择。我们可以返回一个专门的结构。我已经在Python的上下文框架，但我相信它也适用于其他语言。事实上，如果你在C工作，这可能是你唯一的选择。这里是：</p>
-<pre><code>class ReturnValue(object):
-  def __init__(self, y0, y1, y2):
-     self.y0 = y0
-     self.y1 = y1
-     self.y2 = y2
-
-def g(x):
-  y0 = x + 1
-  y1 = x * 3
-  y2 = y0 ** y3
-  return ReturnValue(y0, y1, y2)
-</code></pre><p>在Python中，前两者在管道方面可能非常相似 - 毕竟，{code&gt; {y0，y1，y2} <code>最终只是内部的</code> <strong> dict </strong> <code></code>ReturnValue `。</p>
-<p>对于小对象，Python提供了另一个特性，即<code>__ slots __</code>属性。这个类可以表示为：</p>
-<pre><code>class ReturnValue(object):
-  __slots__ = [&quot;y0&quot;, &quot;y1&quot;, &quot;y2&quot;]
-  def __init__(self, y0, y1, y2):
-     self.y0 = y0
-     self.y1 = y1
-     self.y2 = y2
-</code></pre><p>从<a href="http://www.network-theory.co.uk/docs/pylang/__slots__.html" target="_blank" rel="noopener"> Python参考手册</a>：</p>
-<blockquote>
-<p>The <code>__slots__</code> declaration takes a sequence of instance variables and<br>reserves just enough space in each instance to hold a value for each variable.<br>Space is saved because <code>__dict__</code> is not created for each instance.</p>
-</blockquote>
-<h3 id="Option-Using-a-list"><a href="#Option-Using-a-list" class="headerlink" title="Option: Using a list"></a>Option: Using a list</h3><p>另一个我忽略的建议是来自蜥蜴比尔：</p>
-<pre><code>def h(x):
-  result = [x + 1]
-  result.append(x * 3)
-  result.append(y0 ** y3)
-  return result
-</code></pre><p>不过这是我最不喜欢的方法。我想我已经接触到Haskell，但混合类型列表的想法一直感到不舒服。在这个特定的例子中，列表是非混合类型的，但是可以想象的是。就我所知，以这种方式使用的列表实际上并没有获得关于元组的任何东西。<br>Python中的列表和元组唯一真正的区别是列表是[可变的](<a href="http://docs.python.org/library/stdtypes.html" target="_blank" rel="noopener">http://docs.python.org/library/stdtypes.html</a></p>
-<p>#typesseq-mutable)<br>，元组不是。我个人倾向于继承函数式编程的惯例：使用相同类型的任意数量的元素的列表，以及用于固定数量的预定类型的元素的元组（element）。</p>
-<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>经过冗长的序言，就成了必然的问题。哪种方法（你认为）最好？</p>
-<p>我一般发现我自己去字典路线，因为它涉及较少的设置工作。然而，从类型的角度来看，您最好走上课程路线，因为这可能会帮助您避免混淆字典所代表的内容。另一方面，在Python社区中有一些人觉得[隐含的接口应该优先于显式接口&lt;<br>/ a&gt;，此时对象的类型实际上是不相关的，因为你基本上依赖于约定，即相同的属性总是具有相同的含义。</p>
-<p>那么，如何在Python中返回多个值？</p>
+        <p>我正在使用<code>ListView</code>显示与这些图像相关的一些图像和标题。我正在从互联网上获取图像。有没有办法延迟加载图像，所以当文本显示，用户界面没有锁定，图像显示为他们下载？</p>
+<p>图像总数不固定。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-you-return-multiple-values-in-python/#more">Read More</a>
+            <a href="/2017/11/09/lazy-load-of-images-in-listview/#more">Read More</a>
           
        </p>
     </div>
     <footer class="article-footer clearfix">
 <div class="article-catetags">
 
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/python/">python</a>
-  </div>
 
 </div>
 
@@ -233,28 +176,37 @@ def g(x):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-you-split-a-list-into-evenly-sized-chunks/" title="你如何将一个列表分成均匀大小的块？" itemprop="url">你如何将一个列表分成均匀大小的块？</a>
+      <a href="/2017/11/08/get-the-value-in-an-input-text-box/" title="获取输入文本框中的值" itemprop="url">获取输入文本框中的值</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-08T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-08</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我有一个任意长度的列表，我需要将它分成相等大小的块并对其进行操作。有一些明显的方法可以做到这一点，比如保留一个计数器和两个列表，当第二个列表填满时，将其添加到第一个列表中，并清空下一轮数据的第二个列表，但这可能是非常昂贵的。</p>
-<p>我想知道是否有任何人有一个很好的解决这个任何长度的名单，例如使用生成器。</p>
-<p>我正在寻找<code>itertools</code>中的一些有用的东西，但我找不到任何明显有用的东西。虽然可能已经错过了。</p>
-<p>相关问题：[什么是最好的“python”方式来遍历块的列表？</p>
+        <p>什么是使用jQuery获取和呈现输入值的方法？</p>
+<p>这里是一个：</p>
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;http://code.jquery.com/jquery-1.4.3.min.js&quot; &gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot;&gt;
+    $(document).ready(function(){
+        $(&quot;#txt_name&quot;).keyup(function(){
+            alert($(this).val());
+        });
+    })
+&lt;/script&gt;
+
+&lt;input type=&quot;text&quot; id=&quot;txt_name&quot;  /&gt;
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-you-split-a-list-into-evenly-sized-chunks/#more">Read More</a>
+            <a href="/2017/11/08/get-the-value-in-an-input-text-box/#more">Read More</a>
           
        </p>
     </div>
@@ -264,7 +216,7 @@ def g(x):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/jquery/">jquery</a><a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -293,31 +245,39 @@ def g(x):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-do-you-use-a-variable-in-a-regular-expression/" title="你如何在正则表达式中使用变量？" itemprop="url">你如何在正则表达式中使用变量？</a>
+      <a href="/2017/11/08/how-can-i-make-a-textarea-100-width-without-overflowing-when-padding-is-present/" title="如何在CSS中存在填充时使TextArea 100％宽度没有溢出？" itemprop="url">如何在CSS中存在填充时使TextArea 100％宽度没有溢出？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-08T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-08</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我想在JavaScript中创建一个String.replaceAll（）方法，我想使用RegEx是最简单的方法。但是，我不知道如何将一个变量传递给RegEx。我已经可以做到这一点，将所有“B”的实例替换为“A”。</p>
-<pre><code>&quot;ABABAB&quot;.replace(/B/g, &quot;A&quot;);
-</code></pre><p>但是我想要做这样的事情：</p>
-<pre><code>String.prototype.replaceAll = function(replaceThis, withThis) {
-    this.replace(/replaceThis/g, withThis);
-};
-</code></pre><p>但是，显然这只会替换文本“replaceThis”…所以如何将这个变量传递给我的RegEx字符串呢？</p>
+        <p>我有下面的CSS和HTML代码片段正在呈现。</p>
+<pre><code>textarea
+{
+  border:1px solid #999999;
+  width:100%;
+  margin:5px 0;
+  padding:3px;
+}
+
+
+&lt;div style=&quot;display: block;&quot; id=&quot;rulesformitem&quot; class=&quot;formitem&quot;&gt;
+  &lt;label for=&quot;rules&quot; id=&quot;ruleslabel&quot;&gt;Rules:&lt;/label&gt;
+  &lt;textarea cols=&quot;2&quot; rows=&quot;10&quot; id=&quot;rules&quot;/&gt;
+&lt;/div&gt;
+</code></pre><p>问题是，文本区域结束了8px的宽度（2px的边界+6px的填充）比父。有没有办法继续使用边框和填充，但将<code>textarea</code>的总大小限制为父宽度？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-do-you-use-a-variable-in-a-regular-expression/#more">Read More</a>
+            <a href="/2017/11/08/how-can-i-make-a-textarea-100-width-without-overflowing-when-padding-is-present/#more">Read More</a>
           
        </p>
     </div>
@@ -327,7 +287,7 @@ def g(x):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -356,30 +316,35 @@ def g(x):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-data-binding-work-in-angularjs/" title="数据绑定在AngularJS中如何工作？" itemprop="url">数据绑定在AngularJS中如何工作？</a>
+      <a href="/2017/11/07/how-to-getextract-a-file-extension-in-php/" title="如何在PHP中获取（提取）文件扩展名？" itemprop="url">如何在PHP中获取（提取）文件扩展名？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-07T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-07</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>数据绑定如何在<code>AngularJS</code>框架中工作</p>
-<p>我还没有在<a href="http://angularjs.org" target="_blank" rel="noopener">他们的网站</a>上找到技术细节。当数据从视图传播到模型时，它是如何工作的或多或少都很清楚。但是，AngularJS如何在没有setter和getters的情况下追踪模型属性的变化？</p>
-<p>我发现有可能做这项工作的<a href="https://stackoverflow.com/questions/1029241
-/javascript-object-watch-for-all-browsers" target="_blank" rel="noopener"> JavaScript观察者</a>。但是，它们不支持<a href="http://en.wikipedia.org/wiki/Internet_Explorer_6" target="_blank" rel="noopener"> Internet Explorer 6</a>和<a href="“http：//"> Internet Explorer 7</a>。那么，AngularJS如何知道我改变了以下内容，并在视图上反映了这种变化？</p>
-<pre><code>myobject.myproperty=&quot;new value&quot;;
-</code></pre><p>
+        <p>这是一个问题，你可以在网上随处阅读各种答案：</p>
+<pre><code>$ext = end(explode(&apos;.&apos;, $filename));
+$ext = substr(strrchr($filename, &apos;.&apos;), 1);
+$ext = substr($filename, strrpos($filename, &apos;.&apos;) + 1);
+$ext = preg_replace(&apos;/^.*\.([^.]+)$/D&apos;, &apos;$1&apos;, $filename);
+
+$exts = split(&quot;[/\\.]&quot;, $filename);
+$n    = count($exts)-1;
+$ext  = $exts[$n];
+</code></pre><p>等等</p>
+<p>然而，总是有“最好的方法”，它应该在stackoverflow上。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-data-binding-work-in-angularjs/#more">Read More</a>
+            <a href="/2017/11/07/how-to-getextract-a-file-extension-in-php/#more">Read More</a>
           
        </p>
     </div>
@@ -389,7 +354,7 @@ def g(x):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -418,32 +383,27 @@ def g(x):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/" title="Facebook如何禁用浏览器的集成开发者工具？" itemprop="url">Facebook如何禁用浏览器的集成开发者工具？</a>
+      <a href="/2017/11/07/get-first-key-in-a-possibly-associative-array/" title="获取（可能）关联数组中的第一个键？" itemprop="url">获取（可能）关联数组中的第一个键？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-07T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-07</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>显然，由于最近发生的诈骗事件，开发者工具被人们利用来发布垃圾邮件，甚至被用于“黑客”账户。 Facebook阻止了开发者工具，我甚至无法使用控制台。</p>
-<p><img src="“https://i.stack.imgur.com/Wiatp.png”alt" alt=""></p>
-<p>他们是怎么做到的？ <a href="https://stackoverflow.com/questions/7559409
-/disable-developer-tools" target="_blank" rel="noopener">一个堆栈溢出帖子声称这是不可能的</a>，但Facebook已经证明他们错了。</p>
-<p>只要进入Facebook并打开开发者工具，在控制台中输入一个字符，就会弹出这个警告。不管你输入什么，它都不会被执行。</p>
-<p>这怎么可能？</p>
-<p>他们甚至在控制台中阻止自动完成：</p>
-<p><img src="“https://i.stack.imgur.com/j0Zmx.png”alt" alt=""></p>
+        <p>确定可能的关联数组中的第一个键的最好方法是什么？我首先想到的只是foreach数组，然后立即打破它，像这样：</p>
+<pre><code>foreach ($an_array as $key =&gt; $val) break;
+</code></pre><p>因此，有$ key包含第一个键，但这似乎效率低下。有没有人有更好的解决方案？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-facebook-disable-the-browsers-integrated-developer-tools/#more">Read More</a>
+            <a href="/2017/11/07/get-first-key-in-a-possibly-associative-array/#more">Read More</a>
           
        </p>
     </div>
@@ -453,7 +413,7 @@ def g(x):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -482,35 +442,113 @@ def g(x):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-javascript-prototype-work/" title="JavaScript  prototype如何工作？" itemprop="url">JavaScript  prototype如何工作？</a>
+      <a href="/2017/11/07/retrieving-property-name-from-lambda-expression/" title="从lambda表达式中检索属性名称" itemprop="url">从lambda表达式中检索属性名称</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-07T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-07</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我并不是那么喜欢动态编程语言，但是我已经写下了自己的JavaScript代码。我从来没有真正理解这个基于原型的编程，有没有人知道这是如何工作的？</p>
-<pre><code>var obj = new Object(); // not a functional object
-obj.prototype.test = function() { alert(&apos;Hello?&apos;); }; // this is wrong!
+        <p>有一个更好的方式来获得通过lambda表达式传入时的属性名称？ 这是我目前有。</p>
+<p>例如。</p>
+<pre><code>GetSortingInfo&lt;User&gt;(u =&gt; u.UserId);
+</code></pre><p>只有当属性是一个字符串的时候，它才会将其作为一个元素来表达。因为不是所有的属性都是字符串，我不得不使用对象，但它会返回一个一元表达式。</p>
+<pre><code>public static RouteValueDictionary GetInfo&lt;T&gt;(this HtmlHelper html, 
+    Expression&lt;Func&lt;T, object&gt;&gt; action) where T : class
+{
+    var expression = GetMemberInfo(action);
+    string name = expression.Member.Name;
 
-function MyObject() {} // a first class functional object
-MyObject.prototype.test = function() { alert(&apos;OK&apos;); } // OK
-</code></pre><p>我记得曾经跟人们讨论过很多次（我不太确定自己在做什么），但据我所知，没有一个班级的概念。这只是一个对象，这些对象的实例是原始的克隆，对吧？</p>
-<p>但是，在JavaScript中这个<code>.prototype</code>属性的确切目的是什么呢？它与实例化对象有什么关系？</p>
-<hr>
-<h3 id="Edit"><a href="#Edit" class="headerlink" title="Edit"></a>Edit</h3><p>这些<a href="http://ejohn.org/apps/learn/#64" target="_blank" rel="noopener">幻灯片</a>的确帮助我们理解了这个话题。</p>
-<p>
+    return GetInfo(html, name);
+}
+
+private static MemberExpression GetMemberInfo(Expression method)
+{
+    LambdaExpression lambda = method as LambdaExpression;
+    if (lambda == null)
+        throw new ArgumentNullException(&quot;method&quot;);
+
+    MemberExpression memberExpr = null;
+
+    if (lambda.Body.NodeType == ExpressionType.Convert)
+    {
+        memberExpr = 
+            ((UnaryExpression)lambda.Body).Operand as MemberExpression;
+    }
+    else if (lambda.Body.NodeType == ExpressionType.MemberAccess)
+    {
+        memberExpr = lambda.Body as MemberExpression;
+    }
+
+    if (memberExpr == null)
+        throw new ArgumentException(&quot;method&quot;);
+
+    return memberExpr;
+}
+</code></pre>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-javascript-prototype-work/#more">Read More</a>
+            <a href="/2017/11/07/retrieving-property-name-from-lambda-expression/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+  
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/11/07/can-i-set-subject-content-of-email-using-mailto/" title="我可以使用mailto设置电子邮件的主题/内容：？" itemprop="url">我可以使用mailto设置电子邮件的主题/内容：？</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
+		
+  <p class="article-time">
+    <time datetime="2017-11-07T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-07</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>当我使用mailto时，是否可以设置邮件的主题/内容？</p>
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2017/11/07/can-i-set-subject-content-of-email-using-mailto/#more">Read More</a>
           
        </p>
     </div>
@@ -520,7 +558,7 @@ MyObject.prototype.test = function() { alert(&apos;OK&apos;); } // OK
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/html/">html</a>
   </div>
 
 </div>
@@ -549,40 +587,26 @@ MyObject.prototype.test = function() { alert(&apos;OK&apos;); } // OK
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-pythons-super-work-with-multiple-inheritance/" title="Python的super（）如何处理多重继承？" itemprop="url">Python的super（）如何处理多重继承？</a>
+      <a href="/2017/11/07/how-to-disable-a-link-using-only-css/" title="如何禁用仅使用CSS的链接？" itemprop="url">如何禁用仅使用CSS的链接？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-07T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-07</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>在Python面向对象的编程中，我非常新，而且我遇到了麻烦 理解<code>super（）</code>函数（新样式类），特别是在涉及多重继承的时候。</p>
-<p>例如，如果你有类似的东西：</p>
-<pre><code>class First(object):
-    def __init__(self):
-        print &quot;first&quot;
-
-class Second(object):
-    def __init__(self):
-        print &quot;second&quot;
-
-class Third(First, Second):
-    def __init__(self):
-        super(Third, self).__init__()
-        print &quot;that&apos;s it&quot;
-</code></pre><p>我不明白的是：<code>Third（）</code>类会继承两个构造方法吗？如果是，那么将使用super（）运行哪一个？为什么？</p>
-<p>如果你想运行另一个呢？我知道这与Python方法解析顺序有关（<a href="http://en.wikipedia.org/wiki/C3_linearization" target="_blank" rel="noopener"> MRO</a>）。</p>
+        <p>有没有什么办法来禁用使用CSS的链接？</p>
+<p>我有一个名为<code>current-page</code>的类，并希望与此类的链接被禁用，以便在单击它们时不会发生任何操作。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-pythons-super-work-with-multiple-inheritance/#more">Read More</a>
+            <a href="/2017/11/07/how-to-disable-a-link-using-only-css/#more">Read More</a>
           
        </p>
     </div>
@@ -592,7 +616,7 @@ class Third(First, Second):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/python/">python</a>
+  <span></span> <a href="/tags/html/">html</a><a href="/tags/css/">css</a>
   </div>
 
 </div>
@@ -621,26 +645,26 @@ class Third(First, Second):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-the-this-keyword-work/" title="“this”这个关键字是如何工作的？" itemprop="url">“this”这个关键字是如何工作的？</a>
+      <a href="/2017/11/06/when-to-use-self-over-this/" title="什么时候使用自己超过$这个？" itemprop="url">什么时候使用自己超过$这个？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-06T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-06</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>我注意到，关于<code>这个</code>关键字是什么以及它是如何在堆栈溢出网站的JavaScript中正确使用（和不正确）的，似乎并没有明确的解释。 p&gt;<br>我目睹了一些非常奇怪的行为，并没有明白为什么会发生。</p>
-<p><code></code> <code></code> <code></code> <code></code> <code></code>
+        <p>在PHP 5中，使用<code>self</code>和<code>$this</code>有什么区别？</p>
+<p>什么时候适合？</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-the-this-keyword-work/#more">Read More</a>
+            <a href="/2017/11/06/when-to-use-self-over-this/#more">Read More</a>
           
        </p>
     </div>
@@ -650,7 +674,7 @@ class Third(First, Second):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
+  <span></span> <a href="/tags/php/">php</a>
   </div>
 
 </div>
@@ -679,28 +703,27 @@ class Third(First, Second):
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2018/01/14/how-does-trello-access-the-users-clipboard/" title="Trello如何访问用户的剪贴板？" itemprop="url">Trello如何访问用户的剪贴板？</a>
+      <a href="/2017/11/05/make-a-bash-alias-that-takes-a-parameter/" title="做一个Bash别名，需要一个参数？" itemprop="url">做一个Bash别名，需要一个参数？</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
 		
   <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
+    <time datetime="2017-11-05T02:00:00.000Z" itemprop="datePublished"> Published 2017-11-05</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <p>当您将鼠标悬停在<a href="http://en.wikipedia.org/wiki/Trello" target="_blank" rel="noopener"> Trello </a>的卡片上，然后按<code>Ctrl</code> + <code>C</code>，此卡的网址将被复制到剪贴板。他们如何做到这一点？</p>
-<p>据我所知，没有涉及Flash电影。我已经安装了<a href="http://en.wikipedia.org/wiki/Flashblock" target="_blank" rel="noopener"> Flashblock</a>，并且Firefox网络选项卡没有显示加载的Flash影片。<br>（这是通常的方法，例如，ZeroClipboard。）</p>
-<p>他们如何实现这个魔法？</p>
-<p>（在这一刻，我想我有一个顿悟：你不能选择页面上的文本，所以我假设他们有一个不可见的元素，他们创建一个通过JavaScript代码的文本选择，<code>Ctrl</code>+ <code>C</code>触发浏览器的默认行为，复制不可见节点的文本值。）</p>
+        <p>我曾经使用CShell（csh），它可以让你使一个参数的别名。这个符号是类似的</p>
+<pre><code>alias junk=&quot;mv \\!* ~/.Trash&quot;
+</code></pre><p>在Bash中，这似乎不起作用。鉴于Bash有许多有用的功能，我会假设这一个已经实施，但我想知道如何。</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2018/01/14/how-does-trello-access-the-users-clipboard/#more">Read More</a>
+            <a href="/2017/11/05/make-a-bash-alias-that-takes-a-parameter/#more">Read More</a>
           
        </p>
     </div>
@@ -710,64 +733,7 @@ class Third(First, Second):
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/javascript/">javascript</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-  
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/01/14/how-to-change-the-href-for-a-hyperlink-using-jquery/" title="如何使用jQuery更改超链接的href" itemprop="url">如何使用jQuery更改超链接的href</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="zhizi" target="_blank" itemprop="author">zhizi</a>
-		
-  <p class="article-time">
-    <time datetime="2018-01-14T01:49:19.000Z" itemprop="datePublished"> Published 2018-01-14</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如何使用jQuery更改超链接的href？</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2018/01/14/how-to-change-the-href-for-a-hyperlink-using-jquery/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/javascript/">javascript</a><a href="/tags/jquery/">jquery</a>
+  <span></span> <a href="/tags/bash/">bash</a>
   </div>
 
 </div>
@@ -792,7 +758,7 @@ class Third(First, Second):
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/144/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/143/">143</a><a class="page-number" href="/page/144/">144</a><span class="page-number current">145</span><a class="page-number" href="/page/146/">146</a><a class="page-number" href="/page/147/">147</a><span class="space">&hellip;</span><a class="page-number" href="/page/153/">153</a><a class="extend next" rel="next" href="/page/146/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/144/"><span></span>Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/143/">143</a><a class="page-number" href="/page/144/">144</a><span class="page-number current">145</span><a class="page-number" href="/page/146/">146</a><a class="page-number" href="/page/147/">147</a><span class="space">&hellip;</span><a class="page-number" href="/page/157/">157</a><a class="extend next" rel="next" href="/page/146/">Next<span></span></a>
   </nav>
 
 </div>
@@ -835,15 +801,11 @@ class Third(First, Second):
 			
 		
 			
-				<li><a href="/tags/python/" title="python">python<sup>201</sup></a></li>
+				<li><a href="/tags/python/" title="python">python<sup>199</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/c-sharp/" title="c-sharp">c-sharp<sup>200</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bash/" title="bash">bash<sup>199</sup></a></li>
+				<li><a href="/tags/bash/" title="bash">bash<sup>198</sup></a></li>
 			
 		
 			
@@ -852,10 +814,6 @@ class Third(First, Second):
 		
 			
 				<li><a href="/tags/css/" title="css">css<sup>88</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/dot-net/" title="dot-net">dot-net<sup>85</sup></a></li>
 			
 		
 			
@@ -868,6 +826,10 @@ class Third(First, Second):
 		
 			
 				<li><a href="/tags/linux/" title="linux">linux<sup>57</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/机器学习/" title="机器学习">机器学习<sup>41</sup></a></li>
 			
 		
 			
@@ -892,6 +854,8 @@ class Third(First, Second):
 		
 			
 				<li><a href="/tags/区块链/" title="区块链">区块链<sup>1</sup></a></li>
+			
+		
 			
 		
 			
